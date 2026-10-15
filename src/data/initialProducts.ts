@@ -2,6 +2,51 @@ import { Product } from "@/types";
 
 export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
   {
+      "id": "vu-custom-1792061468584",
+      "title": "925 Ayar Zülfikâr ı Nakkaş, El Yapımı Erkek Yüzüğü",
+      "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 iş günü ✈️ Yurtdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 16-18 • Taş Türü: Doğal Değerli Taş • Yüzüğün Taşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web Sayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
+      "price": 3999,
+      "images": [
+          "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-1.jpeg",
+          "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-2.jpeg",
+          "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-3.jpeg",
+          "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-4.jpeg",
+          "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-5.jpeg",
+          "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-6.jpeg"
+      ],
+      "category": "Özel El Yapımı Gümüş Yüzükler",
+      "ringSize": [
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30"
+      ],
+      "stock": 10,
+      "originalUrl": "https://veyselustam.com/zulfik-r-i-nakkas",
+      "createdAt": "2026-10-15T10:51:08.600Z",
+      "title_en": "925 Sterling Silver Zülfikâr ı Nakkaş, Handcrafted Men's Ring",
+      "description_en": "💍 Material: 925 Sterling Silver 📦 Free Shipping 🚚 Dispatch Time: 1-3 Business Days ✈️ Worldwide Express Shipping Available. ⚖️ Weight: 16-18gr • Gemstone: Doğal Değerli Taş • Custom sizing available.",
+      "title_es": "Anillo para Hombre de Plata de Ley 925 Zülfikâr ı Nakkaş, Hecho a Mano",
+      "description_es": "💍 Material: Plata de Ley 925 📦 Envío Gratis 🚚 Tiempo: 1-3 Días ✈️ Envío Internacional Disponible. ⚖️ Peso: 16-18gr • Piedra: Doğal Değerli Taş.",
+      "title_de": "925er Sterlingsilber Zülfikâr ı Nakkaş, Handgefertigter Herrenring",
+      "description_de": "💍 Material: 925er Sterlingsilber 📦 Kostenloser Versand 🚚 Lieferzeit: 1-3 Werktage ⚖️ Gewicht: 16-18g • Edelstein: Doğal Değerli Taş.",
+      "title_ar": "خاتم رجالي فضة عيار 925 مصنوع يدوياً Zülfikâr ı Nakkaş",
+      "description_ar": "💍 المادة: فضة عيار 925 📦 شحن مجاني ⚖️ الوزن: 16-18 غرام • الحجر: Doğal Değerli Taş."
+  },
+
+  {
     "id": "vu-prod-1",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 17 • Taş Türü: Orjinal Horasan Akik • Yüzüğün Taşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web Sayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
