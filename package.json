@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "oto-urun": "node scripts/multi_platform_generator.js",
+    "deploy": "git add . && git commit -m \"guncelleme\" && git push origin main"
   },
   "dependencies": {
     "firebase": "^10.12.0",
