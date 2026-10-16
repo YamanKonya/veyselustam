@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Product } from "@/types";
-import { deleteProduct, createProduct } from "@/services/productService";
+import { deleteProduct, createProduct, toggleFeaturedProduct, toggleActiveProduct } from "@/services/productService";
 import BulkCampaignModal from "./BulkCampaignModal";
 import { 
   Edit3, 
@@ -17,11 +17,14 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
+  EyeOff,
   X,
   Zap,
   CheckSquare,
   Square,
-  Percent
+  Percent,
+  Star,
+  Sparkles
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
@@ -45,6 +48,7 @@ export default function ProductListTable({
   const { t, language } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Hepsi");
+  const [statusFilter, setStatusFilter] = useState<"all" | "featured" | "active" | "passive">("all");
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [cloningId, setCloningId] = useState<string | null>(null);
   const [deleteConfirmProduct, setDeleteConfirmProduct] = useState<Product | null>(null);
@@ -63,7 +67,13 @@ export default function ProductListTable({
       product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (product.id && product.id.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesCategory = selectedCategory === "Hepsi" || product.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+    
+    let matchesStatus = true;
+    if (statusFilter === "featured") matchesStatus = !!product.isFeatured;
+    else if (statusFilter === "active") matchesStatus = product.isActive !== false;
+    else if (statusFilter === "passive") matchesStatus = product.isActive === false;
+
+    return matchesSearch && matchesCategory && matchesStatus;
   });
 
   // Pagination math
@@ -168,6 +178,45 @@ export default function ProductListTable({
           </select>
         </div>
 
+        {/* Status Filter (Tümü / Vitrin / Aktif / Pasif) */}
+        <div className="flex items-center gap-1 bg-slate-950 p-1 border border-slate-800 rounded-xl overflow-x-auto">
+          <button
+            onClick={() => { setStatusFilter("all"); setCurrentPage(1); }}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+              statusFilter === "all" ? "bg-slate-800 text-white" : "text-slate-400 hover:text-white"
+            }`}
+          >
+            Tümü
+          </button>
+          <button
+            onClick={() => { setStatusFilter("featured"); setCurrentPage(1); }}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
+              statusFilter === "featured" ? "bg-amber-500/20 text-amber-300 border border-amber-500/30" : "text-slate-400 hover:text-amber-300"
+            }`}
+          >
+            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+            Vitrindekiler
+          </button>
+          <button
+            onClick={() => { setStatusFilter("active"); setCurrentPage(1); }}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
+              statusFilter === "active" ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" : "text-slate-400 hover:text-emerald-300"
+            }`}
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-400" />
+            Aktifler
+          </button>
+          <button
+            onClick={() => { setStatusFilter("passive"); setCurrentPage(1); }}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
+              statusFilter === "passive" ? "bg-red-500/20 text-red-300 border border-red-500/30" : "text-slate-400 hover:text-red-300"
+            }`}
+          >
+            <span className="w-2 h-2 rounded-full bg-red-400" />
+            Pasifler
+          </button>
+        </div>
+
         {/* Bulk Campaign Trigger Button */}
         <button
           onClick={() => setIsCampaignModalOpen(true)}
@@ -219,7 +268,7 @@ export default function ProductListTable({
                   <th className="py-4 px-6">{t("admin_tbl_th_category")}</th>
                   <th className="py-4 px-6">{t("admin_tbl_th_price")}</th>
                   <th className="py-4 px-6">{t("admin_tbl_th_stock")}</th>
-                  <th className="py-4 px-6">{t("sizes")}</th>
+                  <th className="py-4 px-6 text-center">VİTRİN & DURUM</th>
                   <th className="py-4 px-6 text-right">{t("admin_tbl_th_actions")}</th>
                 </tr>
               </thead>
@@ -237,7 +286,11 @@ export default function ProductListTable({
                     <tr 
                       key={product.id} 
                       className={`hover:bg-slate-800/40 transition ${
-                        isSelected ? "bg-amber-500/5 border-l-2 border-l-amber-500" : ""
+                        rawProduct.isActive === false ? "opacity-60 bg-red-950/10" : ""
+                      } ${
+                        rawProduct.isFeatured ? "bg-amber-500/[0.04]" : ""
+                      } ${
+                        isSelected ? "bg-amber-500/10 border-l-2 border-l-amber-500" : ""
                       }`}
                     >
                       {/* Checkbox */}
@@ -344,27 +397,48 @@ export default function ProductListTable({
                         </span>
                       </td>
 
-                      {/* Ring Sizes */}
-                      <td className="py-4 px-6">
-                        {product.ringSize && product.ringSize.length > 0 ? (
-                          <div className="flex flex-wrap gap-1 max-w-[140px]">
-                            {product.ringSize.slice(0, 5).map((size) => (
-                              <span
-                                key={size}
-                                className="px-1.5 py-0.5 rounded bg-slate-950 text-[10px] font-mono text-slate-300 border border-slate-800"
-                              >
-                                {size}
-                              </span>
-                            ))}
-                            {product.ringSize.length > 5 && (
-                              <span className="text-[10px] text-slate-500 font-semibold align-middle">
-                                +{product.ringSize.length - 5}
-                              </span>
+                      {/* Featured & Status Toggles */}
+                      <td className="py-4 px-6 whitespace-nowrap text-center">
+                        <div className="flex items-center justify-center gap-2">
+                          {/* Vitrin Butonu */}
+                          <button
+                            onClick={() => rawProduct.id && toggleFeaturedProduct(rawProduct.id)}
+                            className={`px-3 py-1.5 rounded-xl border transition flex items-center gap-1.5 text-xs font-semibold ${
+                              rawProduct.isFeatured
+                                ? "bg-amber-500/20 border-amber-500/40 text-amber-300 shadow-sm shadow-amber-500/20"
+                                : "bg-slate-950 border-slate-800 text-slate-500 hover:text-amber-400 hover:border-slate-700"
+                            }`}
+                            title={rawProduct.isFeatured ? "Vitrin Ürünü (Tıkla ve Kaldır)" : "Vitrinde Göster"}
+                          >
+                            <Star className={`w-3.5 h-3.5 ${rawProduct.isFeatured ? "fill-amber-400 text-amber-400" : ""}`} />
+                            <span className="text-[11px]">
+                              {rawProduct.isFeatured ? "Vitrinde" : "Normal"}
+                            </span>
+                          </button>
+
+                          {/* Aktif / Pasif Butonu */}
+                          <button
+                            onClick={() => rawProduct.id && toggleActiveProduct(rawProduct.id)}
+                            className={`px-2.5 py-1.5 rounded-xl border transition flex items-center gap-1.5 text-xs font-bold ${
+                              rawProduct.isActive !== false
+                                ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/25"
+                                : "bg-red-500/15 border-red-500/30 text-red-400 hover:bg-red-500/25"
+                            }`}
+                            title={rawProduct.isActive !== false ? "Ürün Yayında (Tıkla Pasife Al)" : "Ürün Pasif/Gizli (Tıkla Yayına Al)"}
+                          >
+                            {rawProduct.isActive !== false ? (
+                              <>
+                                <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                                <span>Aktif</span>
+                              </>
+                            ) : (
+                              <>
+                                <span className="w-2 h-2 rounded-full bg-red-400" />
+                                <span>Pasif</span>
+                              </>
                             )}
-                          </div>
-                        ) : (
-                          <span className="text-xs text-slate-500">-</span>
-                        )}
+                          </button>
+                        </div>
                       </td>
 
                       {/* Actions */}

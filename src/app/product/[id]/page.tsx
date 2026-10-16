@@ -189,10 +189,22 @@ export default function ProductDetailPage() {
                   </div>
                 )}
 
-                {/* Category badge */}
-                <span className="absolute top-3 sm:top-4 left-3 rtl:right-3 rtl:left-auto sm:left-4 bg-black/70 backdrop-blur-md text-amber-400 text-[10px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 rounded-xl uppercase tracking-wider">
-                  {product.category}
-                </span>
+                {/* Category & Featured/Status badges */}
+                <div className="absolute top-3 sm:top-4 left-3 rtl:right-3 rtl:left-auto sm:left-4 flex flex-wrap items-center gap-2 z-10">
+                  <span className="bg-black/70 backdrop-blur-md text-amber-400 text-[10px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 rounded-xl uppercase tracking-wider">
+                    {product.category}
+                  </span>
+                  {product.isFeatured && (
+                    <span className="bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 text-[10px] sm:text-xs font-black px-2.5 sm:px-3 py-1 rounded-xl uppercase tracking-wider flex items-center gap-1 shadow-md">
+                      <Star className="w-3 h-3 fill-slate-950" /> VİTRİN
+                    </span>
+                  )}
+                  {product.isActive === false && (
+                    <span className="bg-red-500/90 text-white text-[10px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 rounded-xl uppercase tracking-wider shadow-md">
+                      PASİF (SATIŞA KAPALI)
+                    </span>
+                  )}
+                </div>
 
                 {/* Watermark / Filigran (Sağ Üst Köşe) */}
                 <div className="absolute top-3 sm:top-5 right-3 rtl:left-3 rtl:right-auto sm:right-5 z-10 pointer-events-none opacity-95 group-hover:opacity-100 transition-opacity">

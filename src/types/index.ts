@@ -23,6 +23,8 @@ export interface Product {
   originalPrice?: number;
   discountPercent?: number;
   isCampaign?: boolean;
+  isFeatured?: boolean;
+  isActive?: boolean;
   images: string[];
   videoUrl?: string;
   category: string;

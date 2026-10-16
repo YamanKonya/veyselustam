@@ -74,6 +74,10 @@ export default function ProductFormModal({
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [videoFile, setVideoFile] = useState<File | null>(null);
 
+  // Vitrin & Aktiflik Durumu
+  const [isFeatured, setIsFeatured] = useState<boolean>(false);
+  const [isActive, setIsActive] = useState<boolean>(true);
+
   const [showTranslations, setShowTranslations] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -98,6 +102,9 @@ export default function ProductFormModal({
       setVideoUrl(productToEdit.videoUrl || "");
       setVideoFile(null);
       
+      setIsFeatured(productToEdit.isFeatured || false);
+      setIsActive(productToEdit.isActive !== false);
+
       const cat = productToEdit.category || DEFAULT_CATEGORIES[0];
       if (DEFAULT_CATEGORIES.includes(cat)) {
         setCategory(cat);
@@ -121,6 +128,8 @@ export default function ProductFormModal({
     setTitleEs("");
     setTitleDe("");
     setTitleAr("");
+    setIsFeatured(false);
+    setIsActive(true);
 
     setDescription("");
     setDescriptionEn("");
@@ -252,6 +261,8 @@ export default function ProductFormModal({
         originalPrice: originalPrice !== "" ? Number(originalPrice) : undefined,
         discountPercent: discountPercent !== "" ? Number(discountPercent) : undefined,
         isCampaign: isCampaignActive,
+        isFeatured: isFeatured,
+        isActive: isActive,
         videoUrl: finalVideoUrl.trim() || undefined,
         category: finalCategory,
         stock: Number(stock) || 0,
@@ -326,6 +337,45 @@ export default function ProductFormModal({
                 placeholder="Örn: 925 Ayar Orijinal Horasan Akik Taşlı El Yapımı Gümüş Yüzük"
                 className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm text-white transition"
               />
+            </div>
+
+            {/* Vitrin & Yayın Durumu */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-slate-950/80 border border-slate-800 rounded-xl">
+              <label className="flex items-center gap-3 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={isFeatured}
+                  onChange={(e) => setIsFeatured(e.target.checked)}
+                  className="w-4 h-4 rounded border-slate-700 bg-slate-900 text-amber-500 focus:ring-amber-500"
+                />
+                <div className="flex items-center gap-2">
+                  <Star className={`w-4 h-4 ${isFeatured ? "fill-amber-400 text-amber-400" : "text-slate-500"}`} />
+                  <div>
+                    <span className="text-xs font-bold text-white block">Vitrin Ürünü Olarak Belirle</span>
+                    <span className="text-[10px] text-slate-400 block">Ana sayfada en başta ve öncelikli gösterilir</span>
+                  </div>
+                </div>
+              </label>
+
+              <label className="flex items-center gap-3 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={isActive}
+                  onChange={(e) => setIsActive(e.target.checked)}
+                  className="w-4 h-4 rounded border-slate-700 bg-slate-900 text-emerald-500 focus:ring-emerald-500"
+                />
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className={`w-2 h-2 rounded-full ${isActive ? "bg-emerald-400" : "bg-red-400"}`} />
+                    <span className="text-xs font-bold text-white">
+                      {isActive ? "Ürün Aktif (Sitede Yayında)" : "Ürün Pasif (Gizli)"}
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 block">
+                    {isActive ? "Müşteriler mağazada görebilir" : "Mağazada gizlenir, sadece adminde görünür"}
+                  </span>
+                </div>
+              </label>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

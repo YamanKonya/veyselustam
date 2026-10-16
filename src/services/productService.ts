@@ -385,3 +385,46 @@ export const clearBulkDiscount = async (
   notifySubscribers();
   return count;
 };
+
+// Toggle Featured (Vitrin Ürünü)
+export const toggleFeaturedProduct = async (id: string): Promise<boolean> => {
+  let newStatus = false;
+  localProductsStore = localProductsStore.map((p) => {
+    if (p.id === id) {
+      newStatus = !p.isFeatured;
+      return { ...p, isFeatured: newStatus };
+    }
+    return p;
+  });
+  notifySubscribers();
+
+  try {
+    const productRef = doc(db, PRODUCTS_COLLECTION, id);
+    await updateDoc(productRef, { isFeatured: newStatus });
+  } catch (err) {
+    console.warn("Firestore toggleFeatured notice:", err);
+  }
+  return newStatus;
+};
+
+// Toggle Active / Passive (Aktif / Pasif)
+export const toggleActiveProduct = async (id: string): Promise<boolean> => {
+  let newStatus = false;
+  localProductsStore = localProductsStore.map((p) => {
+    if (p.id === id) {
+      const current = p.isActive !== false; // varsayılan true
+      newStatus = !current;
+      return { ...p, isActive: newStatus };
+    }
+    return p;
+  });
+  notifySubscribers();
+
+  try {
+    const productRef = doc(db, PRODUCTS_COLLECTION, id);
+    await updateDoc(productRef, { isActive: newStatus });
+  } catch (err) {
+    console.warn("Firestore toggleActive notice:", err);
+  }
+  return newStatus;
+};

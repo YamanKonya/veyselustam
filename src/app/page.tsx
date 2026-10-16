@@ -92,10 +92,12 @@ export default function Home() {
   }, []);
 
   const localizedProducts = useMemo(() => {
-    return products.map((p) => translateProduct(p, language));
+    // Only show active products (isActive !== false)
+    const activeOnly = products.filter((p) => p.isActive !== false);
+    return activeOnly.map((p) => translateProduct(p, language));
   }, [products, language]);
 
-  // Filter products based on search and active tab
+  // Filter products based on search and active tab, prioritizing featured products
   const filteredProducts = useMemo(() => {
     let filtered = localizedProducts;
 
@@ -114,7 +116,12 @@ export default function Home() {
       }
     }
 
-    return filtered;
+    // Vitrin (Featured) ürünlerini her zaman en önde göster
+    return [...filtered].sort((a, b) => {
+      if (a.isFeatured && !b.isFeatured) return -1;
+      if (!a.isFeatured && b.isFeatured) return 1;
+      return 0;
+    });
   }, [localizedProducts, globalSearch, activeTab]);
 
   const handleAddToCart = useCallback((product: Product, size: string) => {
@@ -267,6 +274,14 @@ export default function Home() {
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs font-medium">
                       {t("no_image")}
+                    </div>
+                  )}
+
+                  {/* Vitrin Rozeti (Sol Üst Köşe) */}
+                  {product.isFeatured && (
+                    <div className="absolute top-2.5 left-2.5 z-10 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black text-[9px] uppercase tracking-widest px-2.5 py-1 rounded shadow-lg flex items-center gap-1 border border-amber-300">
+                      <Star className="w-3 h-3 fill-slate-950 text-slate-950" />
+                      <span>VİTRİN</span>
                     </div>
                   )}
 
