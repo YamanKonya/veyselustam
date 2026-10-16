@@ -21,6 +21,10 @@ export const metadata: Metadata = {
   title: "Veysel Ustam | Takı & E-Ticaret Platformu",
   description: "Özel tasarım takı ve aksesuar mağazası. En seçkin koleksiyonlar.",
   keywords: ["takı", "aksesuar", "yüzük", "kolye", "bileklik", "e-ticaret", "özel tasarım"],
+  icons: {
+    icon: "/images/logo.png",
+    apple: "/images/logo.png",
+  },
 };
 
 export default function RootLayout({

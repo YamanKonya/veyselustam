@@ -132,13 +132,23 @@ export default function ProductDetailPage() {
           className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 animate-fadeIn cursor-pointer"
           onClick={() => setImageZoom(false)}
         >
-          <img
-            src={currentMainImage}
-            alt={product.title}
-            className="max-w-full max-h-full object-contain rounded-lg"
-          />
+          <div className="relative max-w-full max-h-full flex items-center justify-center">
+            <img
+              src={currentMainImage}
+              alt={product.title}
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+            />
+            {/* Watermark in zoom modal */}
+            <div className="absolute top-4 right-4 z-10 pointer-events-none drop-shadow-xl opacity-90">
+              <img 
+                src="/images/watermark.png" 
+                alt="Veysel Ustam" 
+                className="w-16 h-16 sm:w-20 sm:h-20 object-contain filter drop-shadow" 
+              />
+            </div>
+          </div>
           <button
-            className="absolute top-6 right-6 text-white/70 hover:text-white p-2 bg-white/10 rounded-full backdrop-blur-sm transition"
+            className="absolute top-6 right-6 text-white/70 hover:text-white p-2 bg-white/10 rounded-full backdrop-blur-sm transition z-20"
             onClick={(e) => { e.stopPropagation(); setImageZoom(false); }}
           >
             <AlertCircle className="w-6 h-6" />
@@ -183,6 +193,15 @@ export default function ProductDetailPage() {
                 <span className="absolute top-3 sm:top-4 left-3 rtl:right-3 rtl:left-auto sm:left-4 bg-black/70 backdrop-blur-md text-amber-400 text-[10px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 rounded-xl uppercase tracking-wider">
                   {product.category}
                 </span>
+
+                {/* Watermark / Filigran (Sağ Üst Köşe) */}
+                <div className="absolute top-3 sm:top-4 right-3 rtl:left-3 rtl:right-auto sm:right-4 z-10 pointer-events-none drop-shadow-md opacity-90 group-hover:opacity-100 transition-opacity">
+                  <img 
+                    src="/images/watermark.png" 
+                    alt="Veysel Ustam" 
+                    className="w-14 h-14 sm:w-16 sm:h-16 object-contain filter drop-shadow" 
+                  />
+                </div>
 
                 {/* Zoom hint */}
                 <div className="absolute bottom-3 right-3 rtl:left-3 rtl:right-auto bg-white/80 backdrop-blur-sm text-slate-600 text-[10px] font-medium px-2.5 py-1 rounded-lg flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">

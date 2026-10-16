@@ -75,9 +75,13 @@ function processFolder(folderName) {
   const weight = customInfo['gram'] || customInfo['ağırlık'] || customInfo['weight'] || '16-18';
   const stone = customInfo['taş'] || customInfo['stone'] || 'Doğal Değerli Taş';
 
-  // 1. Görselleri kopyala
+  // 1. Görselleri kopyala ve Sağ Üst Köşeye Filigran (Watermark) Damgala
   const targetImgFolder = path.join(PUBLIC_PRODUCTS_IMG_DIR, productSlug);
   if (!fs.existsSync(targetImgFolder)) fs.mkdirSync(targetImgFolder, { recursive: true });
+
+  const watermarkPath = path.join(__dirname, '..', 'public', 'images', 'watermark.png');
+  const watermarkScript = path.join(__dirname, 'watermark_tool.py');
+  const { execSync } = require('child_process');
 
   const finalImageUrls = [];
   imageFiles.forEach((img, idx) => {
@@ -85,11 +89,23 @@ function processFolder(folderName) {
     const targetFileName = `${productSlug}-${idx + 1}${ext}`;
     const srcPath = path.join(folderPath, img);
     const destPath = path.join(targetImgFolder, targetFileName);
-    fs.copyFileSync(srcPath, destPath);
+
+    try {
+      if (fs.existsSync(watermarkPath)) {
+        // Python watermark aracıyla sağ üst köşeye filigran ekle
+        execSync(`python "${watermarkScript}" "${srcPath}" "${watermarkPath}" "${destPath}"`);
+      } else {
+        fs.copyFileSync(srcPath, destPath);
+      }
+    } catch (e) {
+      // Hata durumunda güvenli yedek olarak düz kopyala
+      fs.copyFileSync(srcPath, destPath);
+    }
+
     finalImageUrls.push(`/images/products/${productSlug}/${targetFileName}`);
   });
 
-  console.log(`✅ ${imageFiles.length} adet görsel optimize edildi ve /public/images/products/${productSlug}/ altına taşındı.`);
+  console.log(`✅ ${imageFiles.length} adet görsele sağ üst filigran eklendi ve /public/images/products/${productSlug}/ altına taşındı.`);
 
   // 2. Çıktı klasörünü hazırla
   const exportProductDir = path.join(EXPORTS_DIR, productSlug);

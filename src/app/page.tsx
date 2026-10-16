@@ -270,6 +270,15 @@ export default function Home() {
                     </div>
                   )}
 
+                  {/* Watermark / Filigran (Sağ Üst Köşe) */}
+                  <div className="absolute top-2 right-2 z-10 pointer-events-none drop-shadow-md opacity-85 group-hover:opacity-100 transition-opacity">
+                    <img 
+                      src="/images/watermark.png" 
+                      alt="Veysel Ustam" 
+                      className="w-10 h-10 sm:w-12 sm:h-12 object-contain filter drop-shadow" 
+                    />
+                  </div>
+
                   <Link
                     href={`/product/${product.id}`}
                     className="absolute inset-x-4 bottom-4 bg-versace-green-900/95 backdrop-blur text-versace-gold-500 py-2.5 text-[10px] uppercase tracking-widest font-semibold flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 hover:bg-versace-green-900 z-20"
@@ -369,6 +378,16 @@ export default function Home() {
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs font-medium">{t("no_image")}</div>
                     )}
+
+                    {/* Watermark / Filigran (Sağ Üst Köşe) */}
+                    <div className="absolute top-2 right-2 z-10 pointer-events-none drop-shadow-md opacity-85 group-hover:opacity-100 transition-opacity">
+                      <img 
+                        src="/images/watermark.png" 
+                        alt="Veysel Ustam" 
+                        className="w-10 h-10 sm:w-12 sm:h-12 object-contain filter drop-shadow" 
+                      />
+                    </div>
+
                     <Link href={`/product/${product.id}`} className="absolute inset-x-4 bottom-4 bg-versace-green-900/95 backdrop-blur text-versace-gold-500 py-2.5 text-[10px] uppercase tracking-widest font-semibold flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 hover:bg-versace-green-900 z-20">
                       <Eye className="w-4 h-4" /> İncele
                     </Link>
@@ -469,9 +488,12 @@ export default function Home() {
           </div>
 
           <div className="mt-16 pt-8 border-t border-versace-gold/10 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-            <div className="flex items-center gap-2 text-versace-gold-500">
-              <Gem className="w-6 h-6" />
-              <span className="font-light tracking-[0.2em] uppercase text-lg">Veysel Ustam</span>
+            <div className="flex items-center gap-3 text-versace-gold-500">
+              <img src="/images/logo.png" alt="Veysel Ustam" className="w-12 h-12 object-contain brightness-110 drop-shadow" />
+              <div>
+                <span className="font-light tracking-[0.2em] uppercase text-lg text-white block">Veysel Ustam</span>
+                <span className="text-[9px] text-versace-gold-500 font-semibold uppercase tracking-[0.3em] block">KAPALIÇARŞI İSTANBUL</span>
+              </div>
             </div>
             <p className="text-[10px] text-versace-green-100/50 uppercase tracking-[0.1em]">{t("footer_rights")}</p>
           </div>

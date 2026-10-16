@@ -93,10 +93,12 @@ export default function Navbar() {
           </button>
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
-            <div className="w-10 h-10 rounded-sm bg-versace-gold flex items-center justify-center text-white">
-              <Gem className="w-5 h-5" />
-            </div>
+          <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
+            <img 
+              src="/images/logo.png" 
+              alt="Veysel Ustam" 
+              className="w-12 h-12 object-contain group-hover:scale-105 transition-transform drop-shadow-sm" 
+            />
             <div className="hidden sm:block">
               <span className="font-light text-xl text-versace-green-900 tracking-[0.2em] block uppercase leading-none">
                 {t("brand_name")}
@@ -210,7 +212,10 @@ export default function Navbar() {
         }`}
       >
         <div className="flex items-center justify-between p-4 bg-versace-green-900 text-white">
-          <span className="font-light tracking-widest uppercase">{t("menu_title")}</span>
+          <div className="flex items-center gap-2">
+            <img src="/images/logo.png" alt="Veysel Ustam" className="w-8 h-8 object-contain" />
+            <span className="font-light tracking-widest uppercase">{t("menu_title")}</span>
+          </div>
           <button onClick={closeMenu} className="p-2 text-versace-gold-100 hover:text-white transition-colors">
             <X className="w-5 h-5" />
           </button>
