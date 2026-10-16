@@ -97,6 +97,9 @@ export default function Navbar() {
             <img 
               src="/images/logo.png" 
               alt="Veysel Ustam" 
+              width={90}
+              height={90}
+              style={{ maxWidth: '90px', maxHeight: '90px', width: 'auto', height: 'auto' }}
               className="w-20 h-20 sm:w-24 sm:h-24 object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md" 
             />
             <div className="hidden sm:block">

@@ -290,6 +290,9 @@ export default function Home() {
                     <img 
                       src="/images/watermark.png" 
                       alt="Veysel Ustam" 
+                      width={90}
+                      height={90}
+                      style={{ maxWidth: '90px', maxHeight: '90px', width: 'auto', height: 'auto' }}
                       className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]" 
                     />
                   </div>
@@ -399,6 +402,9 @@ export default function Home() {
                       <img 
                         src="/images/watermark.png" 
                         alt="Veysel Ustam" 
+                        width={90}
+                        height={90}
+                        style={{ maxWidth: '90px', maxHeight: '90px', width: 'auto', height: 'auto' }}
                         className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]" 
                       />
                     </div>
@@ -504,7 +510,14 @@ export default function Home() {
 
           <div className="mt-16 pt-8 border-t border-versace-gold/10 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
             <div className="flex items-center gap-4 text-versace-gold-500">
-              <img src="/images/logo.png" alt="Veysel Ustam" className="w-20 h-20 sm:w-24 sm:h-24 object-contain brightness-110 drop-shadow-md" />
+              <img 
+                src="/images/logo.png" 
+                alt="Veysel Ustam" 
+                width={80}
+                height={80}
+                style={{ maxWidth: '80px', maxHeight: '80px', width: 'auto', height: 'auto' }}
+                className="w-20 h-20 sm:w-24 sm:h-24 object-contain brightness-110 drop-shadow-md" 
+              />
               <div>
                 <span className="font-light tracking-[0.2em] uppercase text-2xl text-white block">Veysel Ustam</span>
                 <span className="text-[11px] text-versace-gold-500 font-semibold uppercase tracking-[0.35em] block mt-1">KAPALIÇARŞI İSTANBUL</span>

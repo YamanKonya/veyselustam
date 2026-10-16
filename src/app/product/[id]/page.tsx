@@ -143,6 +143,9 @@ export default function ProductDetailPage() {
               <img 
                 src="/images/watermark.png" 
                 alt="Veysel Ustam" 
+                width={200}
+                height={200}
+                style={{ maxWidth: '200px', maxHeight: '200px', width: 'auto', height: 'auto' }}
                 className="w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 object-contain drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)]" 
               />
             </div>
@@ -211,6 +214,9 @@ export default function ProductDetailPage() {
                   <img 
                     src="/images/watermark.png" 
                     alt="Veysel Ustam" 
+                    width={140}
+                    height={140}
+                    style={{ maxWidth: '140px', maxHeight: '140px', width: 'auto', height: 'auto' }}
                     className="w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 object-contain drop-shadow-[0_4px_16px_rgba(0,0,0,0.4)]" 
                   />
                 </div>
