@@ -139,11 +139,11 @@ export default function ProductDetailPage() {
               className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
             />
             {/* Watermark in zoom modal */}
-            <div className="absolute top-4 right-4 z-10 pointer-events-none drop-shadow-xl opacity-90">
+            <div className="absolute top-6 right-6 z-10 pointer-events-none drop-shadow-2xl opacity-95">
               <img 
                 src="/images/watermark.png" 
                 alt="Veysel Ustam" 
-                className="w-16 h-16 sm:w-20 sm:h-20 object-contain filter drop-shadow" 
+                className="w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 object-contain drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]" 
               />
             </div>
           </div>
@@ -195,11 +195,11 @@ export default function ProductDetailPage() {
                 </span>
 
                 {/* Watermark / Filigran (Sağ Üst Köşe) */}
-                <div className="absolute top-3 sm:top-4 right-3 rtl:left-3 rtl:right-auto sm:right-4 z-10 pointer-events-none drop-shadow-md opacity-90 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-3 sm:top-5 right-3 rtl:left-3 rtl:right-auto sm:right-5 z-10 pointer-events-none opacity-95 group-hover:opacity-100 transition-opacity">
                   <img 
                     src="/images/watermark.png" 
                     alt="Veysel Ustam" 
-                    className="w-14 h-14 sm:w-16 sm:h-16 object-contain filter drop-shadow" 
+                    className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 object-contain drop-shadow-[0_4px_14px_rgba(0,0,0,0.35)]" 
                   />
                 </div>
 
