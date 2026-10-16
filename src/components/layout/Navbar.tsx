@@ -82,7 +82,7 @@ export default function Navbar() {
 
       {/* 2. MAIN HEADER (Logo, Search, User/Cart Actions) */}
       <div className="bg-white px-4 sm:px-6 lg:px-8 border-b border-slate-100 shadow-sm">
-        <div className="max-w-7xl mx-auto h-24 flex items-center justify-between gap-4 lg:gap-8">
+        <div className="max-w-7xl mx-auto h-24 sm:h-28 flex items-center justify-between gap-4 lg:gap-8">
           
           {/* Mobile Menu Toggle */}
           <button 
@@ -93,17 +93,17 @@ export default function Navbar() {
           </button>
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3.5 group flex-shrink-0">
+          <Link href="/" className="flex items-center gap-4 group flex-shrink-0">
             <img 
               src="/images/logo.png" 
               alt="Veysel Ustam" 
-              className="w-16 h-16 sm:w-20 sm:h-20 object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md" 
+              className="w-20 h-20 sm:w-24 sm:h-24 object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md" 
             />
             <div className="hidden sm:block">
-              <span className="font-light text-2xl text-versace-green-900 tracking-[0.2em] block uppercase leading-none font-serif">
+              <span className="font-light text-2xl lg:text-3xl text-versace-green-900 tracking-[0.2em] block uppercase leading-none font-serif">
                 {t("brand_name")}
               </span>
-              <span className="text-[10px] text-versace-gold-600 font-semibold uppercase tracking-[0.35em] block mt-1.5">
+              <span className="text-[10px] lg:text-xs text-versace-gold-600 font-semibold uppercase tracking-[0.35em] block mt-1.5">
                 {t("brand_sub")}
               </span>
             </div>

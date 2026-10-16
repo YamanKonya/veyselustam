@@ -7,10 +7,10 @@ def apply_watermark(image_path, watermark_path, output_path):
         base_image = Image.open(image_path).convert("RGBA")
         watermark = Image.open(watermark_path).convert("RGBA")
 
-        # Watermark boyutu ana görselin genişliğinin yaklaşık %25-28'i kadar olsun
-        wm_width = int(base_image.width * 0.26)
-        # En az 140px, en fazla 500px
-        wm_width = max(140, min(wm_width, 500))
+        # Watermark boyutu ana görselin genişliğinin yaklaşık %30'u kadar olsun
+        wm_width = int(base_image.width * 0.30)
+        # En az 160px, en fazla 600px
+        wm_width = max(160, min(wm_width, 600))
         aspect_ratio = watermark.height / watermark.width
         wm_height = int(wm_width * aspect_ratio)
 

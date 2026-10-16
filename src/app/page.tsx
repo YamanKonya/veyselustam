@@ -271,11 +271,11 @@ export default function Home() {
                   )}
 
                   {/* Watermark / Filigran (Sağ Üst Köşe) */}
-                  <div className="absolute top-2.5 right-2.5 z-10 pointer-events-none opacity-95 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute top-2 sm:top-3 right-2 sm:right-3 z-10 pointer-events-none opacity-95 group-hover:opacity-100 transition-opacity">
                     <img 
                       src="/images/watermark.png" 
                       alt="Veysel Ustam" 
-                      className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain drop-shadow-[0_3px_10px_rgba(0,0,0,0.35)]" 
+                      className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]" 
                     />
                   </div>
 
@@ -380,11 +380,11 @@ export default function Home() {
                     )}
 
                     {/* Watermark / Filigran (Sağ Üst Köşe) */}
-                    <div className="absolute top-2.5 right-2.5 z-10 pointer-events-none opacity-95 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute top-2 sm:top-3 right-2 sm:right-3 z-10 pointer-events-none opacity-95 group-hover:opacity-100 transition-opacity">
                       <img 
                         src="/images/watermark.png" 
                         alt="Veysel Ustam" 
-                        className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain drop-shadow-[0_3px_10px_rgba(0,0,0,0.35)]" 
+                        className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]" 
                       />
                     </div>
 
@@ -489,10 +489,10 @@ export default function Home() {
 
           <div className="mt-16 pt-8 border-t border-versace-gold/10 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
             <div className="flex items-center gap-4 text-versace-gold-500">
-              <img src="/images/logo.png" alt="Veysel Ustam" className="w-16 h-16 sm:w-20 sm:h-20 object-contain brightness-110 drop-shadow-md" />
+              <img src="/images/logo.png" alt="Veysel Ustam" className="w-20 h-20 sm:w-24 sm:h-24 object-contain brightness-110 drop-shadow-md" />
               <div>
-                <span className="font-light tracking-[0.2em] uppercase text-xl text-white block">Veysel Ustam</span>
-                <span className="text-[10px] text-versace-gold-500 font-semibold uppercase tracking-[0.35em] block mt-1">KAPALIÇARŞI İSTANBUL</span>
+                <span className="font-light tracking-[0.2em] uppercase text-2xl text-white block">Veysel Ustam</span>
+                <span className="text-[11px] text-versace-gold-500 font-semibold uppercase tracking-[0.35em] block mt-1">KAPALIÇARŞI İSTANBUL</span>
               </div>
             </div>
             <p className="text-[10px] text-versace-green-100/50 uppercase tracking-[0.1em]">{t("footer_rights")}</p>
