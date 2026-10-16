@@ -70,7 +70,7 @@ function processFolder(folderName) {
   const capitalizedTitle = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
   const productSlug = slugify(cleanName);
   const productId = `vu-custom-${Date.now()}`;
-  const price = Number(customInfo['fiyat'] || customInfo['price'] || 3999);
+  const price = Number(customInfo['fiyat'] || customInfo['price'] || 7850);
   const category = customInfo['kategori'] || customInfo['category'] || 'Özel El Yapımı Gümüş Yüzükler';
   const weight = customInfo['gram'] || customInfo['ağırlık'] || customInfo['weight'] || '16-18';
   const stone = customInfo['taş'] || customInfo['stone'] || 'Doğal Değerli Taş';

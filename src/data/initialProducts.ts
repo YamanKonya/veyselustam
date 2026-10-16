@@ -2,55 +2,54 @@ import { Product } from "@/types";
 
 export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
   {
-      "id": "vu-custom-1792061468584",
-      "title": "925 Ayar Zülfikâr ı Nakkaş, El Yapımı Erkek Yüzüğü",
-      "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 iş günü ✈️ Yurtdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 16-18 • Taş Türü: Doğal Değerli Taş • Yüzüğün Taşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web Sayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-      "price": 3999,
-      "images": [
-          "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-1.jpeg",
-          "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-2.jpeg",
-          "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-3.jpeg",
-          "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-4.jpeg",
-          "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-5.jpeg",
-          "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-6.jpeg"
-      ],
-      "category": "Özel El Yapımı Gümüş Yüzükler",
-      "ringSize": [
-          "15",
-          "16",
-          "17",
-          "18",
-          "19",
-          "20",
-          "21",
-          "22",
-          "23",
-          "24",
-          "25",
-          "26",
-          "27",
-          "28",
-          "29",
-          "30"
-      ],
-      "stock": 10,
-      "originalUrl": "https://veyselustam.com/zulfik-r-i-nakkas",
-      "createdAt": "2026-10-15T10:51:08.600Z",
-      "title_en": "925 Sterling Silver Zülfikâr ı Nakkaş, Handcrafted Men's Ring",
-      "description_en": "💍 Material: 925 Sterling Silver 📦 Free Shipping 🚚 Dispatch Time: 1-3 Business Days ✈️ Worldwide Express Shipping Available. ⚖️ Weight: 16-18gr • Gemstone: Doğal Değerli Taş • Custom sizing available.",
-      "title_es": "Anillo para Hombre de Plata de Ley 925 Zülfikâr ı Nakkaş, Hecho a Mano",
-      "description_es": "💍 Material: Plata de Ley 925 📦 Envío Gratis 🚚 Tiempo: 1-3 Días ✈️ Envío Internacional Disponible. ⚖️ Peso: 16-18gr • Piedra: Doğal Değerli Taş.",
-      "title_de": "925er Sterlingsilber Zülfikâr ı Nakkaş, Handgefertigter Herrenring",
-      "description_de": "💍 Material: 925er Sterlingsilber 📦 Kostenloser Versand 🚚 Lieferzeit: 1-3 Werktage ⚖️ Gewicht: 16-18g • Edelstein: Doğal Değerli Taş.",
-      "title_ar": "خاتم رجالي فضة عيار 925 مصنوع يدوياً Zülfikâr ı Nakkaş",
-      "description_ar": "💍 المادة: فضة عيار 925 📦 شحن مجاني ⚖️ الوزن: 16-18 غرام • الحجر: Doğal Değerli Taş."
+    "id": "vu-custom-1792061468584",
+    "title": "925 Ayar Zülfikâr ı Nakkaş, El Yapımı Erkek Yüzüğü",
+    "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 iş günü ✈️ Yurtdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 16-18 • Taş Türü: Doğal Değerli Taş • Yüzüğün Taşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web Sayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
+    "price": 8500,
+    "images": [
+      "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-1.jpeg",
+      "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-2.jpeg",
+      "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-3.jpeg",
+      "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-4.jpeg",
+      "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-5.jpeg",
+      "/images/products/zulfik-r-i-nakkas/zulfik-r-i-nakkas-6.jpeg"
+    ],
+    "category": "Özel El Yapımı Gümüş Yüzükler",
+    "ringSize": [
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30"
+    ],
+    "stock": 10,
+    "originalUrl": "https://veyselustam.com/zulfik-r-i-nakkas",
+    "createdAt": "2026-10-15T10:51:08.600Z",
+    "title_en": "925 Sterling Silver Zülfikâr ı Nakkaş, Handcrafted Men's Ring",
+    "description_en": "💍 Material: 925 Sterling Silver 📦 Free Shipping 🚚 Dispatch Time: 1-3 Business Days ✈️ Worldwide Express Shipping Available. ⚖️ Weight: 16-18gr • Gemstone: Doğal Değerli Taş • Custom sizing available.",
+    "title_es": "Anillo para Hombre de Plata de Ley 925 Zülfikâr ı Nakkaş, Hecho a Mano",
+    "description_es": "💍 Material: Plata de Ley 925 📦 Envío Gratis 🚚 Tiempo: 1-3 Días ✈️ Envío Internacional Disponible. ⚖️ Peso: 16-18gr • Piedra: Doğal Değerli Taş.",
+    "title_de": "925er Sterlingsilber Zülfikâr ı Nakkaş, Handgefertigter Herrenring",
+    "description_de": "💍 Material: 925er Sterlingsilber 📦 Kostenloser Versand 🚚 Lieferzeit: 1-3 Werktage ⚖️ Gewicht: 16-18g • Edelstein: Doğal Değerli Taş.",
+    "title_ar": "خاتم رجالي فضة عيار 925 مصنوع يدوياً Zülfikâr ı Nakkaş",
+    "description_ar": "💍 المادة: فضة عيار 925 📦 شحن مجاني ⚖️ الوزن: 16-18 غرام • الحجر: Doğal Değerli Taş."
   },
-
   {
     "id": "vu-prod-1",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 17 • Taş Türü: Orjinal Horasan Akik • Yüzüğün Taşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web Sayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-    "price": 4999,
+    "price": 7850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/a9bf4210-456e-47bd-826e-9838c0332554/1080/1732876879891.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/a99fab42-8cae-45bf-a510-9ff5870926df/1080/1732876879851.webp",
@@ -95,7 +94,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-2",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 25 • Taş Türü:\nOrjinal Horasan Akik • Yüzüğün\nTaşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web\nSayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-    "price": 4999,
+    "price": 7850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/c35b2011-bb9f-4edd-b706-73225012007c/1080/1732972724703.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/aa48d599-3901-4d9a-986c-e179559a1444/1080/1732972724725.webp",
@@ -140,7 +139,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-3",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 17 • Taş Türü:\nOrjinal Horasan Akik • Yüzüğün\nTaşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web\nSayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-    "price": 4999,
+    "price": 7850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/56690c53-3bda-4bc2-a3c2-dbd3da2c953d/1080/1733091725672.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/aab93ff2-713c-44b1-ab21-a4b63004eb2a/1080/1733091725679.webp",
@@ -187,7 +186,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-4",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 17 • Taş Türü:\nOrjinal Horasan Akik • Yüzüğün\nTaşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web\nSayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-    "price": 4999,
+    "price": 7850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/c8b86551-a7a3-40fb-b3a3-e8baef286c56/1080/1733091725380.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/86ff1553-b1b6-4174-acac-8bdc3313d15e/1080/1733091725373.webp",
@@ -234,7 +233,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-5",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 17 • Taş Türü:\nOrjinal Horasan Akik • Yüzüğün\nTaşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web\nSayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-    "price": 4999,
+    "price": 7850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/3e69912f-aff2-4830-9cf3-a8942fcd1c0b/1080/1733091725519.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/37b348bf-b805-4e86-bbed-292daaa21da2/1080/1733091725527.webp",
@@ -281,7 +280,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-6",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 17 • Taş Türü:\nOrjinal Horasan Akik • Yüzüğün\nTaşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web\nSayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-    "price": 7299,
+    "price": 9450,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/191a27bc-e879-443c-b1fb-9ceceadea56d/1080/1733091725482.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/6a107f11-5660-4082-8df7-dae1f1d7b427/1080/1733091725489.webp",
@@ -328,7 +327,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-7",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 17 • Taş Türü:\nOrjinal Horasan Akik • Yüzüğün\nTaşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web\nSayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-    "price": 4999,
+    "price": 7850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/817717e4-6fab-4733-8f55-05077ede10d0/1080/1733091725801.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/965243c2-cd0e-4651-91f8-22c13809138d/1080/1733091725809.webp",
@@ -375,7 +374,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-8",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 17 • Taş Türü:\nOrjinal Horasan Akik • Yüzüğün\nTaşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web\nSayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-    "price": 5999,
+    "price": 8500,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/a8f3570b-3d24-4abd-bd71-27ea154b5698/1080/il-1140xn.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/79cfeb1b-aa18-4a2f-865d-dba04b79d9c3/1080/il-1140xn.webp",
@@ -420,7 +419,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-9",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 17 • Taş Türü:\nOrjinal Horasan Akik • Yüzüğün\nTaşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web\nSayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-    "price": 4999,
+    "price": 7850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/61769798-4cb9-4772-8252-a965dd9ab5f9/1080/1733091725716.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/60baf716-2cec-4bc1-af12-d83c944a12f3/1080/1733091725709.webp",
@@ -467,7 +466,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-10",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 17 • Taş Türü:\nOrjinal Horasan Akik • Yüzüğün\nTaşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web\nSayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-    "price": 4999,
+    "price": 7850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/e4b0a860-abcd-4b87-bbe5-32e0fdc67a06/1080/1733091725416.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/d5659250-ded4-4b29-a3ef-cd9640bbf1df/1080/1733091725409.webp",
@@ -513,7 +512,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-11",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 17 • Taş Türü:\nOrjinal Horasan Akik • Yüzüğün\nTaşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web\nSayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-    "price": 4999,
+    "price": 7850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/a578e96b-8ec1-46eb-a192-e26530119515/1080/1733091725633.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/8055d4cb-c3ac-4f16-a55d-f748e1026c7f/1080/1733091725641.webp",
@@ -560,7 +559,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-12",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 17 • Taş Türü:\nOrjinal Horasan Akik • Yüzüğün\nTaşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web\nSayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-    "price": 4999,
+    "price": 7850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/ad0f7f81-6d23-42ba-aef1-c4e058059eb1/1080/1733091725857.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/d8e214b1-4ee3-4fec-b97e-7c3cb2493d5e/1080/1733091725865.webp",
@@ -606,7 +605,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-13",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 17 • Taş Türü:\nOrjinal Horasan Akik • Yüzüğün\nTaşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web\nSayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-    "price": 4999,
+    "price": 7850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/37bd7872-b753-47c6-bbe2-bb1d420e222c/1080/1733091725903.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/a4d2be66-ad02-49be-b14a-c4bc93801f83/1080/1733091725910.webp",
@@ -653,7 +652,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-14",
     "title": "925 Ayar Orjinal Horasan Akik Taşlı, El Yapımı, Gösterişli Erkek Yüzüğü, Erkeğe alınacak en değerli Hediye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 17 • Taş Türü:\nOrjinal Horasan Akik • Yüzüğün\nTaşı ve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web\nSayfamızı Ziyaret Etmeyi Unutmayın! https://www.veyselustam.com",
-    "price": 4999,
+    "price": 7850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/51ea8b8e-3641-4612-8c52-d098285119c0/1080/1733091725446.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/e04c36bf-1316-414c-a5b3-f4b215d8449d/1080/1733091725453.webp",
@@ -700,7 +699,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-15",
     "title": "El İşi Gümüş Oyma ve Akik Taşlı Osmanlı Kolye, Vintage Akik Kolye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 20 • Taş Türü:\nOrjinal Horasan Akik • Kolye Taşı\nve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web Sayfamızı\nZiyaret Etmeyi Unutmayın! https://www.veyselustam.com �",
-    "price": 6899,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/bb056b8f-fff6-46b2-b346-22cfb1958fdc/1080/il-1140xn.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/808619eb-73b8-4f66-b1e6-061af686061f/1080/il-1140xn.webp",
@@ -743,7 +742,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-16",
     "title": "Hematit Taşı üzerine Hz. Süleyman Mührü şerifi kazıma yapılmış El yapımı Kadın Kolye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 20 • Taş Türü:\nOrjinal Horasan Akik • Kolye Taşı\nve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web Sayfamızı\nZiyaret Etmeyi Unutmayın! https://www.veyselustam.com �",
-    "price": 5625,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/b060e488-8bb8-4f60-89b2-cf9bf95bf0dd/1080/il-1140xn.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/0b3ba12c-a120-4f34-aba0-52030f007926/1080/il-1140xn.webp",
@@ -784,7 +783,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-17",
     "title": "Salavatı Şerife Oyması yapılmış Orjinal Akik Taşlı Kadın Kolye",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈ ️ Yurdışına Gönderimimiz mevcuttur. ⚖ ️ Gramı: 20 • Taş Türü:\nOrjinal Horasan Akik • Kolye Taşı\nve Türü Kişiselleştirilebilirdir, Bizimle İletişime geçiniz. • Web Sayfamızı\nZiyaret Etmeyi Unutmayın! https://www.veyselustam.com �",
-    "price": 2875,
+    "price": 11850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/d4dce170-d9d5-4c82-bfc3-ba705f6d1579/1080/1737016939920.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/820d0ce9-2026-491f-85bf-9129eea9c297/1080/1737016939885.webp",
@@ -830,7 +829,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-18",
     "title": "Subbuhun Kuddusun Rabbuna ve Rabbul Melaiketi Verruh Onix Taşına Kazıma 925 Ayar Özel İşcilik Erkek Yüzüğü",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Onix Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Taşın üzerindeki yazı: Subbuhun Kuddusun Rabbuna ve Rabbul Melaiketi Verruh Hz. İbrahim as. dilinden düşürmedi",
-    "price": 6875,
+    "price": 8500,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/9dd8f574-d543-4726-9f1d-6b14a411c004/1080/1729639667189.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/2c76dc05-dd29-4e14-80a9-4c3eb331be04/1080/1729639667122.webp",
@@ -875,7 +874,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-19",
     "title": "La ilahe illallah Muhammedun Rasulallah Akik Taşının üzerine İşlenmiştir, 925 Ayar Özel İşcilik Erkek Yüzüğü",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: La ilahe illallah Muhammedun Rasulallah \"Allah'tan başka ilah yoktur, Muhammed Allah'ın elçisidir. ★Yüzüğü ala",
-    "price": 7500,
+    "price": 10650,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/e0bce2fa-eb6c-48db-8a7f-4cfa140c8e22/1080/1729606040982.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/12474103-2594-491e-a3cf-03368878067f/1080/1729606040991.webp",
@@ -922,7 +921,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-20",
     "title": "Akik Taşının üzerine Fatiha Suresi Kazınmıştır. 925 ayar Özel İşcilikli Erkek Yüzüğü",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Fatiha Suresi Kazınmıştır. ★Yüzüğü alacak ve kullanıcak müşterilerimizin WC ye bu yüzükle asla girilmemeli ve ",
-    "price": 7999,
+    "price": 10650,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/47264476-f7f5-417e-bbfd-6228cbdf5abb/1080/1729606041103.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/8a47b346-845f-4c25-a1a1-2e9b3f03591e/1080/1729606041142.webp",
@@ -969,7 +968,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-21",
     "title": "Akik Taşının üzerine Hu ALLAH cc. yüce ismi Şerifi Kazınmıştır. 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Hu Allah cc. Yüzüğün yanlarında ise sırayla: La İlahe İllallah La Galibe İllallah El Kuvveti li Allah Hasbiyal",
-    "price": 7999,
+    "price": 10650,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/55f344e7-0cc7-431e-8f3f-da4e3aa2f828/1080/1729638193172.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/5742f8a1-85f6-48f8-a744-a0d4a4f5c0d0/1080/1729638193180.webp",
@@ -1015,7 +1014,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-22",
     "title": "Kaligrafi Moody yazmaktadır, Kişiye Özel yapılmıştır. Sipariş verdikten sonra bizimle iletişime geçip Kaligrafi yapılacak ismi bize bildirin.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Kaligrafi Moody yazmaktadır, Kişiye Özel yapılmıştır. Yüzüğü aldıktan sonra bizimle iletişime geçip taşın üzer",
-    "price": 6250,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/a09407bf-f2dc-4cb4-8140-e84b5c475b11/1080/1729638390882.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/42eb5282-6a55-4da0-806e-8f190538a768/1080/1729638390917.webp",
@@ -1059,7 +1058,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-23",
     "title": "Sarı Akik Taşına HASBİYALLAHÜ LAİLAHE İLLA HÜVE ALEYHİ TEVEKKELTÜ VEHÜE RABBÜL ARŞİL AZİM İşlenmiştir. 925 Ayar Gümüş Özel İşcilikli Erkek Yüzüğü. ",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Akik taşına oyma ile La Galibe İllallah yazılmıştır. Anlamı: Allahtan başka galip yoktur! ★ Yüzüğü alacak ve k",
-    "price": 6875,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/5236db18-dd53-4c7c-9000-dbec6af7a091/1080/1729638896208.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/d82070c7-ae50-4cf6-b9eb-edf87c3eba0f/1080/1729638896225.webp",
@@ -1105,7 +1104,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-24",
     "title": "Akik taşının üzerine Tasavvuf \"Hiç\" Kazınmıştır. 925 Ayar Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 16 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Akik taşına Tasavvuf \"Hiç\" Yazılmıştır. ★ Yüzüğü alacak ve kullanıcak müşterilerimizin WC ye bu yüzükle asla g",
-    "price": 6699,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/60498b2e-f150-42c1-8b7a-e56c98952dc0/1080/1729639160102.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/16a41102-2bef-4c87-8727-6be1e44e2f2e/1080/1729639160037.webp",
@@ -1149,7 +1148,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-25",
     "title": "Siyah Onix Taşına La Galibe İllallah İşlenmiştir. 925 Ayar Gümüş Özel İşcilikli Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Akik taşına oyma ile La Galibe İllallah yazılmıştır. Anlamı: Allahtan başka galip yoktur! ★ Yüzüğü alacak ve k",
-    "price": 6875,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/e564362b-90fa-4f93-ae73-0b5cdd2417b9/1080/1729639265956.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/3a0a8d4d-5c37-4a8f-b3b4-3e66c2cc4746/1080/1729639265918.webp",
@@ -1195,7 +1194,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-26",
     "title": "Akik taşına Kaligrafi Hat Sanatı ile Bismillâhirrahmânirrahîm Kazınmıştır. 925 Ayar Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 20 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Akik taşına Kaligrafi Hat Sanatı ile Bismillâhirrahmânirrahîm Kazınmıştır. ★ Yüzüğü alacak ve kullanıcak müşte",
-    "price": 6899,
+    "price": 12600,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/d0354dd1-b329-4de9-9441-af588b586d5d/1080/1729816788751.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/4b200bc9-4783-4f90-b4b1-151374c152ac/1080/1729816788695.webp",
@@ -1242,7 +1241,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-27",
     "title": "Akik Taşının Üzerine Hz. Süleyman as. Mührü Kazınmıştır, Yüzüğün tamamı Tılsımlı Ayetler ile çevrelemiştir. 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Hz. Süleyman Mührü yapıldı. Mührün içinde şunlar yazılıdır: Bismillahirrahmanirrahim Arapça Yazı (بِسْــــــــ",
-    "price": 7999,
+    "price": 13000,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/8b38119a-f510-4f44-9329-c4179289b675/1080/1731334982340.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/c9743d34-9a7b-4dcc-86ac-3202333edefc/1080/1731334982308.webp",
@@ -1285,7 +1284,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-28",
     "title": "Akik taşına Kaligrafi Hat Sanatı ile Bismillâhirrahmânirrahîm Kazınmıştır. 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 20 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Akik taşına Kaligrafi Hat Sanatı ile Bismillâhirrahmânirrahîm Kazınmıştır. ★ Yüzüğü alacak ve kullanıcak müşte",
-    "price": 8799,
+    "price": 13700,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/39b13ce6-78a7-454e-b6f4-63427a165bdf/1080/1749024485899.webp",
       "https://cdn.myikas.com/videos/12b70023-d1d5-479c-951a-7f0a014982a9/3f3fee49-0617-4215-95f1-b58ec4519932/original.mp4",
@@ -1333,7 +1332,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-29",
     "title": "Akik Taşının üzerine ALLAH lafzı Kazınmıştır, 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: ALLAH lafzı Kazınmıştır ★ Yüzüğü alacak ve kullanıcak müşterilerimizin WC ye bu yüzükle asla girilmemeli ve di",
-    "price": 6899,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/6808e0a6-a0fd-40c9-b233-8333340fe988/1080/1733266698218.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/6ef6a3f3-c9f2-469a-80a2-bf3042314421/1080/1733266698224.webp",
@@ -1381,7 +1380,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-30",
     "title": "Onix Taşının üzerine Tasavvuf \"Hiç\" Kazınmıştır. 925 Ayar Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 16 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Akik taşına Tasavvuf \"Hiç\" Yazılmıştır. ★ Yüzüğü alacak ve kullanıcak müşterilerimizin WC ye bu yüzükle asla g",
-    "price": 6862.5,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/f7cb3e5f-e9c2-4c00-9872-1b20d5b85861/1080/1735903565789.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/57dfc462-e01e-417d-b7f2-db88791897b8/1080/1735903565797.webp",
@@ -1424,7 +1423,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-31",
     "title": "Akik taşına Kaligrafi Hat Sanatı ile Salavat-ı Şerif Kazınmıştır, 925 Ayar Gümüş Erkek Yüzüğü",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 23 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Akik taşına Kaligrafi Hat Sanatı\nile Salavat-ı Şerif Kazınmıştır. ★ Yüzüğü alacak ve kullanıcak\nmüşterilerimiz",
-    "price": 5200,
+    "price": 11850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/e290edb8-096a-4d8a-bf30-7e5d02701423/1080/1736418519104.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/950c6017-9259-4ee5-8bb2-af4631cb9324/1080/1736418519033.webp",
@@ -1472,7 +1471,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-32",
     "title": "Kızıl Akik taşına Tevbe Suresi 129.Ayet Kazınmıştır, 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür\n📦 Ücretsiz Kargo\n🚚 Gönderim Süresi: 1 - 3 is günü\n✈️ Yurdışına Gönderimimiz mevcuttur.\n⚖️ Gramı: 25\n• Taş Türü: Orjinal Kırmızı Akik Taşı\n• Taş Üzerindeki Kazıma Yazı ve Anlamı: Kırmızı Akik taşına oyma ile Tevbe Suresi 129.Ayet yazılmıştır.",
-    "price": 6875,
+    "price": 12600,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/d4e0f88d-95a1-4c3b-a6ea-a3c740f0b743/1080/1736508012598.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/7a2e2286-8aa2-4761-99be-843cfb38898e/1080/1736508012490.webp",
@@ -1520,7 +1519,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-33",
     "title": "Akik Taşının üzerine Arapca Kalifragi Hat Sanatı ile “Nasihatçi olarak ölüm yeter” Yazmaktadır. 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Kefâ Bil-Mevt Vaizan “Nasihatçi olarak ölüm yeter” كَفَى بِالْمَوْتِ وَاعِظًا “Nasihatçi olarak ölüm yeter” Ya",
-    "price": 7999,
+    "price": 10650,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/9e49b0b1-2487-443b-aef6-9438b4751f97/1080/1736691277461.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/d41571ae-4f56-440a-8945-e8373dd9356e/1080/1736691277466.webp",
@@ -1565,7 +1564,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-34",
     "title": "Casper Taşının Üzerine Fatih Sultan Mehmet Hanın Mührü işlenmiştir, 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Casper Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Casper Taşının Üzerine Fatih Sultan Mehmet Hanın Mührü işlenmiştir. ★ Yüzüğü alacak ve kullanıcak müşteriler",
-    "price": 7999,
+    "price": 9450,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/77551c14-e0bb-4f9c-8eb7-b5c88798456f/1080/1736779585469.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/324f5cfd-7bf9-4201-a779-820faf307187/1080/1736779585502.webp",
@@ -1611,7 +1610,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-35",
     "title": "Orjinal Akik Taşının üzerine ALLAH cc. ismi Şerifi Kazınmıştır. 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Casper Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Casper Taşının Üzerine Fatih Sultan Mehmet Hanın Mührü işlenmiştir. ★ Yüzüğü alacak ve kullanıcak müşteriler",
-    "price": 8125,
+    "price": 10650,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/459bce18-a571-4312-83e6-323e215d9361/1080/il-1140xn.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/d4a34aa8-a5e8-44e9-af59-c36fd237f5ac/1080/il-1140xn.webp",
@@ -1656,7 +1655,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-36",
     "title": "Akik taşına Kaligrafi Hat Sanatı ile Bismillâhirrahmânirrahîm Kazınmıştır. 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Akik taşına Kaligrafi Hat Sanatı ile Bismillâhirrahmânirrahîm Kazınmıştır. ★ Yüzüğü alacak ve kullanıcak müşte",
-    "price": 6899,
+    "price": 12600,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/68ac75d1-08b8-4525-be1b-70c228d55520/1080/1737403290888.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/0ee7dc48-1b4f-4db4-b283-010b69de7d63/1080/1737403290882.webp",
@@ -1704,7 +1703,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-37",
     "title": "Akik taşına Kaligrafi Hat Sanatı ile La ilahe illallah Muhammed RasulAllah Kazınmıştır. 925 Ayar Özel İşcilikli Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Akik taşına Kaligrafi Hat Sanatı ile Kelime İ Tevhid Kazınmıştır. ★ Yüzüğü alacak ve kullanıcak müşterilerimiz",
-    "price": 5399,
+    "price": 9450,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/cf65e8b7-c969-4c76-a2af-2c3938f06747/1080/1738732681644.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/2f9a2107-6027-423b-bf73-0a7766419be3/1080/1738732454115.webp",
@@ -1752,7 +1751,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-38",
     "title": "Akik taşına Kaligrafi Hat Sanatı ile Yasin Suresi 58 Kazınmıştır. 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 13 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Akik taşına Kaligrafi Hat Sanatı ile Yasin Suresi 58. Ayet Kazınmıştır. ★ Yüzüğü alacak ve kullanıcak müşteril",
-    "price": 5399,
+    "price": 11850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/f9ca03c0-7844-4115-af14-15ecd0c45faa/1080/1742191352660.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/3f2b3bec-aa3c-4620-b28c-335e7b2c1543/1080/1742191352617.webp",
@@ -1800,7 +1799,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-39",
     "title": "La ilahe illallah Muhammedun Rasulallah Onix Taşının üzerine İşlenmiştir, 925 Ayar Özel İşcilik Erkek Yüzüğü",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Akik taşına Kaligrafi Hat Sanatı ile La ilahe illallah Muhammedun Rasulallah Kazınmıştır. ★ Yüzüğü alacak ve k",
-    "price": 6875,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/a6bc6c1e-c217-4539-9310-abeb8c6b3f1f/1080/1742902363235.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/69889396-dc53-48a0-becb-afe25a822a9b/1080/1742902363242.webp",
@@ -1848,7 +1847,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-40",
     "title": "Akik taşına Kaligrafi Hat Sanatı ile Bismillâhirrahmânirrahîm Kazınmıştır. 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 23 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Akik taşına Kaligrafi Hat Sanatı ile Bismillâhirrahmânirrahîm Kazınmıştır. ★ Yüzüğü alacak ve kullanıcak müşte",
-    "price": 6899,
+    "price": 12600,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/3155b366-7ae2-4955-bebf-f3b031566d7c/1080/1743599648052.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/d67993f4-8643-4011-83bb-3bc1476dac33/1080/1743599647965.webp",
@@ -1896,7 +1895,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-41",
     "title": "Onix taşına Kaligrafi Hat Sanatı ile ALLAH cc. ismi Şerifi Kazınmıştır. 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 23 • Taş Türü: Orjinal Onix Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Onix taşına Kaligrafi Hat Sanatı ile ALLAH cc. ismi Şerifi Kazınmıştır. ★ Yüzüğü alacak ve kullanıcak müşteril",
-    "price": 4375,
+    "price": 7850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/ac2045dc-0402-46db-bd63-920886c9f218/1080/1744799654330.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/da0807f1-53cf-4549-8f85-fd2081fd7464/1080/1744799654216.webp",
@@ -1944,7 +1943,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-42",
     "title": "Akik taşına Kaligrafi Hat Sanatı ile El-Mülkü Lillâh Kazınmıştır. 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 23 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Akik taşına Kaligrafi Hat Sanatı ile El-Mülkü Lillâh Kazınmıştır. ★ Yüzüğü alacak ve kullanıcak müşterilerimiz",
-    "price": 6899,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/d2c37c0e-3e13-408e-8b53-ea2ee03a5a4f/1080/1744799654264.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/1b8c8304-0483-45d6-969b-8137c930be3d/1080/1744799654227.webp",
@@ -1992,7 +1991,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-43",
     "title": "El-Mülkü Lillâh Akik Taşının üzerine Arapça Hat Sanatı ile Kazınmıştır. 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 23 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Akik taşına Kaligrafi Hat Sanatı ile El-Mülkü Lillâh Kazınmıştır. ★ Yüzüğü alacak ve kullanıcak müşterilerimiz",
-    "price": 5000,
+    "price": 9450,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/d2ed784c-ff3d-4718-9cda-a2cf8d3a4c7b/1080/1744398042390.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/3e4f4674-2fad-49b6-b324-63b20dbb50b8/1080/1744398042355.webp",
@@ -2040,7 +2039,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-44",
     "title": "El-Musavvir Akik Taşının üzerine Arapca Hat Sanatı ile El Oyması Kazınmıştır. 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 23 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: El-Musavvir Akik Taşının üzerine Arapca Hat Sanatı ile El Oyması Kazınmıştır. ★ Yüzüğü alacak ve kullanıcak mü",
-    "price": 7999,
+    "price": 10650,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/7c7ca38c-adb5-4892-a843-76ace52b33df/1080/1746419248606.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/b6c48e6c-a7dd-4abb-8e72-7512f56c5198/1080/1746419248591.webp",
@@ -2088,7 +2087,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-45",
     "title": "Şeref El-Şams, Sarı Akik Taşının üzerine El Oyması Kazınmıştır. Manevi Tılsımı çok yüksektir. 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 23 • Taş Türü: Orjinal Sarı Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Şeref El-Şams, Sarı Akik Taşının üzerine El Oyması Kazınmıştır. Manevi Tılsımı çok yüksektir. ★ Yüzüğü al",
-    "price": 8125,
+    "price": 10650,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/3b66ab45-af5a-4152-8a16-a2e22d478adf/1080/img-20240207-121651.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/15f67680-285e-48cd-b9f6-35ab58f3c2ec/1080/img-20240207-121624.webp",
@@ -2136,7 +2135,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-46",
     "title": "İlahi Ente Maksudi ve Rızake Matlubi, Kırmızı Akik Taşı üzerine Kazınmıştır. 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Kırmızı Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Kırmızı Akik Taşı üzerine İlahi Ente Maksudi ve Rızake Matlubi kazınmıştır. ★ Yüzüğü alacak ve kullanı",
-    "price": 8112.5,
+    "price": 10650,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/ec620e95-635a-4bae-ae74-6e105abeee32/1080/il-1140xn.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/b164f8a2-600b-4c3b-bb78-9436fc8fa22a/1080/il-1140xn.webp",
@@ -2181,7 +2180,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-47",
     "title": "Siyah Onix Taşına La Galibe İllallah Kazınmıştır, 925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Siyah Onix Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Siyah Onix Taşına La Galibe İllallah Kazınmıştır. ★ Yüzüğü alacak ve kullanıcak müşterilerimizin WC ye b",
-    "price": 8112.5,
+    "price": 9450,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/9f55696b-e08f-48e9-bd92-17ce28396946/1080/img-20240511-131643.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/272f26e3-855b-48f3-942f-e128f374ab5f/1080/img-20240511-130754.webp",
@@ -2226,7 +2225,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-48",
     "title": "Kırmızı Akik Taşına La Galibe İllallah İşlenmiştir. 925 Ayar Gümüş Özel İşcilikli Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Kırmızı Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Kırmızı Akik Taşı üzerine La Galibe İllallah İşlenmiştir. ★ Yüzüğü alacak ve kullanıcak müşterilerimiz",
-    "price": 8112.5,
+    "price": 10650,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/929c9553-ed5b-44b7-8c9f-54f47d57c2d1/1080/il-1140xn.webp",
       "https://cdn.myikas.com/videos/12b70023-d1d5-479c-951a-7f0a014982a9/25e7bc5e-0832-4c23-b788-ad6e7400b596/original.mp4",
@@ -2272,7 +2271,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-49",
     "title": "Akik Taşının üzerine Hz. Süleyman Mührü Kazınmıştır. Sarı Kaplama yapılmıştır 925 ayar Gümüştür. ",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Hz. Süleyman Mührü yapıldı. Mührün içinde şunlar yazılıdır: Bismillahirrahmanirrahim Arapça Yazı (بِسْــــــــ",
-    "price": 7999,
+    "price": 10650,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/f0d05e76-1192-4f89-8005-d47c19719794/1080/img-20220402-161117.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/1f0ef322-69f7-4c36-80e0-1154d15d67b4/1080/img-20220402-161206.webp",
@@ -2315,7 +2314,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-50",
     "title": "Hz. Süleyman Mührü Akik Taşının üzerine işlenmiştir. 925 Ayar Gümüş Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 15 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Hz. Süleyman Mührü yapıldı. Mührün içinde şunlar yazılıdır: Bismillahirrahmanirrahim Arapça Yazı (بِسْــــــــ",
-    "price": 6237.5,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/6428267a-5c86-41fc-9cf1-c545ae4c76c5/1080/1729639160025.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/d90b810b-8285-43f0-8003-a0659b60589e/1080/1729639160037.webp",
@@ -2358,7 +2357,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-51",
     "title": "Gümüş üzerine Allahümme Ecirna Minennar kazıma, Yuva ve alt kısımları Tılsım Ayetleri ile doldurulmuş 925 Ayar Eşsiz Erkek Yüzüğü.",
     "description": "💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 25 • Taş Türü: Orjinal Akik Taşı • Taş Üzerindeki Kazıma Yazı ve Anlamı: Hz. Süleyman Mührü yapıldı. Mührün içinde şunlar yazılıdır: Bismillahirrahmanirrahim Arapça Yazı (بِسْــــــــ",
-    "price": 8250,
+    "price": 13000,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/f9e1c361-8bc2-4a10-9184-9ea9187f01d4/1080/il-1140xn.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/437bf1f9-5e60-4090-9457-be62cf59adf2/1080/il-1140xn.webp",
@@ -2401,7 +2400,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-52",
     "title": "Akik Taşının üzerine El Oyması Hud Suresi Kazınmıştır. 925 Ayar Gümüş Erkek Yüzüğü",
     "description": "Yüce Allah, Hûd Sûresin de şöyle buyurmaktadır: Emrolunduğun gibi dosdoğru ol! Peygamber Efendimizin (sas) \"Beni ihtiyarlattı\" dediği sure. 💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 21 📍 Mağazamız Mütaz Koru Sk. Çetin Kaya i",
-    "price": 6899,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/44dc493a-6764-4e83-8a17-6a815c0189f3/1080/1752924425381.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/ca7cf662-2582-4efa-9150-439663a0a65c/1080/1752924425389.webp",
@@ -2443,7 +2442,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-53",
     "title": "Akik Taşının üzerine El Oyması Hud Suresi Kazınmıştır. 925 Ayar Gümüş Erkek Yüzüğü",
     "description": "Yüce Allah, Hûd Sûresin de şöyle buyurmaktadır: Emrolunduğun gibi dosdoğru ol! Peygamber Efendimizin (sas) \"Beni ihtiyarlattı\" dediği sure. 💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 21 📍 Mağazamız Mütaz Koru Sk. Çetin Kaya i",
-    "price": 6899,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/6e4ce592-7f78-414d-bb22-c2d9513c005c/1080/1752924425445.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/76d590eb-696a-40a3-9d5e-47d585f87d66/1080/1752924425411.webp",
@@ -2486,7 +2485,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-54",
     "title": "Onix Taşınn üzerine El Oyması 'Ya Mâlikü'l-mülk' Kazınmıştır.",
     "description": "Onix Taşınn üzerine El Oyması 'Ya Mâlikü'l-mülk' Kazınmıştır. Allah Teâlâ, bütün kâinatın tek sâhibi ve mâlikidir, anlamını taşır. 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcuttur. ⚖️ Gramı: 19/22 📍 Mağazamız Mütaz Koru Sk. Çetin Kaya iş Merkezi, Kat: 2 Kapı No: 205 Meram/Kony",
-    "price": 6237.5,
+    "price": 8500,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/501a980c-e196-4c04-a639-71815ca42c17/1080/1752924425396.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/256f4e2b-82bd-40d0-b42d-4d8fc2b3c695/1080/1752924425404.webp",
@@ -2528,7 +2527,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-55",
     "title": "Sarı Akik üzerine اِنَّ مَعَ الْعُسْرِ يُسْرًاۜ İnşirâh Sûresi 6. Ayeti Muhakkak güçlükle bir beraber kolaylık vardır.",
     "description": "Sarı Akik üzerine اِنَّ مَعَ الْعُسْرِ يُسْرًاۜ İnşirâh Sûresi 6. Ayeti Muhakkak güçlükle bir beraber kolaylık vardır. Özel Sipariş olarak üretilmiştir, müşterimize hayırlı olsun Sarı Altın kaplama. 💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 is günü ✈️ Yurdışına Gönderimimiz mevcu",
-    "price": 9250,
+    "price": 11850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/08e2f784-600e-41b2-b42a-4bf124e2760f/1080/adsiz-tasarim.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/25001b0c-2495-4ecd-a0ce-30e5295252fa/1080/whatsapp-image-2025-07-01-at-01.webp",
@@ -2573,7 +2572,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-56",
     "title": "Çizim ve Tasarım",
     "description": "",
-    "price": 625,
+    "price": 6000,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/951ab7c4-024f-40e0-8552-1b5a0eadaacf/1080/1.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/f01f4f21-8458-4378-9d2f-4c68a007eea4/1080/4.webp"
@@ -2613,7 +2612,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-57",
     "title": "Şems Suresi – El Yapımı Yemen Akik Erkek Yüzüğü",
     "description": "Veysel Usta imzalı bu özel koleksiyon yüzüğü , Bursa Ulu Camii’nde bulunan Şems Suresi hat yazısından esinlenerek hazırlanmıştır. Yüzüğün taşı tamamen el yapımıdır ve usta tarafından işlenmiştir. Taşın üzerinde, “Güneşe ve onun aydınlığına andolsun” ayeti zarif bir hat formunda yer alır. Kasa kısmı, geleneksel el kalem",
-    "price": 9375,
+    "price": 11850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/5d69c367-b2d9-414a-9a39-0bf1b4874bae/1080/img-7354.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/e4592901-dabe-48e1-959d-efb7a9ba56fe/1080/img-7344.webp",
@@ -2660,7 +2659,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-58",
     "title": "Gümüş üzerine Fatiha Suresi İşlenmiş, 925 Ayar Gümüş Erkek Yüzüğü",
     "description": "🕋 El Yapımı Gümüş Fatiha Suresi Yüzüğü – Usta İmzalı Koleksiyon Parçası 💍 Malzeme: %925 Ayar Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1 - 3 iş günü ✈️ Yurtdışına gönderimimiz mevcuttur. ⚖️ Gramı: Yaklaşık 25 gr 📜 Üzerindeki Yazı ve Anlamı: Yüzük üzerinde Fatiha Suresi zarif sülüs hat ile işlenmiştir. ",
-    "price": 6873.75,
+    "price": 6850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/bfc1a9ad-90c3-4019-b852-c1bbeb7653c0/1080/ekran-alintisi-1.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/90108976-bbd3-457b-9fc7-f28c4d88835f/1080/ekran-alintisi-2.webp",
@@ -2708,7 +2707,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-59",
     "title": "🕌 Al-Mu'min Suresi 44.Ayet Yazılı Gümüş Yüzük | El Yapımı Akik Taşlı Silver Ring | ",
     "description": "Veysel Usta imzalı bu özel koleksiyon yüzüğü, taş üzerine yazılmış “Surah Al-Mu'min 44 (وَاُفَوِّضُ اَمْر۪ٓي اِلَى اللّٰهِۜ)” ayetinden ilham alınarak hazırlanmıştır. Anlamı: “İşimi tamamen Allah’a teslim ediyorum” . Yüzüğün taşı tamamen el yapımıdır ve usta tarafından işlenmiştir. Kasa kısmı, geleneksel el kalemi oyma",
-    "price": 6873.75,
+    "price": 12600,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/56713b8f-e280-4604-b981-67ce5bf3a145/1080/ekran-alintisi-4.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/346ec786-3e9a-4e5b-b076-ec8bfdebfa61/1080/ekran-alintisi-1.webp",
@@ -2754,7 +2753,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-60",
     "title": "🕌 Kalem Suresi Taş Üzerine Yazılı | El Yapımı Hematit Taşlı Gümüş Yüzük | Nazardan Koruma,,,",
     "description": "Veysel Usta imzalı bu özel koleksiyon yüzüğü, taş üzerine yazılmış “Ve ma huve illa zikrun lil alemin (وَمَا هُوَ اِلَّا ذِكْرٌ لِلْعَالَم۪ينَ)” ayetinden ilham alınarak hazırlanmıştır. Bu ayet, nazardan korunmak için özel olarak seçilmiştir. Yüzüğün taşı tamamen el yapımıdır ve usta tarafından işlenmiştir. Kasa kısmı,",
-    "price": 5625,
+    "price": 8200,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/9e389cb3-9682-40b6-b12d-0fc7c15e64e8/1080/ekran-alintisi-1.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/6c74c1f5-2412-4dff-8c4e-67885bc18edd/1080/ekran-alintisi-2.webp",
@@ -2801,7 +2800,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-61",
     "title": "🕌 El Yapımı “Al-Musawwir” Oymalı Horasan Akik Taşlı Gümüş Ring | Allah’ın İsmi | Müslüman Erkek Hediye",
     "description": "Veysel Usta imzalı bu özel koleksiyon yüzüğü, taş üzerine “Al-Musawwir” (Allah’ın isimlerinden biri) el oyması ile işlenmiştir. Taş tamamen el yapımıdır ve her detay usta tarafından özenle hazırlanmıştır. Farklı oymalar kişiye özel olarak da yapılabilir; bizimle iletişime geçebilirsiniz. Kasa kısmı, geleneksel el kalem",
-    "price": 6875,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/2bf0c5f0-df98-488b-83f9-5d76afacb67b/1080/ekran-alintisi-2.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/78977c3c-83e5-4b96-af12-38616a171026/1080/ekran-alintisi-3.webp",
@@ -2849,7 +2848,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-62",
     "title": "925 Ayar Gümüş Kûfi Sanatlı Kelime-İ Tevhid Yüzük",
     "description": "Ürün Detayları: 925 ayar saf gümüşten üretilmiştir. Üst yüzeyinde Kûfi hat sanatıyla Kelime-i Tevhid yazılıdır. Alt kısmında yuvarlak içinde sülüs hat ile Muhammed’in Resûlullah yazısı bulunmaktadır. El işçiliğiyle üretilmiştir, her bir yüzük benzersizdir. Malzeme: 925 Ayar Gümüş Cinsiyet: Unisex El İşçiliği: Evet Karg",
-    "price": 6899,
+    "price": 8500,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/c85e42e8-ba72-44ef-8c7f-3609ce9b3fd5/1080/img-20251113-133114.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/9545680e-f3f9-4250-936a-b84dbb253ec8/1080/img-20251113-133053.webp",
@@ -2894,7 +2893,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-63",
     "title": "El İşi Akik Taşlı Ayet-el Kürsî Yüzük – Sekizgen Tasarım, Altın Kaplama Yazı, Kûfî Hatlı ve Selçuklu Motifli – Veysel Usta İmzalı",
     "description": "Bu yüzük, Veysel Usta tarafından tamamen el işçiliğiyle üretilmiş özel bir tasarımdır. Yüzüğün ana kasası sekizgen formda hazırlanmış, üzerine yerleştirilen akik taşının yüzeyine büyük bir özenle Ayet-el Kürsî işlenmiştir. Taş üzerindeki yazı kısmı, parlak ve dayanıklı bir görünüm kazandırmak için altın kaplama ile tam",
-    "price": 7999,
+    "price": 10250,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/cb6922f8-20b8-42ec-97c0-e0ff810c5136/1080/img-20251113-171252.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/c13e0930-cced-4cf8-a0bc-b8f77a4e1a2b/1080/img-20251113-170317.webp",
@@ -2940,7 +2939,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-64",
     "title": "BUDA GEÇER YA HUU",
     "description": "→ Yüzüğün üzerinde kızıl akik taş bulunmakta olup taş üzerine el yazması Osmanlıca “Buda Geçer Ya Hû” oyularak işlenmiştir. → Yüzüğün kasası tamamen el yapımıdır ve kalem işleme (gravür oyma) tekniği ile hazırlanmıştır. → Geleneksel işçilik ile modern kullanımın bir araya getirildiği tek üretim bir modeldir. → Özel ölç",
-    "price": 8999,
+    "price": 13700,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/a9bf4210-456e-47bd-826e-9838c0332554/1080/1732876879891.webp"
     ],
@@ -2979,7 +2978,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "id": "vu-prod-65",
     "title": "Akik Taşının Üzerine Nakkaş oyma sanatı ile Ayat al-Kursi işlenmiştir. Tamamen El yapımıdır",
     "description": "Bu yüzük, tamamen el emeği ile tarafımdan hazırlanmış özel bir çalışmadır. Yüzüğün ana kasası sekizgen formda tasarlanmış, üzerine yerleştirilen akik taşının üzerine özenle Ayet-el Kürsî işlenmiştir. Taş üzerindeki yazı kısmı altın kaplama ile tamamlanarak hem manevi hem estetik bir derinlik kazandırılmıştır. Yüzüğün y",
-    "price": 7999,
+    "price": 14850,
     "images": [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/cca83b9c-88ea-46a5-8cfd-49f6376f0148/1080/adsiz-tasarim-7.webp",
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/a721ccd0-ca04-41b6-8fae-80595125db5c/1080/1766380784970.webp",

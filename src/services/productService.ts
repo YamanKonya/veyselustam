@@ -18,7 +18,7 @@ import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 import { saveVideoBlob, getVideoBlobUrl } from "./videoStorage";
 
 const PRODUCTS_COLLECTION = "products";
-const STORAGE_KEY = "vu_products_catalog_v3";
+const STORAGE_KEY = "vu_products_catalog_v4";
 
 // Helper to strip undefined values so Firestore never throws unsupported field value errors
 const sanitizeForFirestore = (obj: Record<string, any>): Record<string, any> => {
