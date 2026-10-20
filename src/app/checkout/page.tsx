@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { imageAt } from "@/lib/image";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import CartDrawer from "@/components/cart/CartDrawer";
@@ -43,7 +44,7 @@ export default function CheckoutPage() {
     fullName: "",
     email: "",
     phone: "",
-    city: "İstanbul",
+    city: "",
     district: "",
     address: "",
     notes: "",
@@ -93,7 +94,7 @@ export default function CheckoutPage() {
     e.preventDefault();
     setError("");
 
-    if (!formData.fullName.trim() || !formData.phone.trim() || !formData.address.trim() || !formData.district.trim()) {
+    if (!formData.fullName.trim() || !formData.phone.trim() || !formData.city.trim() || !formData.address.trim() || !formData.district.trim()) {
       setError(t("form_error_required"));
       return;
     }
@@ -275,7 +276,6 @@ export default function CheckoutPage() {
                     required
                     value={formData.district}
                     onChange={handleChange}
-                    placeholder="Kadıköy"
                     className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all placeholder:text-slate-400"
                   />
                 </div>
@@ -359,7 +359,7 @@ export default function CheckoutPage() {
                     <div key={item.cartItemId} className="flex gap-3 text-xs">
                       <div className="w-14 h-14 rounded-xl bg-slate-100 overflow-hidden flex-shrink-0">
                         {product.images?.[0] ? (
-                          <img src={product.images[0]} alt={product.title} className="w-full h-full object-cover" />
+                          <img src={imageAt(product.images[0], 180)} alt={product.title} className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-slate-400 text-[10px]">{t("no_image")}</div>
                         )}

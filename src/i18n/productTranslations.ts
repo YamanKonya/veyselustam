@@ -1,1049 +1,128 @@
 import { Product } from "@/types";
 import { Language } from "./translations";
+import { getCatalogContent } from "./catalogContent";
+import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 
 // Category Translation Dictionary for all 5 languages
 export const CATEGORY_TRANSLATIONS: Record<string, Record<Language, string>> = {
   "Nakkaş El Oyması Taşlı": {
     tr: "Nakkaş El Oyması Taşlı",
-    en: "Nakkaş Hand-Engraved Gemstone",
-    es: "Ágata Grabada a Mano Nakkaş",
-    de: "Nakkaş Handgravierter Edelstein",
-    ar: "حجر منقوش يدويًا بالفن النقاش",
+    en: "Nakkaş Hand-Carved Stones",
+    es: "Piedras talladas a mano nakkaş",
+    de: "Nakkaş – handgeschnitzte Steine",
+    ar: "أحجار منقوشة يدويًا بفن النقّاش",
   },
   "Horasan ve Yemen Akik Taşlı": {
     tr: "Horasan ve Yemen Akik Taşlı",
-    en: "Khorasan & Yemen Agate",
+    en: "Khorasan & Yemeni Agate",
     es: "Ágata de Jorasán y Yemen",
-    de: "Chorasan & Jemen Achat",
-    ar: "عقيق خراسان ويمني",
+    de: "Chorasan- & Jemen-Achat",
+    ar: "عقيق خراساني ويمني",
   },
   "El Yapımı Gümüş Kolye": {
     tr: "El Yapımı Gümüş Kolye",
-    en: "Handcrafted Silver Necklace",
-    es: "Collar de Plata Artesanal",
-    de: "Handgefertigte Silberkette",
-    ar: "قلادة فضية مصنوعة يدويًا",
+    en: "Handcrafted Silver Necklaces",
+    es: "Collares de plata artesanales",
+    de: "Handgefertigte Silberketten",
+    ar: "قلائد فضية مصنوعة يدويًا",
   },
   "Özel Yapım Ürünler": {
     tr: "Özel Yapım Ürünler",
-    en: "Custom Handmade Products",
-    es: "Productos Especiales Personalizados",
-    de: "Spezialanfertigungen",
-    ar: "منتجات خاصة حسب الطلب",
+    en: "Made to Order",
+    es: "Piezas por encargo",
+    de: "Sonderanfertigungen",
+    ar: "منتجات حسب الطلب",
+  },
+  "Özel El Yapımı Gümüş Yüzükler": {
+    tr: "Özel El Yapımı Gümüş Yüzükler",
+    en: "Handcrafted Signature Silver Rings",
+    es: "Anillos de plata artesanales exclusivos",
+    de: "Exklusive handgefertigte Silberringe",
+    ar: "خواتم فضية مميزة مصنوعة يدويًا",
+  },
+  "Gümüş Yüzük": {
+    tr: "Gümüş Yüzük",
+    en: "Silver Rings",
+    es: "Anillos de plata",
+    de: "Silberringe",
+    ar: "خواتم فضة",
   },
   "Kadın Takı": {
     tr: "Kadın Takı",
-    en: "Women's Jewelry",
-    es: "Joyería Femenina",
-    de: "Damen Schmuck",
+    en: "Women's Jewellery",
+    es: "Joyería femenina",
+    de: "Damenschmuck",
     ar: "مجوهرات نسائية",
   },
   "Yüzük": {
-    tr: "Gümüş Yüzük",
-    en: "Silver Ring",
-    es: "Anillo de Plata",
-    de: "Silberring",
-    ar: "خاتم فضة",
+    tr: "Yüzük",
+    en: "Rings",
+    es: "Anillos",
+    de: "Ringe",
+    ar: "خواتم",
   },
 };
 
-// Specific translation dictionary for known product IDs and titles
-export const SPECIFIC_PRODUCT_TRANSLATIONS: Record<string, Record<Language, { title: string; description?: string }>> = {
-  "vustam-1": {
-    tr: {
-      title: "Akik Taşının Üzerine Nakkaş Oyma Sanatı ile Ayat al-Kursi İşlenmiştir. Tamamen El Yapımıdır",
-      description: "Akik taşının üzerine geleneksel nakkaş oyma sanatı ile Ayet-el Kürsi duası özenle kazınmıştır. %100 el yapımı usta işçiliği. 925 ayar gümüş kasa."
-    },
-    en: {
-      title: "Ayat al-Kursi Hand-Engraved Agate Silver Ring - 100% Handcrafted",
-      description: "Ayat al-Kursi prayer meticulously hand-engraved on natural Agate gemstone using traditional calligraphic carving. 100% master craftsmanship in 925 sterling silver."
-    },
-    es: {
-      title: "Anillo de Plata con Ayat al-Kursi Grabado a Mano en Ágata - 100% Artesanal",
-      description: "Oración Ayat al-Kursi minuciosamente grabada a mano en ágata natural con caligrafía tradicional. 100% artesanía maestra en plata de ley 925."
-    },
-    de: {
-      title: "Ayat al-Kursi Handgravur Achat Silberring - 100% Handarbeit",
-      description: "Ayat al-Kursi Gebet sorgfältig handgraviert auf natürlichem Achat-Edelstein mit traditioneller Schnittkunst. 100% Meisterschaft in 925er Sterlingsilber."
-    },
-    ar: {
-      title: "خاتم فضة بحجر العقيق منقوش عليه آية الكرسي يدويًا - صناعة يدوية 100%",
-      description: "دعاء آية الكرسي منقوش بدقة على حجر العقيق الطبيعي بفن النقش التقليدي. صناعة يدوية 100% من الفضة عيار 925."
-    }
-  }
-};
-
-// Comprehensive Term Replacements Dictionary for dynamically translating ANY product titles/descriptions
-// Order strictly from LONGEST full sentences/phrases to SHORTEST single words.
-const TERM_DICTIONARY: Record<Language, Array<[RegExp, string]>> = {
-  tr: [],
-  en: [
-    // 1. Whole sentence blocks & story paragraphs
-    [/Bu yüzük, Veysel Usta tarafından tamamen el işçiliğiyle üretilmiş özel bir tasarımdır\./gi, "This ring is a custom design handcrafted entirely by Master Veysel."],
-    [/Bu yüzük, tamamen el emeği ile tarafımdan hazırlanmış özel bir çalışmadır\./gi, "This ring is a custom handcrafted creation created by myself."],
-    [/yüzüğün ana kasası sekizgen formda hazırlanmış,/gi, "the main body of the ring is crafted in an octagonal form,"],
-    [/yüzüğün ana kasası sekizgen formda tasarlanmış,/gi, "the main body of the ring is designed in an octagonal form,"],
-    [/yüzüğün taşı tamamen el yapımıdır ve usta tarafından işlenmiştir\./gi, "the ring's gemstone is 100% handcrafted and carved by the master artisan."],
-    [/yüzüğün taşı tamamen el yapımıdır/gi, "the ring's gemstone is completely handcrafted"],
-    [/üzerine yerleştirilen Horasan Akik Taşının yüzeyine büyük bir özenle Ayet-el Kürsî işlenmiştir\./gi, "and the verse of Ayat al-Kursi is meticulously engraved on the Khorasan Agate gemstone surface."],
-    [/üzerine yerleştirilen Akik Taşının yüzeyine büyük bir özenle Ayet-el Kürsî işlenmiştir\./gi, "and the verse of Ayat al-Kursi is meticulously engraved on the Agate gemstone surface."],
-    [/üzerine yerleştirilen Horasan Akik Taşının özenle Ayet-el Kürsî işlenmiştir\./gi, "with Ayat al-Kursi meticulously engraved on the Khorasan Agate gemstone."],
-    [/üzerine yerleştirilen Akik Taşının özenle Ayet-el Kürsî işlenmiştir\./gi, "with Ayat al-Kursi meticulously engraved on the Agate gemstone."],
-    [/Taş üzerindeki yazı kısmı, parlak ve dayanıklı bir görünüm kazandırmak için altın kaplama ile tamamlanmıştır\./gi, "The engraved inscription is finished with gold plating for a radiant and durable appearance."],
-    [/Taş üzerindeki yazı kısmı altın kaplama ile tamamlanarak hem manevi hem estetik bir derinlik kazandırılmıştır\./gi, "The inscription is finished with gold plating, giving it both spiritual and aesthetic depth."],
-    [/yüzüğün yan kısımları geleneksel el kalemi işçiliğiyle bezenmiş,/gi, "the sides of the ring are adorned with traditional hand-chiseled craftsmanship,"],
-    [/bütünsel bir estetik ve zarafet sunmaktadır\./gi, "offering a complete aesthetic and elegance."],
-    [/Bursa Ulu Camii’nde bulunan Şems Suresi hat yazısından esinlenerek hazırlanmıştır\./gi, "Inspired by the Surah Ash-Shams calligraphy at Bursa Grand Mosque."],
-    [/Taşın üzerinde, “Güneşe ve onun aydınlığına andolsun” ayeti zarif bir hat formunda yer alır\./gi, "The verse 'By the Sun and its brightness' is engraved in elegant calligraphic script."],
-    [/Surah Al-Mu'min 44 \(وَاُفَوِّضُ اَمْر۪ٓي اِلَى اللّٰهِۜ\)/gi, "Surah Al-Mu'min Verse 44"],
-    [/Anlamı: “İşimi tamamen Allah’a teslim ediyorum” \./gi, "Meaning: 'I entrust my affair to Allah'."],
-    [/Ve ma huve illa zikrun lil alemin \(وَمَا هُوَ اِلَّا ذِكْرٌ لِلْعَالَم۪ينَ\)/gi, "Surah Al-Qalam Verse 51 (Evil Eye Protection)"],
-    [/Bu ayet, nazardan korunmak için özel olarak seçilmiştir\./gi, "This verse is specially selected for protection against the evil eye."],
-    [/Al-Musawwir \(Allah’ın isimlerinden biri\)/gi, "Al-Musawwir (The Fashioner - One of Allah's Names)"],
-    [/Fatih Sultan Mehmet Hanın Mührü/gi, "Seal of Sultan Mehmed the Conqueror"],
-    [/Fatih Sultan Mehmet Hanın/gi, "Sultan Mehmed the Conqueror"],
-    [/Yuva ve alt kısımları Tılsım Ayetleri ile doldurulmuş/gi, "Adorned with Spiritual Protection Verses on the sides and base"],
-    [/Mağazamız Mütaz Koru Sk\. Çetin Kaya iş Merkezi, Kat: 2 Kapı No: 205 Meram\/Konya/gi, "Store: Mütaz Koru Sk. Çetin Kaya Business Center, Floor 2 No: 205 Meram/Konya"],
-    [/Allah Teâlâ, bütün kâinatın tek sâhibi ve mâlikidir, anlamını taşır\./gi, "It signifies: Allah Almighty is the sole owner and ruler of the universe."],
-    [/İnşirâh Sûresi 6\. Ayeti Muhakkak güçlükle bir beraber kolaylık vardır\./gi, "Surah Al-Inshirah Verse 6: 'Indeed, with hardship comes ease.'"],
-    [/Sipariş verdikten sonra bizimle iletişime geçip Kaligrafi yapılacak ismi bize bildirin\./gi, "After placing your order, contact us to specify the custom name for calligraphy."],
-    [/Sipariş verdikten sonra bizimle iletişime geçip/gi, "After ordering, contact us"],
-    [/yüzüğü aldıktan sonra bizimle iletişime geçip/gi, "After buying the ring, contact us"],
-    [/Kaligrafi Moody yazmaktadır, Kişiye Özel yapılmıştır\./gi, "Custom Calligraphy 'Moody' inscription, Personalized Order."],
-    [/Kişiye Özel yapılmıştır\./gi, "Custom Made Personalized."],
-    [/Kişiye Özel/gi, "Custom Personalized"],
-
-    // 2. Shipping & Contact Boilerplates
-    [/Gönderim Süresi:\s*1\s*-\s*3\s*is\s*günü/gi, "Dispatch Time: 1-3 Business Days"],
-    [/Gönderim Süresi:\s*1\s*-\s*3\s*iş\s*günü/gi, "Dispatch Time: 1-3 Business Days"],
-    [/is günü/gi, "business days"],
-    [/iş günü/gi, "business days"],
-    [/Ücretsiz Kargo/gi, "Free Shipping"],
-    [/Kargo:\s*Ücretsiz/gi, "Shipping: Free"],
-    [/Yurtdışına Gönderimimiz mevcuttur\.?/gi, "Worldwide Express Shipping Available."],
-    [/Yurdışına Gönderimimiz mevcuttur\.?/gi, "Worldwide Express Shipping Available."],
-    [/Yurdışına Gönderimimiz mevcu/gi, "Worldwide Express Shipping Available."],
-
-    [/Kolye Taşı ve Türü Kişiselleştirilebilirdir,?\s*Bizimle İletişime geçiniz\.?/gi, "Gemstone and metal are customizable, contact us."],
-    [/Yüzüğün Taşı ve Türü Kişiselleştirilebilirdir,?\s*Bizimle İletişime geçiniz\.?/gi, "Gemstone and metal are customizable, contact us."],
-    [/Farklı oymalar kişiye özel olarak da yapılabilir;?\s*bizimle iletişime geçebilirsiniz\.?/gi, "Custom engravings can be personalized, contact us."],
-    [/Bizimle İletişime geçiniz/gi, "Contact Us"],
-    [/bizimle iletişime geçebilirsiniz/gi, "contact us"],
-    [/Web Sayfamızı Ziyaret Etmeyi Unutmayın!/gi, "Don't forget to visit our official website!"],
-
-    // 3. Product Features & Attributes
-    [/Veysel Usta imzalı bu özel koleksiyon yüzük/gi, "This special collection ring signed by Master Veysel"],
-    [/Veysel Usta imzalı bu özel koleksiyon kolye/gi, "This special collection necklace signed by Master Veysel"],
-    [/Veysel Usta imzalı bu özel koleksiyon/gi, "This special collection piece signed by Master Veysel"],
-    [/925 Ayar Özel İşçilikli Gümüş Erkek Yüzüğü/gi, "925 Sterling Silver Custom Handmade Men's Ring"],
-    [/925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü/gi, "925 Sterling Silver Custom Handmade Men's Ring"],
-    [/925 Ayar Gümüş Özel İşcilikli Erkek Yüzüğü/gi, "925 Sterling Silver Custom Handmade Men's Ring"],
-    [/925 Ayar Gümüş Özel İşçilikli Erkek Yüzüğü/gi, "925 Sterling Silver Custom Handmade Men's Ring"],
-    [/925 Ayar Özel İşcilikli Gümüş Erkek Yüzük/gi, "925 Sterling Silver Custom Handmade Men's Ring"],
-    [/925 Ayar Özel İşcilikli Eşsiz Erkek Yüzüğü/gi, "925 Sterling Silver Unique Handcrafted Men's Ring"],
-    [/925 Ayar Gümüş Erkek Yüzüğü/gi, "925 Sterling Silver Men's Ring"],
-    [/925 Ayar Gümüş Erkek Yüzük/gi, "925 Sterling Silver Men's Ring"],
-    [/925 ayar saf gümüşten üretilmiştir/gi, "Made of 925 pure sterling silver"],
-    [/Malzeme:\s*%?925\s*Kaliteli Gümüştür/gi, "Material: 925 Sterling Silver"],
-    [/Malzeme:\s*%?925\s*Kaliteli Gümüş/gi, "Material: 925 Sterling Silver"],
-    [/925 ayar Gümüştür/gi, "925 Sterling Silver"],
-    [/925 Ayar Gümüş/gi, "925 Sterling Silver"],
-    [/925 ayar gümüş/gi, "925 Sterling Silver"],
-
-    [/Erkeğe alınacak en değerli Hediye/gi, "The Most Precious Gift for Men"],
-    [/En Değerli Hediye/gi, "The Most Precious Gift"],
-    [/Arapça Hat Sanatı ile kazıma yapılmış/gi, "Hand-Engraved with Arabic Calligraphy"],
-    [/Arapca Hat Sanatı ile kazıma yapılmış/gi, "Hand-Engraved with Arabic Calligraphy"],
-    [/Arapça Hat Sanatı ile/gi, "with Arabic Calligraphy"],
-    [/Arapca Hat Sanatı ile/gi, "with Arabic Calligraphy"],
-    [/sülüs hat ile/gi, "with Thuluth Calligraphy"],
-    [/Kûfi hat sanatıyla/gi, "with Kufic Calligraphy"],
-    [/Kûfi Sanatlı/gi, "Kufic Calligraphy"],
-    [/Manevi Tılsımı çok yüksektir\.?/gi, "Has high spiritual significance."],
-    [/Nazardan Koruma/gi, "Protection from Evil Eye"],
-    [/Nazardan korunmak için/gi, "for protection from evil eye"],
-    [/Sekizgen formda hazırlanmış/gi, "Designed in octagonal shape"],
-    [/sekizgen formda tasarlanmış/gi, "designed in octagonal shape"],
-    [/Usta İmzalı Koleksiyon Parçası/gi, "Master Signed Collector Piece"],
-    [/Özel Sipariş olarak üretilmiştir,?\s*müşterimize hayırlı olsun/gi, "Custom made order, best wishes to our customer."],
-    [/Sarı Altın kaplama/gi, "Yellow Gold Plated"],
-    [/Sarı Kaplama yapılmıştır/gi, "Yellow Gold Plated"],
-    [/altın kaplama ile tamamlanarak/gi, "finished with gold plating"],
-    [/altın kaplama ile/gi, "with gold plating"],
-
-    [/Ürün Detayları:/gi, "Product Details:"],
-    [/Taş üzerindeki yazı:/gi, "Inscription on Stone:"],
-    [/Taş üzerindeki kazıma yazı ve anlamı:/gi, "Carved Inscription & Meaning:"],
-    [/Taş üzerindeki oyma yazı ve anlamı:/gi, "Engraved Inscription & Meaning:"],
-    [/Üzerindeki Yazı ve Anlamı:/gi, "Inscription & Meaning:"],
-    [/Taş Üzerindeki Kazıma Yazı ve Anlamı:/gi, "Carved Inscription & Meaning:"],
-    [/Taş Üzerindeki Oyma Yazı ve Anlamı:/gi, "Engraved Inscription & Meaning:"],
-    [/Gramı:/gi, "Weight:"],
-    [/Grami:/gi, "Weight:"],
-    [/Gram/gi, "Weight:"],
-    [/Taş Türü:/gi, "Gemstone Type:"],
-    [/Tas Turu:/gi, "Gemstone Type:"],
-    [/Cinsiyet:\s*Unisex/gi, "Gender: Unisex"],
-    [/Cinsiyet:/gi, "Gender:"],
-    [/El İşçiliği:\s*Evet/gi, "Handmade: Yes"],
-    [/El İşçiliği:/gi, "Craftsmanship:"],
-    [/Kargo:/gi, "Shipping:"],
-
-    // 4. Sacred titles & terms
-    [/Hz\. Süleyman Mührü şerifi/gi, "Sacred Seal of Prophet Solomon"],
-    [/Hz\. Süleyman Mührü Şerifi/gi, "Sacred Seal of Prophet Solomon"],
-    [/Hz\. Süleyman Mührü/gi, "Seal of Prophet Solomon"],
-    [/Hz\. Süleyman Mühür/gi, "Seal of Prophet Solomon"],
-    [/Hz\. Süleyman/gi, "Prophet Solomon"],
-    [/Mührü şerifi/gi, "Sacred Seal"],
-    [/Mührü Şerifi/gi, "Sacred Seal"],
-    [/Mührü/gi, "Seal"],
-    [/şerifi/gi, "Sacred"],
-    [/Şerifi/gi, "Sacred"],
-    [/Salavatı Şerife Oyması yapılmış/gi, "Hand-Engraved with Salawat Al-Sharif"],
-    [/Salavatı Şerife/gi, "Salawat Al-Sharif"],
-
-    // 5. Gemstones & Materials
-    [/Orjinal Horasan Akik Taşlı/gi, "Natural Khorasan Agate"],
-    [/Orjinal Horasan Akik/gi, "Natural Khorasan Agate"],
-    [/Horasan Akik Taşlı/gi, "Khorasan Agate"],
-    [/Horasan Akik/gi, "Khorasan Agate"],
-    [/Horasan ve Yemen Akik Taşlı/gi, "Khorasan & Yemen Agate"],
-    [/Horasan/gi, "Khorasan"],
-    [/Yemen Akik/gi, "Yemen Agate"],
-
-    [/Casper Taşının Üzerine/gi, "on Casper Gemstone"],
-    [/Casper Taşının/gi, "Casper Gemstone"],
-    [/Casper Taşlı/gi, "Casper Gemstone"],
-    [/Casper Taşı/gi, "Casper Gemstone"],
-
-    [/Hematit Taşı üzerine/gi, "on Hematite Gemstone"],
-    [/Hematit Taşına/gi, "on Hematite Gemstone"],
-    [/Hematit Taşında/gi, "on Hematite Gemstone"],
-    [/Hematit Taşlı/gi, "with Hematite Gemstone"],
-    [/Hematit Taşı/gi, "Hematite Gemstone"],
-    [/Hematit/gi, "Hematite"],
-
-    [/Akik Taşının Üzerine/gi, "on Agate Gemstone"],
-    [/Akik Taşının üzerine/gi, "on Agate Gemstone"],
-    [/Akik Taşında/gi, "on Agate Gemstone"],
-    [/Akik Taşına/gi, "on Agate Gemstone"],
-    [/Akik Taşlı/gi, "with Agate Gemstone"],
-    [/Akik Taşı/gi, "Agate Gemstone"],
-    [/Akik/gi, "Agate"],
-
-    [/Siyah Onix Taşında/gi, "on Black Onyx Gemstone"],
-    [/Onix Taşının Üzerine/gi, "on Black Onyx Gemstone"],
-    [/Onix Taşında/gi, "on Onyx Gemstone"],
-    [/Onix Taşına/gi, "on Onyx Gemstone"],
-    [/Onix Taşlı/gi, "with Onyx Gemstone"],
-    [/Onix Taşı/gi, "Onyx Gemstone"],
-    [/Onyx Taşı/gi, "Onyx Gemstone"],
-    [/Onix/gi, "Onyx"],
-    [/Onyx/gi, "Onyx"],
-
-    [/Sarı Akik üzerine/gi, "on Yellow Agate"],
-    [/Kırmızı Akik üzerine/gi, "on Red Agate"],
-    [/Sarı Akik/gi, "Yellow Agate"],
-    [/Kırmızı Akik/gi, "Red Agate"],
-    [/Sarı/gi, "Yellow"],
-    [/Kırmızı/gi, "Red"],
-    [/Siyah/gi, "Black"],
-
-    // 6. Generic prepositions & single words (MUST COME LAST)
-    [/Taş üzerine yazılmış/gi, "engraved on stone"],
-    [/Taş üzerine/gi, "on stone"],
-    [/Taşın üzerine/gi, "on the stone"],
-    [/Taşın üzerindeki/gi, "on the stone"],
-    [/Taşın/gi, "stone's"],
-    [/Taş/gi, "stone"],
-    [/Taşı/gi, "gemstone"],
-    [/üzerine/gi, "on"],
-    [/üzerinde/gi, "on"],
-    [/üzerindeki/gi, "on the"],
-    [/kazıma yapılmış/gi, "Hand-Engraved"],
-    [/kazıma yapılmıştır/gi, "Hand-Engraved"],
-    [/kazıma/gi, "Engraving"],
-    [/Kazınmıştır/gi, "Engraved"],
-    [/İşlenmiştir/gi, "Crafted"],
-    [/işlenmiştir/gi, "crafted"],
-    [/El Yapımı/gi, "Handcrafted"],
-    [/El yapımı/gi, "Handcrafted"],
-    [/el yapımı/gi, "handcrafted"],
-    [/El İşi/gi, "Handmade"],
-    [/El işi/gi, "Handmade"],
-    [/el işi/gi, "handmade"],
-    [/El Oyması/gi, "Hand-Engraved"],
-    [/El oyması/gi, "Hand-Engraved"],
-    [/el oyması/gi, "hand-engraved"],
-    [/oyması yapılmış/gi, "carved"],
-    [/oyması/gi, "carving"],
-    [/Orjinal/gi, "Natural Original"],
-    [/Orijinal/gi, "Natural Original"],
-    [/orjinal/gi, "natural original"],
-    [/Gösterişli/gi, "Magnificent"],
-
-    // Product Types
-    [/Kadın Kolye/gi, "Women's Necklace"],
-    [/Bayan Kolye/gi, "Women's Necklace"],
-    [/Gümüş Kolye/gi, "Silver Necklace"],
-    [/Kolye/gi, "Necklace"],
-    [/Gümüş Yüzük/gi, "Silver Ring"],
-    [/Gümüş Ring/gi, "Silver Ring"],
-    [/Erkek Yüzüğü/gi, "Men's Ring"],
-    [/Erkek Yüzük/gi, "Men's Ring"],
-    [/Yüzük/gi, "Ring"],
-    [/Yüzüğü/gi, "Ring"],
-    [/Gümüş/gi, "Silver"],
-  ],
-  es: [
-    // 1. Whole sentence blocks & story paragraphs
-    [/Bu yüzük, Veysel Usta tarafından tamamen el işçiliğiyle üretilmiş özel bir tasarımdır\./gi, "Este anillo es un diseño especial hecho completamente a mano por el Maestro Veysel."],
-    [/Bu yüzük, tamamen el emeği ile tarafımdan hazırlanmış özel bir çalışmadır\./gi, "Este anillo es una creación artesanal personalizada hecha a mano por mí."],
-    [/yüzüğün ana kasası sekizgen formda hazırlanmış,/gi, "el cuerpo principal del anillo está diseñado en forma octogonal,"],
-    [/yüzüğün ana kasası sekizgen formda tasarlanmış,/gi, "el cuerpo principal del anillo está diseñado en forma octogonal,"],
-    [/yüzüğün taşı tamamen el yapımıdır ve usta tarafından işlenmiştir\./gi, "la piedra del anillo es 100% artesanal y trabajada por el maestro."],
-    [/yüzüğün taşı tamamen el yapımıdır/gi, "la piedra del anillo es 100% artesanal"],
-    [/üzerine yerleştirilen Horasan Akik Taşının yüzeyine büyük bir özenle Ayet-el Kürsî işlenmiştir\./gi, "y el versículo Ayat al-Kursi está minuciosamente grabado en la piedra de ágata."],
-    [/üzerine yerleştirilen Akik Taşının yüzeyine büyük bir özenle Ayet-el Kürsî işlenmiştir\./gi, "y el versículo Ayat al-Kursi está minuciosamente grabado en la piedra de ágata."],
-    [/üzerine yerleştirilen Horasan Akik Taşının özenle Ayet-el Kürsî işlenmiştir\./gi, "con Ayat al-Kursi grabado minuciosamente en la piedra de ágata."],
-    [/üzerine yerleştirilen Akik Taşının özenle Ayet-el Kürsî işlenmiştir\./gi, "con Ayat al-Kursi grabado minuciosamente en la piedra de ágata."],
-    [/Taş üzerindeki yazı kısmı, parlak ve dayanıklı bir görünüm kazandırmak için altın kaplama ile tamamlanmıştır\./gi, "El grabado sobre la piedra está acabado con baño de oro para un aspecto radiante y duradero."],
-    [/Taş üzerindeki yazı kısmı altın kaplama ile tamamlanarak hem manevi hem estetik bir derinlik kazandırılmıştır\./gi, "La inscripción tiene un acabado en baño de oro, otorgándole profundidad espiritual y estética."],
-    [/yüzüğün yan kısımları geleneksel el kalemi işçiliğiyle bezenmiş,/gi, "los laterales del anillo están adornados con artesanía tradicional hecha a mano,"],
-    [/bütünsel bir estetik ve zarafet sunmaktadır\./gi, "ofreciendo una estética y elegancia integrales."],
-    [/Bursa Ulu Camii’nde bulunan Şems Suresi hat yazısından esinlenerek hazırlanmıştır\./gi, "Inspirado en la caligrafía de la Sura Ash-Shams de la Gran Mezquita de Bursa."],
-    [/Taşın üzerinde, “Güneşe ve onun aydınlığına andolsun” ayeti zarif bir hat formunda yer alır\./gi, "El versículo 'Por el Sol y su resplandor' está grabado en una elegante caligrafía."],
-    [/Surah Al-Mu'min 44 \(وَاُفَوِّضُ اَمْر۪ٓي اِلَى اللّٰهِۜ\)/gi, "Sura Al-Mu'min Versículo 44"],
-    [/Anlamı: “İşimi tamamen Allah’a teslim ediyorum” \./gi, "Significado: 'Encomiendo mi asunto totalmente a Dios'."],
-    [/Ve ma huve illa zikrun lil alemin \(وَمَا هُوَ اِلَّا ذِكْرٌ لِلْعَالَم۪ينَ\)/gi, "Sura Al-Qalam Versículo 51 (Protección)"],
-    [/Bu ayet, nazardan korunmak için özel olarak seçilmiştir\./gi, "Este versículo fue seleccionado especialmente para protección contra el mal de ojo."],
-    [/Al-Musawwir \(Allah’ın isimlerinden biri\)/gi, "Al-Musawwir (El Creador de Formas - Nombre de Dios)"],
-    [/Fatih Sultan Mehmet Hanın Mührü/gi, "Sello del Sultán Mehmed el Conquistador"],
-    [/Fatih Sultan Mehmet Hanın/gi, "Sultán Mehmed el Conquistador"],
-    [/Yuva ve alt kısımları Tılsım Ayetleri ile doldurulmuş/gi, "Decorado con versículos de protección en los laterales y la base"],
-    [/Mağazamız Mütaz Koru Sk\. Çetin Kaya iş Merkezi, Kat: 2 Kapı No: 205 Meram\/Konya/gi, "Tienda: Mütaz Koru Sk. Çetin Kaya Business Center, Piso 2 No: 205 Meram/Konya"],
-    [/Allah Teâlâ, bütün kâinatın tek sâhibi ve mâlikidir, anlamını taşır\./gi, "Significa: Dios Todopoderoso es el único dueño y soberano del universo."],
-    [/İnşirâh Sûresi 6\. Ayeti Muhakkak güçlükle bir beraber kolaylık vardır\./gi, "Sura Al-Inshirah Versículo 6: 'Ciertamente tras la dificultad viene la facilidad.'"],
-    [/Sipariş verdikten sonra bizimle iletişime geçip Kaligrafi yapılacak ismi bize bildirin\./gi, "Tras realizar el pedido, contáctenos para especificar el nombre para la caligrafía."],
-    [/Sipariş verdikten sonra bizimle iletişime geçip/gi, "Tras realizar el pedido, contáctenos"],
-    [/yüzüğü aldıktan sonra bizimle iletişime geçip/gi, "Tras comprar el anillo, contáctenos"],
-    [/Kaligrafi Moody yazmaktadır, Kişiye Özel yapılmıştır\./gi, "Inscripción en Caligrafía 'Moody', Pedido Personalizado."],
-    [/Kişiye Özel yapılmıştır\./gi, "Pedido Personalizado."],
-    [/Kişiye Özel/gi, "Personalizado"],
-
-    // 2. Shipping & Contact Boilerplates
-    [/Gönderim Süresi:\s*1\s*-\s*3\s*is\s*günü/gi, "Tiempo de Envío: 1-3 Días Hábiles"],
-    [/Gönderim Süresi:\s*1\s*-\s*3\s*iş\s*günü/gi, "Tiempo de Envío: 1-3 Días Hábiles"],
-    [/is günü/gi, "días hábiles"],
-    [/iş günü/gi, "días hábiles"],
-    [/Ücretsiz Kargo/gi, "Envío Gratis"],
-    [/Kargo:\s*Ücretsiz/gi, "Envío: Gratis"],
-    [/Yurtdışına Gönderimimiz mevcuttur\.?/gi, "Envío Internacional Disponible."],
-    [/Yurdışına Gönderimimiz mevcuttur\.?/gi, "Envío Internacional Disponible."],
-    [/Yurdışına Gönderimimiz mevcu/gi, "Envío Internacional Disponible."],
-
-    [/Kolye Taşı ve Türü Kişiselleştirilebilirdir,?\s*Bizimle İletişime geçiniz\.?/gi, "La piedra y el metal son personalizables, contáctenos."],
-    [/Yüzüğün Taşı ve Türü Kişiselleştirilebilirdir,?\s*Bizimle İletişime geçiniz\.?/gi, "La piedra y el metal son personalizables, contáctenos."],
-    [/Farklı oymalar kişiye özel olarak da yapılabilir;?\s*bizimle iletişime geçebilirsiniz\.?/gi, "Se realizan grabados personalizados, contáctenos."],
-    [/Bizimle İletişime geçiniz/gi, "Contáctenos"],
-    [/bizimle iletişime geçebilirsiniz/gi, "contáctenos"],
-    [/Web Sayfamızı Ziyaret Etmeyi Unutmayın!/gi, "¡No olvide visitar nuestro sitio web oficial!"],
-
-    // 3. Product Features & Attributes
-    [/Veysel Usta imzalı bu özel koleksiyon yüzük/gi, "Este anillo de colección especial firmado por el Maestro Veysel"],
-    [/Veysel Usta imzalı bu özel koleksiyon kolye/gi, "Este collar de colección especial firmado por el Maestro Veysel"],
-    [/Veysel Usta imzalı bu özel koleksiyon/gi, "Esta pieza de colección especial firmada por el Maestro Veysel"],
-    [/925 Ayar Özel İşçilikli Gümüş Erkek Yüzüğü/gi, "Anillo de Plata de Ley 925 para Hombre Artesanal"],
-    [/925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü/gi, "Anillo de Plata de Ley 925 para Hombre Artesanal"],
-    [/925 Ayar Gümüş Özel İşcilikli Erkek Yüzüğü/gi, "Anillo de Plata de Ley 925 para Hombre Artesanal"],
-    [/925 Ayar Gümüş Özel İşçilikli Erkek Yüzüğü/gi, "Anillo de Plata de Ley 925 para Hombre Artesanal"],
-    [/925 Ayar Özel İşcilikli Gümüş Erkek Yüzük/gi, "Anillo de Plata de Ley 925 para Hombre Artesanal"],
-    [/925 Ayar Özel İşcilikli Eşsiz Erkek Yüzüğü/gi, "Anillo Único de Plata de Ley 925 para Hombre"],
-    [/925 Ayar Gümüş Erkek Yüzüğü/gi, "Anillo de Plata de Ley 925 para Hombre"],
-    [/925 Ayar Gümüş Erkek Yüzük/gi, "Anillo de Plata de Ley 925 para Hombre"],
-    [/925 ayar saf gümüşten üretilmiştir/gi, "Fabricado en plata de ley 925 pura"],
-    [/Malzeme:\s*%?925\s*Kaliteli Gümüştür/gi, "Material: Plata de Ley 925"],
-    [/Malzeme:\s*%?925\s*Kaliteli Gümüş/gi, "Material: Plata de Ley 925"],
-    [/925 ayar Gümüştür/gi, "Plata de Ley 925"],
-    [/925 Ayar Gümüş/gi, "Plata de Ley 925"],
-    [/925 ayar gümüş/gi, "Plata de Ley 925"],
-
-    [/Erkeğe alınacak en değerli Hediye/gi, "El Regalo más Valioso para Hombre"],
-    [/En Değerli Hediye/gi, "El Regalo más Valioso"],
-    [/Arapça Hat Sanatı ile kazıma yapılmış/gi, "Grabado a Mano en Caligrafía Árabe"],
-    [/Arapca Hat Sanatı ile kazıma yapılmış/gi, "Grabado a Mano en Caligrafía Árabe"],
-    [/Arapça Hat Sanatı ile/gi, "con Caligrafía Árabe"],
-    [/Arapca Hat Sanatı ile/gi, "con Caligrafía Árabe"],
-    [/sülüs hat ile/gi, "con Caligrafía Thuluth"],
-    [/Kûfi hat sanatıyla/gi, "con Caligrafía Cúfica"],
-    [/Kûfi Sanatlı/gi, "Caligrafía Cúfica"],
-    [/Manevi Tılsımı çok yüksektir\.?/gi, "Posee un alto valor espiritual."],
-    [/Nazardan Koruma/gi, "Protección contra el Mal de Ojo"],
-    [/Nazardan korunmak için/gi, "para protección contra el mal de ojo"],
-    [/Sekizgen formda hazırlanmış/gi, "Diseñado en forma octogonal"],
-    [/sekizgen formda tasarlanmış/gi, "diseñado en forma octogonal"],
-    [/Usta İmzalı Koleksiyon Parçası/gi, "Pieza de Colección Firmada por el Maestro"],
-    [/Özel Sipariş olarak üretilmiştir,?\s*müşterimize hayırlı olsun/gi, "Pedido personalizado, nuestros mejores deseos para nuestro cliente."],
-    [/Sarı Altın kaplama/gi, "Con Baño de Oro Amarillo"],
-    [/Sarı Kaplama yapılmıştır/gi, "Con Baño de Oro Amarillo"],
-    [/altın kaplama ile tamamlanarak/gi, "acabado con baño de oro"],
-    [/altın kaplama ile/gi, "con baño de oro"],
-
-    [/Ürün Detayları:/gi, "Detalles del Producto:"],
-    [/Taş üzerindeki yazı:/gi, "Inscripción en la Piedra:"],
-    [/Taş üzerindeki kazıma yazı ve anlamı:/gi, "Inscripción Grabada y Significado:"],
-    [/Taş üzerindeki oyma yazı ve anlamı:/gi, "Inscripción Tallada y Significado:"],
-    [/Üzerindeki Yazı ve Anlamı:/gi, "Inscripción y Significado:"],
-    [/Taş Üzerindeki Kazıma Yazı ve Anlamı:/gi, "Inscripción Grabada y Significado:"],
-    [/Taş Üzerindeki Oyma Yazı ve Anlamı:/gi, "Inscripción Tallada y Significado:"],
-    [/Gramı:/gi, "Peso:"],
-    [/Grami:/gi, "Peso:"],
-    [/Gram/gi, "Peso:"],
-    [/Taş Türü:/gi, "Tipo de Piedra:"],
-    [/Tas Turu:/gi, "Tipo de Piedra:"],
-    [/Cinsiyet:\s*Unisex/gi, "Género: Unisex"],
-    [/Cinsiyet:/gi, "Género:"],
-    [/El İşçiliği:\s*Evet/gi, "Hecho a Mano: Sí"],
-    [/El İşçiliği:/gi, "Artesanía:"],
-    [/Kargo:/gi, "Envío:"],
-
-    // 4. Sacred titles & terms
-    [/Hz\. Süleyman Mührü şerifi/gi, "Sagrado Sello del Profeta Salomón"],
-    [/Hz\. Süleyman Mührü Şerifi/gi, "Sagrado Sello del Profeta Salomón"],
-    [/Hz\. Süleyman Mührü/gi, "Sello del Profeta Salomón"],
-    [/Hz\. Süleyman Mühür/gi, "Sello del Profeta Salomón"],
-    [/Hz\. Süleyman/gi, "Profeta Salomón"],
-    [/Mührü şerifi/gi, "Sagrado Sello"],
-    [/Mührü Şerifi/gi, "Sagrado Sello"],
-    [/Mührü/gi, "Sello"],
-    [/şerifi/gi, "Sagrado"],
-    [/Şerifi/gi, "Sagrado"],
-    [/Salavatı Şerife Oyması yapılmış/gi, "Grabado con Salawat Al-Sharif"],
-    [/Salavatı Şerife/gi, "Salawat Al-Sharif"],
-
-    // 5. Gemstones & Materials
-    [/Orjinal Horasan Akik Taşlı/gi, "Ágata Natural de Jorasán"],
-    [/Orjinal Horasan Akik/gi, "Ágata Natural de Jorasán"],
-    [/Horasan Akik Taşlı/gi, "Ágata de Jorasán"],
-    [/Horasan Akik/gi, "Ágata de Jorasán"],
-    [/Horasan ve Yemen Akik Taşlı/gi, "Ágata de Jorasán y Yemen"],
-    [/Horasan/gi, "Jorasán"],
-    [/Yemen Akik/gi, "Ágata de Yemen"],
-
-    [/Casper Taşının Üzerine/gi, "en Piedra Casper"],
-    [/Casper Taşının/gi, "Piedra Casper"],
-    [/Casper Taşlı/gi, "Piedra Casper"],
-    [/Casper Taşı/gi, "Piedra Casper"],
-
-    [/Hematit Taşı üzerine/gi, "en Piedra de Hematita"],
-    [/Hematit Taşına/gi, "en Piedra de Hematita"],
-    [/Hematit Taşında/gi, "en Piedra de Hematita"],
-    [/Hematit Taşlı/gi, "con Piedra de Hematita"],
-    [/Hematit Taşı/gi, "Piedra de Hematita"],
-    [/Hematit/gi, "Hematita"],
-
-    [/Akik Taşının Üzerine/gi, "en Piedra de Ágata"],
-    [/Akik Taşının üzerine/gi, "en Piedra de Ágata"],
-    [/Akik Taşında/gi, "en Piedra de Ágata"],
-    [/Akik Taşına/gi, "en Piedra de Ágata"],
-    [/Akik Taşlı/gi, "con Ágata"],
-    [/Akik Taşı/gi, "Piedra de Ágata"],
-    [/Akik/gi, "Ágata"],
-
-    [/Siyah Onix Taşında/gi, "en Piedra de Ónix Negro"],
-    [/Onix Taşının Üzerine/gi, "en Piedra de Ónix Negro"],
-    [/Onix Taşında/gi, "en Piedra de Ónix"],
-    [/Onix Taşına/gi, "en Piedra de Ónix"],
-    [/Onix Taşlı/gi, "con Ónix"],
-    [/Onix Taşı/gi, "Piedra de Ónix"],
-    [/Onyx Taşı/gi, "Piedra de Ónix"],
-    [/Onix/gi, "Ónix"],
-    [/Onyx/gi, "Ónix"],
-
-    [/Sarı Akik üzerine/gi, "en Ágata Amarilla"],
-    [/Kırmızı Akik üzerine/gi, "en Ágata Roja"],
-    [/Sarı Akik/gi, "Ágata Amarilla"],
-    [/Kırmızı Akik/gi, "Ágata Roja"],
-    [/Sarı/gi, "Amarillo"],
-    [/Kırmızı/gi, "Rojo"],
-    [/Siyah/gi, "Negro"],
-
-    // 6. Generic prepositions & single words (MUST COME LAST)
-    [/Taş üzerine yazılmış/gi, "grabado en piedra"],
-    [/Taş üzerine/gi, "en piedra"],
-    [/Taşın üzerine/gi, "en la piedra"],
-    [/Taşın üzerindeki/gi, "en la piedra"],
-    [/Taşın/gi, "de la piedra"],
-    [/Taş/gi, "piedra"],
-    [/Taşı/gi, "piedra"],
-    [/üzerine/gi, "en"],
-    [/üzerinde/gi, "en"],
-    [/üzerindeki/gi, "en el"],
-    [/kazıma yapılmış/gi, "Grabado a Mano"],
-    [/kazıma yapılmıştır/gi, "Grabado a Mano"],
-    [/kazıma/gi, "Grabado"],
-    [/Kazınmıştır/gi, "Grabado"],
-    [/İşlenmiştir/gi, "Hecho a Mano"],
-    [/işlenmiştir/gi, "hecho a mano"],
-    [/El Yapımı/gi, "Artesanal"],
-    [/El yapımı/gi, "Artesanal"],
-    [/el yapımı/gi, "artesanal"],
-    [/El İşi/gi, "Hecho a Mano"],
-    [/El işi/gi, "Hecho a Mano"],
-    [/el işi/gi, "hecho a mano"],
-    [/El Oyması/gi, "Grabado a Mano"],
-    [/El oyması/gi, "Grabado a Mano"],
-    [/el oyması/gi, "grabado a mano"],
-    [/oyması yapılmış/gi, "tallado"],
-    [/oyması/gi, "tallado"],
-    [/Orjinal/gi, "Original Natural"],
-    [/Orijinal/gi, "Original Natural"],
-    [/orjinal/gi, "original natural"],
-    [/Gösterişli/gi, "Elegante"],
-
-    // Product Types
-    [/Kadın Kolye/gi, "Collar para Mujer"],
-    [/Bayan Kolye/gi, "Collar para Mujer"],
-    [/Gümüş Kolye/gi, "Collar de Plata"],
-    [/Kolye/gi, "Collar"],
-    [/Gümüş Yüzük/gi, "Anillo de Plata"],
-    [/Gümüş Ring/gi, "Anillo de Plata"],
-    [/Erkek Yüzüğü/gi, "Anillo para Hombre"],
-    [/Erkek Yüzük/gi, "Anillo para Hombre"],
-    [/Yüzük/gi, "Anillo"],
-    [/Yüzüğü/gi, "Anillo"],
-    [/Gümüş/gi, "Plata"],
-  ],
-  de: [
-    // 1. Whole sentence blocks & story paragraphs
-    [/Bu yüzük, Veysel Usta tarafından tamamen el işçiliğiyle üretilmiş özel bir tasarımdır\./gi, "Dieser Ring ist ein speziell von Meister Veysel in vollständiger Handarbeit gefertigtes Design."],
-    [/Bu yüzük, tamamen el emeği ile tarafımdan hazırlanmış özel bir çalışmadır\./gi, "Dieser Ring ist ein von mir in kompletter Handarbeit angefertigtes Einzelstück."],
-    [/yüzüğün ana kasası sekizgen formda hazırlanmış,/gi, "das Hauptgehäuse des Rings ist in oktogonaler Form gefertigt,"],
-    [/yüzüğün ana kasası sekizgen formda tasarlanmış,/gi, "das Hauptgehäuse des Rings ist in oktogonaler Form gestaltet,"],
-    [/yüzüğün taşı tamamen el yapımıdır ve usta tarafından işlenmiştir\./gi, "der Edelstein des Rings ist zu 100% Handarbeit und vom Meister gefertigt."],
-    [/yüzüğün taşı tamamen el yapımıdır/gi, "der Edelstein des Rings ist vollständig Handarbeit"],
-    [/üzerine yerleştirilen Horasan Akik Taşının yüzeyine büyük bir özenle Ayet-el Kürsî işlenmiştir\./gi, "und der Vers Ayat al-Kursi ist sorgfältig auf dem Achat-Edelstein eingraviert."],
-    [/üzerine yerleştirilen Akik Taşının yüzeyine büyük bir özenle Ayet-el Kürsî işlenmiştir\./gi, "und der Vers Ayat al-Kursi ist sorgfältig auf dem Achat-Edelstein eingraviert."],
-    [/üzerine yerleştirilen Horasan Akik Taşının özenle Ayet-el Kürsî işlenmiştir\./gi, "mit sorgfältig auf dem Achat-Edelstein eingraviertem Ayat al-Kursi."],
-    [/üzerine yerleştirilen Akik Taşının özenle Ayet-el Kürsî işlenmiştir\./gi, "mit sorgfältig auf dem Achat-Edelstein eingraviertem Ayat al-Kursi."],
-    [/Taş üzerindeki yazı kısmı, parlak ve dayanıklı bir görünüm kazandırmak için altın kaplama ile tamamlanmıştır\./gi, "Die Gravur auf dem Stein ist mit einer Vergoldung für ein glänzendes und langlebiges Finish vollendet."],
-    [/Taş üzerindeki yazı kısmı altın kaplama ile tamamlanarak hem manevi hem estetik bir derinlik kazandırılmıştır\./gi, "Die Inschrift ist mit einer Vergoldung veredelt, was ihr spirituelle und ästhetische Tiefe verleiht."],
-    [/yüzüğün yan kısımları geleneksel el kalemi işçiliğiyle bezenmiş,/gi, "die Seiten des Rings sind mit traditioneller Handgravur verziert,"],
-    [/bütünsel bir estetik ve zarafet sunmaktadır\./gi, "was eine ganzheitliche Ästhetik und Eleganz bietet."],
-    [/Bursa Ulu Camii’nde bulunan Şems Suresi hat yazısından esinlenerek hazırlanmıştır\./gi, "Inspiriert von der Surah Ash-Shams Kalligraphie in der Großen Moschee von Bursa."],
-    [/Taşın üzerinde, “Güneşe ve onun aydınlığına andolsun” ayeti zarif bir hat formunda yer alır\./gi, "Der Vers 'Bei der Sonne und ihrem Glanz' ist in eleganter Kalligraphie eingraviert."],
-    [/Surah Al-Mu'min 44 \(وَاُفَوِّضُ اَمْر۪ٓي اِلَى اللّٰهِۜ\)/gi, "Sure Al-Mu'min Vers 44"],
-    [/Anlamı: “İşimi tamamen Allah’a teslim ediyorum” \./gi, "Bedeutung: 'Ich überlasse meine Angelegenheit ganz Gott'."],
-    [/Ve ma huve illa zikrun lil alemin \(وَمَا هُوَ اِلَّا ذِكْرٌ لِلْعَالَم۪ينَ\)/gi, "Sure Al-Qalam Vers 51 (Schutzvers)"],
-    [/Bu ayet, nazardan korunmak için özel olarak seçilmiştir\./gi, "Dieser Vers wurde speziell zum Schutz vor dem bösen Blick ausgewählt."],
-    [/Al-Musawwir \(Allah’ın isimlerinden biri\)/gi, "Al-Musawwir (Der Gestalter - Name Gottes)"],
-    [/Fatih Sultan Mehmet Hanın Mührü/gi, "Siegel von Sultan Mehmed dem Eroberer"],
-    [/Fatih Sultan Mehmet Hanın/gi, "Sultan Mehmed der Eroberer"],
-    [/Yuva ve alt kısımları Tılsım Ayetleri ile doldurulmuş/gi, "An den Seiten und der Basis mit Schutzversen verziert"],
-    [/Mağazamız Mütaz Koru Sk\. Çetin Kaya iş Merkezi, Kat: 2 Kapı No: 205 Meram\/Konya/gi, "Geschäft: Mütaz Koru Sk. Çetin Kaya Business Center, Etage 2 Nr: 205 Meram/Konya"],
-    [/Allah Teâlâ, bütün kâinatın tek sâhibi ve mâlikidir, anlamını taşır\./gi, "Es bedeutet: Gott der Allmächtige ist der einzige Besitzer und Herrscher des Universums."],
-    [/İnşirâh Sûresi 6\. Ayeti Muhakkak güçlükle bir beraber kolaylık vardır\./gi, "Sure Al-Inshirah Vers 6: 'Wahrlich, mit der Erschwernis kommt die Erleichterung.'"],
-    [/Sipariş verdikten sonra bizimle iletişime geçip Kaligrafi yapılacak ismi bize bildirin\./gi, "Nach der Bestellung kontaktieren Sie uns bitte für die Wunsch-Kalligraphie."],
-    [/Sipariş verdikten sonra bizimle iletişime geçip/gi, "Nach der Bestellung kontaktieren Sie uns"],
-    [/yüzüğü aldıktan sonra bizimle iletişime geçip/gi, "Nach dem Kauf des Rings kontaktieren Sie uns"],
-    [/Kaligrafi Moody yazmaktadır, Kişiye Özel yapılmıştır\./gi, "Kalligraphie-Inschrift 'Moody', Sonderanfertigung."],
-    [/Kişiye Özel yapılmıştır\./gi, "Sonderanfertigung."],
-    [/Kişiye Özel/gi, "Sonderanfertigung"],
-
-    // 2. Shipping & Contact Boilerplates
-    [/Gönderim Süresi:\s*1\s*-\s*3\s*is\s*günü/gi, "Lieferzeit: 1-3 Werktage"],
-    [/Gönderim Süresi:\s*1\s*-\s*3\s*iş\s*günü/gi, "Lieferzeit: 1-3 Werktage"],
-    [/is günü/gi, "Werktage"],
-    [/iş günü/gi, "Werktage"],
-    [/Ücretsiz Kargo/gi, "Kostenloser Versand"],
-    [/Kargo:\s*Ücretsiz/gi, "Versand: Kostenlos"],
-    [/Yurtdışına Gönderimimiz mevcuttur\.?/gi, "Weltweiter Expressversand verfügbar."],
-    [/Yurdışına Gönderimimiz mevcuttur\.?/gi, "Weltweiter Expressversand verfügbar."],
-    [/Yurdışına Gönderimimiz mevcu/gi, "Weltweiter Expressversand verfügbar."],
-
-    [/Kolye Taşı ve Türü Kişiselleştirilebilirdir,?\s*Bizimle İletişime geçiniz\.?/gi, "Edelstein und Metall anpassbar, kontaktieren Sie uns."],
-    [/Yüzüğün Taşı ve Türü Kişiselleştirilebilirdir,?\s*Bizimle İletişime geçiniz\.?/gi, "Edelstein und Metall anpassbar, kontaktieren Sie uns."],
-    [/Farklı oymalar kişiye özel olarak da yapılabilir;?\s*bizimle iletişime geçebilirsiniz\.?/gi, "Individuelle Gravuren möglich, kontaktieren Sie uns."],
-    [/Bizimle İletişime geçiniz/gi, "Kontaktieren Sie uns"],
-    [/bizimle iletişime geçebilirsiniz/gi, "kontaktieren Sie uns"],
-    [/Web Sayfamızı Ziyaret Etmeyi Unutmayın!/gi, "Besuchen Sie unsere offizielle Website!"],
-
-    // 3. Product Features & Attributes
-    [/Veysel Usta imzalı bu özel koleksiyon yüzük/gi, "Dieser Ring aus der Spezialkollektion von Meister Veysel"],
-    [/Veysel Usta imzalı bu özel koleksiyon kolye/gi, "Diese Kette aus der Spezialkollektion von Meister Veysel"],
-    [/Veysel Usta imzalı bu özel koleksiyon/gi, "Dieses Schmuckstück aus der Spezialkollektion von Meister Veysel"],
-    [/925 Ayar Özel İşçilikli Gümüş Erkek Yüzüğü/gi, "925er Sterlingsilber Herrenring in Sonderanfertigung"],
-    [/925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü/gi, "925er Sterlingsilber Herrenring in Sonderanfertigung"],
-    [/925 Ayar Gümüş Özel İşcilikli Erkek Yüzüğü/gi, "925er Sterlingsilber Herrenring in Sonderanfertigung"],
-    [/925 Ayar Gümüş Özel İşçilikli Erkek Yüzüğü/gi, "925er Sterlingsilber Herrenring in Sonderanfertigung"],
-    [/925 Ayar Özel İşcilikli Gümüş Erkek Yüzük/gi, "925er Sterlingsilber Herrenring in Sonderanfertigung"],
-    [/925 Ayar Özel İşcilikli Eşsiz Erkek Yüzüğü/gi, "Einzigartiger 925er Sterlingsilber Herrenring"],
-    [/925 Ayar Gümüş Erkek Yüzüğü/gi, "925er Sterlingsilber Herrenring"],
-    [/925 Ayar Gümüş Erkek Yüzük/gi, "925er Sterlingsilber Herrenring"],
-    [/925 ayar saf gümüşten üretilmiştir/gi, "Hergestellt aus reinem 925er Sterlingsilber"],
-    [/Malzeme:\s*%?925\s*Kaliteli Gümüştür/gi, "Material: 925er Sterlingsilber"],
-    [/Malzeme:\s*%?925\s*Kaliteli Gümüş/gi, "Material: 925er Sterlingsilber"],
-    [/925 ayar Gümüştür/gi, "925er Sterlingsilber"],
-    [/925 Ayar Gümüş/gi, "925er Sterlingsilber"],
-    [/925 ayar gümüş/gi, "925er Sterlingsilber"],
-
-    [/Erkeğe alınacak en değerli Hediye/gi, "Das wertvollste Geschenk für Männer"],
-    [/En Değerli Hediye/gi, "Das wertvollste Geschenk"],
-    [/Arapça Hat Sanatı ile kazıma yapılmış/gi, "Handgraviert mit arabischer Kalligraphie"],
-    [/Arapca Hat Sanatı ile kazıma yapılmış/gi, "Handgraviert mit arabischer Kalligraphie"],
-    [/Arapça Hat Sanatı ile/gi, "mit arabischer Kalligraphie"],
-    [/Arapca Hat Sanatı ile/gi, "mit arabischer Kalligraphie"],
-    [/sülüs hat ile/gi, "mit Thuluth-Kalligraphie"],
-    [/Kûfi hat sanatıyla/gi, "mit Kufi-Kalligraphie"],
-    [/Kûfi Sanatlı/gi, "Kufi-Kalligraphie"],
-    [/Manevi Tılsımı çok yüksektir\.?/gi, "Besitzt eine hohe spirituelle Bedeutung."],
-    [/Nazardan Koruma/gi, "Schutz vor dem bösen Blick"],
-    [/Nazardan korunmak için/gi, "zum Schutz vor dem bösen Blick"],
-    [/Sekizgen formda hazırlanmış/gi, "In oktogonaler Form gestaltet"],
-    [/sekizgen formda tasarlanmış/gi, "in oktogonaler Form gestaltet"],
-    [/Usta İmzalı Koleksiyon Parçası/gi, "Vom Meister signiertes Sammlerstück"],
-    [/Özel Sipariş olarak üretilmiştir,?\s*müşterimize hayırlı olsun/gi, "Sonderanfertigung, beste Wünsche an unseren Kunden."],
-    [/Sarı Altın kaplama/gi, "Gelbgold vergoldet"],
-    [/Sarı Kaplama yapılmıştır/gi, "Gelbgold vergoldet"],
-    [/altın kaplama ile tamamlanarak/gi, "mit Vergoldung veredelt"],
-    [/altın kaplama ile/gi, "mit Vergoldung"],
-
-    [/Ürün Detayları:/gi, "Produkt-Details:"],
-    [/Taş üzerindeki yazı:/gi, "Inschrift auf dem Stein:"],
-    [/Taş üzerindeki kazıma yazı ve anlamı:/gi, "Gravierte Inschrift & Bedeutung:"],
-    [/Taş üzerindeki oyma yazı ve anlamı:/gi, "Geschnittene Inschrift & Bedeutung:"],
-    [/Üzerindeki Yazı ve Anlamı:/gi, "Inschrift & Bedeutung:"],
-    [/Taş Üzerindeki Kazıma Yazı ve Anlamı:/gi, "Gravierte Inschrift & Bedeutung:"],
-    [/Taş Üzerindeki Oyma Yazı ve Anlamı:/gi, "Geschnittene Inschrift & Bedeutung:"],
-    [/Gramı:/gi, "Gewicht:"],
-    [/Grami:/gi, "Gewicht:"],
-    [/Gram/gi, "Gewicht:"],
-    [/Taş Türü:/gi, "Edelstein-Typ:"],
-    [/Tas Turu:/gi, "Edelstein-Typ:"],
-    [/Cinsiyet:\s*Unisex/gi, "Geschlecht: Unisex"],
-    [/Cinsiyet:/gi, "Geschlecht:"],
-    [/El İşçiliği:\s*Evet/gi, "Handarbeit: Ja"],
-    [/El İşçiliği:/gi, "Handarbeit:"],
-    [/Kargo:/gi, "Versand:"],
-
-    // 4. Sacred titles & terms
-    [/Hz\. Süleyman Mührü şerifi/gi, "Heiliges Siegel des Propheten Salomo"],
-    [/Hz\. Süleyman Mührü Şerifi/gi, "Heiliges Siegel des Propheten Salomo"],
-    [/Hz\. Süleyman Mührü/gi, "Siegel des Propheten Salomo"],
-    [/Hz\. Süleyman Mühür/gi, "Siegel des Propheten Salomo"],
-    [/Hz\. Süleyman/gi, "Prophet Salomo"],
-    [/Mührü şerifi/gi, "Heiliges Siegel"],
-    [/Mührü Şerifi/gi, "Heiliges Siegel"],
-    [/Mührü/gi, "Siegel"],
-    [/şerifi/gi, "Heilig"],
-    [/Şerifi/gi, "Heilig"],
-    [/Salavatı Şerife Oyması yapılmış/gi, "Handgraviert mit Salawat Al-Sharif"],
-    [/Salavatı Şerife/gi, "Salawat Al-Sharif"],
-
-    // 5. Gemstones & Materials
-    [/Orjinal Horasan Akik Taşlı/gi, "Echter Chorasan Achat"],
-    [/Orjinal Horasan Akik/gi, "Echter Chorasan Achat"],
-    [/Horasan Akik Taşlı/gi, "Chorasan Achat"],
-    [/Horasan Akik/gi, "Chorasan Achat"],
-    [/Horasan ve Yemen Akik Taşlı/gi, "Chorasan & Jemen Achat"],
-    [/Horasan/gi, "Chorasan"],
-    [/Yemen Akik/gi, "Jemen Achat"],
-
-    [/Casper Taşının Üzerine/gi, "auf Casper Edelstein"],
-    [/Casper Taşının/gi, "Casper Edelstein"],
-    [/Casper Taşlı/gi, "Casper Edelstein"],
-    [/Casper Taşı/gi, "Casper Edelstein"],
-
-    [/Hematit Taşı üzerine/gi, "auf Hämatit Edelstein"],
-    [/Hematit Taşına/gi, "auf Hämatit Edelstein"],
-    [/Hematit Taşında/gi, "auf Hämatit Edelstein"],
-    [/Hematit Taşlı/gi, "mit Hämatit Edelstein"],
-    [/Hematit Taşı/gi, "Hämatit Edelstein"],
-    [/Hematit/gi, "Hämatit"],
-
-    [/Akik Taşının Üzerine/gi, "auf Achat Edelstein"],
-    [/Akik Taşının üzerine/gi, "auf Achat Edelstein"],
-    [/Akik Taşında/gi, "auf Achat Edelstein"],
-    [/Akik Taşına/gi, "auf Achat Edelstein"],
-    [/Akik Taşlı/gi, "mit Achat Edelstein"],
-    [/Akik Taşı/gi, "Achat Edelstein"],
-    [/Akik/gi, "Achat"],
-
-    [/Siyah Onix Taşında/gi, "auf Schwarzem Onyx Edelstein"],
-    [/Onix Taşının Üzerine/gi, "auf Schwarzem Onyx Edelstein"],
-    [/Onix Taşında/gi, "auf Onyx Edelstein"],
-    [/Onix Taşına/gi, "auf Onyx Edelstein"],
-    [/Onix Taşlı/gi, "mit Onyx Edelstein"],
-    [/Onix Taşı/gi, "Onyx Edelstein"],
-    [/Onyx Taşı/gi, "Onyx Edelstein"],
-    [/Onix/gi, "Onyx"],
-    [/Onyx/gi, "Onyx"],
-
-    [/Sarı Akik üzerine/gi, "auf Gelbem Achat"],
-    [/Kırmızı Akik üzerine/gi, "auf Rotem Achat"],
-    [/Sarı Akik/gi, "Gelber Achat"],
-    [/Kırmızı Akik/gi, "Roter Achat"],
-    [/Sarı/gi, "Gelb"],
-    [/Kırmızı/gi, "Rot"],
-    [/Siyah/gi, "Schwarz"],
-
-    // 6. Generic prepositions & single words (MUST COME LAST)
-    [/Taş üzerine yazılmış/gi, "auf Stein graviert"],
-    [/Taş üzerine/gi, "auf Stein"],
-    [/Taşın üzerine/gi, "auf dem Stein"],
-    [/Taşın üzerindeki/gi, "auf dem Stein"],
-    [/Taşın/gi, "des Steins"],
-    [/Taş/gi, "Stein"],
-    [/Taşı/gi, "Edelstein"],
-    [/üzerine/gi, "auf"],
-    [/üzerinde/gi, "auf"],
-    [/üzerindeki/gi, "auf dem"],
-    [/kazıma yapılmış/gi, "Handgraviert"],
-    [/kazıma yapılmıştır/gi, "Handgraviert"],
-    [/kazıma/gi, "Gravur"],
-    [/Kazınmıştır/gi, "Handgraviert"],
-    [/İşlenmiştir/gi, "Handgefertigt"],
-    [/işlenmiştir/gi, "handgefertigt"],
-    [/El Yapımı/gi, "Handgefertigt"],
-    [/El yapımı/gi, "Handgefertigt"],
-    [/el yapımı/gi, "handgefertigt"],
-    [/El İşi/gi, "Handarbeit"],
-    [/El işi/gi, "Handarbeit"],
-    [/el işi/gi, "handarbeit"],
-    [/El Oyması/gi, "Handgravur"],
-    [/El oyması/gi, "Handgravur"],
-    [/el oyması/gi, "handgravur"],
-    [/oyması yapılmış/gi, "geschnitten"],
-    [/oyması/gi, "Gravur"],
-    [/Orjinal/gi, "Echter Natürlicher"],
-    [/Orijinal/gi, "Echter Natürlicher"],
-    [/orjinal/gi, "echter natürlicher"],
-    [/Gösterişli/gi, "Prachtvoll"],
-
-    // Product Types
-    [/Kadın Kolye/gi, "Damenhalskette"],
-    [/Bayan Kolye/gi, "Damenhalskette"],
-    [/Gümüş Kolye/gi, "Silberkette"],
-    [/Kolye/gi, "Halskette"],
-    [/Gümüş Yüzük/gi, "Silberring"],
-    [/Gümüş Ring/gi, "Silberring"],
-    [/Erkek Yüzüğü/gi, "Herrenring"],
-    [/Erkek Yüzük/gi, "Herrenring"],
-    [/Yüzük/gi, "Ring"],
-    [/Yüzüğü/gi, "Ring"],
-    [/Gümüş/gi, "Silber"],
-  ],
-  ar: [
-    // 1. Whole sentence blocks & story paragraphs
-    [/Bu yüzük, Veysel Usta tarafından tamamen el işçiliğiyle üretilmiş özel bir tasarımdır\./gi, "هذا الخاتم تصميم خاص مصنوع يدويًا بالكامل بواسطة المعلم فيصل."],
-    [/Bu yüzük, tamamen el emeği ile tarafımdan hazırlanmış özel bir çalışmadır\./gi, "هذا الخاتم عمل خاص مصنوع يدويًا بالكامل من قبلي."],
-    [/yüzüğün ana kasası sekizgen formda hazırlanmış,/gi, "الهيكل الرئيسي للخاتم مصمم على شكل ثماني الأضلاع،"],
-    [/yüzüğün ana kasası sekizgen formda tasarlanmış,/gi, "الهيكل الرئيسي للخاتم مصمم على شكل ثماني الأضلاع،"],
-    [/yüzüğün taşı tamamen el yapımıdır ve usta tarafından işlenmiştir\./gi, "حجر الخاتم مصنوع يدويًا بالكامل وتم نقشه بدقة بواسطة المعلم."],
-    [/yüzüğün taşı tamamen el yapımıdır/gi, "حجر الخاتم مصنوع يدويًا بالكامل"],
-    [/üzerine yerleştirilen Horasan Akik Taşının yüzeyine büyük bir özenle Ayet-el Kürsî işlenmiştir\./gi, "ومنقوش على حجر العقيق آية الكرسي المباركة بدقة عالية."],
-    [/üzerine yerleştirilen Akik Taşının yüzeyine büyük bir özenle Ayet-el Kürsî işlenmiştir\./gi, "ومنقوش على حجر العقيق آية الكرسي المباركة بدقة عالية."],
-    [/üzerine yerleştirilen Horasan Akik Taşının özenle Ayet-el Kürsî işlenmiştir\./gi, "مع نقش آية الكرسي المباركة على حجر العقيق بدقة."],
-    [/üzerine yerleştirilen Akik Taşının özenle Ayet-el Kürsî işlenmiştir\./gi, "مع نقش آية الكرسي المباركة على حجر العقيق بدقة."],
-    [/Taş üzerindeki yazı kısmı, parlak ve dayanıklı bir görünüm kazandırmak için altın kaplama ile tamamlanmıştır\./gi, "النقش الموجود على الحجر مطلي بالذهب لإعطائه مظهرًا براقًا يدوم طويلاً."],
-    [/Taş üzerindeki yazı kısmı altın kaplama ile tamamlanarak hem manevi hem estetik bir derinlik kazandırılmıştır\./gi, "تم إنهاء جزء النقش بطلاء الذهب لمنحه عمقًا روحيًا وجماليًا."],
-    [/yüzüğün yan kısımları geleneksel el kalemi işçiliğiyle bezenmiş,/gi, "جوانب الخاتم مزخرفة بنقش يدوي تقليدي،"],
-    [/bütünsel bir estetik ve zarafet sunmaktadır\./gi, "مما يقدم جمالية وأناقة متكاملة."],
-    [/Bursa Ulu Camii’nde bulunan Şems Suresi hat yazısından esinlenerek hazırlanmıştır\./gi, "مستوحى من خط سورة الشمس الموجود في جامع بورصة الكبير."],
-    [/Taşın üzerinde, “Güneşe ve onun aydınlığına andolsun” ayeti zarif bir hat formunda yer alır\./gi, "منقوش على الحجر آية 'والشمس وضحاها' بخط عربي أنيق."],
-    [/Surah Al-Mu'min 44 \(وَاُفَوِّضُ اَمْر۪ٓي اِلَى اللّٰهِۜ\)/gi, "سورة غافر الآية 44 (وَأُفَوِّضُ أَمْرِي إِلَى اللَّهِ)"],
-    [/Anlamı: “İşimi tamamen Allah’a teslim ediyorum” \./gi, "المعنى: 'وأفوض أمري إلى الله إن الله بصير بالعباد'."],
-    [/Ve ma huve illa zikrun lil alemin \(وَمَا هُوَ اِلَّا ذِكْرٌ لِلْعَالَم۪ينَ\)/gi, "سورة القلم الآية 51 (آية الوقاية من العين)"],
-    [/Bu ayet, nazardan korunmak için özel olarak seçilmiştir\./gi, "تم اختيار هذه الآية المباركة خصيصًا للحماية من العين والحسد."],
-    [/Al-Musawwir \(Allah’ın isimlerinden biri\)/gi, "المصور (من أسماء الله الحسنى)"],
-    [/Fatih Sultan Mehmet Hanın Mührü/gi, "خاتم السلطان محمد الفاتح"],
-    [/Fatih Sultan Mehmet Hanın/gi, "السلطان محمد الفاتح"],
-    [/Yuva ve alt kısımları Tılsım Ayetleri ile doldurulmuş/gi, "مزخرف بآيات الحفظ والبركة على الجوانب والقاعدة"],
-    [/Mağazamız Mütaz Koru Sk\. Çetin Kaya iş Merkezi, Kat: 2 Kapı No: 205 Meram\/Konya/gi, "متجرنا: شارع ممتاز كور و, مركز جتين كايا للأعمال, الطابق 2 رقم 205 مرام/قونية"],
-    [/Allah Teâlâ, bütün kâinatın tek sâhibi ve mâlikidir, anlamını taşır\./gi, "ومعناها: الله تعالى هو المالك والمالك الوحيد للكون بأكمله."],
-    [/İnşirâh Sûresi 6\. Ayeti Muhakkak güçlükle bir beraber kolaylık vardır\./gi, "سورة الشرح الآية 6: 'إن مع العسر يسراً'."],
-    [/Sipariş verdikten sonra bizimle iletişime geçip Kaligrafi yapılacak ismi bize bildirin\./gi, "بعد التوصية والطلب، تواصل معنا لتحديد الاسم المراد نقشه بالخط العربي."],
-    [/Sipariş verdikten sonra bizimle iletişime geçip/gi, "بعد الطلب، تواصل معنا"],
-    [/yüzüğü aldıktan sonra bizimle iletişime geçip/gi, "بعد شراء الخاتم، تواصل معنا"],
-    [/Kaligrafi Moody yazmaktadır, Kişiye Özel yapılmıştır\./gi, "نقش بالخط العربي باسم 'Moody'، طلب خاص حسب الطلب."],
-    [/Kişiye Özel yapılmıştır\./gi, "مصنوع حسب الطلب."],
-    [/Kişiye Özel/gi, "حسب الطلب"],
-
-    // 2. Shipping & Contact Boilerplates
-    [/Gönderim Süresi:\s*1\s*-\s*3\s*is\s*günü/gi, "مدة الشحن: 1 - 3 أيام عمل"],
-    [/Gönderim Süresi:\s*1\s*-\s*3\s*iş\s*günü/gi, "مدة الشحن: 1 - 3 أيام عمل"],
-    [/is günü/gi, "أيام عمل"],
-    [/iş günü/gi, "أيام عمل"],
-    [/Ücretsiz Kargo/gi, "شحن مجاني"],
-    [/Kargo:\s*Ücretsiz/gi, "الشحن: مجاني"],
-    [/Yurtdışına Gönderimimiz mevcuttur\.?/gi, "الشحن الدولي السريع متوفر."],
-    [/Yurdışına Gönderimimiz mevcuttur\.?/gi, "الشحن الدولي السريع متوفر."],
-    [/Yurdışına Gönderimimiz mevcu/gi, "الشحن الدولي السريع متوفر."],
-
-    [/Kolye Taşı ve Türü Kişiselleştirilebilirdir,?\s*Bizimle İletişime geçiniz\.?/gi, "يمكن تخصيص نوع الحجر والمعدن، تواصل معنا."],
-    [/Yüzüğün Taşı ve Türü Kişiselleştirilebilirdir,?\s*Bizimle İletişime geçiniz\.?/gi, "يمكن تخصيص نوع الحجر والمعدن، تواصل معنا."],
-    [/Farklı oymalar kişiye özel olarak da yapılabilir;?\s*bizimle iletişime geçebilirsiniz\.?/gi, "يمكن تنفيذ نقوش خاصة حسب الطلب، تواصل معنا."],
-    [/Bizimle İletişime geçiniz/gi, "تواصل معنا"],
-    [/bizimle iletişime geçebilirsiniz/gi, "تواصل معنا"],
-    [/Web Sayfamızı Ziyaret Etmeyi Unutmayın!/gi, "لا تنسَ زيارة موقعنا الرسمي!"],
-
-    // 3. Product Features & Attributes
-    [/Veysel Usta imzalı bu özel koleksiyon yüzük/gi, "هذا الخاتم الفريد من مجموعة المعلم فيصل الخاصة"],
-    [/Veysel Usta imzalı bu özel koleksiyon kolye/gi, "هذه القلادة الفريدة من مجموعة المعلم فيصل الخاصة"],
-    [/Veysel Usta imzalı bu özel koleksiyon/gi, "هذه القطعة الفريدة من مجموعة المعلم فيصل الخاصة"],
-    [/925 Ayar Özel İşçilikli Gümüş Erkek Yüzüğü/gi, "خاتم فضة رجالي عيار 925 بصناعة خاصة"],
-    [/925 Ayar Özel İşcilikli Gümüş Erkek Yüzüğü/gi, "خاتم فضة رجالي عيار 925 بصناعة خاصة"],
-    [/925 Ayar Gümüş Özel İşcilikli Erkek Yüzüğü/gi, "خاتم فضة رجالي عيار 925 بصناعة خاصة"],
-    [/925 Ayar Gümüş Özel İşçilikli Erkek Yüzüğü/gi, "خاتم فضة رجالي عيار 925 بصناعة خاصة"],
-    [/925 Ayar Özel İşcilikli Gümüş Erkek Yüzük/gi, "خاتم فضة رجالي عيار 925 بصناعة خاصة"],
-    [/925 Ayar Özel İşcilikli Eşsiz Erkek Yüzüğü/gi, "خاتم فضة رجالي فريد عيار 925 بصناعة خاصة"],
-    [/925 Ayar Gümüş Erkek Yüzüğü/gi, "خاتم فضة رجالي عيار 925"],
-    [/925 Ayar Gümüş Erkek Yüzük/gi, "خاتم فضة رجالي عيار 925"],
-    [/925 ayar saf gümüşten üretilmiştir/gi, "مصنوع من الفضة النقية عيار 925"],
-    [/Malzeme:\s*%?925\s*Kaliteli Gümüştür/gi, "المعدن: فضة عيار 925 عالية الجودة"],
-    [/Malzeme:\s*%?925\s*Kaliteli Gümüş/gi, "المعدن: فضة عيار 925 عالية الجودة"],
-    [/925 ayar Gümüştür/gi, "فضة عيار 925"],
-    [/925 Ayar Gümüş/gi, "فضة عيار 925"],
-    [/925 ayar gümüş/gi, "فضة عيار 925"],
-
-    [/Erkeğe alınacak en değerli Hediye/gi, "أغلى هدية يمكن تقديمها للرجل"],
-    [/En Değerli Hediye/gi, "أغلى هدية"],
-    [/Arapça Hat Sanatı ile kazıma yapılmış/gi, "منقوش يدويًا بالخط العربي"],
-    [/Arapca Hat Sanatı ile kazıma yapılmış/gi, "منقوش يدويًا بالخط العربي"],
-    [/Arapça Hat Sanatı ile/gi, "بالخط العربي"],
-    [/Arapca Hat Sanatı ile/gi, "بالخط العربي"],
-    [/sülüs hat ile/gi, "بخط الثلث العربي"],
-    [/Kûfi hat sanatıyla/gi, "بخط الكوفي"],
-    [/Kûfi Sanatlı/gi, "بالخط الكوفي"],
-    [/Manevi Tılsımı çok yüksektir\.?/gi, "ذو قيمة روحية وبركة عالية جدًا."],
-    [/Nazardan Koruma/gi, "حماية من العين والحسد"],
-    [/Nazardan korunmak için/gi, "للحماية من العين والحسد"],
-    [/Sekizgen formda hazırlanmış/gi, "مصمم على شكل ثماني الأضلاع"],
-    [/sekizgen formda tasarlanmış/gi, "مصمم على شكل ثماني الأضلاع"],
-    [/Usta İmzalı Koleksiyon Parçası/gi, "قطعة من المجموعة الخاصة بتوقيع المعلم"],
-    [/Özel Sipariş olarak üretilmiştir,?\s*müşterimize hayırlı olsun/gi, "طلب خاص مصنوع حسب الطلب، نتمنى الخير لعميلنا العزيز."],
-    [/Sarı Altın kaplama/gi, "مطلي بالذهب الأصفر"],
-    [/Sarı Kaplama yapılmıştır/gi, "مطلي بالذهب الأصفر"],
-    [/altın kaplama ile tamamlanarak/gi, "مع لمسة طلاء ذهبية"],
-    [/altın kaplama ile/gi, "مطلي بالذهب"],
-
-    [/Ürün Detayları:/gi, "تفاصيل المنتج:"],
-    [/Taş üzerindeki yazı:/gi, "النقش على الحجر:"],
-    [/Taş üzerindeki kazıma yazı ve anlamı:/gi, "النقش والمعنى:"],
-    [/Taş üzerindeki oyma yazı ve anlamı:/gi, "النقش والمعنى:"],
-    [/Üzerindeki Yazı ve Anlamı:/gi, "النقش والمعنى:"],
-    [/Taş Üzerindeki Kazıma Yazı ve Anlamı:/gi, "النقش والمعنى:"],
-    [/Taş Üzerindeki Oyma Yazı ve Anlamı:/gi, "النقش والمعنى:"],
-    [/Gramı:/gi, "الوزن:"],
-    [/Grami:/gi, "الوزن:"],
-    [/Gram/gi, "الوزن:"],
-    [/Taş Türü:/gi, "نوع الحجر:"],
-    [/Tas Turu:/gi, "نوع الحجر:"],
-    [/Cinsiyet:\s*Unisex/gi, "الجنس: للجنسين"],
-    [/Cinsiyet:/gi, "الجنس:"],
-    [/El İşçiliği:\s*Evet/gi, "صناعة يدوية: نعم"],
-    [/El İşçiliği:/gi, "صناعة يدوية:"],
-    [/Kargo:/gi, "الشحن:"],
-
-    // 4. Sacred titles & terms
-    [/Hz\. Süleyman Mührü şerifi/gi, "خاتم النبي سليمان عليه السلام الشريف"],
-    [/Hz\. Süleyman Mührü Şerifi/gi, "خاتم النبي سليمان عليه السلام الشريف"],
-    [/Hz\. Süleyman Mührü/gi, "خاتم النبي سليمان عليه السلام"],
-    [/Hz\. Süleyman Mühür/gi, "خاتم النبي سليمان عليه السلام"],
-    [/Hz\. Süleyman/gi, "النبي سليمان عليه السلام"],
-    [/Mührü şerifi/gi, "الخاتم الشريف"],
-    [/Mührü Şerifi/gi, "الخاتم الشريف"],
-    [/Mührü/gi, "الخاتم"],
-    [/şerifi/gi, "الشريف"],
-    [/Şerifi/gi, "الشريف"],
-    [/Salavatı Şerife Oyması yapılmış/gi, "منقوش بالصلوات الشريفة"],
-    [/Salavatı Şerife/gi, "الصلوات الشريفة"],
-
-    // 5. Gemstones & Materials
-    [/Orjinal Horasan Akik Taşlı/gi, "عقيق خراسان الطبيعي"],
-    [/Orjinal Horasan Akik/gi, "عقيق خراسان الطبيعي"],
-    [/Horasan Akik Taşlı/gi, "حجر عقيق خراسان"],
-    [/Horasan Akik/gi, "عقيق خراسان"],
-    [/Horasan ve Yemen Akik Taşlı/gi, "عقيق خراسان ويمني"],
-    [/Horasan/gi, "خراسان"],
-    [/Yemen Akik/gi, "عقيق يمني"],
-
-    [/Casper Taşının Üzerine/gi, "على حجر كاسبر"],
-    [/Casper Taşının/gi, "حجر كاسبر"],
-    [/Casper Taşlı/gi, "حجر كاسبر"],
-    [/Casper Taşı/gi, "حجر كاسبر"],
-
-    [/Hematit Taşı üzerine/gi, "على حجر الهيماتيت"],
-    [/Hematit Taşına/gi, "على حجر الهيماتيت"],
-    [/Hematit Taşında/gi, "على حجر الهيماتيت"],
-    [/Hematit Taşlı/gi, "بحجر الهيماتيت"],
-    [/Hematit Taşı/gi, "حجر الهيماتيت"],
-    [/Hematit/gi, "هيماتيت"],
-
-    [/Akik Taşının Üzerine/gi, "على حجر العقيق"],
-    [/Akik Taşının üzerine/gi, "على حجر العقيق"],
-    [/Akik Taşında/gi, "على حجر العقيق"],
-    [/Akik Taşına/gi, "على حجر العقيق"],
-    [/Akik Taşlı/gi, "بحجر العقيق"],
-    [/Akik Taşı/gi, "حجر العقيق"],
-    [/Akik/gi, "عقيق"],
-
-    [/Siyah Onix Taşında/gi, "على حجر الأونيكس الأسود"],
-    [/Onix Taşının Üzerine/gi, "على حجر الأونيكس الأسود"],
-    [/Onix Taşında/gi, "على حجر الأونيكس"],
-    [/Onix Taşına/gi, "على حجر الأونيكس"],
-    [/Onix Taşlı/gi, "بحجر الأونيكس"],
-    [/Onix Taşı/gi, "حجر الأونيكس"],
-    [/Onyx Taşı/gi, "حجر الأونيكس"],
-    [/Onix/gi, "أونيكس"],
-    [/Onyx/gi, "أونيكس"],
-
-    [/Sarı Akik üzerine/gi, "على العقيق الأصفر"],
-    [/Kırmızı Akik üzerine/gi, "على العقيق الأحمر"],
-    [/Sarı Akik/gi, "عقيق أصفر"],
-    [/Kırmızı Akik/gi, "عقيق أحمر"],
-    [/Sarı/gi, "أصفر"],
-    [/Kırmızı/gi, "أحمـر"],
-    [/Siyah/gi, "أسود"],
-
-    // 6. Generic prepositions & single words (MUST COME LAST)
-    [/Taş üzerine yazılmış/gi, "منقوش على الحجر"],
-    [/Taş üzerine/gi, "على الحجر"],
-    [/Taşın üzerine/gi, "على الحجر"],
-    [/Taşın üzerindeki/gi, "على الحجر"],
-    [/Taşın/gi, "الحجر"],
-    [/Taş/gi, "حجر"],
-    [/Taşı/gi, "حجر"],
-    [/üzerine/gi, "على"],
-    [/üzerinde/gi, "على"],
-    [/üzerindeki/gi, "على"],
-    [/kazıma yapılmış/gi, "منقوش يدويًا"],
-    [/kazıma yapılmıştır/gi, "منقوش يدويًا"],
-    [/kazıma/gi, "نقش"],
-    [/Kazınmıştır/gi, "منقوش"],
-    [/İşlenmiştir/gi, "مصنوع"],
-    [/işlenmiştir/gi, "مصنوع"],
-    [/El Yapımı/gi, "صناعة يدوية"],
-    [/El yapımı/gi, "صناعة يدوية"],
-    [/el yapımı/gi, "صناعة يدوية"],
-    [/El İşi/gi, "عمل يدوي"],
-    [/El işi/gi, "عمل يدوي"],
-    [/el işi/gi, "عمل يدوي"],
-    [/El Oyması/gi, "نقش يدوي"],
-    [/El oyması/gi, "نقش يدوي"],
-    [/el oyması/gi, "نقش يدوي"],
-    [/oyması yapılmış/gi, "منقوش"],
-    [/oyması/gi, "نقش"],
-    [/Orjinal/gi, "طبيعي أصلي"],
-    [/Orijinal/gi, "طبيعي أصلي"],
-    [/orjinal/gi, "طبيعي أصلي"],
-    [/Gösterişli/gi, "فاخر"],
-
-    // Product Types
-    [/Kadın Kolye/gi, "قلادة نسائية"],
-    [/Bayan Kolye/gi, "قلادة نسائية"],
-    [/Gümüş Kolye/gi, "قلادة فضية"],
-    [/Kolye/gi, "قلادة"],
-    [/Gümüş Yüzük/gi, "خاتم فضة"],
-    [/Gümüş Ring/gi, "خاتم فضة"],
-    [/Erkek Yüzüğü/gi, "خاتم رجالي"],
-    [/Erkek Yüzük/gi, "خاتم رجالي"],
-    [/Yüzük/gi, "خاتم"],
-    [/Yüzüğü/gi, "خاتم"],
-    [/Gümüş/gi, "فضة"],
-  ]
-};
-
-// Helper function to clean redundant website self-promos and invalid unicode characters
+// Strip shop self-promotion links and stray replacement characters from imported text
 const cleanProductText = (text: string): string => {
   return (text || "")
     .normalize("NFC")
     .replace(/[•\s]*Web Sayfamızı Ziyaret Etmeyi Unutmayın!?:?\s*(https?:\/\/[^\s]+)?/gi, "")
-    .replace(/[•\s]*Don't forget to visit our official website!?:?\s*(https?:\/\/[^\s]+)?/gi, "")
-    .replace(/[•\s]*¡No olvide visitar nuestro sitio web oficial!?:?\s*(https?:\/\/[^\s]+)?/gi, "")
-    .replace(/[•\s]*Besuchen Sie unsere offizielle Website!?:?\s*(https?:\/\/[^\s]+)?/gi, "")
-    .replace(/[•\s]*لا تنسَ زيارة موقعنا الرسمي!?:?\s*(https?:\/\/[^\s]+)?/gi, "")
     .replace(/https?:\/\/(www\.)?veyselustam\.com[^\s]*/gi, "")
-    .replace(/[\uFFFD\uFDFF]/g, "")
+    .replace(/[�﷿]/g, "")
     .replace(/[•\s]+$/g, "")
     .trim();
 };
 
-// Helper function to translate a product's category, title and description based on current language
+const normalizeForCompare = (text: string) => cleanProductText(text).replace(/\s+/g, " ").toLocaleLowerCase("tr");
+
+/** Fingerprint of the Turkish source text; stored with machine translations to detect edits. */
+export const translationSourceKey = (title: string, description: string) => {
+  const text = `${normalizeForCompare(title)}\n${normalizeForCompare(description)}`;
+  let hash = 5381;
+  for (let i = 0; i < text.length; i++) hash = ((hash << 5) + hash + text.charCodeAt(i)) | 0;
+  return `v1-${(hash >>> 0).toString(36)}-${text.length}`;
+};
+
+const SEED_TITLES = new Map(
+  INITIAL_VEYSELUSTAM_PRODUCTS.map((p) => [p.id, normalizeForCompare(p.title)] as const)
+);
+
+export const translateCategory = (category: string, lang: Language) => {
+  const clean = cleanProductText(category);
+  return CATEGORY_TRANSLATIONS[clean]?.[lang] || clean;
+};
+
+/**
+ * Title and description in the requested language. Sources, in order:
+ * 1. The hand-written catalogue text, while the product still has its original title.
+ * 2. Translations saved with the product, if they were made from its current Turkish text.
+ * 3. The Turkish text unchanged — never a half-translated mix.
+ */
 export function translateProduct(product: Product, lang: Language): Product {
-  // Normalize Unicode to NFC form to guarantee single character accents match regexes
-  const normalizedCategory = cleanProductText(product.category || "");
-  const baseTitle = cleanProductText(product.title || "");
-  const baseDesc = cleanProductText(product.description || "");
-  
-  // Translate category
-  let translatedCategory = normalizedCategory;
-  if (lang !== "tr" && CATEGORY_TRANSLATIONS[normalizedCategory]?.[lang]) {
-    translatedCategory = CATEGORY_TRANSLATIONS[normalizedCategory][lang];
+  const category = translateCategory(product.category || "", lang);
+
+  if (product.id && SEED_TITLES.get(product.id) === normalizeForCompare(product.title)) {
+    const catalog = getCatalogContent(product.id, lang);
+    if (catalog) return { ...product, category, ...catalog };
   }
 
-  if (lang === "tr") {
-    return {
-      ...product,
-      category: translatedCategory,
-      title: baseTitle,
-      description: baseDesc,
-    };
+  const baseTitle = cleanProductText(product.title);
+  const baseDesc = cleanProductText(product.description);
+
+  if (lang !== "tr") {
+    const storedTitle = product[`title_${lang}` as keyof Product] as string | undefined;
+    const storedDesc = product[`description_${lang}` as keyof Product] as string | undefined;
+    const fresh = product.i18nSource && product.i18nSource === translationSourceKey(product.title, product.description);
+    if (fresh && storedTitle) {
+      return {
+        ...product,
+        category,
+        title: cleanProductText(storedTitle),
+        description: cleanProductText(storedDesc || baseDesc),
+      };
+    }
   }
 
-  // 1. Check if DB fields exist for this language
-  const dbTitle = (product as any)[`title_${lang}`];
-  const dbDesc = (product as any)[`description_${lang}`];
-
-  if (dbTitle || dbDesc) {
-    return {
-      ...product,
-      category: translatedCategory,
-      title: cleanProductText(dbTitle || baseTitle),
-      description: cleanProductText(dbDesc || baseDesc),
-    };
-  }
-
-  // 2. Check if explicit custom translation exists
-  if (product.id && SPECIFIC_PRODUCT_TRANSLATIONS[product.id]?.[lang]) {
-    const custom = SPECIFIC_PRODUCT_TRANSLATIONS[product.id][lang];
-    return {
-      ...product,
-      category: translatedCategory,
-      title: cleanProductText(custom.title || baseTitle),
-      description: cleanProductText(custom.description || baseDesc),
-    };
-  }
-
-  // 2. Dynamic regex term replacement for titles and descriptions
-  let translatedTitle = baseTitle;
-  let translatedDesc = baseDesc;
-
-  const replacements = TERM_DICTIONARY[lang] || [];
-  for (const [regex, replacement] of replacements) {
-    translatedTitle = translatedTitle.replace(regex, replacement);
-    translatedDesc = translatedDesc.replace(regex, replacement);
-  }
-
-  // Post-processing cleanup for any remaining isolated Turkish suffixes or grammatical joiners
-  if (lang === "ar") {
-    translatedTitle = translatedTitle
-      .replace(/\bna\b/g, "")
-      .replace(/\bnda\b/g, "")
-      .replace(/\bine\b/g, "")
-      .replace(/\bnn\b/g, "");
-    translatedDesc = translatedDesc
-      .replace(/\bna\b/g, "")
-      .replace(/\bnda\b/g, "")
-      .replace(/\bine\b/g, "")
-      .replace(/\bnn\b/g, "");
-  }
-
-  return {
-    ...product,
-    category: translatedCategory,
-    title: cleanProductText(translatedTitle),
-    description: cleanProductText(translatedDesc),
-  };
+  return { ...product, category, title: baseTitle, description: baseDesc };
 }

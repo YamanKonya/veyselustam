@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Product } from "@/types";
 import { createProduct, updateProduct, uploadFileToStorage } from "@/services/productService";
+import { translationSourceKey } from "@/i18n/productTranslations";
 import { 
   X, 
   Upload, 
@@ -79,6 +80,10 @@ export default function ProductFormModal({
   const [isActive, setIsActive] = useState<boolean>(true);
 
   const [showTranslations, setShowTranslations] = useState(false);
+  // Fingerprint of the Turkish text the translation fields were made from
+  const [i18nSource, setI18nSource] = useState<string | undefined>(undefined);
+  const [translating, setTranslating] = useState(false);
+  const [translateFailed, setTranslateFailed] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -96,6 +101,7 @@ export default function ProductFormModal({
       setDescriptionEs(productToEdit.description_es || "");
       setDescriptionDe(productToEdit.description_de || "");
       setDescriptionAr(productToEdit.description_ar || "");
+      setI18nSource(productToEdit.i18nSource);
       setPrice(productToEdit.price || 0);
       setOriginalPrice(productToEdit.originalPrice || "");
       setDiscountPercent(productToEdit.discountPercent || "");
@@ -136,6 +142,8 @@ export default function ProductFormModal({
     setDescriptionEs("");
     setDescriptionDe("");
     setDescriptionAr("");
+    setI18nSource(undefined);
+    setTranslateFailed(false);
     setPrice("");
     setOriginalPrice("");
     setDiscountPercent("");
@@ -222,6 +230,57 @@ export default function ProductFormModal({
     }
   };
 
+  type Translations = Record<"en" | "es" | "de" | "ar", { title: string; description: string }>;
+
+  const fetchTranslations = async (): Promise<Translations> => {
+    const res = await fetch("/api/translate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ texts: [title.trim(), description.trim()] }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || "Çeviri yapılamadı.");
+    const pick = (lang: keyof Translations) => ({
+      title: data.translations[lang][0] as string,
+      description: data.translations[lang][1] as string,
+    });
+    return { en: pick("en"), es: pick("es"), de: pick("de"), ar: pick("ar") };
+  };
+
+  const applyTranslations = (tr: Translations) => {
+    setTitleEn(tr.en.title); setDescriptionEn(tr.en.description);
+    setTitleEs(tr.es.title); setDescriptionEs(tr.es.description);
+    setTitleDe(tr.de.title); setDescriptionDe(tr.de.description);
+    setTitleAr(tr.ar.title); setDescriptionAr(tr.ar.description);
+    setI18nSource(translationSourceKey(title, description));
+  };
+
+  const handleAutoTranslate = async () => {
+    if (!title.trim()) {
+      setError("Çevirmeden önce Türkçe ürün adını girin.");
+      return;
+    }
+    setTranslating(true);
+    setError("");
+    try {
+      applyTranslations(await fetchTranslations());
+      setShowTranslations(true);
+      setTranslateFailed(false);
+    } catch (err: any) {
+      setError(err.message || "Çeviri yapılamadı.");
+    } finally {
+      setTranslating(false);
+    }
+  };
+
+  // A hand-edited translation counts as made from the current Turkish text
+  const editTranslation = (setter: (v: string) => void) => (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setter(e.target.value);
+    setI18nSource(translationSourceKey(title, description));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) {
@@ -244,19 +303,48 @@ export default function ProductFormModal({
         finalVideoUrl = await uploadFileToStorage(videoFile, "videos");
       }
 
+      // Translate when the Turkish text changed since the last translation (or never had one)
+      const sourceKey = translationSourceKey(title, description);
+      let tr = {
+        en: { title: title_en, description: description_en },
+        es: { title: title_es, description: description_es },
+        de: { title: title_de, description: description_de },
+        ar: { title: title_ar, description: description_ar },
+      };
+      let savedSource = i18nSource;
+      const stale = i18nSource !== sourceKey || !title_en.trim() || !title_ar.trim();
+      if (stale && !translateFailed) {
+        try {
+          tr = await fetchTranslations();
+          applyTranslations(tr);
+          savedSource = sourceKey;
+        } catch (err: any) {
+          setTranslateFailed(true);
+          setError(
+            (err.message || "Çeviri yapılamadı.") +
+              " Ürünü çevirisiz kaydetmek için tekrar kaydedin; diğer dillerde Türkçe metin gösterilir."
+          );
+          setLoading(false);
+          return;
+        }
+      } else if (stale) {
+        savedSource = undefined;
+      }
+
       const isCampaignActive = originalPrice !== "" && Number(originalPrice) > Number(price);
       const productData = {
         title: title.trim(),
-        title_en: title_en.trim() || undefined,
-        title_es: title_es.trim() || undefined,
-        title_de: title_de.trim() || undefined,
-        title_ar: title_ar.trim() || undefined,
+        title_en: tr.en.title.trim() || undefined,
+        title_es: tr.es.title.trim() || undefined,
+        title_de: tr.de.title.trim() || undefined,
+        title_ar: tr.ar.title.trim() || undefined,
 
         description: description.trim(),
-        description_en: description_en.trim() || undefined,
-        description_es: description_es.trim() || undefined,
-        description_de: description_de.trim() || undefined,
-        description_ar: description_ar.trim() || undefined,
+        description_en: tr.en.description.trim() || undefined,
+        description_es: tr.es.description.trim() || undefined,
+        description_de: tr.de.description.trim() || undefined,
+        description_ar: tr.ar.description.trim() || undefined,
+        i18nSource: savedSource,
         price: Number(price),
         originalPrice: originalPrice !== "" ? Number(originalPrice) : undefined,
         discountPercent: discountPercent !== "" ? Number(discountPercent) : undefined,
@@ -434,9 +522,26 @@ export default function ProductFormModal({
               onClick={() => setShowTranslations(!showTranslations)}
               className="w-full px-4 py-3 bg-slate-900/50 hover:bg-slate-800 flex items-center justify-between transition"
             >
-              <span className="text-sm font-bold text-amber-500">Çoklu Dil Çevirileri (Opsiyonel)</span>
+              <span className="text-sm font-bold text-amber-500">Çeviriler (İngilizce, Arapça, İspanyolca, Almanca)</span>
               <span className="text-xs text-slate-400">{showTranslations ? "Gizle ▲" : "Göster ▼"}</span>
             </button>
+            <div className="px-4 py-3 bg-slate-950 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+              <p className="text-[11px] text-slate-400 max-w-md">
+                Kaydettiğinizde Türkçe metin otomatik olarak 4 dile çevrilir. Türkçe metni değiştirirseniz çeviriler yeniden yapılır.
+                {i18nSource && i18nSource === translationSourceKey(title, description)
+                  ? " Çeviriler güncel."
+                  : " Çeviriler güncel değil; kayıtta yenilenecek."}
+              </p>
+              <button
+                type="button"
+                onClick={handleAutoTranslate}
+                disabled={translating}
+                className="px-3 py-2 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-lg flex items-center gap-1.5 disabled:opacity-60"
+              >
+                {translating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
+                Şimdi otomatik çevir
+              </button>
+            </div>
             {showTranslations && (
               <div className="p-4 bg-slate-950 space-y-6">
                 
@@ -446,14 +551,14 @@ export default function ProductFormModal({
                   <input
                     type="text"
                     value={title_en}
-                    onChange={(e) => setTitleEn(e.target.value)}
+                    onChange={editTranslation(setTitleEn)}
                     placeholder="English Title"
                     className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white"
                   />
                   <textarea
                     rows={2}
                     value={description_en}
-                    onChange={(e) => setDescriptionEn(e.target.value)}
+                    onChange={editTranslation(setDescriptionEn)}
                     placeholder="English Description"
                     className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white resize-none"
                   />
@@ -465,7 +570,7 @@ export default function ProductFormModal({
                   <input
                     type="text"
                     value={title_ar}
-                    onChange={(e) => setTitleAr(e.target.value)}
+                    onChange={editTranslation(setTitleAr)}
                     placeholder="Arabic Title"
                     dir="auto"
                     className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white"
@@ -473,7 +578,7 @@ export default function ProductFormModal({
                   <textarea
                     rows={2}
                     value={description_ar}
-                    onChange={(e) => setDescriptionAr(e.target.value)}
+                    onChange={editTranslation(setDescriptionAr)}
                     placeholder="Arabic Description"
                     dir="auto"
                     className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white resize-none"
@@ -486,14 +591,14 @@ export default function ProductFormModal({
                   <input
                     type="text"
                     value={title_es}
-                    onChange={(e) => setTitleEs(e.target.value)}
+                    onChange={editTranslation(setTitleEs)}
                     placeholder="Spanish Title"
                     className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white"
                   />
                   <textarea
                     rows={2}
                     value={description_es}
-                    onChange={(e) => setDescriptionEs(e.target.value)}
+                    onChange={editTranslation(setDescriptionEs)}
                     placeholder="Spanish Description"
                     className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white resize-none"
                   />
@@ -505,14 +610,14 @@ export default function ProductFormModal({
                   <input
                     type="text"
                     value={title_de}
-                    onChange={(e) => setTitleDe(e.target.value)}
+                    onChange={editTranslation(setTitleDe)}
                     placeholder="German Title"
                     className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white"
                   />
                   <textarea
                     rows={2}
                     value={description_de}
-                    onChange={(e) => setDescriptionDe(e.target.value)}
+                    onChange={editTranslation(setDescriptionDe)}
                     placeholder="German Description"
                     className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white resize-none"
                   />

@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,20 +6,76 @@
   html {
     scroll-behavior: smooth;
   }
-  
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   body {
-    font-family: 'Inter', sans-serif;
     @apply min-h-screen bg-slate-50 text-slate-900 antialiased;
   }
 
   ::selection {
-    @apply bg-amber-500/30 text-amber-900;
+    @apply bg-versace-gold-500/30 text-versace-green-900;
   }
 
-  img {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
+  :focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-versace-gold-500;
   }
+
+  /* Arabic: Arabic faces first (they only carry Arabic glyphs, so Latin text
+     still falls through to Inter / Cormorant), and no letter-spacing, which
+     breaks the joins between Arabic letters. */
+  html[lang="ar"] body,
+  html[lang="ar"] .font-sans {
+    font-family: var(--font-arabic-sans), var(--font-inter), sans-serif;
+  }
+  html[lang="ar"] .font-display,
+  html[lang="ar"] .font-serif {
+    font-family: var(--font-arabic-display), var(--font-display), serif;
+  }
+  html[lang="ar"] body * {
+    letter-spacing: normal !important;
+  }
+  html[lang="ar"] body {
+    line-height: 1.7;
+  }
+}
+
+/* ===== VİTRİN (product showcase) ===== */
+
+/* Green velvet case lit from above, like a jeweller's window */
+.showcase {
+  background:
+    radial-gradient(ellipse 70% 55% at 68% 0%, rgba(197, 160, 89, 0.16), transparent 70%),
+    radial-gradient(ellipse 90% 70% at 50% 120%, rgba(0, 0, 0, 0.45), transparent 70%),
+    #0c2417;
+}
+
+/* Thin gold bezel around the stage, inset so it reads as a frame, not a border */
+.showcase-frame {
+  box-shadow:
+    0 0 0 1px rgba(197, 160, 89, 0.55),
+    0 0 0 7px #0c2417,
+    0 0 0 8px rgba(197, 160, 89, 0.22),
+    0 40px 80px -30px rgba(0, 0, 0, 0.8);
+}
+
+.showcase-arrow {
+  @apply z-10 flex items-center justify-center w-11 h-11 rounded-full bg-versace-green-900 text-versace-gold-500 transition-colors;
+  box-shadow: 0 0 0 1px rgba(197, 160, 89, 0.5);
+}
+.showcase-arrow:hover {
+  @apply bg-versace-gold-500 text-versace-green-900;
+}
+
+.showcase-thumb {
+  box-shadow: 0 0 0 1px rgba(197, 160, 89, 0.25);
+}
+.showcase-thumb[aria-selected="true"] {
+  box-shadow: 0 0 0 1px rgba(197, 160, 89, 0.9);
 }
 
 @layer utilities {

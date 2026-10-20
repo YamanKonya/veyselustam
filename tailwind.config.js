@@ -10,7 +10,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', ...defaultTheme.fontFamily.sans],
+        sans: ['var(--font-inter)', 'Inter', ...defaultTheme.fontFamily.sans],
+        display: ['var(--font-display)', 'Cormorant Garamond', ...defaultTheme.fontFamily.serif],
+        serif: ['var(--font-display)', 'Cormorant Garamond', ...defaultTheme.fontFamily.serif],
       },
       colors: {
         brand: {
@@ -41,6 +43,14 @@ module.exports = {
         xs: '2px',
       },
       keyframes: {
+        placard: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'showcase-progress': {
+          '0%': { transform: 'scaleX(0)' },
+          '100%': { transform: 'scaleX(1)' },
+        },
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
@@ -105,6 +115,8 @@ module.exports = {
         },
       },
       animation: {
+        placard: 'placard 0.7s cubic-bezier(.2,.7,.2,1) both',
+        'showcase-progress': 'showcase-progress linear forwards',
         fadeIn: 'fadeIn 0.5s ease-out forwards',
         slideUp: 'slideUp 0.6s ease-out forwards',
         slideInRight: 'slideInRight 0.6s ease-out forwards',

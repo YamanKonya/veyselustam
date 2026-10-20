@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { imageAt } from "@/lib/image";
 import { useCartStore } from "@/store/useCartStore";
 import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
@@ -136,7 +137,7 @@ export default function CartDrawer() {
                         <div className="w-24 h-24 rounded-xl bg-slate-100 overflow-hidden flex-shrink-0 relative">
                           {hasImage ? (
                             <img
-                              src={product.images[0]}
+                              src={imageAt(product.images[0], 180)}
                               alt={product.title}
                               className="w-full h-full object-cover transition-transform group-hover:scale-105"
                             />

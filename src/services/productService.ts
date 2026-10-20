@@ -176,6 +176,12 @@ export const getProducts = async (): Promise<Product[]> => {
   return localProductsStore;
 };
 
+// Synchronous lookup in the local dataset, for rendering before Firestore answers
+export const getLocalProductById = (id: string): Product | null => {
+  localProductsStore = loadProductsFromStorage();
+  return localProductsStore.find((p) => p.id === id) || null;
+};
+
 // Fetch a single product by ID
 export const getProductById = async (id: string): Promise<Product | null> => {
   localProductsStore = loadProductsFromStorage();

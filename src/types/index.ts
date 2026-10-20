@@ -19,6 +19,8 @@ export interface Product {
   description_es?: string;
   description_de?: string;
   description_ar?: string;
+  /** translationSourceKey of the Turkish text the stored translations were made from */
+  i18nSource?: string;
   price: number;
   originalPrice?: number;
   discountPercent?: number;
