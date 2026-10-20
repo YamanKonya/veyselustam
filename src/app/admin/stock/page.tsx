@@ -1,10 +1,19 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Boxes, Plus, Minus, Trash2, AlertCircle, Loader2, Save } from "lucide-react";
+import { Boxes, Plus, Minus, Trash2, AlertCircle, Loader2, Save, FlaskConical, CheckCircle2 } from "lucide-react";
 import { Product, StockGroup } from "@/types";
 import { subscribeProducts } from "@/services/productService";
-import { useStockGroups, saveStockGroup, deleteStockGroup, slugifyGroupName } from "@/services/stockService";
+import {
+  useStockGroups,
+  saveStockGroup,
+  deleteStockGroup,
+  slugifyGroupName,
+  runSaleTest,
+  availableStock,
+  OutOfStockError,
+  SaleTestResult,
+} from "@/services/stockService";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 
 export default function AdminStockPage() {
@@ -16,6 +25,7 @@ export default function AdminStockPage() {
   const [busy, setBusy] = useState<string | null>(null);
   // Typed-in stock values not yet saved, per group
   const [drafts, setDrafts] = useState<Record<string, number | "">>({});
+  const [testResults, setTestResults] = useState<Record<string, SaleTestResult>>({});
 
   useEffect(() => {
     const unsubscribe = subscribeProducts((data) => data.length && setProducts(data));
@@ -67,6 +77,31 @@ export default function AdminStockPage() {
         return rest;
       });
     });
+
+  // Sells one unit of a linked product through the real checkout path, then
+  // cancels it and gives the stock back; shows the numbers at each step.
+  const saleTest = (g: StockGroup) => {
+    const product = (linked[g.id] || []).find((p) => availableStock(p, groups) > 0);
+    if (!product) {
+      setError(`“${g.name}” kasasına bağlı, stokta olan ürün yok; test için önce stok ekleyin.`);
+      return;
+    }
+    setBusy(`test-${g.id}`);
+    setError("");
+    runSaleTest(product, g.name)
+      .then((result) => setTestResults((r) => ({ ...r, [g.id]: result })))
+      .catch((err) => {
+        console.error(err);
+        setError(
+          err instanceof OutOfStockError
+            ? "Test satışı stok yetersiz dediği için durdu."
+            : err?.code === "permission-denied"
+            ? "Test başarısız: Firebase kuralları stok düşümüne izin vermedi. firestore.rules dosyasının güncel hâlinin yayınlandığından emin olun."
+            : "Test tamamlanamadı. İnternet bağlantısını kontrol edip tekrar deneyin."
+        );
+      })
+      .finally(() => setBusy(null));
+  };
 
   const remove = (g: StockGroup) => {
     const count = linked[g.id]?.length || 0;
@@ -184,6 +219,15 @@ export default function AdminStockPage() {
 
                 <button
                   type="button"
+                  onClick={() => saleTest(g)}
+                  disabled={busy !== null}
+                  className="px-3 h-9 rounded-lg bg-panel-800 hover:bg-panel-700 text-panel-100 text-xs font-semibold flex items-center gap-1.5 disabled:opacity-50"
+                >
+                  {busy === `test-${g.id}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FlaskConical className="w-3.5 h-3.5" />}
+                  Satış testi
+                </button>
+                <button
+                  type="button"
                   onClick={() => remove(g)}
                   aria-label={`${g.name} kasasını sil`}
                   className="p-2 text-panel-500 hover:text-red-400 transition"
@@ -191,6 +235,31 @@ export default function AdminStockPage() {
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
+
+              {testResults[g.id] && (
+                <div className="mt-3 p-3 rounded-xl bg-emerald-950/60 border border-emerald-800 text-sm text-emerald-200">
+                  <p className="font-semibold flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4" /> Satış testi: “{testResults[g.id].productTitle}”den 1 adet
+                  </p>
+                  <ul className="mt-1.5 space-y-0.5 tabular-nums">
+                    {testResults[g.id].group && (
+                      <li>
+                        {testResults[g.id].group!.name} kasası: {testResults[g.id].group!.before} → satışta{" "}
+                        {testResults[g.id].group!.afterSale} → iptalde {testResults[g.id].group!.afterReturn}
+                      </li>
+                    )}
+                    {testResults[g.id].product ? (
+                      <li>
+                        Modelin kendi stoğu: {testResults[g.id].product!.before} → satışta{" "}
+                        {testResults[g.id].product!.afterSale} → iptalde {testResults[g.id].product!.afterReturn}
+                      </li>
+                    ) : (
+                      <li>Modelin kendi stoğu Firebase’de kayıtlı değil, takip edilmiyor.</li>
+                    )}
+                  </ul>
+                  <p className="mt-1.5 text-xs text-emerald-300/70">Test siparişi iptal edilip silindi; gerçek sipariş oluşmadı.</p>
+                </div>
+              )}
 
               <div className="mt-3 pt-3 border-t border-panel-800">
                 {items.length ? (

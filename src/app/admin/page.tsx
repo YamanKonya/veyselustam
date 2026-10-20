@@ -9,6 +9,7 @@ import {
   describeFirestoreError,
 } from "@/services/productService";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
+import { ensureStockGroups } from "@/services/stockService";
 import ProductFormModal from "@/components/admin/ProductFormModal";
 import ProductListTable from "@/components/admin/ProductListTable";
 import { useLanguage } from "@/context/LanguageContext";
@@ -53,6 +54,26 @@ export default function AdminDashboardPage() {
     if (toastTimer.current) clearTimeout(toastTimer.current);
     toastTimer.current = setTimeout(() => setToastMessage(null), isError ? 8000 : 3000);
   };
+
+  // One-time setup on opening the panel: save catalogue products that aren't in
+  // Firestore yet and create cases they point to (e.g. Sidre). Idempotent.
+  const setupStarted = useRef(false);
+  useEffect(() => {
+    if (setupStarted.current) return;
+    setupStarted.current = true;
+    (async () => {
+      try {
+        const { created } = await seedProductsToFirestore();
+        const groups = await ensureStockGroups(INITIAL_VEYSELUSTAM_PRODUCTS);
+        const parts: string[] = [];
+        if (created) parts.push(`${created} ürün Firebase'e kaydedildi`);
+        if (groups.length) parts.push(`kasa oluşturuldu: ${groups.join(", ")}`);
+        if (parts.length) showToast(parts.join(" · "));
+      } catch (err) {
+        showToast(`Otomatik kurulum yapılamadı: ${describeFirestoreError(err)}`, true);
+      }
+    })();
+  }, []);
 
   // Background Firestore writes report failures here (e.g. rules denial)
   useEffect(() => {

@@ -2,13 +2,14 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   increment,
   onSnapshot,
   runTransaction,
   setDoc,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
 import { Order, Product, StockDeductions, StockGroup } from "@/types";
 
 // Shared stock pools: one ring case (e.g. "Sidre") sold with different stones.
@@ -200,4 +201,81 @@ export const restockOrder = async (order: Order) => {
     for (const [pid, qty] of Object.entries(products || {})) tx.update(doc(db, PRODUCTS, pid), { stock: increment(qty) });
     tx.update(orderRef, { restocked: true });
   });
+};
+
+/* ---------- admin: one-time setup and a no-customer sale test ---------- */
+
+/**
+ * Creates cases that products point to but that don't exist yet, starting each
+ * at the sum of its products' own stock. Returns e.g. ["Sidre (20)"].
+ */
+export const ensureStockGroups = async (products: Product[]) => {
+  const totals: Record<string, number> = {};
+  for (const p of products) {
+    if (p.stockGroup) totals[p.stockGroup] = (totals[p.stockGroup] || 0) + (typeof p.stock === "number" ? p.stock : 0);
+  }
+  const created: string[] = [];
+  for (const [id, total] of Object.entries(totals)) {
+    const snap = await getDoc(doc(db, GROUPS, id));
+    if (snap.exists()) continue;
+    const name = id.charAt(0).toLocaleUpperCase("tr") + id.slice(1).replace(/-/g, " ");
+    await saveStockGroup(id, name, total);
+    created.push(`${name} (${total})`);
+  }
+  return created;
+};
+
+export interface SaleTestResult {
+  productTitle: string;
+  group?: { name: string; before: number; afterSale: number; afterReturn: number };
+  product?: { before: number; afterSale: number; afterReturn: number };
+}
+
+const readStock = async (path: string, id: string) => {
+  const snap = await getDoc(doc(db, path, id));
+  return snap.exists() && typeof snap.data().stock === "number" ? (snap.data().stock as number) : undefined;
+};
+
+/**
+ * Runs one unit of `product` through the real checkout path (same transaction,
+ * same Firestore rules), records the stock, then cancels the order, returns the
+ * stock and deletes the test order. No customer or real order is left behind.
+ */
+export const runSaleTest = async (product: Product, groupName?: string): Promise<SaleTestResult> => {
+  if (!product.id) throw new Error("no-product-id");
+  const gid = product.stockGroup;
+  const g0 = gid ? await readStock(GROUPS, gid) : undefined;
+  const p0 = await readStock(PRODUCTS, product.id);
+
+  const orderId = await placeOrderWithStock([{ product, quantity: 1 }], {
+    userId: auth?.currentUser?.uid || "guest_user",
+    customerInfo: {
+      fullName: "STOK TESTİ (otomatik, siliniyor)",
+      email: "",
+      phone: "-",
+      city: "-",
+      district: "-",
+      address: "Kasa Stokları sayfasındaki satış testi",
+      notes: "",
+    },
+    items: [{ productId: product.id, title: product.title, price: 0, quantity: 1 }],
+    totalAmount: 0,
+    status: "pending",
+  });
+
+  const g1 = gid ? await readStock(GROUPS, gid) : undefined;
+  const p1 = await readStock(PRODUCTS, product.id);
+
+  const orderSnap = await getDoc(doc(db, ORDERS, orderId));
+  await restockOrder({ id: orderId, ...(orderSnap.data() as Order) });
+  await deleteDoc(doc(db, ORDERS, orderId));
+
+  const g2 = gid ? await readStock(GROUPS, gid) : undefined;
+  const p2 = await readStock(PRODUCTS, product.id);
+
+  return {
+    productTitle: product.title,
+    group: gid && g0 !== undefined ? { name: groupName || gid, before: g0, afterSale: g1 ?? g0, afterReturn: g2 ?? g0 } : undefined,
+    product: p0 !== undefined ? { before: p0, afterSale: p1 ?? p0, afterReturn: p2 ?? p0 } : undefined,
+  };
 };
