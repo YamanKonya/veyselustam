@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Product } from "@/types";
 import { createProduct, updateProduct, uploadFileToStorage } from "@/services/productService";
 import { translationSourceKey } from "@/i18n/productTranslations";
+import { useStockGroups } from "@/services/stockService";
 import { 
   X, 
   Upload, 
@@ -63,6 +64,8 @@ export default function ProductFormModal({
   const [category, setCategory] = useState(DEFAULT_CATEGORIES[0]);
   const [customCategory, setCustomCategory] = useState("");
   const [stock, setStock] = useState<number | "">(10);
+  const [stockGroup, setStockGroup] = useState("");
+  const { groups: stockGroups } = useStockGroups();
   const [selectedRingSizes, setSelectedRingSizes] = useState<string[]>(STANDARD_RING_SIZES);
   const [customRingSize, setCustomRingSize] = useState("");
 
@@ -121,6 +124,7 @@ export default function ProductFormModal({
       }
 
       setStock(productToEdit.stock ?? 10);
+      setStockGroup(productToEdit.stockGroup || "");
       setSelectedRingSizes(productToEdit.ringSize || STANDARD_RING_SIZES);
       setExistingImages(productToEdit.images || []);
     } else {
@@ -150,6 +154,7 @@ export default function ProductFormModal({
     setCategory(DEFAULT_CATEGORIES[0]);
     setCustomCategory("");
     setStock(10);
+    setStockGroup("");
     setSelectedRingSizes(STANDARD_RING_SIZES);
     setCustomRingSize("");
     setExistingImages([]);
@@ -354,6 +359,7 @@ export default function ProductFormModal({
         videoUrl: finalVideoUrl.trim() || undefined,
         category: finalCategory,
         stock: Number(stock) || 0,
+        stockGroup,
         ringSize: selectedRingSizes,
         images: existingImages,
       };
@@ -707,6 +713,45 @@ export default function ProductFormModal({
                 />
               </div>
             </div>
+          </div>
+
+          {/* Stock: own count, or a shared case (e.g. Sidre) that several products sell from */}
+          <div className="bg-panel-950/60 border border-panel-800 rounded-2xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label className="block">
+              <span className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">Stok kasası</span>
+              <select
+                value={stockGroup}
+                onChange={(e) => setStockGroup(e.target.value)}
+                className="w-full px-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-white"
+              >
+                <option value="">Yok — ürünün kendi stoğu</option>
+                {stockGroups.map((g) => (
+                  <option key={g.id} value={g.id}>
+                    {g.name} ({g.stock} stokta)
+                  </option>
+                ))}
+              </select>
+              <span className="block text-[11px] text-panel-500 mt-1.5">
+                Kasalar “Kasa Stokları” sayfasından eklenir.
+              </span>
+            </label>
+            <label className="block">
+              <span className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">Stok adedi</span>
+              {stockGroup ? (
+                <p className="px-4 py-3 bg-panel-900 border border-panel-800 rounded-xl text-sm text-panel-300">
+                  {stockGroups.find((g) => g.id === stockGroup)?.stock ?? 0} adet —{" "}
+                  {stockGroups.find((g) => g.id === stockGroup)?.name} kasasından düşülür
+                </p>
+              ) : (
+                <input
+                  type="number"
+                  min={0}
+                  value={stock}
+                  onChange={(e) => setStock(e.target.value === "" ? "" : Number(e.target.value))}
+                  className="w-full px-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-white"
+                />
+              )}
+            </label>
           </div>
 
           {/* Ring Sizes Variation Selector */}

@@ -10,7 +10,8 @@ import {
   ShoppingBag,
   LogOut,
   ChevronLeft,
-  KeyRound
+  KeyRound,
+  Boxes
 } from "lucide-react";
 
 export default function AdminLayout({
@@ -64,6 +65,18 @@ export default function AdminLayout({
             >
               <ShoppingBag className="w-4 h-4" />
               Sipariş Takibi
+            </Link>
+
+            <Link
+              href="/admin/stock"
+              className={`flex items-center gap-3 px-4 py-3 text-xs sm:text-sm font-semibold rounded-xl transition ${
+                pathname === "/admin/stock"
+                  ? "bg-brass-600 text-white shadow-lg shadow-brass-600/20"
+                  : "text-panel-400 hover:bg-panel-800 hover:text-panel-200"
+              }`}
+            >
+              <Boxes className="w-4 h-4" />
+              Kasa Stokları
             </Link>
 
             <Link

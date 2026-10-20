@@ -32,6 +32,9 @@ export interface Product {
   category: string;
   ringSize: string[];
   stock: number;
+  /** id of a shared stock group (e.g. the "Sidre" ring case); when set, the
+   *  group's stock is what can be sold and every sale draws from it */
+  stockGroup?: string;
   originalUrl?: string;
   createdAt?: string;
 }
@@ -65,4 +68,19 @@ export interface Order {
   totalAmount: number;
   status: OrderStatus;
   createdAt: string;
+  /** stock taken by this order, so it can be returned if the order is cancelled */
+  stockDeductions?: StockDeductions;
+  restocked?: boolean;
+}
+
+export interface StockDeductions {
+  groups: Record<string, number>;
+  products: Record<string, number>;
+}
+
+/** A shared stock pool, e.g. one ring case sold with different stones */
+export interface StockGroup {
+  id: string;
+  name: string;
+  stock: number;
 }

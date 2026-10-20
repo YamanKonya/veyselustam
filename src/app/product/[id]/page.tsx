@@ -7,6 +7,7 @@ import CartDrawer from "@/components/cart/CartDrawer";
 import SiteFooter from "@/components/layout/SiteFooter";
 import { whatsappLink } from "@/lib/contact";
 import { imageAt } from "@/lib/image";
+import { useStockGroups, availableStock } from "@/services/stockService";
 import { Product } from "@/types";
 import { getProductById, getLocalProductById } from "@/services/productService";
 import { useCartStore } from "@/store/useCartStore";
@@ -56,6 +57,7 @@ export default function ProductDetailPage() {
 
   const { addItem } = useCartStore();
   const { addRecentItem } = useRecentStore();
+  const { groups } = useStockGroups();
 
   useEffect(() => {
     if (!id) return;
@@ -185,6 +187,8 @@ export default function ProductDetailPage() {
 
   const images = product.images && product.images.length > 0 ? product.images : [];
   const currentMainImage = images[selectedImageIndex] || null;
+  // Linked to a shared case (e.g. Sidre)? Then the case stock is what can be sold
+  const left = availableStock(product, groups);
 
   return (
     <div className="min-h-screen text-slate-900 flex flex-col">
@@ -394,12 +398,12 @@ export default function ProductDetailPage() {
 
                   <span
                     className={`text-xs font-semibold px-2.5 py-1 rounded-lg ${
-                      product.stock > 0
+                      left > 0
                         ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                         : "bg-red-50 text-red-700 border border-red-200"
                     }`}
                   >
-                    {product.stock > 0 ? `${t("pd_in_stock")} (${product.stock})` : t("pd_out_of_stock")}
+                    {left > 0 ? `${t("pd_in_stock")} (${left})` : t("pd_out_of_stock")}
                   </span>
                 </div>
 
@@ -468,7 +472,7 @@ export default function ProductDetailPage() {
                     </button>
                     <span className="text-sm font-extrabold w-10 text-center">{quantity}</span>
                     <button
-                      onClick={() => setQuantity(quantity + 1)}
+                      onClick={() => setQuantity(Math.min(Math.max(left, 1), quantity + 1))}
                       className="w-10 h-10 flex items-center justify-center text-slate-600 hover:text-slate-900 rounded-lg hover:bg-white transition"
                     >
                       <Plus className="w-4 h-4" />
@@ -482,7 +486,7 @@ export default function ProductDetailPage() {
                 {/* Add to Cart Button */}
                 <button
                   onClick={handleAddToCart}
-                  disabled={product.stock <= 0}
+                  disabled={left <= 0}
                   className={`w-full py-4 font-extrabold shadow-xl flex items-center justify-center gap-2.5 transition-all duration-300 text-sm sm:text-base disabled:opacity-50 ${
                     addedToCart
                       ? "bg-versace-gold-500 text-versace-green-900 shadow-versace-gold-500/25"
@@ -497,7 +501,7 @@ export default function ProductDetailPage() {
                   ) : (
                     <>
                       <ShoppingBag className="w-5 h-5" />
-                      <span>{t("add_to_cart")} • ₺{(product.price * quantity).toLocaleString("tr-TR")}</span>
+                      <span>{left <= 0 ? t("sold_out") : `${t("add_to_cart")} • ₺${(product.price * quantity).toLocaleString("tr-TR")}`}</span>
                     </>
                   )}
                 </button>

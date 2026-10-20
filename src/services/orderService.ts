@@ -29,14 +29,11 @@ export const createOrder = async (
     createdAt: new Date().toISOString(),
   };
 
-  try {
-    const docRef = await addDoc(collection(db, ORDERS_COLLECTION), {
-      ...newOrder,
-    });
-    newOrder.id = docRef.id;
-  } catch (error) {
-    console.warn("Firestore order creation fallback:", error);
-  }
+  // No silent fallback: an order that isn't in Firestore must not look placed
+  const docRef = await addDoc(collection(db, ORDERS_COLLECTION), {
+    ...newOrder,
+  });
+  newOrder.id = docRef.id;
 
   localOrdersStore = [newOrder, ...localOrdersStore];
   return newOrder.id!;

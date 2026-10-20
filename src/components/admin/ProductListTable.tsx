@@ -29,6 +29,7 @@ import {
 import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
 import Link from "next/link";
+import { useStockGroups, availableStock } from "@/services/stockService";
 
 interface ProductListTableProps {
   products: Product[];
@@ -47,6 +48,7 @@ export default function ProductListTable({
 }: ProductListTableProps) {
   const { t, language } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
+  const { groups: stockGroups } = useStockGroups();
   const [selectedCategory, setSelectedCategory] = useState("Hepsi");
   const [statusFilter, setStatusFilter] = useState<"all" | "featured" | "active" | "passive">("all");
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -384,17 +386,26 @@ export default function ProductListTable({
 
                       {/* Stock */}
                       <td className="py-4 px-6 whitespace-nowrap">
-                        <span
-                          className={`px-2.5 py-1 rounded-lg text-xs font-bold ${
-                            product.stock > 5
-                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                              : product.stock > 0
-                              ? "bg-brass-500/10 text-brass-400 border border-brass-500/20"
-                              : "bg-red-500/10 text-red-400 border border-red-500/20"
-                          }`}
-                        >
-                          {product.stock} adet
-                        </span>
+                        {(() => {
+                          const left = availableStock(product, stockGroups);
+                          const group = stockGroups.find((g) => g.id === product.stockGroup);
+                          return (
+                            <>
+                              <span
+                                className={`px-2.5 py-1 rounded-lg text-xs font-bold ${
+                                  left > 5
+                                    ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                                    : left > 0
+                                    ? "bg-brass-500/10 text-brass-400 border border-brass-500/20"
+                                    : "bg-red-500/10 text-red-400 border border-red-500/20"
+                                }`}
+                              >
+                                {left} adet
+                              </span>
+                              {group && <span className="block mt-1 text-[10px] text-panel-400">{group.name} kasası</span>}
+                            </>
+                          );
+                        })()}
                       </td>
 
                       {/* Featured & Status Toggles */}

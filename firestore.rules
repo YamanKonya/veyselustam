@@ -26,10 +26,33 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // Ürünler: herkes okur, yalnızca yönetici değiştirir.
+    // Satışta stok düşümü: müşteri bir stok sayısını yalnızca AYNI işlemde
+    // oluşturduğu yeni siparişin "stockDeductions" alanında yazan adet kadar
+    // azaltabilir. Başka alana dokunamaz, stok eksiye düşemez ve her sipariş
+    // yalnızca bir kez oluşturulabildiği için aynı düşüm tekrarlanamaz.
+    function stockSale(kind, id) {
+      let orderPath = /databases/$(database)/documents/orders/$(request.resource.data.lastOrderId);
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stock', 'lastOrderId'])
+        && request.resource.data.stock is int
+        && request.resource.data.stock >= 0
+        && !exists(orderPath)
+        && existsAfter(orderPath)
+        && getAfter(orderPath).data.stockDeductions[kind][id]
+             == resource.data.stock - request.resource.data.stock;
+    }
+
+    // Ürünler: herkes okur, yalnızca yönetici değiştirir (satışta stok düşümü hariç).
     match /products/{productId} {
       allow read: if true;
       allow write: if isAdmin();
+      allow update: if stockSale('products', productId);
+    }
+
+    // Ortak stok grupları (ör. "Sidre" kasası): herkes okur, yönetici yönetir.
+    match /stockGroups/{groupId} {
+      allow read: if true;
+      allow write: if isAdmin();
+      allow update: if stockSale('groups', groupId);
     }
 
     // Siparişler: müşteri (misafir dahil) yalnızca "pending" durumunda yeni
@@ -41,7 +64,8 @@ service cloud.firestore {
       allow get: if true;
       allow list: if isAdmin();
       allow create: if request.resource.data.status == 'pending'
-        && request.resource.data.userId == (signedIn() ? request.auth.uid : 'guest_user');
+        && request.resource.data.userId == (signedIn() ? request.auth.uid : 'guest_user')
+        && !('restocked' in request.resource.data);
       allow update, delete: if isAdmin();
     }
 

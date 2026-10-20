@@ -8,6 +8,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useCartStore } from "@/store/useCartStore";
 import { formatPrice } from "@/lib/format";
 import { imageAt, imageSrcSet } from "@/lib/image";
+import { useStockGroups, availableStock } from "@/services/stockService";
 
 const AUTOPLAY_MS = 5000;
 
@@ -18,6 +19,7 @@ interface ShowcaseSliderProps {
 export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
   const { t, dir } = useLanguage();
   const { addItem } = useCartStore();
+  const { groups } = useStockGroups();
 
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -94,6 +96,7 @@ export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
   };
 
   const hasDiscount = !!product.originalPrice && product.originalPrice > product.price;
+  const soldOut = availableStock(product, groups) <= 0;
 
   return (
     <section
@@ -217,10 +220,11 @@ export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
               <button
                 type="button"
                 onClick={handleAdd}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-versace-gold-500/50 text-versace-gold-50 text-sm font-semibold hover:border-versace-gold-500 hover:bg-white/5 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-versace-gold-100"
+                disabled={soldOut}
+                className="disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-versace-gold-500/50 text-versace-gold-50 text-sm font-semibold hover:border-versace-gold-500 hover:bg-white/5 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-versace-gold-100"
               >
                 {added ? <Check className="w-4 h-4" /> : <ShoppingBag className="w-4 h-4" />}
-                {added ? t("added") : t("btn_add_to_cart")}
+                {soldOut ? t("sold_out") : added ? t("added") : t("btn_add_to_cart")}
               </button>
             </div>
           </div>

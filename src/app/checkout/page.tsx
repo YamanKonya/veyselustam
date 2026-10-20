@@ -9,6 +9,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
+import { placeOrderWithStock, OutOfStockError } from "@/services/stockService";
 import { createOrder } from "@/services/orderService";
 import { ShippingAddress, OrderItem } from "@/types";
 import Link from "next/link";
@@ -111,19 +112,43 @@ export default function CheckoutPage() {
         image: item.product.images?.[0] || "",
       }));
 
-      const newOrderId = await createOrder({
+      const orderData = {
         userId: user?.uid || "guest_user",
         customerInfo: formData,
         items: orderItems,
         totalAmount: totalAmount,
-        status: "pending",
-      });
+        status: "pending" as const,
+      };
+      // Order and stock are written together; a sold-out case stops the order.
+      // If the stock rules aren't published yet (permission-denied), still take
+      // the order so sales never stop, just without the stock update.
+      let newOrderId: string;
+      try {
+        newOrderId = await placeOrderWithStock(
+          items.map((item) => ({ product: item.product, quantity: item.quantity })),
+          orderData
+        );
+      } catch (err: any) {
+        if (err?.code !== "permission-denied") throw err;
+        console.warn("Stock rules not active; order saved without stock update", err);
+        newOrderId = await createOrder(orderData);
+      }
 
       clearCart();
       router.push(`/order-success/${newOrderId}`);
     } catch (err: any) {
       console.error(err);
-      setError(err.message || t("order_error_generic"));
+      if (err instanceof OutOfStockError) {
+        const line = items.find((i) => i.product.id === err.productId);
+        const name = line ? translateProduct(line.product, language).title : "";
+        setError(
+          err.available > 0
+            ? t("order_error_stock_low").replace("{name}", name).replace("{count}", String(err.available))
+            : t("order_error_stock_out").replace("{name}", name)
+        );
+      } else {
+        setError(t("order_error_generic"));
+      }
     } finally {
       setLoading(false);
     }

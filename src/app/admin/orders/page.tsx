@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Order, OrderStatus } from "@/types";
 import { subscribeOrders, updateOrderStatus } from "@/services/orderService";
+import { restockOrder } from "@/services/stockService";
 import { 
   ShoppingBag, 
   Clock, 
@@ -39,6 +40,9 @@ export default function AdminOrdersPage() {
   const handleStatusChange = async (orderId: string, newStatus: OrderStatus) => {
     try {
       await updateOrderStatus(orderId, newStatus);
+      // A cancelled order gives its rings/cases back to stock (once)
+      const order = orders.find((o) => o.id === orderId);
+      if (newStatus === "cancelled" && order) await restockOrder(order);
     } catch (error) {
       console.error("Error updating order status:", error);
     }

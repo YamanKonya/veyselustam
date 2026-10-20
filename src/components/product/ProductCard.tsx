@@ -6,6 +6,7 @@ import { Product } from "@/types";
 import { useLanguage } from "@/context/LanguageContext";
 import { formatPrice, discountPercent } from "@/lib/format";
 import { imageAt, imageSrcSet } from "@/lib/image";
+import { useStockGroups, availableStock } from "@/services/stockService";
 
 interface ProductCardProps {
   product: Product;
@@ -15,6 +16,8 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, isAdded, onAddToCart }: ProductCardProps) {
   const { t } = useLanguage();
+  const { groups } = useStockGroups();
+  const soldOut = availableStock(product, groups) <= 0;
   const image = product.images?.[0];
   const discount = discountPercent(product.price, product.originalPrice, product.discountPercent);
   const href = `/product/${product.id}`;
@@ -78,14 +81,17 @@ export default function ProductCard({ product, isAdded, onAddToCart }: ProductCa
 
         <button
           type="button"
+          disabled={soldOut}
           onClick={() => onAddToCart(product, product.ringSize?.[0] || "")}
           className={`mt-auto w-full py-3 text-sm font-semibold transition-colors ${
-            isAdded
+            soldOut
+              ? "bg-slate-200 text-slate-500 cursor-not-allowed"
+              : isAdded
               ? "bg-versace-gold-500 text-versace-green-900"
               : "bg-versace-green-900 text-versace-gold-50 hover:bg-versace-green-700"
           }`}
         >
-          {isAdded ? t("added") : t("btn_add_to_cart")}
+          {soldOut ? t("sold_out") : isAdded ? t("added") : t("btn_add_to_cart")}
         </button>
       </div>
     </article>
