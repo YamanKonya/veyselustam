@@ -102,7 +102,11 @@ export const translateCategory = (category: string, lang: Language) => {
 export function translateProduct(product: Product, lang: Language): Product {
   const category = translateCategory(product.category || "", lang);
 
-  if (product.id && SEED_TITLES.get(product.id) === normalizeForCompare(product.title)) {
+  // Matches the original seed title, or the catalogue's own Turkish title (cart items
+  // and orders store the product as it was shown when added)
+  const title = normalizeForCompare(product.title);
+  const catalogTr = product.id ? getCatalogContent(product.id, "tr") : null;
+  if (catalogTr && (SEED_TITLES.get(product.id) === title || normalizeForCompare(catalogTr.title) === title)) {
     const catalog = getCatalogContent(product.id, lang);
     if (catalog) return { ...product, category, ...catalog };
   }
