@@ -3,7 +3,7 @@ export const CONTACT = {
   phoneDisplay: "0533 620 30 85",
   phoneE164: "+905336203085",
   whatsapp: "905336203085",
-  instagram: "veyselustam",
+  instagram: "veysel.ustam",
   address: "Konya, Türkiye",
 };
 
