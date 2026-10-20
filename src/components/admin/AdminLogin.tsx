@@ -36,7 +36,7 @@ export default function AdminLogin() {
         <div className="text-center mb-8">
           <img src="/images/logo-128.webp" alt="Veysel Ustam" className="w-16 h-16 mx-auto object-contain" />
           <h1 className="font-display text-3xl text-versace-green-900 mt-3">Yönetim paneli</h1>
-          <p className="text-sm text-slate-500 mt-1">Devam etmek için giriş yapın.</p>
+          <p className="text-sm text-panel-500 mt-1">Devam etmek için giriş yapın.</p>
         </div>
 
         {error && (
@@ -48,9 +48,9 @@ export default function AdminLogin() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <label className="block">
-            <span className="block text-sm font-medium text-slate-700 mb-1">Kullanıcı adı</span>
+            <span className="block text-sm font-medium text-panel-700 mb-1">Kullanıcı adı</span>
             <div className="relative">
-              <User className="w-4 h-4 absolute start-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <User className="w-4 h-4 absolute start-3 top-1/2 -translate-y-1/2 text-panel-400" />
               <input
                 type="text"
                 required
@@ -58,21 +58,21 @@ export default function AdminLogin() {
                 autoCapitalize="none"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full ps-9 pe-3 py-2.5 border border-slate-300 focus:outline-none focus:border-versace-gold-500 text-sm"
+                className="w-full ps-9 pe-3 py-2.5 border border-panel-300 focus:outline-none focus:border-versace-gold-500 text-sm"
               />
             </div>
           </label>
           <label className="block">
-            <span className="block text-sm font-medium text-slate-700 mb-1">Şifre</span>
+            <span className="block text-sm font-medium text-panel-700 mb-1">Şifre</span>
             <div className="relative">
-              <KeyRound className="w-4 h-4 absolute start-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <KeyRound className="w-4 h-4 absolute start-3 top-1/2 -translate-y-1/2 text-panel-400" />
               <input
                 type="password"
                 required
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full ps-9 pe-3 py-2.5 border border-slate-300 focus:outline-none focus:border-versace-gold-500 text-sm"
+                className="w-full ps-9 pe-3 py-2.5 border border-panel-300 focus:outline-none focus:border-versace-gold-500 text-sm"
               />
             </div>
           </label>

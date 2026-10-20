@@ -70,21 +70,21 @@ export default function BulkCampaignModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-      <div className="relative max-w-lg w-full bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden text-slate-100">
+      <div className="relative max-w-lg w-full bg-panel-900 border border-panel-800 rounded-3xl shadow-2xl overflow-hidden text-panel-100">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-800 bg-slate-950/60">
+        <div className="flex items-center justify-between p-6 border-b border-panel-800 bg-panel-950/60">
           <div className="flex items-center gap-2.5">
-            <div className="p-2.5 bg-gradient-to-br from-amber-500 to-amber-700 text-white rounded-2xl shadow-lg shadow-amber-500/20">
+            <div className="p-2.5 bg-gradient-to-br from-brass-500 to-brass-700 text-white rounded-2xl shadow-lg shadow-brass-500/20">
               <Zap className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-lg font-bold text-white">Toplu Kampanya Yönetimi</h2>
-              <p className="text-xs text-slate-400">Ürünlere toplu indirim uygulayın veya kaldırın</p>
+              <p className="text-xs text-panel-400">Ürünlere toplu indirim uygulayın veya kaldırın</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition"
+            className="p-2 text-panel-400 hover:text-white hover:bg-panel-800 rounded-xl transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -93,13 +93,13 @@ export default function BulkCampaignModal({
         {/* Body */}
         <div className="p-6 space-y-6">
           {/* Mode Switch Tabs */}
-          <div className="grid grid-cols-2 gap-2 p-1 bg-slate-950 rounded-2xl border border-slate-800">
+          <div className="grid grid-cols-2 gap-2 p-1 bg-panel-950 rounded-2xl border border-panel-800">
             <button
               onClick={() => setMode("apply")}
               className={`py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
                 mode === "apply"
-                  ? "bg-amber-600 text-white shadow-md shadow-amber-600/20"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-brass-600 text-white shadow-md shadow-brass-600/20"
+                  : "text-panel-400 hover:text-white"
               }`}
             >
               <Percent className="w-4 h-4" />
@@ -110,7 +110,7 @@ export default function BulkCampaignModal({
               className={`py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
                 mode === "clear"
                   ? "bg-red-600 text-white shadow-md shadow-red-600/20"
-                  : "text-slate-400 hover:text-white"
+                  : "text-panel-400 hover:text-white"
               }`}
             >
               <RotateCcw className="w-4 h-4" />
@@ -119,15 +119,15 @@ export default function BulkCampaignModal({
           </div>
 
           {/* Targeted Products Info */}
-          <div className="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl flex items-center gap-3">
-            <Layers className="w-5 h-5 text-amber-400 flex-shrink-0" />
+          <div className="p-4 bg-panel-950/80 border border-panel-800 rounded-2xl flex items-center gap-3">
+            <Layers className="w-5 h-5 text-brass-400 flex-shrink-0" />
             <div className="text-xs">
               {selectedProductIds.length > 0 ? (
-                <p className="text-amber-400 font-semibold">
+                <p className="text-brass-400 font-semibold">
                   Tablodan seçilen <span className="font-bold underline">{selectedProductIds.length} adet özel ürüne</span> işlem yapılacaktır.
                 </p>
               ) : (
-                <p className="text-slate-300">
+                <p className="text-panel-300">
                   Kategoriye göre tüm ürünler hedeflenecektir.
                 </p>
               )}
@@ -139,13 +139,13 @@ export default function BulkCampaignModal({
               {/* Category Filter Target */}
               {selectedProductIds.length === 0 && (
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">
                     Hedef Kategori
                   </label>
                   <select
                     value={targetCategory}
                     onChange={(e) => setTargetCategory(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-4 py-3 bg-panel-950 border border-panel-800 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-brass-500"
                   >
                     {categories.map((cat) => (
                       <option key={cat} value={cat}>
@@ -158,7 +158,7 @@ export default function BulkCampaignModal({
 
               {/* Discount Percentage Options */}
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">
                   İndirim Oranı (%)
                 </label>
 
@@ -173,8 +173,8 @@ export default function BulkCampaignModal({
                       }}
                       className={`py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1 border ${
                         selectedPercent === pct && !customPercent
-                          ? "bg-amber-600 text-white border-amber-500 shadow-md shadow-amber-600/20"
-                          : "bg-slate-950 text-slate-300 border-slate-800 hover:border-slate-700"
+                          ? "bg-brass-600 text-white border-brass-500 shadow-md shadow-brass-600/20"
+                          : "bg-panel-950 text-panel-300 border-panel-800 hover:border-panel-700"
                       }`}
                     >
                       %{pct}
@@ -184,7 +184,7 @@ export default function BulkCampaignModal({
 
                 {/* Custom Percentage Input */}
                 <div className="relative">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-bold">%</span>
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-panel-400 text-xs font-bold">%</span>
                   <input
                     type="number"
                     min="1"
@@ -192,7 +192,7 @@ export default function BulkCampaignModal({
                     value={customPercent}
                     onChange={(e) => setCustomPercent(e.target.value)}
                     placeholder="Veya Özel Yüzde Girin (Örn: 35)"
-                    className="w-full pl-8 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full pl-8 pr-4 py-2.5 bg-panel-950 border border-panel-800 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-brass-500"
                   />
                 </div>
               </div>
@@ -210,10 +210,10 @@ export default function BulkCampaignModal({
         </div>
 
         {/* Footer Actions */}
-        <div className="flex items-center justify-end gap-3 p-6 border-t border-slate-800 bg-slate-950/40">
+        <div className="flex items-center justify-end gap-3 p-6 border-t border-panel-800 bg-panel-950/40">
           <button
             onClick={onClose}
-            className="px-5 py-2.5 rounded-xl border border-slate-800 text-slate-400 hover:bg-slate-800 text-xs font-semibold transition"
+            className="px-5 py-2.5 rounded-xl border border-panel-800 text-panel-400 hover:bg-panel-800 text-xs font-semibold transition"
           >
             İptal
           </button>
@@ -222,7 +222,7 @@ export default function BulkCampaignModal({
             disabled={loading}
             className={`px-6 py-2.5 rounded-xl text-xs font-bold text-white shadow-lg transition flex items-center gap-2 ${
               mode === "apply"
-                ? "bg-amber-600 hover:bg-amber-700 shadow-amber-600/20"
+                ? "bg-brass-600 hover:bg-brass-700 shadow-brass-600/20"
                 : "bg-red-600 hover:bg-red-700 shadow-red-600/20"
             }`}
           >

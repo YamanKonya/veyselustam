@@ -143,10 +143,10 @@ export default function ProductListTable({
   return (
     <div className="space-y-4">
       {/* Search & Campaign Action Bar */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-panel-900 border border-panel-800 p-4 rounded-2xl shadow-lg">
         {/* Search */}
         <div className="relative flex-1">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-panel-400" />
           <input
             type="text"
             value={searchTerm}
@@ -155,20 +155,20 @@ export default function ProductListTable({
               setCurrentPage(1);
             }}
             placeholder={t("admin_tbl_search_ph")}
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
+            className="w-full pl-10 pr-4 py-2.5 bg-panel-950 border border-panel-800 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-brass-500 transition"
           />
         </div>
 
         {/* Category Filter */}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-400 font-medium whitespace-nowrap">{t("admin_tbl_th_category")}:</span>
+          <span className="text-xs text-panel-400 font-medium whitespace-nowrap">{t("admin_tbl_th_category")}:</span>
           <select
             value={selectedCategory}
             onChange={(e) => {
               setSelectedCategory(e.target.value);
               setCurrentPage(1);
             }}
-            className="px-3 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
+            className="px-3 py-2.5 bg-panel-950 border border-panel-800 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-brass-500 transition"
           >
             {categories.map((cat) => (
               <option key={cat} value={cat}>
@@ -179,11 +179,11 @@ export default function ProductListTable({
         </div>
 
         {/* Status Filter (Tümü / Vitrin / Aktif / Pasif) */}
-        <div className="flex items-center gap-1 bg-slate-950 p-1 border border-slate-800 rounded-xl overflow-x-auto">
+        <div className="flex items-center gap-1 bg-panel-950 p-1 border border-panel-800 rounded-xl overflow-x-auto">
           <button
             onClick={() => { setStatusFilter("all"); setCurrentPage(1); }}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-              statusFilter === "all" ? "bg-slate-800 text-white" : "text-slate-400 hover:text-white"
+              statusFilter === "all" ? "bg-panel-800 text-white" : "text-panel-400 hover:text-white"
             }`}
           >
             Tümü
@@ -191,16 +191,16 @@ export default function ProductListTable({
           <button
             onClick={() => { setStatusFilter("featured"); setCurrentPage(1); }}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
-              statusFilter === "featured" ? "bg-amber-500/20 text-amber-300 border border-amber-500/30" : "text-slate-400 hover:text-amber-300"
+              statusFilter === "featured" ? "bg-brass-500/20 text-brass-300 border border-brass-500/30" : "text-panel-400 hover:text-brass-300"
             }`}
           >
-            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+            <Star className="w-3.5 h-3.5 fill-brass-400 text-brass-400" />
             Vitrindekiler
           </button>
           <button
             onClick={() => { setStatusFilter("active"); setCurrentPage(1); }}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
-              statusFilter === "active" ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" : "text-slate-400 hover:text-emerald-300"
+              statusFilter === "active" ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" : "text-panel-400 hover:text-emerald-300"
             }`}
           >
             <span className="w-2 h-2 rounded-full bg-emerald-400" />
@@ -209,7 +209,7 @@ export default function ProductListTable({
           <button
             onClick={() => { setStatusFilter("passive"); setCurrentPage(1); }}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
-              statusFilter === "passive" ? "bg-red-500/20 text-red-300 border border-red-500/30" : "text-slate-400 hover:text-red-300"
+              statusFilter === "passive" ? "bg-red-500/20 text-red-300 border border-red-500/30" : "text-panel-400 hover:text-red-300"
             }`}
           >
             <span className="w-2 h-2 rounded-full bg-red-400" />
@@ -220,7 +220,7 @@ export default function ProductListTable({
         {/* Bulk Campaign Trigger Button */}
         <button
           onClick={() => setIsCampaignModalOpen(true)}
-          className="px-4 py-2.5 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-white rounded-xl text-xs font-bold shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2 transition whitespace-nowrap"
+          className="px-4 py-2.5 bg-gradient-to-r from-brass-600 to-brass-500 hover:from-brass-500 hover:to-brass-600 text-white rounded-xl text-xs font-bold shadow-lg shadow-brass-600/20 flex items-center justify-center gap-2 transition whitespace-nowrap"
         >
           <Zap className="w-4 h-4" />
           {selectedProductIds.length > 0 
@@ -231,33 +231,33 @@ export default function ProductListTable({
       </div>
 
       {/* Table Container */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+      <div className="bg-panel-900 border border-panel-800 rounded-2xl overflow-hidden shadow-xl">
         {loading ? (
-          <div className="py-20 text-center text-slate-400 flex flex-col items-center gap-3">
-            <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
+          <div className="py-20 text-center text-panel-400 flex flex-col items-center gap-3">
+            <Loader2 className="w-8 h-8 animate-spin text-brass-500" />
             <p className="text-sm font-medium">{t("loading_products")}</p>
           </div>
         ) : filteredProducts.length === 0 ? (
-          <div className="py-20 text-center text-slate-400 flex flex-col items-center gap-2">
-            <Tag className="w-10 h-10 text-slate-600 mb-1" />
-            <p className="text-base font-semibold text-slate-300">{t("no_products_found")}</p>
-            <p className="text-xs text-slate-500 max-w-sm">
+          <div className="py-20 text-center text-panel-400 flex flex-col items-center gap-2">
+            <Tag className="w-10 h-10 text-panel-600 mb-1" />
+            <p className="text-base font-semibold text-panel-300">{t("no_products_found")}</p>
+            <p className="text-xs text-panel-500 max-w-sm">
               {t("no_products_desc")}
             </p>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-slate-300">
-              <thead className="bg-slate-950/80 border-b border-slate-800 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <table className="w-full text-left text-sm text-panel-300">
+              <thead className="bg-panel-950/80 border-b border-panel-800 text-xs font-semibold text-panel-400 uppercase tracking-wider">
                 <tr>
                   <th className="py-4 px-4 w-10 text-center">
                     <button
                       onClick={handleSelectAllOnPage}
-                      className="p-1 text-slate-400 hover:text-amber-400 transition"
+                      className="p-1 text-panel-400 hover:text-brass-400 transition"
                       title="Sayfadaki Tümünü Seç"
                     >
                       {paginatedProducts.every((p) => p.id && selectedProductIds.includes(p.id)) ? (
-                        <CheckSquare className="w-4 h-4 text-amber-500" />
+                        <CheckSquare className="w-4 h-4 text-brass-500" />
                       ) : (
                         <Square className="w-4 h-4" />
                       )}
@@ -272,7 +272,7 @@ export default function ProductListTable({
                   <th className="py-4 px-6 text-right">{t("admin_tbl_th_actions")}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/80">
+              <tbody className="divide-y divide-panel-800/80">
                 {paginatedProducts.map((rawProduct) => {
                   const product = translateProduct(rawProduct, language);
                   const hasImage = product.images && product.images.length > 0;
@@ -285,24 +285,24 @@ export default function ProductListTable({
                   return (
                     <tr 
                       key={product.id} 
-                      className={`hover:bg-slate-800/40 transition ${
+                      className={`hover:bg-panel-800/40 transition ${
                         rawProduct.isActive === false ? "opacity-60 bg-red-950/10" : ""
                       } ${
-                        rawProduct.isFeatured ? "bg-amber-500/[0.04]" : ""
+                        rawProduct.isFeatured ? "bg-brass-500/[0.04]" : ""
                       } ${
-                        isSelected ? "bg-amber-500/10 border-l-2 border-l-amber-500" : ""
+                        isSelected ? "bg-brass-500/10 border-l-2 border-l-brass-500" : ""
                       }`}
                     >
                       {/* Checkbox */}
                       <td className="py-4 px-4 text-center">
                         <button
                           onClick={() => product.id && handleToggleSelectProduct(product.id)}
-                          className="p-1 text-slate-400 hover:text-amber-400 transition"
+                          className="p-1 text-panel-400 hover:text-brass-400 transition"
                         >
                           {isSelected ? (
-                            <CheckSquare className="w-4 h-4 text-amber-500" />
+                            <CheckSquare className="w-4 h-4 text-brass-500" />
                           ) : (
-                            <Square className="w-4 h-4 text-slate-600" />
+                            <Square className="w-4 h-4 text-panel-600" />
                           )}
                         </button>
                       </td>
@@ -311,8 +311,8 @@ export default function ProductListTable({
                       <td className="py-4 px-4">
                         <div 
                           onClick={() => mainImg && setPreviewImage(mainImg)}
-                          className={`w-14 h-14 rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center flex-shrink-0 cursor-pointer group relative ${
-                            mainImg ? "hover:border-amber-500" : ""
+                          className={`w-14 h-14 rounded-xl bg-panel-950 border border-panel-800 overflow-hidden flex items-center justify-center flex-shrink-0 cursor-pointer group relative ${
+                            mainImg ? "hover:border-brass-500" : ""
                           }`}
                         >
                           {mainImg ? (
@@ -327,7 +327,7 @@ export default function ProductListTable({
                               </div>
                             </>
                           ) : (
-                            <ImageIcon className="w-6 h-6 text-slate-600" />
+                            <ImageIcon className="w-6 h-6 text-panel-600" />
                           )}
                         </div>
                       </td>
@@ -337,16 +337,16 @@ export default function ProductListTable({
                         <Link 
                           href={`/product/${product.id}`} 
                           target="_blank"
-                          className="font-bold text-slate-100 text-sm hover:text-amber-400 transition line-clamp-1 flex items-center gap-1.5"
+                          className="font-bold text-panel-100 text-sm hover:text-brass-400 transition line-clamp-1 flex items-center gap-1.5"
                         >
                           <span>{product.title}</span>
                           <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100" />
                         </Link>
-                        <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">
+                        <p className="text-xs text-panel-400 line-clamp-1 mt-0.5">
                           {product.description || "Açıklama yok"}
                         </p>
                         {product.images && product.images.length > 1 && (
-                          <span className="inline-block mt-1 text-[10px] text-amber-500 font-semibold bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+                          <span className="inline-block mt-1 text-[10px] text-brass-500 font-semibold bg-brass-500/10 px-1.5 py-0.5 rounded border border-brass-500/20">
                             +{product.images.length - 1} ekstra resim
                           </span>
                         )}
@@ -354,7 +354,7 @@ export default function ProductListTable({
 
                       {/* Category */}
                       <td className="py-4 px-6 whitespace-nowrap">
-                        <span className="px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold">
+                        <span className="px-2.5 py-1 rounded-lg bg-brass-500/10 border border-brass-500/20 text-brass-400 text-xs font-semibold">
                           {product.category}
                         </span>
                       </td>
@@ -375,7 +375,7 @@ export default function ProductListTable({
                           </div>
 
                           {hasDiscount && (
-                            <span className="text-xs text-slate-500 line-through mt-0.5 font-medium">
+                            <span className="text-xs text-panel-500 line-through mt-0.5 font-medium">
                               ₺{product.originalPrice!.toLocaleString("tr-TR", { minimumFractionDigits: 0 })}
                             </span>
                           )}
@@ -389,7 +389,7 @@ export default function ProductListTable({
                             product.stock > 5
                               ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
                               : product.stock > 0
-                              ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                              ? "bg-brass-500/10 text-brass-400 border border-brass-500/20"
                               : "bg-red-500/10 text-red-400 border border-red-500/20"
                           }`}
                         >
@@ -405,12 +405,12 @@ export default function ProductListTable({
                             onClick={() => rawProduct.id && toggleFeaturedProduct(rawProduct.id)}
                             className={`px-3 py-1.5 rounded-xl border transition flex items-center gap-1.5 text-xs font-semibold ${
                               rawProduct.isFeatured
-                                ? "bg-amber-500/20 border-amber-500/40 text-amber-300 shadow-sm shadow-amber-500/20"
-                                : "bg-slate-950 border-slate-800 text-slate-500 hover:text-amber-400 hover:border-slate-700"
+                                ? "bg-brass-500/20 border-brass-500/40 text-brass-300 shadow-sm shadow-brass-500/20"
+                                : "bg-panel-950 border-panel-800 text-panel-500 hover:text-brass-400 hover:border-panel-700"
                             }`}
                             title={rawProduct.isFeatured ? "Vitrin Ürünü (Tıkla ve Kaldır)" : "Vitrinde Göster"}
                           >
-                            <Star className={`w-3.5 h-3.5 ${rawProduct.isFeatured ? "fill-amber-400 text-amber-400" : ""}`} />
+                            <Star className={`w-3.5 h-3.5 ${rawProduct.isFeatured ? "fill-brass-400 text-brass-400" : ""}`} />
                             <span className="text-[11px]">
                               {rawProduct.isFeatured ? "Vitrinde" : "Normal"}
                             </span>
@@ -446,7 +446,7 @@ export default function ProductListTable({
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => onEdit(rawProduct)}
-                            className="p-2 text-slate-400 hover:text-amber-400 hover:bg-slate-800 rounded-xl transition"
+                            className="p-2 text-panel-400 hover:text-brass-400 hover:bg-panel-800 rounded-xl transition"
                             title="Düzenle / İndirim Yap"
                           >
                             <Edit3 className="w-4 h-4" />
@@ -455,7 +455,7 @@ export default function ProductListTable({
                           <button
                             onClick={() => handleCloneProduct(product)}
                             disabled={cloningId === product.id}
-                            className="p-2 text-slate-400 hover:text-purple-400 hover:bg-slate-800 rounded-xl transition disabled:opacity-50"
+                            className="p-2 text-panel-400 hover:text-purple-400 hover:bg-panel-800 rounded-xl transition disabled:opacity-50"
                             title="Kopyala / Çoğalt"
                           >
                             {cloningId === product.id ? (
@@ -467,7 +467,7 @@ export default function ProductListTable({
 
                           <button
                             onClick={() => setDeleteConfirmProduct(product)}
-                            className="p-2 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-xl transition"
+                            className="p-2 text-panel-400 hover:text-red-400 hover:bg-panel-800 rounded-xl transition"
                             title="Sil"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -484,7 +484,7 @@ export default function ProductListTable({
 
         {/* Pagination Footer */}
         {filteredProducts.length > ITEMS_PER_PAGE && (
-          <div className="flex items-center justify-between px-6 py-4 bg-slate-950/60 border-t border-slate-800 text-xs text-slate-400">
+          <div className="flex items-center justify-between px-6 py-4 bg-panel-950/60 border-t border-panel-800 text-xs text-panel-400">
             <span>
               Toplam <strong>{filteredProducts.length}</strong> üründen{" "}
               <strong>{(currentPage - 1) * ITEMS_PER_PAGE + 1}</strong> -{" "}
@@ -495,7 +495,7 @@ export default function ProductListTable({
               <button
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
-                className="p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-300 hover:bg-slate-800 disabled:opacity-40 transition"
+                className="p-2 bg-panel-900 border border-panel-800 rounded-lg text-panel-300 hover:bg-panel-800 disabled:opacity-40 transition"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -505,7 +505,7 @@ export default function ProductListTable({
               <button
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
-                className="p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-300 hover:bg-slate-800 disabled:opacity-40 transition"
+                className="p-2 bg-panel-900 border border-panel-800 rounded-lg text-panel-300 hover:bg-panel-800 disabled:opacity-40 transition"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -529,7 +529,7 @@ export default function ProductListTable({
       {/* Image Full Modal */}
       {previewImage && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md" onClick={() => setPreviewImage(null)}>
-          <div className="relative max-w-2xl w-full bg-slate-900 border border-slate-800 p-2 rounded-2xl overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div className="relative max-w-2xl w-full bg-panel-900 border border-panel-800 p-2 rounded-2xl overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <button
               onClick={() => setPreviewImage(null)}
               className="absolute top-4 right-4 z-10 p-2 bg-black/60 text-white hover:bg-black rounded-full transition"
@@ -544,18 +544,18 @@ export default function ProductListTable({
       {/* Delete Confirmation Modal */}
       {deleteConfirmProduct && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="max-w-md w-full bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-2xl text-center space-y-4">
+          <div className="max-w-md w-full bg-panel-900 border border-panel-800 p-6 rounded-3xl shadow-2xl text-center space-y-4">
             <div className="w-14 h-14 bg-red-500/10 border border-red-500/20 text-red-500 rounded-2xl flex items-center justify-center mx-auto">
               <AlertTriangle className="w-7 h-7" />
             </div>
             <h3 className="text-lg font-bold text-white">Ürünü Silmek İstiyor musunuz?</h3>
-            <p className="text-xs text-slate-400">
-              "<span className="text-slate-200 font-semibold">{deleteConfirmProduct.title}</span>" ürünü veritabanından silinecektir.
+            <p className="text-xs text-panel-400">
+              "<span className="text-panel-200 font-semibold">{deleteConfirmProduct.title}</span>" ürünü veritabanından silinecektir.
             </p>
             <div className="flex justify-center gap-3 pt-2">
               <button
                 onClick={() => setDeleteConfirmProduct(null)}
-                className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold transition"
+                className="px-5 py-2.5 bg-panel-800 hover:bg-panel-700 text-panel-300 rounded-xl text-xs font-semibold transition"
               >
                 İptal
               </button>

@@ -13,8 +13,10 @@
     }
   }
 
+  /* Faint Seljuk star lattice: reads as texture from afar, as a motif up close */
   body {
-    @apply min-h-screen bg-slate-50 text-slate-900 antialiased;
+    @apply min-h-screen text-slate-900 antialiased;
+    background: #fbfbf8 url("/images/pattern-seljuk-light.svg") repeat;
   }
 
   ::selection {
@@ -51,7 +53,14 @@
   background:
     radial-gradient(ellipse 70% 55% at 68% 0%, rgba(197, 160, 89, 0.16), transparent 70%),
     radial-gradient(ellipse 90% 70% at 50% 120%, rgba(0, 0, 0, 0.45), transparent 70%),
+    url("/images/pattern-seljuk-dark.svg") repeat,
     #0c2417;
+}
+
+/* Gold lattice on the green surfaces (footer, admin sidebar) */
+.bg-pattern-dark {
+  background-image: url("/images/pattern-seljuk-dark.svg");
+  background-repeat: repeat;
 }
 
 /* Thin gold bezel around the stage, inset so it reads as a frame, not a border */

@@ -37,7 +37,7 @@ export default function OrderSuccessPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col">
+      <div className="min-h-screen flex flex-col">
         <Navbar />
         <div className="flex-1 flex flex-col items-center justify-center gap-3">
           <Loader2 className="w-8 h-8 animate-spin text-amber-600" />
@@ -49,7 +49,7 @@ export default function OrderSuccessPage() {
 
   if (!order) {
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col">
+      <div className="min-h-screen flex flex-col">
         <Navbar />
         <div className="flex-1 flex flex-col items-center justify-center text-center p-4">
           <AlertCircle className="w-12 h-12 text-slate-400 mb-2" />
@@ -64,7 +64,7 @@ export default function OrderSuccessPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
+    <div className="min-h-screen text-slate-900 flex flex-col">
       <Navbar />
 
       <main className="max-w-3xl mx-auto px-4 py-12 flex-1 w-full space-y-8">

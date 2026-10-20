@@ -60,7 +60,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr" className="scroll-smooth">
-      <body className={`${inter.variable} ${cormorant.variable} ${arabicDisplay.variable} ${arabicSans.variable} font-sans min-h-screen bg-slate-50 text-slate-900 antialiased`}>
+      <body className={`${inter.variable} ${cormorant.variable} ${arabicDisplay.variable} ${arabicSans.variable} font-sans min-h-screen text-slate-900 antialiased`}>
         <LanguageProvider>
           <AuthProvider>
             {children}

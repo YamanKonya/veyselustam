@@ -104,18 +104,18 @@ export default function AdminDashboardPage() {
       )}
 
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-panel-800 pb-6">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
               {t("admin_title")}
             </h1>
-            <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold flex items-center gap-1">
+            <span className="px-3 py-1 rounded-full bg-brass-500/10 border border-brass-500/20 text-brass-400 text-xs font-bold flex items-center gap-1">
               <Sparkles className="w-3.5 h-3.5" />
               {t("admin_badge")}
             </span>
           </div>
-          <p className="text-slate-400 text-xs sm:text-sm mt-1">
+          <p className="text-panel-400 text-xs sm:text-sm mt-1">
             {t("admin_subtitle")}
           </p>
         </div>
@@ -125,14 +125,14 @@ export default function AdminDashboardPage() {
           onClick={handleSeedFirestore}
           disabled={seeding}
           title="Henüz Firestore'da olmayan ürünleri veritabanına kaydeder"
-          className="px-5 py-3.5 rounded-2xl border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-200 font-bold text-sm flex items-center justify-center gap-2 transition disabled:opacity-60"
+          className="px-5 py-3.5 rounded-2xl border border-panel-700 bg-panel-900 hover:bg-panel-800 text-panel-200 font-bold text-sm flex items-center justify-center gap-2 transition disabled:opacity-60"
         >
           {seeding ? <Loader2 className="w-5 h-5 animate-spin" /> : <CloudUpload className="w-5 h-5" />}
           {seeding ? "Yükleniyor..." : "Ürünleri Firestore'a Yükle"}
         </button>
         <button
           onClick={handleOpenCreateModal}
-          className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-sm shadow-xl shadow-amber-600/20 flex items-center justify-center gap-2 transition duration-300 hover:scale-[1.02]"
+          className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-brass-600 to-brass-500 hover:from-brass-500 hover:to-brass-600 text-white font-bold text-sm shadow-xl shadow-brass-600/20 flex items-center justify-center gap-2 transition duration-300 hover:scale-[1.02]"
         >
           <Plus className="w-5 h-5" />
           {t("admin_btn_add")}
@@ -143,23 +143,23 @@ export default function AdminDashboardPage() {
       {/* Overview Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
         {/* Total Products */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex items-center justify-between shadow-xl">
+        <div className="bg-panel-900 border border-panel-800 rounded-2xl p-5 flex items-center justify-between shadow-xl">
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{t("admin_stat_1")}</p>
+            <p className="text-xs font-semibold text-panel-400 uppercase tracking-wider">{t("admin_stat_1")}</p>
             <h3 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">{totalProducts}</h3>
-            <p className="text-[11px] text-slate-500 mt-1">{t("admin_stat_1_sub")}</p>
+            <p className="text-[11px] text-panel-500 mt-1">{t("admin_stat_1_sub")}</p>
           </div>
-          <div className="p-3 bg-amber-600/10 text-amber-500 rounded-2xl border border-amber-500/20">
+          <div className="p-3 bg-brass-600/10 text-brass-500 rounded-2xl border border-brass-500/20">
             <Package className="w-6 h-6" />
           </div>
         </div>
 
         {/* Total Stock */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex items-center justify-between shadow-xl">
+        <div className="bg-panel-900 border border-panel-800 rounded-2xl p-5 flex items-center justify-between shadow-xl">
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{t("admin_stat_2")}</p>
+            <p className="text-xs font-semibold text-panel-400 uppercase tracking-wider">{t("admin_stat_2")}</p>
             <h3 className="text-2xl sm:text-3xl font-extrabold text-emerald-400 mt-1">{totalStock}</h3>
-            <p className="text-[11px] text-slate-500 mt-1">{t("admin_stat_2_sub")}</p>
+            <p className="text-[11px] text-panel-500 mt-1">{t("admin_stat_2_sub")}</p>
           </div>
           <div className="p-3 bg-emerald-600/10 text-emerald-500 rounded-2xl border border-emerald-500/20">
             <Boxes className="w-6 h-6" />
@@ -167,27 +167,27 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Categories */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex items-center justify-between shadow-xl">
+        <div className="bg-panel-900 border border-panel-800 rounded-2xl p-5 flex items-center justify-between shadow-xl">
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{t("admin_stat_3")}</p>
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-purple-400 mt-1">{categoriesCount}</h3>
-            <p className="text-[11px] text-slate-500 mt-1">{t("admin_stat_3_sub")}</p>
+            <p className="text-xs font-semibold text-panel-400 uppercase tracking-wider">{t("admin_stat_3")}</p>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-brass-300 mt-1">{categoriesCount}</h3>
+            <p className="text-[11px] text-panel-500 mt-1">{t("admin_stat_3_sub")}</p>
           </div>
-          <div className="p-3 bg-purple-600/10 text-purple-500 rounded-2xl border border-purple-500/20">
+          <div className="p-3 bg-brass-500/10 text-brass-300 rounded-2xl border border-brass-500/20">
             <Layers className="w-6 h-6" />
           </div>
         </div>
 
         {/* Total Catalog Value */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex items-center justify-between shadow-xl">
+        <div className="bg-panel-900 border border-panel-800 rounded-2xl p-5 flex items-center justify-between shadow-xl">
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{t("admin_stat_4")}</p>
-            <h3 className="text-xl sm:text-2xl font-extrabold text-amber-400 mt-1">
+            <p className="text-xs font-semibold text-panel-400 uppercase tracking-wider">{t("admin_stat_4")}</p>
+            <h3 className="text-xl sm:text-2xl font-extrabold text-brass-400 mt-1">
               ₺{totalCatalogValue.toLocaleString("tr-TR", { maximumFractionDigits: 0 })}
             </h3>
-            <p className="text-[11px] text-slate-500 mt-1">{t("admin_stat_4_sub")}</p>
+            <p className="text-[11px] text-panel-500 mt-1">{t("admin_stat_4_sub")}</p>
           </div>
-          <div className="p-3 bg-blue-600/10 text-blue-500 rounded-2xl border border-blue-500/20">
+          <div className="p-3 bg-panel-500/10 text-panel-200 rounded-2xl border border-panel-500/20">
             <TrendingUp className="w-6 h-6" />
           </div>
         </div>

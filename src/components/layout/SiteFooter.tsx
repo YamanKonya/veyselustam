@@ -40,7 +40,7 @@ export default function SiteFooter() {
   ];
 
   return (
-    <footer className="bg-versace-green-900 text-versace-gold-100 mt-auto">
+    <footer className="bg-versace-green-900 bg-pattern-dark text-versace-gold-100 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {columns.map((col) => (

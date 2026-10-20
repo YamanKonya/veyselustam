@@ -63,7 +63,7 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col">
+      <div className="min-h-screen flex flex-col">
         <Navbar />
         <CartDrawer />
         <div className="flex-1 flex flex-col items-center justify-center text-center p-6 space-y-4">
@@ -130,7 +130,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
+    <div className="min-h-screen text-slate-900 flex flex-col">
       <Navbar />
       <CartDrawer />
 

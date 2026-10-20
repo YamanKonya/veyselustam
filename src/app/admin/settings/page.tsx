@@ -52,14 +52,14 @@ export default function AdminSettingsPage() {
     }
   };
 
-  const field = "w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-amber-500";
+  const field = "w-full px-3 py-2.5 bg-panel-900 border border-panel-700 rounded-xl text-sm text-panel-100 focus:outline-none focus:border-brass-500";
 
   return (
     <div className="max-w-md">
-      <h1 className="text-2xl font-extrabold text-slate-100 flex items-center gap-2">
-        <KeyRound className="w-6 h-6 text-amber-400" /> Giriş bilgileri
+      <h1 className="text-2xl font-extrabold text-panel-100 flex items-center gap-2">
+        <KeyRound className="w-6 h-6 text-brass-400" /> Giriş bilgileri
       </h1>
-      <p className="text-sm text-slate-400 mt-1">Yönetim paneline giriş için kullanılan kullanıcı adı ve şifreyi değiştirin.</p>
+      <p className="text-sm text-panel-400 mt-1">Yönetim paneline giriş için kullanılan kullanıcı adı ve şifreyi değiştirin.</p>
 
       {message && (
         <div
@@ -75,25 +75,25 @@ export default function AdminSettingsPage() {
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         <label className="block">
-          <span className="block text-sm text-slate-300 mb-1">Mevcut şifre</span>
+          <span className="block text-sm text-panel-300 mb-1">Mevcut şifre</span>
           <input type="password" required autoComplete="current-password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} className={field} />
         </label>
         <label className="block">
-          <span className="block text-sm text-slate-300 mb-1">Kullanıcı adı</span>
+          <span className="block text-sm text-panel-300 mb-1">Kullanıcı adı</span>
           <input type="text" required autoComplete="username" value={username} onChange={(e) => setUsername(e.target.value)} className={field} />
         </label>
         <label className="block">
-          <span className="block text-sm text-slate-300 mb-1">Yeni şifre</span>
+          <span className="block text-sm text-panel-300 mb-1">Yeni şifre</span>
           <input type="password" required autoComplete="new-password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className={field} />
         </label>
         <label className="block">
-          <span className="block text-sm text-slate-300 mb-1">Yeni şifre (tekrar)</span>
+          <span className="block text-sm text-panel-300 mb-1">Yeni şifre (tekrar)</span>
           <input type="password" required autoComplete="new-password" value={repeat} onChange={(e) => setRepeat(e.target.value)} className={field} />
         </label>
         <button
           type="submit"
           disabled={busy}
-          className="w-full py-3 bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-xl text-sm transition disabled:opacity-60 flex items-center justify-center gap-2"
+          className="w-full py-3 bg-brass-600 hover:bg-brass-500 text-white font-semibold rounded-xl text-sm transition disabled:opacity-60 flex items-center justify-center gap-2"
         >
           {busy && <Loader2 className="w-4 h-4 animate-spin" />}
           Giriş bilgilerini kaydet

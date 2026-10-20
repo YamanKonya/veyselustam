@@ -148,7 +148,7 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col">
+      <div className="min-h-screen flex flex-col">
         <Navbar />
         <CartDrawer />
         <div className="flex-1 flex flex-col items-center justify-center gap-4">
@@ -163,7 +163,7 @@ export default function ProductDetailPage() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col">
+      <div className="min-h-screen flex flex-col">
         <Navbar />
         <CartDrawer />
         <div className="flex-1 flex flex-col items-center justify-center text-center p-4 gap-4">
@@ -187,7 +187,7 @@ export default function ProductDetailPage() {
   const currentMainImage = images[selectedImageIndex] || null;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
+    <div className="min-h-screen text-slate-900 flex flex-col">
       <Navbar />
       <CartDrawer />
 

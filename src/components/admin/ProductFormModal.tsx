@@ -377,25 +377,25 @@ export default function ProductFormModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
-      <div className="relative w-full max-w-3xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl text-slate-100 my-8 overflow-hidden">
+      <div className="relative w-full max-w-3xl bg-panel-900 border border-panel-800 rounded-3xl shadow-2xl text-panel-100 my-8 overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-slate-800 bg-slate-950/50">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-panel-800 bg-panel-950/50">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-amber-500/10 text-amber-500 rounded-xl border border-amber-500/20">
+            <div className="p-2 bg-brass-500/10 text-brass-500 rounded-xl border border-brass-500/20">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-lg font-bold text-white">
                 {productToEdit ? "Ürünü Düzenle" : "Yeni Ürün Ekle"}
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-panel-400">
                 {productToEdit ? `ID: ${productToEdit.id}` : "Kataloğa yeni el yapımı ürün ekleyin"}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition"
+            className="p-2 text-panel-400 hover:text-white hover:bg-panel-800 rounded-xl transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -414,7 +414,7 @@ export default function ProductFormModal({
           {/* Title & Category */}
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">
                 Ürün Adı / Başlığı *
               </label>
               <input
@@ -423,24 +423,24 @@ export default function ProductFormModal({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Örn: 925 Ayar Orijinal Horasan Akik Taşlı El Yapımı Gümüş Yüzük"
-                className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm text-white transition"
+                className="w-full px-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-white transition"
               />
             </div>
 
             {/* Vitrin & Yayın Durumu */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-slate-950/80 border border-slate-800 rounded-xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-panel-950/80 border border-panel-800 rounded-xl">
               <label className="flex items-center gap-3 cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={isFeatured}
                   onChange={(e) => setIsFeatured(e.target.checked)}
-                  className="w-4 h-4 rounded border-slate-700 bg-slate-900 text-amber-500 focus:ring-amber-500"
+                  className="w-4 h-4 rounded border-panel-700 bg-panel-900 text-brass-500 focus:ring-brass-500"
                 />
                 <div className="flex items-center gap-2">
-                  <Star className={`w-4 h-4 ${isFeatured ? "fill-amber-400 text-amber-400" : "text-slate-500"}`} />
+                  <Star className={`w-4 h-4 ${isFeatured ? "fill-brass-400 text-brass-400" : "text-panel-500"}`} />
                   <div>
                     <span className="text-xs font-bold text-white block">Vitrin Ürünü Olarak Belirle</span>
-                    <span className="text-[10px] text-slate-400 block">Ana sayfada en başta ve öncelikli gösterilir</span>
+                    <span className="text-[10px] text-panel-400 block">Ana sayfada en başta ve öncelikli gösterilir</span>
                   </div>
                 </div>
               </label>
@@ -450,7 +450,7 @@ export default function ProductFormModal({
                   type="checkbox"
                   checked={isActive}
                   onChange={(e) => setIsActive(e.target.checked)}
-                  className="w-4 h-4 rounded border-slate-700 bg-slate-900 text-emerald-500 focus:ring-emerald-500"
+                  className="w-4 h-4 rounded border-panel-700 bg-panel-900 text-emerald-500 focus:ring-emerald-500"
                 />
                 <div>
                   <div className="flex items-center gap-1.5">
@@ -459,7 +459,7 @@ export default function ProductFormModal({
                       {isActive ? "Ürün Aktif (Sitede Yayında)" : "Ürün Pasif (Gizli)"}
                     </span>
                   </div>
-                  <span className="text-[10px] text-slate-400 block">
+                  <span className="text-[10px] text-panel-400 block">
                     {isActive ? "Müşteriler mağazada görebilir" : "Mağazada gizlenir, sadece adminde görünür"}
                   </span>
                 </div>
@@ -468,13 +468,13 @@ export default function ProductFormModal({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">
                   Kategori *
                 </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm text-white transition"
+                  className="w-full px-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-white transition"
                 >
                   {DEFAULT_CATEGORIES.map((cat) => (
                     <option key={cat} value={cat}>
@@ -486,7 +486,7 @@ export default function ProductFormModal({
 
               {category === "Diğer" && (
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-amber-400 mb-2">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-brass-400 mb-2">
                     Özel Kategori Adı
                   </label>
                   <input
@@ -494,7 +494,7 @@ export default function ProductFormModal({
                     value={customCategory}
                     onChange={(e) => setCustomCategory(e.target.value)}
                     placeholder="Örn: Kol Düğmesi, Tesbih..."
-                    className="w-full px-4 py-3 bg-slate-950 border border-amber-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm text-white"
+                    className="w-full px-4 py-3 bg-panel-950 border border-brass-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-white"
                   />
                 </div>
               )}
@@ -503,7 +503,7 @@ export default function ProductFormModal({
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">
               Ürün Açıklaması
             </label>
             <textarea
@@ -511,22 +511,22 @@ export default function ProductFormModal({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1-3 iş günü..."
-              className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm text-white resize-none"
+              className="w-full px-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-white resize-none"
             />
           </div>
 
           {/* Translations Section */}
-          <div className="border border-slate-800 rounded-xl overflow-hidden">
+          <div className="border border-panel-800 rounded-xl overflow-hidden">
             <button
               type="button"
               onClick={() => setShowTranslations(!showTranslations)}
-              className="w-full px-4 py-3 bg-slate-900/50 hover:bg-slate-800 flex items-center justify-between transition"
+              className="w-full px-4 py-3 bg-panel-900/50 hover:bg-panel-800 flex items-center justify-between transition"
             >
-              <span className="text-sm font-bold text-amber-500">Çeviriler (İngilizce, Arapça, İspanyolca, Almanca)</span>
-              <span className="text-xs text-slate-400">{showTranslations ? "Gizle ▲" : "Göster ▼"}</span>
+              <span className="text-sm font-bold text-brass-500">Çeviriler (İngilizce, Arapça, İspanyolca, Almanca)</span>
+              <span className="text-xs text-panel-400">{showTranslations ? "Gizle ▲" : "Göster ▼"}</span>
             </button>
-            <div className="px-4 py-3 bg-slate-950 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
-              <p className="text-[11px] text-slate-400 max-w-md">
+            <div className="px-4 py-3 bg-panel-950 border-t border-panel-800 flex flex-wrap items-center justify-between gap-3">
+              <p className="text-[11px] text-panel-400 max-w-md">
                 Kaydettiğinizde Türkçe metin otomatik olarak 4 dile çevrilir. Türkçe metni değiştirirseniz çeviriler yeniden yapılır.
                 {i18nSource && i18nSource === translationSourceKey(title, description)
                   ? " Çeviriler güncel."
@@ -536,44 +536,44 @@ export default function ProductFormModal({
                 type="button"
                 onClick={handleAutoTranslate}
                 disabled={translating}
-                className="px-3 py-2 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-lg flex items-center gap-1.5 disabled:opacity-60"
+                className="px-3 py-2 bg-brass-600 hover:bg-brass-500 text-white text-xs font-bold rounded-lg flex items-center gap-1.5 disabled:opacity-60"
               >
                 {translating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
                 Şimdi otomatik çevir
               </button>
             </div>
             {showTranslations && (
-              <div className="p-4 bg-slate-950 space-y-6">
+              <div className="p-4 bg-panel-950 space-y-6">
                 
                 {/* English */}
                 <div className="space-y-3">
-                  <h4 className="text-xs font-bold text-slate-300 uppercase">İngilizce (English)</h4>
+                  <h4 className="text-xs font-bold text-panel-300 uppercase">İngilizce (English)</h4>
                   <input
                     type="text"
                     value={title_en}
                     onChange={editTranslation(setTitleEn)}
                     placeholder="English Title"
-                    className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white"
+                    className="w-full px-4 py-2 bg-panel-900 border border-panel-800 rounded-lg text-sm text-white"
                   />
                   <textarea
                     rows={2}
                     value={description_en}
                     onChange={editTranslation(setDescriptionEn)}
                     placeholder="English Description"
-                    className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white resize-none"
+                    className="w-full px-4 py-2 bg-panel-900 border border-panel-800 rounded-lg text-sm text-white resize-none"
                   />
                 </div>
 
                 {/* Arabic */}
                 <div className="space-y-3">
-                  <h4 className="text-xs font-bold text-slate-300 uppercase">Arapça (العربية)</h4>
+                  <h4 className="text-xs font-bold text-panel-300 uppercase">Arapça (العربية)</h4>
                   <input
                     type="text"
                     value={title_ar}
                     onChange={editTranslation(setTitleAr)}
                     placeholder="Arabic Title"
                     dir="auto"
-                    className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white"
+                    className="w-full px-4 py-2 bg-panel-900 border border-panel-800 rounded-lg text-sm text-white"
                   />
                   <textarea
                     rows={2}
@@ -581,45 +581,45 @@ export default function ProductFormModal({
                     onChange={editTranslation(setDescriptionAr)}
                     placeholder="Arabic Description"
                     dir="auto"
-                    className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white resize-none"
+                    className="w-full px-4 py-2 bg-panel-900 border border-panel-800 rounded-lg text-sm text-white resize-none"
                   />
                 </div>
 
                 {/* Spanish */}
                 <div className="space-y-3">
-                  <h4 className="text-xs font-bold text-slate-300 uppercase">İspanyolca (Español)</h4>
+                  <h4 className="text-xs font-bold text-panel-300 uppercase">İspanyolca (Español)</h4>
                   <input
                     type="text"
                     value={title_es}
                     onChange={editTranslation(setTitleEs)}
                     placeholder="Spanish Title"
-                    className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white"
+                    className="w-full px-4 py-2 bg-panel-900 border border-panel-800 rounded-lg text-sm text-white"
                   />
                   <textarea
                     rows={2}
                     value={description_es}
                     onChange={editTranslation(setDescriptionEs)}
                     placeholder="Spanish Description"
-                    className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white resize-none"
+                    className="w-full px-4 py-2 bg-panel-900 border border-panel-800 rounded-lg text-sm text-white resize-none"
                   />
                 </div>
 
                 {/* German */}
                 <div className="space-y-3">
-                  <h4 className="text-xs font-bold text-slate-300 uppercase">Almanca (Deutsch)</h4>
+                  <h4 className="text-xs font-bold text-panel-300 uppercase">Almanca (Deutsch)</h4>
                   <input
                     type="text"
                     value={title_de}
                     onChange={editTranslation(setTitleDe)}
                     placeholder="German Title"
-                    className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white"
+                    className="w-full px-4 py-2 bg-panel-900 border border-panel-800 rounded-lg text-sm text-white"
                   />
                   <textarea
                     rows={2}
                     value={description_de}
                     onChange={editTranslation(setDescriptionDe)}
                     placeholder="German Description"
-                    className="w-full px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-sm text-white resize-none"
+                    className="w-full px-4 py-2 bg-panel-900 border border-panel-800 rounded-lg text-sm text-white resize-none"
                   />
                 </div>
 
@@ -630,11 +630,11 @@ export default function ProductFormModal({
           {/* Price, Original Price, Discount & Stock */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">
                 Satış Fiyatı (₺ TL) *
               </label>
               <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500 font-bold text-sm">₺</span>
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brass-500 font-bold text-sm">₺</span>
                 <input
                   type="number"
                   min="0"
@@ -650,17 +650,17 @@ export default function ProductFormModal({
                     }
                   }}
                   placeholder="5600.00"
-                  className="w-full pl-9 pr-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm text-white font-bold"
+                  className="w-full pl-9 pr-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-white font-bold"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">
                 İndirimsiz (Eski) Fiyat (₺)
               </label>
               <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">₺</span>
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-panel-500 font-bold text-sm">₺</span>
                 <input
                   type="number"
                   min="0"
@@ -675,17 +675,17 @@ export default function ProductFormModal({
                     }
                   }}
                   placeholder="7000.00"
-                  className="w-full pl-9 pr-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm text-slate-300 line-through"
+                  className="w-full pl-9 pr-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-panel-300 line-through"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-amber-400 mb-2">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-brass-400 mb-2">
                 İndirim Oranı (%)
               </label>
               <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500 font-bold text-sm">%</span>
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brass-500 font-bold text-sm">%</span>
                 <input
                   type="number"
                   min="0"
@@ -703,31 +703,31 @@ export default function ProductFormModal({
                     }
                   }}
                   placeholder="20"
-                  className="w-full pl-8 pr-4 py-3 bg-slate-950 border border-amber-500/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm text-amber-400 font-bold"
+                  className="w-full pl-8 pr-4 py-3 bg-panel-950 border border-brass-500/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-brass-400 font-bold"
                 />
               </div>
             </div>
           </div>
 
           {/* Ring Sizes Variation Selector */}
-          <div className="bg-slate-950/60 border border-slate-800 rounded-2xl p-4 space-y-3">
+          <div className="bg-panel-950/60 border border-panel-800 rounded-2xl p-4 space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold uppercase tracking-wider text-amber-400">
+              <label className="text-xs font-semibold uppercase tracking-wider text-brass-400">
                 Parmak Numaraları (Ring Sizes)
               </label>
               <div className="flex gap-2">
                 <button
                   type="button"
                   onClick={handleSelectAllRingSizes}
-                  className="text-[11px] text-amber-400 hover:underline font-medium"
+                  className="text-[11px] text-brass-400 hover:underline font-medium"
                 >
                   Tümünü Seç (15-30)
                 </button>
-                <span className="text-slate-700">•</span>
+                <span className="text-panel-700">•</span>
                 <button
                   type="button"
                   onClick={handleClearAllRingSizes}
-                  className="text-[11px] text-slate-400 hover:underline font-medium"
+                  className="text-[11px] text-panel-400 hover:underline font-medium"
                 >
                   Temizle
                 </button>
@@ -744,8 +744,8 @@ export default function ProductFormModal({
                     onClick={() => handleRingSizeToggle(size)}
                     className={`px-2.5 py-1 rounded-lg text-xs font-mono font-semibold transition flex items-center gap-1 border ${
                       isSelected
-                        ? "bg-amber-600 text-white border-amber-500 shadow-md shadow-amber-600/20"
-                        : "bg-slate-900 text-slate-400 border-slate-800 hover:border-slate-700"
+                        ? "bg-brass-600 text-white border-brass-500 shadow-md shadow-brass-600/20"
+                        : "bg-panel-900 text-panel-400 border-panel-800 hover:border-panel-700"
                     }`}
                   >
                     {isSelected && <Check className="w-3 h-3" />}
@@ -756,18 +756,18 @@ export default function ProductFormModal({
             </div>
 
             {/* Custom Ring Size Add */}
-            <div className="flex gap-2 pt-2 border-t border-slate-800/60">
+            <div className="flex gap-2 pt-2 border-t border-panel-800/60">
               <input
                 type="text"
                 value={customRingSize}
                 onChange={(e) => setCustomRingSize(e.target.value)}
                 placeholder="Özel Ölçü Ekle (Örn: 14, Standart Boy...)"
-                className="flex-1 px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-lg text-xs text-white focus:outline-none focus:ring-1 focus:ring-amber-500"
+                className="flex-1 px-3 py-1.5 bg-panel-900 border border-panel-800 rounded-lg text-xs text-white focus:outline-none focus:ring-1 focus:ring-brass-500"
               />
               <button
                 type="button"
                 onClick={handleAddCustomRingSize}
-                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded-lg transition text-slate-200"
+                className="px-3 py-1.5 bg-panel-800 hover:bg-panel-700 text-xs font-semibold rounded-lg transition text-panel-200"
               >
                 Ekle
               </button>
@@ -776,12 +776,12 @@ export default function ProductFormModal({
 
           {/* Image Upload Integration */}
           <div className="space-y-3">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-panel-400">
               Ürün Görselleri
             </label>
             
             {/* File upload drag & drop area */}
-            <div className="border-2 border-dashed border-slate-800 hover:border-amber-500/50 rounded-2xl p-6 text-center cursor-pointer bg-slate-950/60 transition group">
+            <div className="border-2 border-dashed border-panel-800 hover:border-brass-500/50 rounded-2xl p-6 text-center cursor-pointer bg-panel-950/60 transition group">
               <input
                 type="file"
                 multiple
@@ -791,13 +791,13 @@ export default function ProductFormModal({
                 id="file-upload"
               />
               <label htmlFor="file-upload" className="cursor-pointer flex flex-col items-center gap-2">
-                <div className="w-12 h-12 rounded-full bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition duration-300">
+                <div className="w-12 h-12 rounded-full bg-brass-500/10 text-brass-500 flex items-center justify-center group-hover:scale-110 transition duration-300">
                   <Upload className="w-6 h-6" />
                 </div>
-                <span className="text-xs text-slate-200 font-semibold">
+                <span className="text-xs text-panel-200 font-semibold">
                   Bilgisayarınızdan Resim Seçin veya Sürükleyin
                 </span>
-                <span className="text-[10px] text-slate-500">WEBP, JPG, PNG formatları. Çoklu seçim desteklenir.</span>
+                <span className="text-[10px] text-panel-500">WEBP, JPG, PNG formatları. Çoklu seçim desteklenir.</span>
               </label>
             </div>
 
@@ -808,12 +808,12 @@ export default function ProductFormModal({
                 value={imageUrlInput}
                 onChange={(e) => setImageUrlInput(e.target.value)}
                 placeholder="Veya Harici Resim URL'si Ekle (https://...)"
-                className="flex-1 px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:ring-1 focus:ring-amber-500"
+                className="flex-1 px-3 py-2 bg-panel-950 border border-panel-800 rounded-xl text-xs text-white focus:outline-none focus:ring-1 focus:ring-brass-500"
               />
               <button
                 type="button"
                 onClick={handleAddImageUrl}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-semibold rounded-xl transition text-slate-200 whitespace-nowrap"
+                className="px-4 py-2 bg-panel-800 hover:bg-panel-700 text-xs font-semibold rounded-xl transition text-panel-200 whitespace-nowrap"
               >
                 URL Ekle
               </button>
@@ -822,8 +822,8 @@ export default function ProductFormModal({
             {/* Image Previews */}
             {(existingImages.length > 0 || filePreviews.length > 0) && (
               <div className="space-y-2 pt-2">
-                <p className="text-[11px] text-slate-400 font-medium flex items-center gap-1">
-                  <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                <p className="text-[11px] text-panel-400 font-medium flex items-center gap-1">
+                  <Star className="w-3 h-3 text-brass-500 fill-brass-500" />
                   İlk görsel ana ürün resmi olarak kullanılacaktır.
                 </p>
 
@@ -832,14 +832,14 @@ export default function ProductFormModal({
                   {existingImages.map((url, idx) => (
                     <div 
                       key={`existing-${idx}`} 
-                      className={`relative group rounded-xl overflow-hidden border aspect-square bg-slate-950 ${
-                        idx === 0 ? "border-amber-500 shadow-md shadow-amber-500/20" : "border-slate-800"
+                      className={`relative group rounded-xl overflow-hidden border aspect-square bg-panel-950 ${
+                        idx === 0 ? "border-brass-500 shadow-md shadow-brass-500/20" : "border-panel-800"
                       }`}
                     >
                       <img src={url} alt={`Görsel ${idx + 1}`} className="w-full h-full object-cover" />
                       
                       {idx === 0 && (
-                        <span className="absolute top-1 left-1 bg-amber-500 text-[9px] font-bold text-slate-950 px-1.5 py-0.5 rounded shadow">
+                        <span className="absolute top-1 left-1 bg-brass-500 text-[9px] font-bold text-panel-950 px-1.5 py-0.5 rounded shadow">
                           Ana Görsel
                         </span>
                       )}
@@ -849,10 +849,10 @@ export default function ProductFormModal({
                           <button
                             type="button"
                             onClick={() => handleMakeMainImage(idx)}
-                            className="p-1.5 bg-amber-500 text-slate-950 rounded-lg text-xs font-bold transition hover:scale-105"
+                            className="p-1.5 bg-brass-500 text-panel-950 rounded-lg text-xs font-bold transition hover:scale-105"
                             title="Ana Görsel Yap"
                           >
-                            <Star className="w-3.5 h-3.5 fill-slate-950" />
+                            <Star className="w-3.5 h-3.5 fill-panel-950" />
                           </button>
                         )}
                         <button
@@ -869,7 +869,7 @@ export default function ProductFormModal({
 
                   {/* New File Previews */}
                   {filePreviews.map((previewUrl, idx) => (
-                    <div key={`new-${idx}`} className="relative group rounded-xl overflow-hidden border border-amber-500/60 aspect-square bg-slate-950">
+                    <div key={`new-${idx}`} className="relative group rounded-xl overflow-hidden border border-brass-500/60 aspect-square bg-panel-950">
                       <img src={previewUrl} alt="Yeni Yüklenen" className="w-full h-full object-cover" />
                       <span className="absolute top-1 left-1 bg-emerald-500 text-[9px] font-bold text-white px-1.5 py-0.5 rounded">
                         Yeni
@@ -889,18 +889,18 @@ export default function ProductFormModal({
           </div>
 
           {/* Hover Video Upload Integration */}
-          <div className="space-y-3 pt-4 border-t border-slate-800">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-amber-400" />
+          <div className="space-y-3 pt-4 border-t border-panel-800">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-brass-400 flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-brass-400" />
               Hover Özel Ürün Videosu (Opsiyonel)
             </label>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-[11px] text-panel-400">
               Mouse ile ürünün üzerine gelindiğinde gösterilecek kısa video (.mp4, .webm veya harici video URL'si). Yüklenmezse normal resim gösterilir.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {/* Video File Upload */}
-              <div className="border border-dashed border-amber-500/30 hover:border-amber-500/80 rounded-xl p-4 text-center cursor-pointer bg-slate-950/80 transition group">
+              <div className="border border-dashed border-brass-500/30 hover:border-brass-500/80 rounded-xl p-4 text-center cursor-pointer bg-panel-950/80 transition group">
                 <input
                   type="file"
                   accept="video/mp4,video/webm,video/quicktime,video/*"
@@ -909,12 +909,12 @@ export default function ProductFormModal({
                   id="video-file-upload"
                 />
                 <label htmlFor="video-file-upload" className="cursor-pointer flex flex-col items-center gap-1.5">
-                  <div className="p-2.5 bg-amber-500/10 text-amber-500 rounded-full group-hover:scale-110 transition duration-300">
+                  <div className="p-2.5 bg-brass-500/10 text-brass-500 rounded-full group-hover:scale-110 transition duration-300">
                     <Upload className="w-5 h-5" />
                   </div>
                   {videoFile ? (
                     <>
-                      <span className="text-xs text-amber-400 font-bold truncate max-w-[200px]">
+                      <span className="text-xs text-brass-400 font-bold truncate max-w-[200px]">
                         ✓ {videoFile.name}
                       </span>
                       <span className="text-[10px] text-emerald-400 font-medium bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
@@ -926,16 +926,16 @@ export default function ProductFormModal({
                       <span className="text-xs text-emerald-400 font-bold">
                         ✓ Yüklü Video Mevcut
                       </span>
-                      <span className="text-[10px] text-slate-400 font-medium">
+                      <span className="text-[10px] text-panel-400 font-medium">
                         Farklı video seçmek için tıklayın
                       </span>
                     </>
                   ) : (
                     <>
-                      <span className="text-xs text-slate-200 font-semibold">
+                      <span className="text-xs text-panel-200 font-semibold">
                         Video Dosyası Yükle
                       </span>
-                      <span className="text-[10px] text-slate-500">MP4, WEBM formatı desteklenir</span>
+                      <span className="text-[10px] text-panel-500">MP4, WEBM formatı desteklenir</span>
                     </>
                   )}
                 </label>
@@ -955,7 +955,7 @@ export default function ProductFormModal({
                       ? "Bilgisayardan Yüklenmiş Video Aktif"
                       : "Veya Harici Video URL'si Girin (https://...mp4)"
                   }
-                  className="w-full px-3 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full px-3 py-2.5 bg-panel-950 border border-panel-800 rounded-xl text-xs text-white focus:outline-none focus:ring-1 focus:ring-brass-500"
                 />
                 {videoUrl && (
                   <button
@@ -974,16 +974,16 @@ export default function ProductFormModal({
 
             {/* Video Preview Player with Hover test */}
             {videoUrl && (
-              <div className="mt-3 bg-slate-950/80 border border-amber-500/30 rounded-2xl p-4 space-y-2">
-                <div className="flex items-center justify-between text-xs font-bold text-amber-400">
+              <div className="mt-3 bg-panel-950/80 border border-brass-500/30 rounded-2xl p-4 space-y-2">
+                <div className="flex items-center justify-between text-xs font-bold text-brass-400">
                   <span className="flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5" /> Hover Video Canlı Kart Önizlemesi (Fareyi üzerine getirin):
                   </span>
-                  <span className="text-[10px] text-slate-400 font-normal hidden sm:inline">Ana sayfada aynen böyle görünecektir</span>
+                  <span className="text-[10px] text-panel-400 font-normal hidden sm:inline">Ana sayfada aynen böyle görünecektir</span>
                 </div>
                 
                 <div 
-                  className="group relative aspect-square max-w-[200px] mx-auto rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 cursor-pointer shadow-xl"
+                  className="group relative aspect-square max-w-[200px] mx-auto rounded-2xl overflow-hidden border border-panel-800 bg-panel-900 cursor-pointer shadow-xl"
                   onMouseEnter={(e) => {
                     const vid = e.currentTarget.querySelector("video");
                     if (vid) vid.play().catch(() => {});
@@ -996,7 +996,7 @@ export default function ProductFormModal({
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-slate-500 text-xs">Görsel Yok</div>
+                    <div className="w-full h-full flex items-center justify-center text-panel-500 text-xs">Görsel Yok</div>
                   )}
 
                   <video
@@ -1012,17 +1012,17 @@ export default function ProductFormModal({
 
                   {/* Header Badges */}
                   <div className="absolute top-2 inset-x-2 flex items-start justify-between gap-1 z-20 pointer-events-none">
-                    <span className="bg-black/75 backdrop-blur-md text-amber-400 text-[9px] font-bold px-2 py-0.5 rounded truncate max-w-[65%] shadow">
+                    <span className="bg-black/75 backdrop-blur-md text-brass-400 text-[9px] font-bold px-2 py-0.5 rounded truncate max-w-[65%] shadow">
                       {category === "Diğer" && customCategory ? customCategory : category}
                     </span>
                     {originalPrice && Number(originalPrice) > Number(price || 0) && (
-                      <span className="bg-gradient-to-r from-red-600 to-amber-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded shrink-0 shadow">
+                      <span className="bg-gradient-to-r from-red-600 to-brass-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded shrink-0 shadow">
                         -%{discountPercent || Math.round(((Number(originalPrice) - Number(price)) / Number(originalPrice)) * 100)} İNDİRİM
                       </span>
                     )}
                   </div>
 
-                  <div className="absolute bottom-2 inset-x-2 bg-white/90 text-slate-900 text-[10px] font-bold py-1.5 rounded-lg text-center opacity-0 group-hover:opacity-100 transition duration-300 z-20">
+                  <div className="absolute bottom-2 inset-x-2 bg-white/90 text-panel-900 text-[10px] font-bold py-1.5 rounded-lg text-center opacity-0 group-hover:opacity-100 transition duration-300 z-20">
                     Detayları Gör
                   </div>
                 </div>
@@ -1031,18 +1031,18 @@ export default function ProductFormModal({
           </div>
 
           {/* Footer Buttons */}
-          <div className="flex items-center justify-end gap-3 pt-6 border-t border-slate-800">
+          <div className="flex items-center justify-end gap-3 pt-6 border-t border-panel-800">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 rounded-xl border border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-white text-sm font-medium transition"
+              className="px-5 py-2.5 rounded-xl border border-panel-800 text-panel-400 hover:bg-panel-800 hover:text-white text-sm font-medium transition"
             >
               İptal
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold shadow-lg shadow-amber-600/20 flex items-center gap-2 transition disabled:opacity-50"
+              className="px-6 py-2.5 rounded-xl bg-brass-600 hover:bg-brass-700 text-white text-sm font-bold shadow-lg shadow-brass-600/20 flex items-center gap-2 transition disabled:opacity-50"
             >
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
               {loading ? "Kaydediliyor..." : productToEdit ? "Değişiklikleri Kaydet" : "Ürünü Yayınla"}

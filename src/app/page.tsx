@@ -139,7 +139,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 flex flex-col">
+    <div className="min-h-screen text-slate-900 flex flex-col">
       <Navbar />
       <CartDrawer />
 
