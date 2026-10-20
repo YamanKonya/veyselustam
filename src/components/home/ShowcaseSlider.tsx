@@ -2,14 +2,14 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, ShoppingBag, Check } from "lucide-react";
+import { ChevronLeft, ChevronRight, ShoppingBag, Check, Pause, Play } from "lucide-react";
 import { Product } from "@/types";
 import { useLanguage } from "@/context/LanguageContext";
 import { useCartStore } from "@/store/useCartStore";
 import { formatPrice } from "@/lib/format";
 import { imageAt, imageSrcSet } from "@/lib/image";
 
-const AUTOPLAY_MS = 6000;
+const AUTOPLAY_MS = 5000;
 
 interface ShowcaseSliderProps {
   products: Product[];
@@ -45,11 +45,13 @@ export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
     if (index >= count) setIndex(0);
   }, [count, index]);
 
+  // Advances every 5 s; any manual move restarts the countdown (the effect re-runs
+  // on index). Only the pause button stops it.
   useEffect(() => {
-    if (paused || reducedMotion || count < 2) return;
+    if (paused || count < 2) return;
     const timer = setTimeout(() => go(index + 1), AUTOPLAY_MS);
     return () => clearTimeout(timer);
-  }, [index, paused, reducedMotion, count, go]);
+  }, [index, paused, count, go]);
 
   // Keep the active thumbnail visible in the rail
   useEffect(() => {
@@ -98,10 +100,6 @@ export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
       aria-roledescription="carousel"
       aria-label={t("showcase_label")}
       className="showcase relative w-full overflow-hidden text-versace-gold-50"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
       onKeyDown={onKeyDown}
     >
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-8 lg:pt-16 lg:pb-12">
@@ -170,13 +168,24 @@ export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
           </div>
 
           {/* Placard: what the piece is and what it costs */}
-          <div className="lg:order-1 text-center lg:text-start" aria-live="polite">
-            <p className="text-sm text-versace-gold-500/90 font-medium">
+          {/* Announce changes only when the visitor is driving; autoplay would be noise */}
+          <div className="lg:order-1 text-center lg:text-start" aria-live={paused ? "polite" : "off"}>
+            <div className="flex items-center gap-3 justify-center lg:justify-start text-sm text-versace-gold-500/90 font-medium">
               {t("showcase_label")}
-              <span dir="ltr" className="inline-block text-versace-gold-50/40 tabular-nums ms-3">
+              <span dir="ltr" className="inline-block text-versace-gold-50/40 tabular-nums">
                 {String(index + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
               </span>
-            </p>
+              {count > 1 && (
+                <button
+                  type="button"
+                  onClick={() => setPaused((p) => !p)}
+                  aria-label={paused ? t("showcase_play") : t("showcase_pause")}
+                  className="w-7 h-7 rounded-full flex items-center justify-center text-versace-gold-50/60 hover:text-versace-gold-500 shadow-[0_0_0_1px_rgba(197,160,89,0.35)] transition-colors"
+                >
+                  {paused ? <Play className="w-3 h-3" /> : <Pause className="w-3 h-3" />}
+                </button>
+              )}
+            </div>
 
             <h2
               key={product.id}
@@ -242,7 +251,7 @@ export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
                   <span
                     key={`${index}-${paused}`}
                     className={`absolute inset-x-0 bottom-0 h-[2px] bg-versace-gold-500 origin-left rtl:origin-right ${
-                      paused || reducedMotion ? "" : "animate-showcase-progress"
+                      paused ? "" : "animate-showcase-progress"
                     }`}
                     style={{ animationDuration: `${AUTOPLAY_MS}ms` }}
                   />

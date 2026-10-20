@@ -13,7 +13,8 @@
     }
   }
 
-  /* Faint Seljuk star lattice: reads as texture from afar, as a motif up close */
+  /* Faint Seljuk 12-point star strapwork: texture from afar, a motif up close.
+     The tile's inner stroke is #fbfbf8, so keep this background colour with it. */
   body {
     @apply min-h-screen text-slate-900 antialiased;
     background: #fbfbf8 url("/images/pattern-seljuk-light.svg") repeat;
@@ -53,11 +54,11 @@
   background:
     radial-gradient(ellipse 70% 55% at 68% 0%, rgba(197, 160, 89, 0.16), transparent 70%),
     radial-gradient(ellipse 90% 70% at 50% 120%, rgba(0, 0, 0, 0.45), transparent 70%),
-    url("/images/pattern-seljuk-dark.svg") repeat,
     #0c2417;
 }
 
-/* Gold lattice on the green surfaces (footer, admin sidebar) */
+/* Gold strapwork for the green surfaces (footer, admin sidebar). The tile's inner
+   stroke is #0c2417, so use it only on versace-green-900 backgrounds. */
 .bg-pattern-dark {
   background-image: url("/images/pattern-seljuk-dark.svg");
   background-repeat: repeat;
