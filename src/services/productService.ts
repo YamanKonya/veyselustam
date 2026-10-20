@@ -1,15 +1,14 @@
-import { 
-  collection, 
-  addDoc, 
+import {
+  collection,
+  addDoc,
   setDoc,
-  updateDoc, 
-  deleteDoc, 
-  doc, 
+  deleteDoc,
+  doc,
   getDoc,
-  getDocs, 
-  onSnapshot, 
-  query, 
-  orderBy 
+  getDocs,
+  onSnapshot,
+  deleteField,
+  FieldValue,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "@/lib/firebase";
@@ -28,7 +27,85 @@ const sanitizeForFirestore = (obj: Record<string, any>): Record<string, any> => 
       clean[key] = obj[key];
     }
   });
+  // blob: URLs only live in the uploading browser and huge data URLs exceed the doc size limit
+  if (typeof clean.videoUrl === "string" && (clean.videoUrl.startsWith("blob:") || clean.videoUrl.length > 500000)) {
+    delete clean.videoUrl;
+  }
+  delete clean.id;
   return clean;
+};
+
+// ---- Firestore write error reporting ----
+// Writes run in the background after the optimistic local update, so failures are
+// pushed to listeners (the admin panel shows them as a toast) instead of being swallowed.
+const writeErrorListeners: Array<(message: string) => void> = [];
+
+export const subscribeProductWriteErrors = (cb: (message: string) => void) => {
+  writeErrorListeners.push(cb);
+  return () => {
+    const idx = writeErrorListeners.indexOf(cb);
+    if (idx > -1) writeErrorListeners.splice(idx, 1);
+  };
+};
+
+export const describeFirestoreError = (err: unknown): string => {
+  const code = (err as { code?: string })?.code || "";
+  if (code === "permission-denied") {
+    return "Yetki reddedildi: bu hesap Firestore'da yönetici (admins) olarak kayıtlı değil veya oturum kapanmış.";
+  }
+  if (code === "unavailable") {
+    return "Firebase'e ulaşılamadı (internet bağlantısını kontrol edin).";
+  }
+  if (code === "invalid-argument" || code === "resource-exhausted") {
+    return "Ürün verisi çok büyük (fotoğraf/video). Daha küçük dosya deneyin.";
+  }
+  return (err as { message?: string })?.message || String(err);
+};
+
+const reportWriteError = (action: string, err: unknown) => {
+  console.error(`Firestore ${action} failed:`, err);
+  const message = `Kaydedilemedi (${action}): ${describeFirestoreError(err)}`;
+  writeErrorListeners.forEach((cb) => cb(message));
+};
+
+// Writes changed fields to products/{id}. If the doc does not exist yet (product only
+// lives in initialProducts / localStorage) or is a partial doc without createdAt, the
+// full product is written so it shows up for every visitor.
+const writeProductDoc = async (
+  id: string,
+  fields: Record<string, unknown | FieldValue>
+): Promise<void> => {
+  const productRef = doc(db, PRODUCTS_COLLECTION, id);
+  const snap = await getDoc(productRef);
+  const existing = snap.exists() ? snap.data() : null;
+
+  if (existing && existing.createdAt && existing.title) {
+    await setDoc(productRef, fields, { merge: true });
+    return;
+  }
+
+  const local =
+    localProductsStore.find((p) => p.id === id) ||
+    INITIAL_VEYSELUSTAM_PRODUCTS.find((p) => p.id === id);
+  if (!local) {
+    await setDoc(productRef, fields, { merge: true });
+    return;
+  }
+
+  await setDoc(
+    productRef,
+    {
+      ...sanitizeForFirestore(local),
+      ...(existing || {}),
+      ...fields,
+      createdAt: local.createdAt || existing?.createdAt || new Date().toISOString(),
+    },
+    { merge: true }
+  );
+};
+
+const syncProductInBackground = (action: string, id: string, fields: Record<string, unknown | FieldValue>) => {
+  writeProductDoc(id, fields).catch((err) => reportWriteError(action, err));
 };
 
 // Helper to load catalog from localStorage (persists discounts & custom products)
@@ -121,45 +198,38 @@ export const uploadImageToStorage = (file: File): Promise<string> => {
   return uploadFileToStorage(file, "products");
 };
 
-// Helper to merge Firestore docs with local products dataset, giving precedence to local updates
+// Merge Firestore docs over the local catalog. Firestore is the source of truth for every
+// product it holds (so admin edits reach all browsers); products not in Firestore yet
+// (not seeded) fall back to the local / initial dataset.
 const mergeWithInitialProducts = (fetched: Product[]): Product[] => {
-  const currentLocal = loadProductsFromStorage();
-  const localMap = new Map<string, Product>();
+  const base = loadProductsFromStorage();
+  const baseMap = new Map<string, Product>();
+  base.forEach((p) => p.id && baseMap.set(p.id, p));
 
-  // Start with fetched products from Firestore
-  fetched.forEach((p) => {
-    if (p.id) {
-      localMap.set(p.id, p);
-    }
+  const fetchedIds = new Set<string>();
+  const merged: Product[] = fetched
+    .filter((p) => p.id)
+    .map((remote) => {
+      fetchedIds.add(remote.id!);
+      const localProd = baseMap.get(remote.id!);
+      return localProd
+        ? { ...localProd, ...remote, videoUrl: remote.videoUrl || localProd.videoUrl }
+        : remote;
+    })
+    .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
+
+  base.forEach((p) => {
+    if (p.id && !fetchedIds.has(p.id)) merged.push(p);
   });
-
-  // Overlay currentLocal products (user edits take precedence)
-  currentLocal.forEach((localProd) => {
-    if (localProd.id) {
-      const existingInFetched = localMap.get(localProd.id);
-      if (existingInFetched) {
-        const videoUrl = localProd.videoUrl || existingInFetched.videoUrl;
-        localMap.set(localProd.id, { 
-          ...existingInFetched, 
-          ...localProd,
-          videoUrl: videoUrl,
-        });
-      } else {
-        localMap.set(localProd.id, localProd);
-      }
-    }
-  });
-
-  return Array.from(localMap.values());
+  return merged;
 };
 
 // Fetch all products with instant fallback
 export const getProducts = async (): Promise<Product[]> => {
   localProductsStore = loadProductsFromStorage();
   try {
-    const q = query(collection(db, PRODUCTS_COLLECTION), orderBy("createdAt", "desc"));
-    const querySnapshot = await getDocs(q);
-    
+    const querySnapshot = await getDocs(collection(db, PRODUCTS_COLLECTION));
+
     if (!querySnapshot.empty) {
       const fetched = querySnapshot.docs.map((doc) => ({
         id: doc.id,
@@ -183,7 +253,8 @@ export const getProductById = async (id: string): Promise<Product | null> => {
     const docRef = doc(db, PRODUCTS_COLLECTION, id);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() } as Product;
+      const local = localProductsStore.find((p) => p.id === id);
+      return { ...(local || {}), id: docSnap.id, ...docSnap.data() } as Product;
     }
   } catch (error) {
     console.warn("Firestore getDoc failed, searching local store:", error);
@@ -200,9 +271,8 @@ export const subscribeProducts = (onUpdate: (products: Product[]) => void) => {
 
   let unsubscribeFirebase = () => {};
   try {
-    const q = query(collection(db, PRODUCTS_COLLECTION), orderBy("createdAt", "desc"));
     unsubscribeFirebase = onSnapshot(
-      q,
+      collection(db, PRODUCTS_COLLECTION),
       (snapshot) => {
         if (!snapshot.empty) {
           const fetched = snapshot.docs.map((doc) => ({
@@ -255,18 +325,9 @@ export const createProduct = async (
   notifySubscribers();
 
   // Background non-blocking sync to Firestore
-  (async () => {
-    try {
-      const cleanPayload = sanitizeForFirestore(newProduct);
-      if (cleanPayload.videoUrl && cleanPayload.videoUrl.length > 500000) {
-        delete cleanPayload.videoUrl;
-      }
-      const productRef = doc(db, PRODUCTS_COLLECTION, newId);
-      await setDoc(productRef, cleanPayload, { merge: true });
-    } catch (err) {
-      console.warn("Background Firestore addDoc notice:", err);
-    }
-  })();
+  setDoc(doc(db, PRODUCTS_COLLECTION, newId), sanitizeForFirestore(newProduct), { merge: true }).catch(
+    (err) => reportWriteError("yeni ürün", err)
+  );
 
   return newProduct.id!;
 };
@@ -297,18 +358,7 @@ export const updateProduct = async (
   notifySubscribers();
 
   // Background non-blocking sync to Firestore
-  (async () => {
-    try {
-      const cleanPayload = sanitizeForFirestore(updatedFields);
-      if (cleanPayload.videoUrl && cleanPayload.videoUrl.length > 500000) {
-        delete cleanPayload.videoUrl;
-      }
-      const productRef = doc(db, PRODUCTS_COLLECTION, id);
-      await setDoc(productRef, cleanPayload, { merge: true });
-    } catch (err) {
-      console.warn("Background Firestore setDoc notice:", err);
-    }
-  })();
+  syncProductInBackground("ürün güncelleme", id, sanitizeForFirestore(updatedFields));
 };
 
 // Delete a product
@@ -316,14 +366,7 @@ export const deleteProduct = async (id: string): Promise<void> => {
   localProductsStore = localProductsStore.filter((p) => p.id !== id);
   notifySubscribers();
 
-  try {
-    const productRef = doc(db, PRODUCTS_COLLECTION, id);
-    deleteDoc(productRef).catch((err) => {
-      console.warn("Background Firestore deleteDoc notice:", err);
-    });
-  } catch (error) {
-    console.warn("Firestore deleteDoc fallback (saved locally):", error);
-  }
+  deleteDoc(doc(db, PRODUCTS_COLLECTION, id)).catch((err) => reportWriteError("ürün silme", err));
 };
 
 // Bulk apply percentage discount to selected products or category
@@ -335,6 +378,7 @@ export const applyBulkDiscount = async (
   if (percent <= 0 || percent >= 100) return 0;
 
   let count = 0;
+  const changed: Product[] = [];
   localProductsStore = localProductsStore.map((product) => {
     const matchesCategory = !targetCategory || targetCategory === "Hepsi" || product.category === targetCategory;
     const matchesSelection = !selectedProductIds || selectedProductIds.length === 0 || (product.id && selectedProductIds.includes(product.id));
@@ -344,18 +388,30 @@ export const applyBulkDiscount = async (
       const basePrice = product.originalPrice || product.price;
       const discountedPrice = Math.round(basePrice * (1 - percent / 100));
 
-      return {
+      const updated = {
         ...product,
         originalPrice: basePrice,
         price: discountedPrice,
         discountPercent: percent,
         isCampaign: true,
       };
+      changed.push(updated);
+      return updated;
     }
     return product;
   });
 
   notifySubscribers();
+  await Promise.all(
+    changed.map((p) =>
+      writeProductDoc(p.id!, {
+        originalPrice: p.originalPrice,
+        price: p.price,
+        discountPercent: p.discountPercent,
+        isCampaign: true,
+      })
+    )
+  ).catch((err) => reportWriteError("toplu indirim", err));
   return count;
 };
 
@@ -365,12 +421,14 @@ export const clearBulkDiscount = async (
   selectedProductIds?: string[]
 ): Promise<number> => {
   let count = 0;
+  const changed: Product[] = [];
   localProductsStore = localProductsStore.map((product) => {
     const matchesCategory = !targetCategory || targetCategory === "Hepsi" || product.category === targetCategory;
     const matchesSelection = !selectedProductIds || selectedProductIds.length === 0 || (product.id && selectedProductIds.includes(product.id));
 
     if (matchesCategory && matchesSelection && product.originalPrice) {
       count++;
+      changed.push(product);
       return {
         ...product,
         price: product.originalPrice,
@@ -383,6 +441,16 @@ export const clearBulkDiscount = async (
   });
 
   notifySubscribers();
+  await Promise.all(
+    changed.map((p) =>
+      writeProductDoc(p.id!, {
+        price: p.originalPrice,
+        originalPrice: deleteField(),
+        discountPercent: deleteField(),
+        isCampaign: false,
+      })
+    )
+  ).catch((err) => reportWriteError("indirim kaldırma", err));
   return count;
 };
 
@@ -398,12 +466,7 @@ export const toggleFeaturedProduct = async (id: string): Promise<boolean> => {
   });
   notifySubscribers();
 
-  try {
-    const productRef = doc(db, PRODUCTS_COLLECTION, id);
-    await updateDoc(productRef, { isFeatured: newStatus });
-  } catch (err) {
-    console.warn("Firestore toggleFeatured notice:", err);
-  }
+  syncProductInBackground("vitrin", id, { isFeatured: newStatus });
   return newStatus;
 };
 
@@ -420,11 +483,41 @@ export const toggleActiveProduct = async (id: string): Promise<boolean> => {
   });
   notifySubscribers();
 
-  try {
-    const productRef = doc(db, PRODUCTS_COLLECTION, id);
-    await updateDoc(productRef, { isActive: newStatus });
-  } catch (err) {
-    console.warn("Firestore toggleActive notice:", err);
-  }
+  syncProductInBackground("aktif/pasif", id, { isActive: newStatus });
   return newStatus;
+};
+
+// Seed every catalog product into Firestore products/{id} if it is missing (or only a
+// partial doc without createdAt). Uses this browser's local copy so earlier local edits
+// are kept; existing complete docs are never overwritten.
+export const seedProductsToFirestore = async (): Promise<{ created: number; skipped: number }> => {
+  const localMap = new Map<string, Product>();
+  localProductsStore.forEach((p) => p.id && localMap.set(p.id, p));
+
+  const toSeed: Product[] = INITIAL_VEYSELUSTAM_PRODUCTS.map((p) => localMap.get(p.id!) || p);
+  localProductsStore.forEach((p) => {
+    if (p.id && !INITIAL_VEYSELUSTAM_PRODUCTS.some((ip) => ip.id === p.id)) toSeed.push(p);
+  });
+
+  const snapshot = await getDocs(collection(db, PRODUCTS_COLLECTION));
+  const complete = new Set(
+    snapshot.docs.filter((d) => d.data().createdAt && d.data().title).map((d) => d.id)
+  );
+  const partial = new Map(snapshot.docs.filter((d) => !complete.has(d.id)).map((d) => [d.id, d.data()]));
+
+  let created = 0;
+  for (const product of toSeed) {
+    if (!product.id || complete.has(product.id)) continue;
+    await setDoc(
+      doc(db, PRODUCTS_COLLECTION, product.id),
+      {
+        ...sanitizeForFirestore(product),
+        ...(partial.get(product.id) || {}),
+        createdAt: product.createdAt || new Date().toISOString(),
+      },
+      { merge: true }
+    );
+    created++;
+  }
+  return { created, skipped: toSeed.length - created };
 };
