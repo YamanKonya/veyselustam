@@ -18,7 +18,7 @@ const LOGIN_DOC = ["settings", "adminLogin"] as const;
 
 export const DEFAULT_ADMIN_USERNAME = "veysel";
 export const DEFAULT_ADMIN_EMAIL =
-  process.env.NEXT_PUBLIC_ADMIN_EMAIL || "veysel@veyselustam.com";
+  process.env.NEXT_PUBLIC_ADMIN_EMAIL || "veyseloztoprak@gmail.com";
 
 export interface AdminLoginInfo {
   username: string;

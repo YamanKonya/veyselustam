@@ -19,7 +19,7 @@ Kim ne yapabilir:
 
 1. **Authentication → Sign-in method** sekmesinde **Email/Password** açık olsun.
 2. **Authentication → Users → Add user**:
-   e-posta `veysel@veyselustam.com` (veya `.env.local` içindeki `NEXT_PUBLIC_ADMIN_EMAIL`),
+   e-posta `veyseloztoprak@gmail.com` (veya `.env.local` içindeki `NEXT_PUBLIC_ADMIN_EMAIL`),
    şifre `2026` kabul edilmez (Firebase en az 6 karakter ister) → örn. `veysel2026`.
    Oluşan satırdaki **User UID** değerini kopyala.
 3. **Firestore Database → Data → Start collection**: koleksiyon adı `admins`,
