@@ -1,0 +1,69 @@
+rules_version = '2';
+
+// Veysel Ustam - Firestore güvenlik kuralları
+//
+// Yönetici = Firebase Authentication'da giriş yapmış VE uid'si "admins"
+// koleksiyonunda belge olarak duran hesap. "admins" koleksiyonuna sitenin
+// kendisi yazamaz; belge yalnızca Firebase konsolundan elle eklenir.
+// Kurulum adımları: FIREBASE_GUVENLIK.md
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Yönetici listesi: herkes yalnızca kendi kaydının varlığını görebilir,
+    // kimse siteden yazamaz.
+    match /admins/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Ürünler: herkes okur, yalnızca yönetici değiştirir.
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Siparişler: müşteri (misafir dahil) yalnızca "pending" durumunda yeni
+    // sipariş oluşturabilir. Sipariş numarası (belge kimliği) rastgele ve
+    // tahmin edilemez olduğu için tek bir siparişi numarasıyla açmak serbest
+    // (sipariş onay sayfası bunu kullanıyor); listeleme ve güncelleme yalnızca
+    // yöneticide.
+    match /orders/{orderId} {
+      allow get: if true;
+      allow list: if isAdmin();
+      allow create: if request.resource.data.status == 'pending'
+        && request.resource.data.userId == (signedIn() ? request.auth.uid : 'guest_user');
+      allow update, delete: if isAdmin();
+    }
+
+    // Müşteri profilleri: herkes yalnızca kendi profilini görür / yazar ve
+    // kendine "admin" rolü veremez.
+    match /users/{uid} {
+      allow read: if (signedIn() && request.auth.uid == uid) || isAdmin();
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.get('role', 'customer') == 'customer';
+      allow delete: if isAdmin();
+    }
+
+    // Site ayarları. "adminLogin" belgesi giriş ekranındaki kullanıcı adını
+    // e-postaya çevirmek için herkese açık okunur; şifre içermez.
+    match /settings/{docId} {
+      allow read: if docId == 'adminLogin' || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Yukarıda sayılmayan her şey kapalı.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

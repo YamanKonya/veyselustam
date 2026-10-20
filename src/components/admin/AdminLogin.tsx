@@ -16,10 +16,15 @@ export default function AdminLogin() {
     setError("");
     setBusy(true);
     try {
-      const ok = await adminLogin(username, password);
-      if (!ok) setError("Kullanıcı adı veya şifre yanlış.");
-    } catch {
-      setError("Giriş yapılamadı. İnternet bağlantısını kontrol edip tekrar deneyin.");
+      const result = await adminLogin(username, password);
+      if (result === "wrong") setError("Kullanıcı adı veya şifre yanlış.");
+      if (result === "not-admin") setError("Bu hesabın yönetici yetkisi yok.");
+    } catch (err: any) {
+      setError(
+        err?.code === "auth/too-many-requests"
+          ? "Çok fazla hatalı deneme yapıldı. Birkaç dakika sonra tekrar deneyin."
+          : "Giriş yapılamadı. İnternet bağlantısını kontrol edip tekrar deneyin."
+      );
     } finally {
       setBusy(false);
     }
