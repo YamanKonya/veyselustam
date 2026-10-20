@@ -4,12 +4,14 @@ import React from "react";
 import { useAuth } from "@/context/AuthContext";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { 
-  Package, 
-  ShoppingBag, 
+import AdminLogin from "@/components/admin/AdminLogin";
+import {
+  Package,
+  ShoppingBag,
   LogOut,
   ChevronLeft,
-  Sparkles
+  Sparkles,
+  KeyRound
 } from "lucide-react";
 
 export default function AdminLayout({
@@ -17,8 +19,11 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { profile, logout } = useAuth();
+  const { isAdmin, adminChecked, adminUsername, adminLogout } = useAuth();
   const pathname = usePathname();
+
+  if (!adminChecked) return <div className="min-h-screen bg-versace-green-900" />;
+  if (!isAdmin) return <AdminLogin />;
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-slate-950 text-slate-100">
@@ -63,6 +68,18 @@ export default function AdminLayout({
               <ShoppingBag className="w-4 h-4" />
               Sipariş Takibi
             </Link>
+
+            <Link
+              href="/admin/settings"
+              className={`flex items-center gap-3 px-4 py-3 text-xs sm:text-sm font-semibold rounded-xl transition ${
+                pathname === "/admin/settings"
+                  ? "bg-amber-600 text-white shadow-lg shadow-amber-600/20"
+                  : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+              }`}
+            >
+              <KeyRound className="w-4 h-4" />
+              Giriş Bilgileri
+            </Link>
           </nav>
         </div>
 
@@ -70,11 +87,11 @@ export default function AdminLayout({
         <div className="border-t border-slate-800/80 pt-4 mt-6">
           <div className="flex items-center justify-between">
             <div className="truncate pr-2">
-              <p className="text-xs font-bold text-slate-200 truncate">{profile?.email || "admin@veyselustam.com"}</p>
+              <p className="text-xs font-bold text-slate-200 truncate">{adminUsername}</p>
               <span className="text-[10px] text-amber-400 font-mono font-bold uppercase tracking-widest">Yönetici Modu</span>
             </div>
             <button
-              onClick={logout}
+              onClick={adminLogout}
               title="Çıkış Yap"
               className="p-2 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl transition"
             >

@@ -1,108 +1,123 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { 
-  onAuthStateChanged, 
-  User as FirebaseUser, 
-  signOut as firebaseSignOut 
+import {
+  onAuthStateChanged,
+  User as FirebaseUser,
+  signOut as firebaseSignOut
 } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { UserProfile } from "@/types";
+import {
+  verifyAdminLogin,
+  startAdminSession,
+  readAdminSession,
+  endAdminSession,
+} from "@/lib/adminAuth";
 
 interface AuthContextType {
-  user: FirebaseUser | { uid: string; email: string } | null;
+  // Customer account (Firebase Auth)
+  user: FirebaseUser | null;
   profile: UserProfile | null;
   loading: boolean;
-  isAdmin: boolean;
   logout: () => Promise<void>;
   setUserProfile: (profile: UserProfile) => void;
-  loginAsDemoAdmin: () => void;
+  // Shop owner (admin panel), separate from customer accounts
+  isAdmin: boolean;
+  adminChecked: boolean;
+  adminUsername: string | null;
+  adminLogin: (username: string, password: string) => Promise<boolean>;
+  adminLogout: () => void;
 }
 
-const DEFAULT_ADMIN_USER = { uid: "admin-master", email: "admin@veyselustam.com" };
-const DEFAULT_ADMIN_PROFILE: UserProfile = {
-  id: "admin-master",
-  email: "admin@veyselustam.com",
-  role: "admin",
-  createdAt: new Date().toISOString(),
-};
-
 const AuthContext = createContext<AuthContextType>({
-  user: DEFAULT_ADMIN_USER,
-  profile: DEFAULT_ADMIN_PROFILE,
-  loading: false,
-  isAdmin: true,
+  user: null,
+  profile: null,
+  loading: true,
   logout: async () => {},
   setUserProfile: () => {},
-  loginAsDemoAdmin: () => {},
+  isAdmin: false,
+  adminChecked: false,
+  adminUsername: null,
+  adminLogin: async () => false,
+  adminLogout: () => {},
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  // Default to Admin enabled so admin routes load instantly without hanging
-  const [user, setUser] = useState<FirebaseUser | { uid: string; email: string } | null>(DEFAULT_ADMIN_USER);
-  const [profile, setProfile] = useState<UserProfile | null>(DEFAULT_ADMIN_PROFILE);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const loginAsDemoAdmin = () => {
-    setUser(DEFAULT_ADMIN_USER);
-    setProfile(DEFAULT_ADMIN_PROFILE);
-    setLoading(false);
-  };
+  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [adminUsername, setAdminUsername] = useState<string | null>(null);
+  const [adminChecked, setAdminChecked] = useState(false);
 
   useEffect(() => {
-    // Try to listen to real Firebase Auth in background, but NEVER block UI
+    setAdminUsername(readAdminSession()?.username ?? null);
+    setAdminChecked(true);
+  }, []);
+
+  useEffect(() => {
     try {
       const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-        if (currentUser) {
-          setUser(currentUser);
-          try {
-            const userDocRef = doc(db, "users", currentUser.uid);
-            const userDoc = await getDoc(userDocRef);
-
-            if (userDoc.exists()) {
-              setProfile(userDoc.data() as UserProfile);
-            } else {
-              setProfile({
-                id: currentUser.uid,
-                email: currentUser.email || "admin@veyselustam.com",
-                role: "admin",
-                createdAt: new Date().toISOString(),
-              });
-            }
-          } catch (error) {
-            // Keep default admin profile on error
-          }
+        setUser(currentUser);
+        setLoading(false);
+        if (!currentUser) {
+          setProfile(null);
+          return;
+        }
+        try {
+          const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+          setProfile(
+            userDoc.exists()
+              ? (userDoc.data() as UserProfile)
+              : { id: currentUser.uid, email: currentUser.email || "", role: "customer" }
+          );
+        } catch {
+          setProfile({ id: currentUser.uid, email: currentUser.email || "", role: "customer" });
         }
       });
-
       return () => unsubscribe();
     } catch (err) {
       console.warn("Firebase auth listener error (ignored):", err);
+      setLoading(false);
     }
   }, []);
 
   const logout = async () => {
     try {
       await firebaseSignOut(auth);
-    } catch (e) {}
-    // Reset to default admin so user can navigate back seamlessly
-    setUser(DEFAULT_ADMIN_USER);
-    setProfile(DEFAULT_ADMIN_PROFILE);
+    } catch {}
+    setUser(null);
+    setProfile(null);
   };
 
-  const isAdmin = true; // Always true for seamless admin access
+  const adminLogin = async (username: string, password: string) => {
+    const ok = await verifyAdminLogin(username, password);
+    if (ok) {
+      startAdminSession(username.trim());
+      setAdminUsername(username.trim());
+    }
+    return ok;
+  };
+
+  const adminLogout = () => {
+    endAdminSession();
+    setAdminUsername(null);
+  };
 
   return (
     <AuthContext.Provider
       value={{
         user,
         profile,
-        loading: false, // Never block with loading
-        isAdmin: true,  // Always grant admin access
+        loading,
         logout,
         setUserProfile: setProfile,
-        loginAsDemoAdmin,
+        isAdmin: !!adminUsername,
+        adminChecked,
+        adminUsername,
+        adminLogin,
+        adminLogout,
       }}
     >
       {children}
