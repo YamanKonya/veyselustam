@@ -160,7 +160,7 @@ Every piece is meticulously hand-carved using centuries-old Ottoman metalworking
   const instagramPost = `
 Ustalığın ve zarafetin parmaklarınızdaki imzası: 925 Ayar Gümüş ${capitalizedTitle} ✨
 
-İstanbul Kapalıçarşı geleneğiyle, atölyemizde tamamen el işçiliğiyle hazırlandı.
+Anadolu'nun köklü gümüş işçiliği geleneğiyle, Konya'daki atölyemizde tamamen el işçiliğiyle hazırlandı.
 💎 Taş: ${stone}
 💍 Maden: 925 Ayar Damgalı Saf Gümüş
 ⚖️ Gramaj: ~${weight} gr
@@ -170,7 +170,7 @@ Ustalığın ve zarafetin parmaklarınızdaki imzası: 925 Ayar Gümüş ${capit
 Sipariş & Detaylar için profildeki linke tıklayabilir veya bize doğrudan DM üzerinden mesaj atabilirsiniz.
 🌐 https://veyselustam.com
 
-#gümüşyüzük #erkekyüzük #925ayar #elyapımı #veyselustam #kapalıçarşı #yüzükmodelleri #doğaltaş #mensjewelry #silversmith #handmadering #artisanjewelry #silvercraft #turkishjewelry
+#gümüşyüzük #erkekyüzük #925ayar #elyapımı #veyselustam #konya #yüzükmodelleri #doğaltaş #mensjewelry #silversmith #handmadering #artisanjewelry #silvercraft #turkishjewelry
   `.trim();
   fs.writeFileSync(path.join(exportProductDir, 'instagram_post.txt'), instagramPost, 'utf-8');
 

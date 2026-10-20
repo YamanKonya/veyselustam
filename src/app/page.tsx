@@ -80,7 +80,8 @@ export default function Home() {
   const showcaseProducts = useMemo(() => {
     const withImage = localizedProducts.filter((p) => p.images?.length);
     const featured = withImage.filter((p) => p.isFeatured);
-    const newest = [...withImage].reverse().filter((p) => !p.isFeatured);
+    const time = (p: Product) => (p.createdAt ? Date.parse(p.createdAt) || 0 : 0);
+    const newest = withImage.filter((p) => !p.isFeatured).sort((a, b) => time(b) - time(a));
     return [...featured, ...newest].slice(0, Math.max(SHOWCASE_SIZE, featured.length));
   }, [localizedProducts]);
 
@@ -112,7 +113,10 @@ export default function Home() {
         });
       }
       if (activeTab === "tab_new") {
-        filtered = [...filtered].reverse();
+        // Newest first by date added (the list's own order differs between the
+        // local catalogue and Firestore, so don't rely on it)
+        const time = (p: Product) => (p.createdAt ? Date.parse(p.createdAt) || 0 : 0);
+        filtered = [...filtered].sort((a, b) => time(b) - time(a));
       } else if (activeTab === "tab_bestseller") {
         filtered = [...filtered].sort((a, b) => b.price - a.price);
       }

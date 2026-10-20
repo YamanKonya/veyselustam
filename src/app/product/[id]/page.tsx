@@ -9,6 +9,7 @@ import { whatsappLink } from "@/lib/contact";
 import { imageAt } from "@/lib/image";
 import { useStockGroups, availableStock } from "@/services/stockService";
 import { AdminEditButton } from "@/components/admin/AdminEditProvider";
+import { SALES_OPEN } from "@/lib/shop";
 import { Product } from "@/types";
 import { getProductById, getLocalProductById } from "@/services/productService";
 import { useCartStore } from "@/store/useCartStore";
@@ -402,6 +403,7 @@ export default function ProductDetailPage() {
                     </span>
                   )}
 
+                  {SALES_OPEN && (
                   <span
                     className={`text-xs font-semibold px-2.5 py-1 rounded-lg ${
                       left > 0
@@ -411,6 +413,7 @@ export default function ProductDetailPage() {
                   >
                     {left > 0 ? `${t("pd_in_stock")} (${left})` : t("pd_out_of_stock")}
                   </span>
+                  )}
                 </div>
 
                 {/* Description */}
@@ -424,7 +427,7 @@ export default function ProductDetailPage() {
                 </div>
 
                 {/* Ring Size Selection */}
-                {product.ringSize && product.ringSize.length > 0 && (
+                {SALES_OPEN && product.ringSize && product.ringSize.length > 0 && (
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <label className="text-xs font-bold uppercase tracking-wider text-slate-800">
@@ -465,6 +468,7 @@ export default function ProductDetailPage() {
                 )}
 
                 {/* Quantity Selector */}
+                {SALES_OPEN && (
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-800">
                     {t("quantity_label")}
@@ -485,11 +489,13 @@ export default function ProductDetailPage() {
                     </button>
                   </div>
                 </div>
+                )}
               </div>
 
               {/* Action Buttons & Guarantees */}
               <div className="space-y-4 pt-6 mt-4 border-t border-slate-100">
                 {/* Add to Cart Button */}
+                {SALES_OPEN ? (
                 <button
                   onClick={handleAddToCart}
                   disabled={left <= 0}
@@ -511,6 +517,12 @@ export default function ProductDetailPage() {
                     </>
                   )}
                 </button>
+                ) : (
+                  <div className="p-4 border border-versace-gold-500/40 bg-versace-gold-50 text-versace-green-900">
+                    <p className="font-display text-xl">{t("sales_soon")}</p>
+                    <p className="text-sm text-slate-600 mt-1">{t("sales_soon_product")}</p>
+                  </div>
+                )}
 
                 {/* WhatsApp Contact */}
                 <a

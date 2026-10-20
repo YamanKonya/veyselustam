@@ -11,6 +11,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
 import { placeOrderWithStock, OutOfStockError } from "@/services/stockService";
 import { createOrder } from "@/services/orderService";
+import { SALES_OPEN } from "@/lib/shop";
 import { ShippingAddress, OrderItem } from "@/types";
 import Link from "next/link";
 import { 
@@ -61,6 +62,24 @@ export default function CheckoutPage() {
   if (!mounted) return null;
 
   const totalAmount = getTotalAmount();
+
+  if (!SALES_OPEN) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <div className="flex-1 flex flex-col items-center justify-center text-center p-6">
+          <h1 className="font-display text-4xl text-versace-green-900">{t("sales_soon")}</h1>
+          <p className="text-sm text-slate-600 mt-3 max-w-md">{t("sales_soon_checkout")}</p>
+          <Link
+            href="/"
+            className="mt-8 px-8 py-3 bg-versace-green-900 hover:bg-versace-green-700 text-versace-gold-50 text-sm font-semibold transition-colors"
+          >
+            {t("hero_cta_explore")}
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (

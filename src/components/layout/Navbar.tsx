@@ -7,6 +7,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageSelector from "@/components/layout/LanguageSelector";
 import { whatsappLink } from "@/lib/contact";
+import { SALES_OPEN } from "@/lib/shop";
 import { ShoppingBag, Search, Menu, X, Phone } from "lucide-react";
 
 export default function Navbar() {
@@ -68,7 +69,7 @@ export default function Navbar() {
       {/* Top bar */}
       <div className="bg-versace-green-900 text-versace-gold-100 py-1.5 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between text-[11px] sm:text-xs">
-          <span className="hidden sm:block tracking-wide">{t("hero_badge")}</span>
+          <span className="hidden sm:block tracking-wide">{SALES_OPEN ? t("hero_badge") : t("sales_soon_banner")}</span>
           <div className="ms-auto">
             <LanguageSelector />
           </div>
@@ -120,6 +121,7 @@ export default function Navbar() {
               <Phone className="w-5 h-5 lg:w-6 lg:h-6" />
               <span className="hidden lg:block text-[11px] font-semibold uppercase tracking-wider">{t("nav_contact")}</span>
             </a>
+            {SALES_OPEN && (
             <button
               onClick={toggleCart}
               className="flex flex-col items-center gap-1 text-versace-green-900 hover:text-versace-gold-700 transition-colors"
@@ -135,6 +137,7 @@ export default function Navbar() {
               </span>
               <span className="hidden lg:block text-[11px] font-semibold uppercase tracking-wider">{t("nav_my_cart")}</span>
             </button>
+            )}
           </div>
         </div>
       </div>

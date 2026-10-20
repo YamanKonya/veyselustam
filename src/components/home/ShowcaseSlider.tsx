@@ -10,6 +10,7 @@ import { formatPrice } from "@/lib/format";
 import { imageAt, imageSrcSet } from "@/lib/image";
 import { useStockGroups, availableStock } from "@/services/stockService";
 import { AdminEditButton } from "@/components/admin/AdminEditProvider";
+import { SALES_OPEN } from "@/lib/shop";
 
 const AUTOPLAY_MS = 5000;
 
@@ -219,6 +220,7 @@ export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
               >
                 {t("showcase_view")}
               </Link>
+              {SALES_OPEN && (
               <button
                 type="button"
                 onClick={handleAdd}
@@ -228,6 +230,7 @@ export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
                 {added ? <Check className="w-4 h-4" /> : <ShoppingBag className="w-4 h-4" />}
                 {soldOut ? t("sold_out") : added ? t("added") : t("btn_add_to_cart")}
               </button>
+              )}
             </div>
           </div>
         </div>

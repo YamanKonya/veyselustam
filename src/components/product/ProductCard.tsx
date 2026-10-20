@@ -8,6 +8,7 @@ import { formatPrice, discountPercent } from "@/lib/format";
 import { imageAt, imageSrcSet } from "@/lib/image";
 import { useStockGroups, availableStock } from "@/services/stockService";
 import { AdminEditButton } from "@/components/admin/AdminEditProvider";
+import { SALES_OPEN } from "@/lib/shop";
 
 interface ProductCardProps {
   product: Product;
@@ -83,6 +84,14 @@ export default function ProductCard({ product, isAdded, onAddToCart }: ProductCa
           )}
         </div>
 
+        {!SALES_OPEN ? (
+          <Link
+            href={href}
+            className="mt-auto w-full py-3 text-sm font-semibold text-center border border-versace-green-900/30 text-versace-green-900 hover:border-versace-green-900 transition-colors"
+          >
+            {t("sales_soon")}
+          </Link>
+        ) : (
         <button
           type="button"
           disabled={soldOut}
@@ -97,6 +106,7 @@ export default function ProductCard({ product, isAdded, onAddToCart }: ProductCa
         >
           {soldOut ? t("sold_out") : isAdded ? t("added") : t("btn_add_to_cart")}
         </button>
+        )}
       </div>
     </article>
   );

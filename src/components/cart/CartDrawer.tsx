@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { imageAt } from "@/lib/image";
 import { formatPrice } from "@/lib/format";
+import { SALES_OPEN } from "@/lib/shop";
 import { useCartStore } from "@/store/useCartStore";
 import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
@@ -47,7 +48,7 @@ export default function CartDrawer() {
     };
   }, []);
 
-  if (!mounted || !isRendered) return null;
+  if (!SALES_OPEN || !mounted || !isRendered) return null;
 
   const totalAmount = getTotalAmount();
   const totalItems = getTotalItems();
