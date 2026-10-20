@@ -35,3 +35,4 @@ tsconfig.tsbuildinfo
 
 # Automation inbox temp
 urun_inbox/temp/
+.vercel

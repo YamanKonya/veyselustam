@@ -3,11 +3,10 @@
 import React, { useState } from "react";
 import { KeyRound, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { changeAdminCredentials } from "@/lib/adminAuth";
-import { startAdminSession } from "@/lib/adminAuth";
+import { changeAdminCredentials, WrongPasswordError } from "@/lib/adminAuth";
 
 export default function AdminSettingsPage() {
-  const { adminUsername } = useAuth();
+  const { adminUsername, setAdminUsername } = useAuth();
   const [currentPassword, setCurrentPassword] = useState("");
   const [username, setUsername] = useState(adminUsername || "");
   const [newPassword, setNewPassword] = useState("");
@@ -33,15 +32,19 @@ export default function AdminSettingsPage() {
     setBusy(true);
     try {
       const saved = await changeAdminCredentials(currentPassword, username, newPassword);
-      startAdminSession(saved);
+      setAdminUsername(saved);
       setCurrentPassword("");
       setNewPassword("");
       setRepeat("");
       setMessage({ ok: true, text: "Giriş bilgileri güncellendi. Bir sonraki girişte yenilerini kullanın." });
-    } catch (err) {
+    } catch (err: any) {
       const text =
-        err instanceof Error && err.message === "Mevcut şifre yanlış."
+        err instanceof WrongPasswordError
           ? err.message
+          : err?.code === "auth/too-many-requests"
+          ? "Çok fazla hatalı deneme yapıldı. Birkaç dakika sonra tekrar deneyin."
+          : err?.code === "auth/weak-password"
+          ? "Yeni şifre çok zayıf, daha uzun bir şifre seçin."
           : "Kaydedilemedi. İnternet bağlantısını kontrol edip tekrar deneyin.";
       setMessage({ ok: false, text });
     } finally {

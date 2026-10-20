@@ -1,43 +1,29 @@
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+  User,
+} from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
 
-// Admin credentials live in Firestore (settings/adminCredentials) as a salted
-// SHA-256 hash, so they can be changed from the admin panel. Until the shop
-// sets its own, the starting login is veysel / 2026 (stored here only as a hash).
-const CREDENTIALS_DOC = ["settings", "adminCredentials"] as const;
-const CACHE_KEY = "veyselustam_admin_credentials";
-const SESSION_KEY = "veyselustam_admin_session";
-const SESSION_HOURS = 12;
+// The admin is a normal Firebase Auth email/password account whose uid has a
+// document in the "admins" collection (added by hand in the Firebase console;
+// firestore.rules only lets that uid write products/settings and read orders).
+// The login screen asks for a short username ("veysel"); settings/adminLogin
+// maps it to the account's email so the email never has to be typed.
+const LOGIN_DOC = ["settings", "adminLogin"] as const;
 
-export interface AdminCredentials {
+export const DEFAULT_ADMIN_USERNAME = "veysel";
+export const DEFAULT_ADMIN_EMAIL =
+  process.env.NEXT_PUBLIC_ADMIN_EMAIL || "veyseloztoprak@gmail.com";
+
+export interface AdminLoginInfo {
   username: string;
-  salt: string;
-  passwordHash: string;
-  updatedAt?: string;
+  email: string;
 }
-
-const DEFAULT_CREDENTIALS: AdminCredentials = {
-  username: "veysel",
-  salt: "vu-default-2026",
-  passwordHash: "1f45dcf6323ac27bd72ce3b89c7afbe2703fc92bbbad97c0e61d66ecf68907f8",
-};
-
-export const sha256 = async (text: string) => {
-  const bytes = new TextEncoder().encode(text);
-  const digest = await crypto.subtle.digest("SHA-256", bytes);
-  return Array.from(new Uint8Array(digest))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-};
-
-const readCache = (): AdminCredentials | null => {
-  try {
-    const raw = localStorage.getItem(CACHE_KEY);
-    return raw ? (JSON.parse(raw) as AdminCredentials) : null;
-  } catch {
-    return null;
-  }
-};
 
 const withTimeout = <T,>(promise: Promise<T>, ms: number) =>
   Promise.race([
@@ -45,73 +31,79 @@ const withTimeout = <T,>(promise: Promise<T>, ms: number) =>
     new Promise<never>((_, reject) => setTimeout(() => reject(new Error("timeout")), ms)),
   ]);
 
-// Firestore copy wins; if Firestore can't be reached, fall back to the last copy
-// this browser saw, then to the starting credentials.
-const loadCredentials = async (): Promise<AdminCredentials> => {
+const normalize = (s: string) => s.trim().toLocaleLowerCase("tr");
+
+export const loadAdminLoginInfo = async (): Promise<AdminLoginInfo> => {
   try {
-    const snap = await withTimeout(getDoc(doc(db, ...CREDENTIALS_DOC)), 5000);
-    if (snap.exists()) {
-      const creds = snap.data() as AdminCredentials;
-      localStorage.setItem(CACHE_KEY, JSON.stringify(creds));
-      return creds;
-    }
-    return DEFAULT_CREDENTIALS;
+    const snap = await withTimeout(getDoc(doc(db, ...LOGIN_DOC)), 5000);
+    if (snap.exists()) return snap.data() as AdminLoginInfo;
+  } catch {}
+  return { username: DEFAULT_ADMIN_USERNAME, email: DEFAULT_ADMIN_EMAIL };
+};
+
+// Firestore rules are the real gate; this only decides what the UI shows.
+export const isAdminUser = async (user: User | null) => {
+  if (!user) return false;
+  try {
+    const snap = await withTimeout(getDoc(doc(db, "admins", user.uid)), 8000);
+    return snap.exists();
   } catch {
-    return readCache() || DEFAULT_CREDENTIALS;
+    return false;
   }
 };
 
-export const verifyAdminLogin = async (username: string, password: string) => {
-  const creds = await loadCredentials();
-  if (username.trim().toLocaleLowerCase("tr") !== creds.username.toLocaleLowerCase("tr")) return false;
-  return (await sha256(`${creds.salt}:${password}`)) === creds.passwordHash;
+export type AdminLoginResult = "ok" | "wrong" | "not-admin";
+
+export const adminSignIn = async (username: string, password: string): Promise<AdminLoginResult> => {
+  const input = username.trim();
+  let email = input;
+  if (!input.includes("@")) {
+    const info = await loadAdminLoginInfo();
+    if (normalize(input) !== normalize(info.username)) return "wrong";
+    email = info.email;
+  }
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    if (await isAdminUser(cred.user)) return "ok";
+    await signOut(auth);
+    return "not-admin";
+  } catch (err: any) {
+    const code = err?.code || "";
+    if (
+      code === "auth/invalid-credential" ||
+      code === "auth/wrong-password" ||
+      code === "auth/user-not-found" ||
+      code === "auth/invalid-email"
+    ) {
+      return "wrong";
+    }
+    throw err;
+  }
 };
+
+export class WrongPasswordError extends Error {}
 
 export const changeAdminCredentials = async (
   currentPassword: string,
   newUsername: string,
   newPassword: string
 ) => {
-  const creds = await loadCredentials();
-  if ((await sha256(`${creds.salt}:${currentPassword}`)) !== creds.passwordHash) {
-    throw new Error("Mevcut şifre yanlış.");
-  }
-  const salt = crypto.getRandomValues(new Uint32Array(4)).join("-");
-  const next: AdminCredentials = {
-    username: newUsername.trim(),
-    salt,
-    passwordHash: await sha256(`${salt}:${newPassword}`),
-    updatedAt: new Date().toISOString(),
-  };
-  await withTimeout(setDoc(doc(db, ...CREDENTIALS_DOC), next), 8000);
-  localStorage.setItem(CACHE_KEY, JSON.stringify(next));
-  return next.username;
-};
-
-export const startAdminSession = (username: string) => {
-  localStorage.setItem(
-    SESSION_KEY,
-    JSON.stringify({ username, expires: Date.now() + SESSION_HOURS * 3600 * 1000 })
-  );
-};
-
-export const readAdminSession = (): { username: string } | null => {
+  const user: User | null = auth.currentUser;
+  if (!user || !user.email) throw new Error("not-signed-in");
   try {
-    const raw = localStorage.getItem(SESSION_KEY);
-    if (!raw) return null;
-    const session = JSON.parse(raw);
-    if (!session.expires || session.expires < Date.now()) {
-      localStorage.removeItem(SESSION_KEY);
-      return null;
+    await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, currentPassword));
+  } catch (err: any) {
+    const code = err?.code || "";
+    if (code === "auth/invalid-credential" || code === "auth/wrong-password") {
+      throw new WrongPasswordError("Mevcut şifre yanlış.");
     }
-    return { username: session.username };
-  } catch {
-    return null;
+    throw err;
   }
-};
-
-export const endAdminSession = () => {
-  try {
-    localStorage.removeItem(SESSION_KEY);
-  } catch {}
+  if (newPassword) await updatePassword(user, newPassword);
+  const info: AdminLoginInfo = { username: newUsername.trim(), email: user.email };
+  await withTimeout(
+    setDoc(doc(db, ...LOGIN_DOC), { ...info, updatedAt: new Date().toISOString() }),
+    8000
+  );
+  return info.username;
 };

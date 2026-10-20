@@ -1,8 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Product } from "@/types";
-import { subscribeProducts } from "@/services/productService";
+import {
+  subscribeProducts,
+  subscribeProductWriteErrors,
+  seedProductsToFirestore,
+  describeFirestoreError,
+} from "@/services/productService";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 import ProductFormModal from "@/components/admin/ProductFormModal";
 import ProductListTable from "@/components/admin/ProductListTable";
@@ -14,7 +19,10 @@ import {
   Boxes, 
   Sparkles,
   TrendingUp,
-  CheckCircle2
+  CheckCircle2,
+  AlertTriangle,
+  CloudUpload,
+  Loader2
 } from "lucide-react";
 
 export default function AdminDashboardPage() {
@@ -24,6 +32,9 @@ export default function AdminDashboardPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastIsError, setToastIsError] = useState(false);
+  const [seeding, setSeeding] = useState(false);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const unsubscribe = subscribeProducts((data) => {
@@ -36,9 +47,29 @@ export default function AdminDashboardPage() {
     return () => unsubscribe();
   }, []);
 
-  const showToast = (msg: string) => {
+  const showToast = (msg: string, isError = false) => {
     setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3000);
+    setToastIsError(isError);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToastMessage(null), isError ? 8000 : 3000);
+  };
+
+  // Background Firestore writes report failures here (e.g. rules denial)
+  useEffect(() => {
+    return subscribeProductWriteErrors((msg) => showToast(msg, true));
+  }, []);
+
+  const handleSeedFirestore = async () => {
+    if (!confirm("Tüm ürünler Firestore'a yüklenecek (zaten kayıtlı olanlara dokunulmaz). Devam edilsin mi?")) return;
+    setSeeding(true);
+    try {
+      const { created, skipped } = await seedProductsToFirestore();
+      showToast(`${created} ürün Firestore'a yüklendi, ${skipped} ürün zaten kayıtlıydı.`);
+    } catch (err) {
+      showToast(`Yükleme başarısız: ${describeFirestoreError(err)}`, true);
+    } finally {
+      setSeeding(false);
+    }
   };
 
   const handleOpenCreateModal = () => {
@@ -61,8 +92,13 @@ export default function AdminDashboardPage() {
     <div className="max-w-7xl mx-auto space-y-8 pb-12">
       {/* Toast Alert */}
       {toastMessage && (
-        <div className="fixed top-20 right-6 rtl:left-6 rtl:right-auto z-50 bg-emerald-600 text-white px-5 py-3 rounded-2xl shadow-2xl font-semibold text-sm flex items-center gap-2.5 animate-bounce">
-          <CheckCircle2 className="w-5 h-5" />
+        <div
+          role={toastIsError ? "alert" : "status"}
+          className={`fixed top-20 right-6 rtl:left-6 rtl:right-auto z-50 max-w-md text-white px-5 py-3 rounded-2xl shadow-2xl font-semibold text-sm flex items-center gap-2.5 ${
+            toastIsError ? "bg-rose-600" : "bg-emerald-600 animate-bounce"
+          }`}
+        >
+          {toastIsError ? <AlertTriangle className="w-5 h-5 shrink-0" /> : <CheckCircle2 className="w-5 h-5 shrink-0" />}
           <span>{toastMessage}</span>
         </div>
       )}
@@ -84,6 +120,16 @@ export default function AdminDashboardPage() {
           </p>
         </div>
 
+        <div className="flex flex-col sm:flex-row gap-3">
+        <button
+          onClick={handleSeedFirestore}
+          disabled={seeding}
+          title="Henüz Firestore'da olmayan ürünleri veritabanına kaydeder"
+          className="px-5 py-3.5 rounded-2xl border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-200 font-bold text-sm flex items-center justify-center gap-2 transition disabled:opacity-60"
+        >
+          {seeding ? <Loader2 className="w-5 h-5 animate-spin" /> : <CloudUpload className="w-5 h-5" />}
+          {seeding ? "Yükleniyor..." : "Ürünleri Firestore'a Yükle"}
+        </button>
         <button
           onClick={handleOpenCreateModal}
           className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-sm shadow-xl shadow-amber-600/20 flex items-center justify-center gap-2 transition duration-300 hover:scale-[1.02]"
@@ -91,6 +137,7 @@ export default function AdminDashboardPage() {
           <Plus className="w-5 h-5" />
           {t("admin_btn_add")}
         </button>
+        </div>
       </div>
 
       {/* Overview Stat Cards */}
