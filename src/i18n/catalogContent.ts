@@ -17,7 +17,9 @@ type StoneKey =
   | "onyx"
   | "black_onyx"
   | "jasper"
-  | "hematite";
+  | "hematite"
+  | "turquoise"
+  | "green_quartz";
 
 interface CatalogEntry {
   title: string; // key in TITLES
@@ -39,6 +41,8 @@ const STONES: Record<StoneKey, L> = {
   black_onyx: { tr: "Doğal siyah oniks", en: "Natural black onyx", es: "Ónix negro natural", de: "Natürlicher schwarzer Onyx", ar: "أونيكس أسود طبيعي" },
   jasper: { tr: "Doğal jasper (casper)", en: "Natural jasper", es: "Jaspe natural", de: "Natürlicher Jaspis", ar: "يشب طبيعي" },
   hematite: { tr: "Doğal hematit", en: "Natural hematite", es: "Hematita natural", de: "Natürlicher Hämatit", ar: "هيماتيت طبيعي" },
+  turquoise: { tr: "Doğal firuze", en: "Natural turquoise", es: "Turquesa natural", de: "Natürlicher Türkis", ar: "فيروز طبيعي" },
+  green_quartz: { tr: "Yeşil kuvars, fasetalı kesim", en: "Green quartz, faceted cut", es: "Cuarzo verde, talla facetada", de: "Grüner Quarz, facettiert", ar: "كوارتز أخضر، قطع مُضلّع" },
 };
 
 const LABELS: Record<Language, {
@@ -94,6 +98,34 @@ const LABELS: Record<Language, {
 };
 
 const TITLES: Record<string, L> = {
+  sidre_hematit: {
+    tr: "Sidre Model Hat Yazılı Hematit Taşlı El Oyması Gümüş Erkek Yüzüğü",
+    en: "Sidre Calligraphy-Engraved Hematite Hand-Chased Silver Men's Ring",
+    es: "Anillo de hombre Sidre en plata cincelada a mano con hematita caligrafiada",
+    de: "Sidre-Herrenring aus handziseliertem Silber mit kalligrafiertem Hämatit",
+    ar: "خاتم رجالي «سِدرة» من الفضة المنقوشة يدويًا بحجر الهيماتيت المخطوط",
+  },
+  sidre_firuze: {
+    tr: "Sidre Model Firuze Taşlı El Oyması Gümüş Erkek Yüzüğü",
+    en: "Sidre Turquoise Hand-Chased Silver Men's Ring",
+    es: "Anillo de hombre Sidre en plata cincelada a mano con turquesa",
+    de: "Sidre-Herrenring aus handziseliertem Silber mit Türkis",
+    ar: "خاتم رجالي «سِدرة» من الفضة المنقوشة يدويًا بحجر الفيروز",
+  },
+  sidre_akik: {
+    tr: "Sidre Model Kızıl Akik Taşlı El Oyması Gümüş Erkek Yüzüğü",
+    en: "Sidre Red Agate Hand-Chased Silver Men's Ring",
+    es: "Anillo de hombre Sidre en plata cincelada a mano con ágata roja",
+    de: "Sidre-Herrenring aus handziseliertem Silber mit rotem Achat",
+    ar: "خاتم رجالي «سِدرة» من الفضة المنقوشة يدويًا بحجر العقيق الأحمر",
+  },
+  sidre_yesil: {
+    tr: "Sidre Model Yeşil Kuvars Taşlı El Oyması Gümüş Erkek Yüzüğü",
+    en: "Sidre Green Quartz Hand-Chased Silver Men's Ring",
+    es: "Anillo de hombre Sidre en plata cincelada a mano con cuarzo verde",
+    de: "Sidre-Herrenring aus handziseliertem Silber mit grünem Quarz",
+    ar: "خاتم رجالي «سِدرة» من الفضة المنقوشة يدويًا بحجر الكوارتز الأخضر",
+  },
   zulfikar: {
     tr: "Zülfikâr Nakkaş İşlemeli El Yapımı Gümüş Erkek Yüzüğü",
     en: "Zulfiqar Hand-Engraved Sterling Silver Men's Ring",
@@ -412,6 +444,34 @@ const TITLES: Record<string, L> = {
 };
 
 const STORIES: Record<string, L> = {
+  sidre_hematit: {
+    tr: "Sidre, atölyemizin imza kasasıdır: kasanın her yüzü geleneksel kalem işi (gravür) tekniğiyle, kıvrık dal ve rumi motifleriyle elde işlenir. Aynı kasa farklı doğal taşlarla hazırlanır. Bu modelde hematit taşın üzerine hat yazısı elde kazınmıştır.",
+    en: "Sidre is our workshop's signature setting: every face of the band is hand-chased in the traditional engraving technique with scrolling branch and rumi motifs. The same setting is made with different natural stones. In this piece, calligraphy is hand-engraved onto the hematite stone.",
+    es: "Sidre es el engaste distintivo de nuestro taller: cada cara del aro se cincela a mano con la técnica tradicional de grabado, con motivos de ramas en espiral y rumi. El mismo engaste se elabora con distintas piedras naturales. En esta pieza, la caligrafía está grabada a mano sobre la hematita.",
+    de: "Sidre ist die Signaturfassung unserer Werkstatt: Jede Seite der Ringschiene wird in traditioneller Gravurtechnik mit Rankenwerk und Rumi-Motiven von Hand ziseliert. Dieselbe Fassung entsteht mit verschiedenen Natursteinen. Bei diesem Stück ist Kalligrafie von Hand in den Hämatit graviert.",
+    ar: "«سِدرة» هو التصميم المميّز لورشتنا: يُنقش كل وجه من جسم الخاتم يدويًا بتقنية النقش التقليدية بزخارف الأغصان الملتفة والرومي. ويُصنع التصميم نفسه بأحجار طبيعية مختلفة. في هذا الخاتم نُقش خطّ عربي يدويًا على حجر الهيماتيت.",
+  },
+  sidre_firuze: {
+    tr: "Sidre, atölyemizin imza kasasıdır: kasanın her yüzü geleneksel kalem işi (gravür) tekniğiyle, kıvrık dal ve rumi motifleriyle elde işlenir. Aynı kasa farklı doğal taşlarla hazırlanır. Bu modelde, damarlı dokusuyla her taşı birbirinden farklı olan doğal firuze kullanılmıştır.",
+    en: "Sidre is our workshop's signature setting: every face of the band is hand-chased in the traditional engraving technique with scrolling branch and rumi motifs. The same setting is made with different natural stones. This piece is set with natural turquoise, whose veined matrix makes every stone unique.",
+    es: "Sidre es el engaste distintivo de nuestro taller: cada cara del aro se cincela a mano con la técnica tradicional de grabado, con motivos de ramas en espiral y rumi. El mismo engaste se elabora con distintas piedras naturales. Esta pieza lleva turquesa natural, cuya matriz veteada hace única cada piedra.",
+    de: "Sidre ist die Signaturfassung unserer Werkstatt: Jede Seite der Ringschiene wird in traditioneller Gravurtechnik mit Rankenwerk und Rumi-Motiven von Hand ziseliert. Dieselbe Fassung entsteht mit verschiedenen Natursteinen. Dieses Stück ist mit natürlichem Türkis gefasst, dessen geäderte Matrix jeden Stein einzigartig macht.",
+    ar: "«سِدرة» هو التصميم المميّز لورشتنا: يُنقش كل وجه من جسم الخاتم يدويًا بتقنية النقش التقليدية بزخارف الأغصان الملتفة والرومي. ويُصنع التصميم نفسه بأحجار طبيعية مختلفة. رُصّع هذا الخاتم بالفيروز الطبيعي الذي تجعل عروقه كل حجر فريدًا.",
+  },
+  sidre_akik: {
+    tr: "Sidre, atölyemizin imza kasasıdır: kasanın her yüzü geleneksel kalem işi (gravür) tekniğiyle, kıvrık dal ve rumi motifleriyle elde işlenir. Aynı kasa farklı doğal taşlarla hazırlanır. Bu modelde derin renkli, parlak cilalı doğal kızıl akik kullanılmıştır.",
+    en: "Sidre is our workshop's signature setting: every face of the band is hand-chased in the traditional engraving technique with scrolling branch and rumi motifs. The same setting is made with different natural stones. This piece is set with a deep-toned, high-polish natural red agate.",
+    es: "Sidre es el engaste distintivo de nuestro taller: cada cara del aro se cincela a mano con la técnica tradicional de grabado, con motivos de ramas en espiral y rumi. El mismo engaste se elabora con distintas piedras naturales. Esta pieza lleva un ágata roja natural de tono profundo y pulido brillante.",
+    de: "Sidre ist die Signaturfassung unserer Werkstatt: Jede Seite der Ringschiene wird in traditioneller Gravurtechnik mit Rankenwerk und Rumi-Motiven von Hand ziseliert. Dieselbe Fassung entsteht mit verschiedenen Natursteinen. Dieses Stück ist mit einem tieffarbigen, hochglanzpolierten natürlichen roten Achat gefasst.",
+    ar: "«سِدرة» هو التصميم المميّز لورشتنا: يُنقش كل وجه من جسم الخاتم يدويًا بتقنية النقش التقليدية بزخارف الأغصان الملتفة والرومي. ويُصنع التصميم نفسه بأحجار طبيعية مختلفة. رُصّع هذا الخاتم بعقيق أحمر طبيعي عميق اللون مصقول بلمعان.",
+  },
+  sidre_yesil: {
+    tr: "Sidre, atölyemizin imza kasasıdır: kasanın her yüzü geleneksel kalem işi (gravür) tekniğiyle, kıvrık dal ve rumi motifleriyle elde işlenir. Aynı kasa farklı doğal taşlarla hazırlanır. Bu modelde, ışığı yüzeylerinde kıran fasetalı kesim yeşil kuvars kullanılmıştır.",
+    en: "Sidre is our workshop's signature setting: every face of the band is hand-chased in the traditional engraving technique with scrolling branch and rumi motifs. The same setting is made with different natural stones. This piece is set with a faceted green quartz that catches the light across its facets.",
+    es: "Sidre es el engaste distintivo de nuestro taller: cada cara del aro se cincela a mano con la técnica tradicional de grabado, con motivos de ramas en espiral y rumi. El mismo engaste se elabora con distintas piedras naturales. Esta pieza lleva un cuarzo verde facetado que juega con la luz en cada faceta.",
+    de: "Sidre ist die Signaturfassung unserer Werkstatt: Jede Seite der Ringschiene wird in traditioneller Gravurtechnik mit Rankenwerk und Rumi-Motiven von Hand ziseliert. Dieselbe Fassung entsteht mit verschiedenen Natursteinen. Dieses Stück ist mit einem facettierten grünen Quarz gefasst, der das Licht in seinen Facetten bricht.",
+    ar: "«سِدرة» هو التصميم المميّز لورشتنا: يُنقش كل وجه من جسم الخاتم يدويًا بتقنية النقش التقليدية بزخارف الأغصان الملتفة والرومي. ويُصنع التصميم نفسه بأحجار طبيعية مختلفة. رُصّع هذا الخاتم بكوارتز أخضر مُضلّع القطع يعكس الضوء على أوجهه.",
+  },
   zulfikar: {
     tr: "Zülfikâr motifi, nakkaş oyma tekniğiyle kasaya elde işlenmiştir. Güçlü duruşuyla günlük kullanıma da özel günlere de yakışan bir erkek yüzüğü.",
     en: "The Zulfiqar motif is engraved into the band by hand using the traditional nakkaş carving technique. A bold men's ring that suits both everyday wear and special occasions.",
@@ -696,6 +756,10 @@ const STORIES: Record<string, L> = {
 
 // Seed product id → content
 const ENTRIES: Record<string, CatalogEntry> = {
+  "vu-sidre-hematit": { title: "sidre_hematit", story: "sidre_hematit", stone: "hematite", sacred: true },
+  "vu-sidre-firuze": { title: "sidre_firuze", story: "sidre_firuze", stone: "turquoise" },
+  "vu-sidre-akik": { title: "sidre_akik", story: "sidre_akik", stone: "red_agate" },
+  "vu-sidre-yesil": { title: "sidre_yesil", story: "sidre_yesil", stone: "green_quartz" },
   "vu-custom-1792061468584": { title: "zulfikar", story: "zulfikar", stone: "natural_gem", weight: "16–18" },
   "vu-prod-1": { title: "horasan", story: "horasan", stone: "horasan_agate", weight: "17" },
   "vu-prod-2": { title: "horasan", story: "horasan", stone: "horasan_agate", weight: "25" },

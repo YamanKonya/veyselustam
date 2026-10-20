@@ -737,19 +737,19 @@ export default function ProductFormModal({
             </label>
             <label className="block">
               <span className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">Stok adedi</span>
-              {stockGroup ? (
-                <p className="px-4 py-3 bg-panel-900 border border-panel-800 rounded-xl text-sm text-panel-300">
-                  {stockGroups.find((g) => g.id === stockGroup)?.stock ?? 0} adet —{" "}
-                  {stockGroups.find((g) => g.id === stockGroup)?.name} kasasından düşülür
-                </p>
-              ) : (
-                <input
-                  type="number"
-                  min={0}
-                  value={stock}
-                  onChange={(e) => setStock(e.target.value === "" ? "" : Number(e.target.value))}
-                  className="w-full px-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-white"
-                />
+              <input
+                type="number"
+                min={0}
+                value={stock}
+                onChange={(e) => setStock(e.target.value === "" ? "" : Number(e.target.value))}
+                className="w-full px-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-white"
+              />
+              {stockGroup && (
+                <span className="block text-[11px] text-panel-400 mt-1.5">
+                  Bu modelin kendi adedi. Satılabilir adet, bu sayı ile{" "}
+                  {stockGroups.find((g) => g.id === stockGroup)?.name ?? "kasa"} stoğunun (
+                  {stockGroups.find((g) => g.id === stockGroup)?.stock ?? 0}) küçüğüdür; satışta ikisi de düşer.
+                </span>
               )}
             </label>
           </div>

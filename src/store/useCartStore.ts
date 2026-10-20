@@ -94,6 +94,13 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: "veyselustam-cart-storage",
+      // Keep only the items; the drawer should never reopen on its own after a reload
+      partialize: (state) => ({ items: state.items }),
+      // Older saves also hold isOpen; read back only the items
+      merge: (persisted, current) => ({
+        ...current,
+        items: (persisted as { items?: CartItem[] } | undefined)?.items ?? current.items,
+      }),
     }
   )
 );

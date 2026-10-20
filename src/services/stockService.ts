@@ -62,16 +62,19 @@ export const useStockGroups = () => {
   return { groups, loaded };
 };
 
-/** What can be sold right now: the group's stock for linked products, else the product's own. */
+/**
+ * What can be sold right now. A product linked to a case is limited by both the
+ * case stock and its own stock (e.g. Sidre case 20, Sidre Akik stones 5 → 5).
+ */
 export const availableStock = (product: Product, groups: StockGroup[]) => {
+  const own = typeof product.stock === "number" ? product.stock : Infinity;
   if (product.stockGroup) {
     const group = groups.find((g) => g.id === product.stockGroup);
-    // Before the group list arrives, fall back to the product's own number
-    // rather than flashing "out of stock".
-    if (!group) return groupsLoaded ? 0 : product.stock ?? 0;
-    return group.stock;
+    // A case that doesn't exist (not created yet, or deleted) doesn't limit
+    // anything; checkout treats it the same way.
+    if (group) return Math.min(group.stock, own);
   }
-  return product.stock ?? 0;
+  return Number.isFinite(own) ? own : 0;
 };
 
 /* ---------- admin: manage groups ---------- */
@@ -134,8 +137,10 @@ export const placeOrderWithStock = async (
       if (group) {
         groupQty[group] = (groupQty[group] || 0) + line.quantity;
         names[`g:${group}`] = id;
-      } else if (snap?.exists() && typeof snap.data().stock === "number") {
-        // products without a stock field in Firestore are not tracked
+      }
+      // The product's own count is taken too (a case product's stones); products
+      // without a stock field in Firestore are not tracked
+      if (snap?.exists() && typeof snap.data().stock === "number") {
         productQty[id] = (productQty[id] || 0) + line.quantity;
         names[`p:${id}`] = id;
       }
@@ -145,8 +150,13 @@ export const placeOrderWithStock = async (
       Object.keys(groupQty).map(async (gid) => [gid, await tx.get(doc(db, GROUPS, gid))] as const)
     );
 
+    // Cases that don't exist in Firestore aren't tracked (same as availableStock)
     for (const [gid, snap] of groupSnaps) {
-      const stock = snap.exists() ? Number(snap.data().stock) || 0 : 0;
+      if (!snap.exists()) {
+        delete groupQty[gid];
+        continue;
+      }
+      const stock = Number(snap.data().stock) || 0;
       if (stock < groupQty[gid]) throw new OutOfStockError(names[`g:${gid}`], stock);
     }
     for (const [pid, qty] of Object.entries(productQty)) {
@@ -155,6 +165,7 @@ export const placeOrderWithStock = async (
     }
 
     for (const [gid, snap] of groupSnaps) {
+      if (!(gid in groupQty)) continue;
       const stock = Number(snap.data()!.stock) || 0;
       tx.update(doc(db, GROUPS, gid), { stock: stock - groupQty[gid], lastOrderId: orderRef.id });
     }
