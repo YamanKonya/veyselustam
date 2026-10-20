@@ -9,6 +9,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { formatPrice } from "@/lib/format";
 import { imageAt, imageSrcSet } from "@/lib/image";
 import { useStockGroups, availableStock } from "@/services/stockService";
+import { AdminEditButton } from "@/components/admin/AdminEditProvider";
 
 const AUTOPLAY_MS = 5000;
 
@@ -198,6 +199,7 @@ export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
             </h2>
 
             <p className="mt-3 text-sm text-versace-gold-50/60">{product.category}</p>
+            <AdminEditButton productId={product.id} className="mt-3" />
 
             <div className="mt-6 flex items-baseline gap-3 justify-center lg:justify-start">
               <span className="font-display text-3xl sm:text-4xl text-versace-gold-500 tabular-nums lining-nums">

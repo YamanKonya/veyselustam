@@ -7,6 +7,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { formatPrice, discountPercent } from "@/lib/format";
 import { imageAt, imageSrcSet } from "@/lib/image";
 import { useStockGroups, availableStock } from "@/services/stockService";
+import { AdminEditButton } from "@/components/admin/AdminEditProvider";
 
 interface ProductCardProps {
   product: Product;
@@ -24,42 +25,45 @@ export default function ProductCard({ product, isAdded, onAddToCart }: ProductCa
 
   return (
     <article className="group flex flex-col">
-      <Link href={href} className="relative block aspect-square w-full overflow-hidden bg-versace-green-900">
-        {image ? (
+      <div className="relative">
+        <Link href={href} className="relative block aspect-square w-full overflow-hidden bg-versace-green-900">
+          {image ? (
+            <img
+              src={imageAt(image, 540)}
+              srcSet={imageSrcSet(image, [360, 540, 720])}
+              sizes="(min-width: 1280px) 300px, (min-width: 1024px) 33vw, 50vw"
+              alt={product.title}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04] motion-reduce:transition-none"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-versace-gold-100/60 text-xs">
+              {t("no_image")}
+            </div>
+          )}
+
+          {product.isFeatured && (
+            <span className="absolute top-3 start-3 bg-versace-green-900/90 text-versace-gold-500 text-[11px] font-medium px-2.5 py-1 shadow-[0_0_0_1px_rgba(197,160,89,0.5)]">
+              {t("featured_badge")}
+            </span>
+          )}
+
+          {discount > 0 && (
+            <span className="absolute bottom-3 start-3 bg-versace-gold-500 text-versace-green-900 text-xs font-semibold px-2 py-1 tabular-nums">
+              −%{discount}
+            </span>
+          )}
+
           <img
-            src={imageAt(image, 540)}
-            srcSet={imageSrcSet(image, [360, 540, 720])}
-            sizes="(min-width: 1280px) 300px, (min-width: 1024px) 33vw, 50vw"
-            alt={product.title}
-            loading="lazy"
-            decoding="async"
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04] motion-reduce:transition-none"
+            src="/images/watermark.webp"
+            alt=""
+            aria-hidden
+            className="absolute top-2 end-2 w-12 h-12 sm:w-14 sm:h-14 object-contain pointer-events-none drop-shadow-[0_3px_8px_rgba(0,0,0,0.45)]"
           />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-versace-gold-100/60 text-xs">
-            {t("no_image")}
-          </div>
-        )}
-
-        {product.isFeatured && (
-          <span className="absolute top-3 start-3 bg-versace-green-900/90 text-versace-gold-500 text-[11px] font-medium px-2.5 py-1 shadow-[0_0_0_1px_rgba(197,160,89,0.5)]">
-            {t("featured_badge")}
-          </span>
-        )}
-
-        {discount > 0 && (
-          <span className="absolute bottom-3 start-3 bg-versace-gold-500 text-versace-green-900 text-xs font-semibold px-2 py-1 tabular-nums">
-            −%{discount}
-          </span>
-        )}
-
-        <img
-          src="/images/watermark.webp"
-          alt=""
-          aria-hidden
-          className="absolute top-2 end-2 w-12 h-12 sm:w-14 sm:h-14 object-contain pointer-events-none drop-shadow-[0_3px_8px_rgba(0,0,0,0.45)]"
-        />
-      </Link>
+        </Link>
+        <AdminEditButton productId={product.id} className="absolute bottom-3 end-3 z-10" />
+      </div>
 
       <div className="pt-4 flex-1 flex flex-col">
         <Link href={href} className="hover:text-versace-gold-700 transition-colors">

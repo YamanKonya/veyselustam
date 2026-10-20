@@ -3,6 +3,7 @@ import { Inter, Cormorant_Garamond, Amiri, IBM_Plex_Sans_Arabic } from "next/fon
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { AdminEditProvider } from "@/components/admin/AdminEditProvider";
 
 // latin-ext carries the Turkish glyphs (ğ, ş, ı, İ)
 const inter = Inter({
@@ -63,7 +64,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${cormorant.variable} ${arabicDisplay.variable} ${arabicSans.variable} font-sans min-h-screen text-slate-900 antialiased`}>
         <LanguageProvider>
           <AuthProvider>
-            {children}
+            <AdminEditProvider>{children}</AdminEditProvider>
           </AuthProvider>
         </LanguageProvider>
       </body>

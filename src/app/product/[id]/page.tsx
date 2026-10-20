@@ -8,6 +8,7 @@ import SiteFooter from "@/components/layout/SiteFooter";
 import { whatsappLink } from "@/lib/contact";
 import { imageAt } from "@/lib/image";
 import { useStockGroups, availableStock } from "@/services/stockService";
+import { AdminEditButton } from "@/components/admin/AdminEditProvider";
 import { Product } from "@/types";
 import { getProductById, getLocalProductById } from "@/services/productService";
 import { useCartStore } from "@/store/useCartStore";
@@ -367,6 +368,11 @@ export default function ProductDetailPage() {
                   <h1 className="font-display text-3xl sm:text-4xl lg:text-[2.6rem] font-medium text-versace-green-900 leading-[1.1]">
                     {product.title}
                   </h1>
+                  <AdminEditButton
+                    productId={product.id}
+                    label="Bu ürünü düzenle"
+                    onSaved={() => id && getProductById(id).then((data) => data && setProduct(data))}
+                  />
                 </div>
 
                 {/* Price & Stock */}
