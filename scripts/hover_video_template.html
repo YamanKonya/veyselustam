@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=720, height=720" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 720px; height: 720px; overflow: hidden; background: #0c2417; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #0c2417; }
+      .shot { position: absolute; inset: 0; overflow: hidden; }
+      .shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      #sheen {
+        position: absolute; inset: -20%;
+        background: linear-gradient(115deg, rgba(197,160,89,0) 38%, rgba(240,214,150,0.30) 50%, rgba(197,160,89,0) 62%);
+        mix-blend-mode: screen; pointer-events: none;
+      }
+      #frame { position: absolute; inset: 14px; border: 1px solid rgba(197,160,89,0.55); pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="720" data-height="720">
+      <div id="hero" class="shot clip" data-start="0" data-duration="5" data-track-index="0">
+        <img id="hero-img" data-layout-allow-overflow src="assets/hero.jpg" alt="" />
+      </div>
+      <div id="stone" class="shot clip" data-start="0" data-duration="5" data-track-index="1">
+        <img id="stone-img" data-layout-allow-overflow src="assets/stone.jpg" alt="" />
+      </div>
+      <div id="sheen-layer" class="shot clip" data-start="0" data-duration="5" data-track-index="2">
+        <div id="sheen" data-layout-allow-overflow></div>
+      </div>
+      <div id="frame-layer" class="shot clip" data-start="0" data-duration="5" data-track-index="3">
+        <div id="frame"></div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      // Hero: slow push-in and back, so frame 0 and the last frame match (seamless loop)
+      tl.fromTo("#hero-img", { scale: 1 }, { scale: 1.07, duration: 2.5, ease: "sine.inOut" }, 0);
+      tl.to("#hero-img", { scale: 1, duration: 2.5, ease: "sine.inOut" }, 2.5);
+      // Stone close-up fades in mid-loop and drifts, then hands back to the hero
+      tl.fromTo("#stone", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 1.5);
+      tl.fromTo("#stone-img", { scale: 1.12, xPercent: -2 }, { scale: 1.02, xPercent: 2, duration: 2.4, ease: "none" }, 1.3);
+      tl.to("#stone", { opacity: 0, duration: 0.6, ease: "power1.inOut" }, 3.2);
+      // One gold light pass across the silver
+      tl.fromTo("#sheen", { xPercent: -60 }, { xPercent: 60, duration: 1.4, ease: "power2.inOut" }, 0.2);
+      tl.fromTo("#sheen", { xPercent: -60 }, { xPercent: 60, duration: 1.2, ease: "power2.inOut" }, 3.75);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

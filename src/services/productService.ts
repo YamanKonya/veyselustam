@@ -201,6 +201,12 @@ export const uploadImageToStorage = (file: File): Promise<string> => {
 // Merge Firestore docs over the local catalog. Firestore is the source of truth for every
 // product it holds (so admin edits reach all browsers); products not in Firestore yet
 // (not seeded) fall back to the local / initial dataset.
+// Videos shipped with the site (public/videos) for catalogue products; a video set
+// in the admin panel takes precedence.
+const SEED_VIDEOS = new Map(
+  INITIAL_VEYSELUSTAM_PRODUCTS.filter((p) => p.id && p.videoUrl).map((p) => [p.id!, p.videoUrl!] as const)
+);
+
 const mergeWithInitialProducts = (fetched: Product[]): Product[] => {
   const base = loadProductsFromStorage();
   const baseMap = new Map<string, Product>();
@@ -213,8 +219,8 @@ const mergeWithInitialProducts = (fetched: Product[]): Product[] => {
       fetchedIds.add(remote.id!);
       const localProd = baseMap.get(remote.id!);
       return localProd
-        ? { ...localProd, ...remote, videoUrl: remote.videoUrl || localProd.videoUrl }
-        : remote;
+        ? { ...localProd, ...remote, videoUrl: remote.videoUrl || SEED_VIDEOS.get(remote.id!) || localProd.videoUrl }
+        : { ...remote, videoUrl: remote.videoUrl || SEED_VIDEOS.get(remote.id!) };
     })
     .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
 

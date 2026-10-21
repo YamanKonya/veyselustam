@@ -25,7 +25,7 @@ with close-ups and tone variants (studio light, warm, silver, vignette, branded 
 Output: 1200x1200 progressive JPEGs, <slug>-1.jpg … <slug>-N.jpg. Image 1 is the hero.
 """
 import json, os, sys
-from PIL import Image, ImageEnhance, ImageFilter, ImageOps, ImageDraw, ImageFont
+from PIL import Image, ImageChops, ImageEnhance, ImageFilter, ImageOps, ImageDraw, ImageFont
 
 SIZE = 1200
 GREEN, GOLD, IVORY = (12, 36, 23), (197, 160, 89), (243, 236, 220)
@@ -99,6 +99,66 @@ def branded(im_square, label):
     return canvas
 
 
+BACKDROPS = {
+    "green": ((28, 70, 46), (7, 24, 15)),
+    "ivory": ((250, 246, 238), (222, 212, 192)),
+    "charcoal": ((58, 62, 66), (14, 16, 18)),
+}
+
+
+def backdrop(kind):
+    """Square radial-gradient studio backdrop."""
+    inner_c, outer_c = BACKDROPS[kind]
+    small = 256
+    grad = Image.new("L", (small, small))
+    px = grad.load()
+    for y in range(small):
+        for x in range(small):
+            d = ((x - small / 2) ** 2 + (y - small * 0.45) ** 2) ** 0.5 / (small * 0.72)
+            px[x, y] = int(255 * min(1, d))
+    grad = grad.resize((SIZE, SIZE), Image.BICUBIC).filter(ImageFilter.GaussianBlur(8))
+    return Image.composite(Image.new("RGB", (SIZE, SIZE), outer_c), Image.new("RGB", (SIZE, SIZE), inner_c), grad)
+
+
+def staged(cut_square, kind="green"):
+    """Cut-out subject on a studio backdrop with a soft contact shadow."""
+    bg = backdrop(kind).convert("RGBA")
+    alpha = cut_square.getchannel("A")
+    shadow = Image.new("RGBA", cut_square.size, (0, 0, 0, 0))
+    shadow.putalpha(alpha.point(lambda a: int(a * 0.45)).filter(ImageFilter.GaussianBlur(28)))
+    bg.alpha_composite(shadow, (0, 22))
+    bg.alpha_composite(cut_square)
+    return bg.convert("RGB")
+
+
+def load_cutout(path, clip_top=None, stone_oval=None, clear=()):
+    cut = Image.open(path).convert("RGBA")
+    a = cut.getchannel("A")
+    d = ImageDraw.Draw(a)
+    if clip_top:
+        # Drop anything above the ring (tools left behind by the matting)
+        d.rectangle((0, 0, cut.width, int(clip_top)), fill=0)
+    for box in clear:
+        # Leftover tools next to the ring
+        if len(box) == 4:
+            d.rectangle(tuple(int(v) for v in box), fill=0)
+        else:  # polygon: x0, y0, x1, y1, ...
+            d.polygon([(box[i], box[i + 1]) for i in range(0, len(box), 2)], fill=0)
+    if stone_oval:
+        # Around a domed stone: keep only the stone's oval in its upper part
+        x0, y0, x1, y1 = stone_oval
+        keep = Image.new("L", cut.size, 255)
+        kd = ImageDraw.Draw(keep)
+        kd.rectangle((0, 0, cut.width, int(y0 + (y1 - y0) * 0.45)), fill=0)
+        dx = (x1 - x0) * 0.04
+        kd.ellipse((x0 - dx, y0, x1 + dx, y1 + (y1 - y0)), fill=255)
+        keep = keep.filter(ImageFilter.GaussianBlur(2))
+        a = ImageChops.darker(a, keep)
+    cut.putalpha(a)
+    return cut
+
+
+
 def main():
     args = sys.argv[1:]
     if not args:
@@ -116,16 +176,45 @@ def main():
     first, fp = photos[0]
     ring = fp.get("ring") or (0, 0, first.width, first.height)
     hero = images[0]
-    extras = [
-        square(first, fp.get("stone") or inner(ring, 0.45), pad=0.18),  # stone close-up
-        square(first, fp.get("side") or inner(ring, 0.7), pad=0.02),    # engraving / detail
-        studio(hero),                                                   # studio light
-        tone(studio(hero), 1.06, 1.0, 0.9),                             # warm
-        silver(hero),                                                   # silver tone
-        vignette(studio(hero)),                                         # vignette
-        branded(studio(hero), label),                                   # branded frame
-        square(first, ring, pad=0.45),                                  # wider view
-    ]
+
+    if fp.get("cutout"):
+        # Studio set: the photo's subject matted onto brand backdrops, then the
+        # untouched workshop photo for authenticity
+        cut = load_cutout(fp["cutout"], fp.get("clip_top"), fp.get("stone_oval"), fp.get("clear", ()))
+        cut_hero = square(cut, ring, pad=0.34)
+        cut_studio = studio(cut_hero.convert("RGB"))
+        cut_studio.putalpha(cut_hero.getchannel("A"))
+        silver_cut = silver(cut_hero.convert("RGB")).convert("RGBA")
+        silver_cut.putalpha(cut_hero.getchannel("A"))
+        stone = square(cut, fp.get("stone") or inner(ring, 0.45), pad=0.32)
+        side = square(cut, fp.get("side") or inner(ring, 0.7), pad=0.02)
+        images = [
+            staged(cut_studio, "green"),                                # 1 hero on brand green
+            staged(cut_studio, "ivory"),                                # 2 hero on ivory
+            staged(stone, "green"),                                     # 3 stone close-up
+            staged(side, "green"),                                      # 4 hand-chased engraving
+            studio(hero),                                               # 5 workshop photo
+            staged(silver_cut, "charcoal"),                             # 6 silver tone
+            tone(studio(hero), 1.06, 1.0, 0.9),                         # 7 warm workshop
+            branded(staged(cut_studio, "green"), label),                # 8 branded frame
+            studio(square(first, fp.get("stone") or inner(ring, 0.45), pad=0.05)),  # 9 bezel detail
+            square(first, ring, pad=0.45),                              # 10 wider view
+        ] + images[1:]
+        extras = []
+    else:
+        extras = None
+
+    if extras is None:
+        extras = [
+            square(first, fp.get("stone") or inner(ring, 0.45), pad=0.18),  # stone close-up
+            square(first, fp.get("side") or inner(ring, 0.7), pad=0.02),    # engraving / detail
+            studio(hero),                                                   # studio light
+            tone(studio(hero), 1.06, 1.0, 0.9),                             # warm
+            silver(hero),                                                   # silver tone
+            vignette(studio(hero)),                                         # vignette
+            branded(studio(hero), label),                                   # branded frame
+            square(first, ring, pad=0.45),                                  # wider view
+        ]
     images += extras
     images = images[:count]
 

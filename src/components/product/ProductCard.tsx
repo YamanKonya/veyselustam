@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Product } from "@/types";
 import { useLanguage } from "@/context/LanguageContext";
@@ -16,8 +16,35 @@ interface ProductCardProps {
   onAddToCart: (product: Product, size: string) => void;
 }
 
+// Only videos every visitor can load (site files or web links), not ones kept in
+// the admin's own browser storage
+const playableVideo = (url?: string) => (url && /^(\/|https?:\/\/)/.test(url) ? url : "");
+
 export default function ProductCard({ product, isAdded, onAddToCart }: ProductCardProps) {
   const { t } = useLanguage();
+  const video = playableVideo(product.videoUrl);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoArmed, setVideoArmed] = useState(false); // load the file only after the first hover
+  const [videoOn, setVideoOn] = useState(false);
+
+  const startVideo = (e: React.PointerEvent) => {
+    if (!video || e.pointerType !== "mouse") return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    setVideoArmed(true);
+    setVideoOn(true);
+  };
+  useEffect(() => {
+    if (videoOn) videoRef.current?.play().catch(() => setVideoOn(false));
+  }, [videoOn, videoArmed]);
+
+  const stopVideo = () => {
+    setVideoOn(false);
+    const v = videoRef.current;
+    if (v) {
+      v.pause();
+      v.currentTime = 0;
+    }
+  };
   const { groups } = useStockGroups();
   const soldOut = availableStock(product, groups) <= 0;
   const image = product.images?.[0];
@@ -27,7 +54,12 @@ export default function ProductCard({ product, isAdded, onAddToCart }: ProductCa
   return (
     <article className="group flex flex-col">
       <div className="relative">
-        <Link href={href} className="relative block aspect-square w-full overflow-hidden bg-versace-green-900">
+        <Link
+          href={href}
+          onPointerEnter={startVideo}
+          onPointerLeave={stopVideo}
+          className="relative block aspect-square w-full overflow-hidden bg-versace-green-900"
+        >
           {image ? (
             <img
               src={imageAt(image, 540)}
@@ -42,6 +74,19 @@ export default function ProductCard({ product, isAdded, onAddToCart }: ProductCa
             <div className="w-full h-full flex items-center justify-center text-versace-gold-100/60 text-xs">
               {t("no_image")}
             </div>
+          )}
+
+          {video && videoArmed && (
+            <video
+              ref={videoRef}
+              src={video}
+              muted
+              loop
+              playsInline
+              preload="auto"
+              aria-hidden
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${videoOn ? "opacity-100" : "opacity-0"}`}
+            />
           )}
 
           {product.isFeatured && (

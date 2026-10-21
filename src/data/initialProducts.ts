@@ -3037,6 +3037,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/sidre-hematit/sidre-hematit-9.jpg",
       "/images/products/sidre-hematit/sidre-hematit-10.jpg"
     ],
+    "videoUrl": "/videos/sidre-hematit.mp4",
     "category": "Özel El Yapımı Gümüş Yüzükler",
     "ringSize": [
       "15",
@@ -3077,6 +3078,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/sidre-firuze/sidre-firuze-9.jpg",
       "/images/products/sidre-firuze/sidre-firuze-10.jpg"
     ],
+    "videoUrl": "/videos/sidre-firuze.mp4",
     "category": "Özel El Yapımı Gümüş Yüzükler",
     "ringSize": [
       "15",
@@ -3117,6 +3119,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/sidre-akik/sidre-akik-9.jpg",
       "/images/products/sidre-akik/sidre-akik-10.jpg"
     ],
+    "videoUrl": "/videos/sidre-akik.mp4",
     "category": "Özel El Yapımı Gümüş Yüzükler",
     "ringSize": [
       "15",
@@ -3157,6 +3160,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/sidre-yesil/sidre-yesil-9.jpg",
       "/images/products/sidre-yesil/sidre-yesil-10.jpg"
     ],
+    "videoUrl": "/videos/sidre-yesil.mp4",
     "category": "Özel El Yapımı Gümüş Yüzükler",
     "ringSize": [
       "15",
