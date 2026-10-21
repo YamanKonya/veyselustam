@@ -202,15 +202,15 @@ export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
             <p className="mt-3 text-sm text-versace-gold-50/60">{product.category}</p>
             <AdminEditButton productId={product.id} className="mt-3" />
 
-            <div className="mt-6 flex items-baseline gap-3 justify-center lg:justify-start">
-              <span className="font-display text-3xl sm:text-4xl text-versace-gold-500 tabular-nums lining-nums">
-                ₺{formatPrice(product.price)}
-              </span>
+            <div className="mt-6 flex flex-wrap items-baseline gap-x-4 gap-y-1 justify-center lg:justify-start">
               {hasDiscount && (
-                <span className="text-sm text-versace-gold-50/40 line-through tabular-nums">
+                <span className="text-lg sm:text-xl text-versace-gold-50/60 line-through decoration-red-400 decoration-2 tabular-nums lining-nums">
                   ₺{formatPrice(product.originalPrice!)}
                 </span>
               )}
+              <span className="font-display text-3xl sm:text-4xl text-versace-gold-500 tabular-nums lining-nums">
+                ₺{formatPrice(product.price)}
+              </span>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3 justify-center lg:justify-start">

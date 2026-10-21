@@ -118,15 +118,15 @@ export default function ProductCard({ product, isAdded, onAddToCart }: ProductCa
           </h3>
         </Link>
 
-        <div className="mt-2 mb-4 flex items-baseline gap-2">
-          <span className="text-base font-semibold text-versace-green-900 tabular-nums">
-            ₺{formatPrice(product.price)}
-          </span>
+        <div className="mt-2 mb-4 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
           {discount > 0 && (
-            <span className="text-xs text-slate-400 line-through tabular-nums">
+            <span className="text-sm text-slate-500 line-through decoration-red-600/80 decoration-2 tabular-nums">
               ₺{formatPrice(product.originalPrice!)}
             </span>
           )}
+          <span className={`font-bold text-versace-green-900 tabular-nums ${discount > 0 ? "text-xl" : "text-lg"}`}>
+            ₺{formatPrice(product.price)}
+          </span>
         </div>
 
         {!SALES_OPEN ? (
