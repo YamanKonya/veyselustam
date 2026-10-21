@@ -22,6 +22,7 @@ import { Product } from "@/types";
 import { subscribeProducts, toggleFeaturedProduct } from "@/services/productService";
 import { translateProduct } from "@/i18n/productTranslations";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
+import CampaignLinkBuilder from "@/components/admin/CampaignLinkBuilder";
 import { fetchPageViews, groupVisits, sourceLabel, campaignLink, PageView } from "@/services/analyticsService";
 
 const RANGES = [
@@ -314,6 +315,8 @@ export default function AdminAnalyticsPage() {
           </div>
         </Panel>
       )}
+
+      <CampaignLinkBuilder products={products} />
 
       {/* Products by interest */}
       <Panel title="En çok ilgi gören ürünler">
