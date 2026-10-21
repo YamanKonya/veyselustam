@@ -16,7 +16,7 @@ export default function SiteFooter() {
         { label: t("footer_corp_about"), href: "/" },
         { label: t("footer_corp_customer"), href: "/" },
         { label: t("footer_corp_faq"), href: "/" },
-        { label: t("footer_corp_privacy"), href: "/" },
+        { label: t("footer_corp_privacy"), href: "/gizlilik" },
       ],
     },
     {
