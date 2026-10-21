@@ -78,6 +78,23 @@ export async function listSeoProducts(): Promise<(Product & { updatedAt?: string
   return INITIAL_VEYSELUSTAM_PRODUCTS.filter((p) => p.isActive !== false);
 }
 
+/** Shared case stock by group id (e.g. { sidre: 15 }); empty if unavailable. */
+export async function listStockGroups(): Promise<Record<string, number>> {
+  try {
+    const res = await fetch(`${REST}/stockGroups?pageSize=300&key=${firebaseConfig.apiKey}`, { next: { revalidate: 900 } });
+    if (!res.ok) return {};
+    const data = await res.json();
+    const out: Record<string, number> = {};
+    for (const d of data.documents || []) {
+      const g = fromDoc(d) as any;
+      if (typeof g.stock === "number") out[g.id] = g.stock;
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
 /** Search-result sized description: first sentences, emoji and links stripped. */
 export const metaDescription = (text: string, max = 158) => {
   const clean = text
