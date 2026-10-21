@@ -385,7 +385,7 @@ export default function ProductDetailPage() {
                           ₺{product.price.toLocaleString("tr-TR", { minimumFractionDigits: 0 })}
                         </span>
                         <span className="text-xs font-bold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-md">
-                          -%{product.discountPercent || Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)} {t("discount_label")}
+                          -%{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)} {t("discount_label")}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 mt-0.5">

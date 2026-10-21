@@ -369,8 +369,14 @@ export const updateProduct = async (
   );
   notifySubscribers();
 
+  // Clearing a field in the form must remove it from Firestore, not keep the old value
+  const firestoreFields: Record<string, unknown | FieldValue> = sanitizeForFirestore(updatedFields);
+  (["originalPrice", "discountPercent", "videoUrl"] as const).forEach((key) => {
+    if (key in productData && productData[key] === undefined) firestoreFields[key] = deleteField();
+  });
+
   // Background non-blocking sync to Firestore
-  syncProductInBackground("ürün güncelleme", id, sanitizeForFirestore(updatedFields));
+  syncProductInBackground("ürün güncelleme", id, firestoreFields);
 };
 
 // Delete a product

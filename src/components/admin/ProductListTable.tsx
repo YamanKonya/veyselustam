@@ -282,7 +282,7 @@ export default function ProductListTable({
                   const isSelected = product.id ? selectedProductIds.includes(product.id) : false;
 
                   const hasDiscount = product.originalPrice && product.originalPrice > product.price;
-                  const discountPct = product.discountPercent || (hasDiscount ? Math.round(((product.originalPrice! - product.price) / product.originalPrice!) * 100) : 0);
+                  const discountPct = (hasDiscount ? Math.round(((product.originalPrice! - product.price) / product.originalPrice!) * 100) : 0);
 
                   return (
                     <tr 

@@ -336,7 +336,11 @@ export default function ProductFormModal({
         savedSource = undefined;
       }
 
+      // An old price only counts when it is above the sale price; the % always follows the prices
       const isCampaignActive = originalPrice !== "" && Number(originalPrice) > Number(price);
+      const savedDiscount = isCampaignActive
+        ? Math.round(((Number(originalPrice) - Number(price)) / Number(originalPrice)) * 100)
+        : undefined;
       const productData = {
         title: title.trim(),
         title_en: tr.en.title.trim() || undefined,
@@ -351,8 +355,8 @@ export default function ProductFormModal({
         description_ar: tr.ar.description.trim() || undefined,
         i18nSource: savedSource,
         price: Number(price),
-        originalPrice: originalPrice !== "" ? Number(originalPrice) : undefined,
-        discountPercent: discountPercent !== "" ? Number(discountPercent) : undefined,
+        originalPrice: isCampaignActive ? Number(originalPrice) : undefined,
+        discountPercent: savedDiscount,
         isCampaign: isCampaignActive,
         isFeatured: isFeatured,
         isActive: isActive,
@@ -680,8 +684,8 @@ export default function ProductFormModal({
                       setDiscountPercent(pct > 0 ? pct : 0);
                     }
                   }}
-                  placeholder="7000.00"
-                  className="w-full pl-9 pr-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-panel-300 line-through"
+                  placeholder="İndirim yoksa boş bırakın"
+                  className="w-full pl-9 pr-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-panel-300 placeholder:text-panel-600 placeholder:font-normal [&:not(:placeholder-shown)]:line-through"
                 />
               </div>
             </div>
@@ -708,11 +712,16 @@ export default function ProductFormModal({
                       setOriginalPrice(calculatedOrig);
                     }
                   }}
-                  placeholder="20"
-                  className="w-full pl-8 pr-4 py-3 bg-panel-950 border border-brass-500/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-brass-400 font-bold"
+                  placeholder="—"
+                  className="w-full pl-8 pr-4 py-3 bg-panel-950 border border-brass-500/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-brass-400 font-bold placeholder:text-panel-600 placeholder:font-normal"
                 />
               </div>
             </div>
+            {originalPrice !== "" && price !== "" && Number(originalPrice) <= Number(price) && (
+              <p role="alert" className="md:col-span-3 -mt-1 text-xs text-amber-300">
+                İndirimsiz fiyat, satış fiyatından yüksek olmalı. Böyle kaydederseniz indirim gösterilmez ve eski fiyat silinir.
+              </p>
+            )}
           </div>
 
           {/* Stock: own count, or a shared case (e.g. Sidre) that several products sell from */}

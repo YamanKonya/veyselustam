@@ -1,7 +1,8 @@
 export const formatPrice = (value: number) =>
   value.toLocaleString("tr-TR", { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
-export const discountPercent = (price: number, originalPrice?: number, explicit?: number) => {
+// Always derived from the two prices, so a stale stored percentage can't disagree with them
+export const discountPercent = (price: number, originalPrice?: number, _stored?: number) => {
   if (!originalPrice || originalPrice <= price) return 0;
-  return explicit || Math.round(((originalPrice - price) / originalPrice) * 100);
+  return Math.round(((originalPrice - price) / originalPrice) * 100);
 };
