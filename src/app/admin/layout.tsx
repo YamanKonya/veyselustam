@@ -11,7 +11,8 @@ import {
   LogOut,
   ChevronLeft,
   KeyRound,
-  Boxes
+  Boxes,
+  BarChart3
 } from "lucide-react";
 
 export default function AdminLayout({
@@ -65,6 +66,18 @@ export default function AdminLayout({
             >
               <ShoppingBag className="w-4 h-4" />
               Sipariş Takibi
+            </Link>
+
+            <Link
+              href="/admin/analytics"
+              className={`flex items-center gap-3 px-4 py-3 text-xs sm:text-sm font-semibold rounded-xl transition ${
+                pathname === "/admin/analytics"
+                  ? "bg-brass-600 text-white shadow-lg shadow-brass-600/20"
+                  : "text-panel-400 hover:bg-panel-800 hover:text-panel-200"
+              }`}
+            >
+              <BarChart3 className="w-4 h-4" />
+              Ziyaretler
             </Link>
 
             <Link

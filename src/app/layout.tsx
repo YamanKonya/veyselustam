@@ -4,6 +4,8 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { AdminEditProvider } from "@/components/admin/AdminEditProvider";
+import VisitTracker from "@/components/VisitTracker";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, storeJsonLd } from "@/lib/seo";
 
 // latin-ext carries the Turkish glyphs (ğ, ş, ı, İ)
 const inter = Inter({
@@ -45,9 +47,35 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Veysel Ustam | Takı & E-Ticaret Platformu",
-  description: "Özel tasarım takı ve aksesuar mağazası. En seçkin koleksiyonlar.",
-  keywords: ["takı", "aksesuar", "yüzük", "kolye", "bileklik", "e-ticaret", "özel tasarım"],
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Veysel Ustam | El Yapımı 925 Ayar Gümüş Yüzük, Konya",
+    template: "%s | Veysel Ustam",
+  },
+  description: SITE_DESCRIPTION,
+  keywords: [
+    "el yapımı gümüş yüzük",
+    "925 ayar gümüş yüzük",
+    "erkek gümüş yüzük",
+    "akik yüzük",
+    "firuze yüzük",
+    "hematit yüzük",
+    "nakkaş yüzük",
+    "Konya gümüş yüzük",
+    "kişiye özel yüzük",
+    "Veysel Ustam",
+  ],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: SITE_NAME,
+    title: "Veysel Ustam | El Yapımı 925 Ayar Gümüş Yüzük",
+    description: SITE_DESCRIPTION,
+    locale: "tr_TR",
+    images: [{ url: "/images/logo-256.png", width: 256, height: 256, alt: SITE_NAME }],
+  },
+  twitter: { card: "summary", title: SITE_NAME, description: SITE_DESCRIPTION },
   icons: {
     icon: "/images/logo-256.png",
     apple: "/images/logo-256.png",
@@ -62,9 +90,21 @@ export default function RootLayout({
   return (
     <html lang="tr" className="scroll-smooth">
       <body className={`${inter.variable} ${cormorant.variable} ${arabicDisplay.variable} ${arabicSans.variable} font-sans min-h-screen text-slate-900 antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              storeJsonLd(),
+              { "@context": "https://schema.org", "@type": "WebSite", name: SITE_NAME, url: SITE_URL, inLanguage: "tr-TR" },
+            ]),
+          }}
+        />
         <LanguageProvider>
           <AuthProvider>
-            <AdminEditProvider>{children}</AdminEditProvider>
+            <AdminEditProvider>
+              {children}
+              <VisitTracker />
+            </AdminEditProvider>
           </AuthProvider>
         </LanguageProvider>
       </body>

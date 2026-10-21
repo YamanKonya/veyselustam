@@ -69,6 +69,34 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
+    // Ziyaret istatistikleri: site her sayfa görüntülemesinde bir kayıt açar
+    // (IP saklanmaz; konum şehir düzeyinde). Yalnızca yönetici okur/siler.
+    // Kayıt açılırken süre 0 ve zaman sunucu saati olmalı; sonra yalnızca
+    // "seconds" alanı artırılabilir (en fazla 4 saat).
+    function shortStr(v, n) {
+      return v is string && v.size() <= n;
+    }
+    function validPageview(d) {
+      return d.keys().hasOnly(['sid', 'path', 'productId', 'at', 'seconds', 'country', 'region', 'city',
+                               'device', 'ref', 'utmSource', 'utmMedium', 'utmCampaign', 'lang', 'landing'])
+        && shortStr(d.sid, 40) && d.sid.size() >= 8
+        && shortStr(d.path, 200) && shortStr(d.productId, 80)
+        && shortStr(d.country, 8) && shortStr(d.region, 60) && shortStr(d.city, 80)
+        && d.device in ['mobile', 'tablet', 'desktop']
+        && shortStr(d.ref, 120) && shortStr(d.utmSource, 60) && shortStr(d.utmMedium, 60)
+        && shortStr(d.utmCampaign, 80) && shortStr(d.lang, 5) && d.landing is bool;
+    }
+    match /pageviews/{viewId} {
+      allow read, delete: if isAdmin();
+      allow create: if validPageview(request.resource.data)
+        && request.resource.data.seconds == 0
+        && request.resource.data.at == request.time;
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['seconds'])
+        && request.resource.data.seconds is int
+        && request.resource.data.seconds >= resource.data.seconds
+        && request.resource.data.seconds <= 14400;
+    }
+
     // Müşteri profilleri: herkes yalnızca kendi profilini görür / yazar ve
     // kendine "admin" rolü veremez.
     match /users/{uid} {
