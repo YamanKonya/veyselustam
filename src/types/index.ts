@@ -35,6 +35,9 @@ export interface Product {
   /** id of a shared stock group (e.g. the "Sidre" ring case); when set, the
    *  group's stock is what can be sold and every sale draws from it */
   stockGroup?: string;
+  /** bumped in the catalogue when its image set changes; the admin panel then
+   *  copies the new image list to Firestore once */
+  imagesVersion?: number;
   originalUrl?: string;
   createdAt?: string;
 }

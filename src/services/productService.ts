@@ -508,6 +508,29 @@ export const toggleActiveProduct = async (id: string): Promise<boolean> => {
 // Seed every catalog product into Firestore products/{id} if it is missing (or only a
 // partial doc without createdAt). Uses this browser's local copy so earlier local edits
 // are kept; existing complete docs are never overwritten.
+/**
+ * Catalogue products whose image set was renewed in the code (higher
+ * `imagesVersion`) get the new image list in Firestore. Runs when the admin opens
+ * the panel; an image list edited by hand is only replaced when the catalogue
+ * version is raised again. Returns how many products were updated.
+ */
+export const syncCatalogImages = async (): Promise<number> => {
+  let updated = 0;
+  for (const seed of INITIAL_VEYSELUSTAM_PRODUCTS) {
+    if (!seed.id || !seed.imagesVersion) continue;
+    const ref = doc(db, PRODUCTS_COLLECTION, seed.id);
+    const snap = await getDoc(ref);
+    if (!snap.exists() || (snap.data().imagesVersion || 0) >= seed.imagesVersion) continue;
+    await setDoc(ref, { images: seed.images, imagesVersion: seed.imagesVersion }, { merge: true });
+    localProductsStore = localProductsStore.map((p) =>
+      p.id === seed.id ? { ...p, images: seed.images, imagesVersion: seed.imagesVersion } : p
+    );
+    updated++;
+  }
+  if (updated) notifySubscribers();
+  return updated;
+};
+
 export const seedProductsToFirestore = async (): Promise<{ created: number; skipped: number }> => {
   const localMap = new Map<string, Product>();
   localProductsStore.forEach((p) => p.id && localMap.set(p.id, p));

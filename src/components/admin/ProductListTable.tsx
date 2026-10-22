@@ -55,6 +55,12 @@ export default function ProductListTable({
   const [cloningId, setCloningId] = useState<string | null>(null);
   const [deleteConfirmProduct, setDeleteConfirmProduct] = useState<Product | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  // Large preview that follows the cursor over a thumbnail
+  const [hoverPreview, setHoverPreview] = useState<{ images: string[]; x: number; y: number } | null>(null);
+  const trackHover = (images: string[]) => (e: React.MouseEvent) => {
+    if (window.matchMedia?.("(hover: none)").matches) return;
+    setHoverPreview({ images, x: e.clientX, y: e.clientY });
+  };
   const [currentPage, setCurrentPage] = useState(1);
 
   // Campaign Modal & Selection State
@@ -313,6 +319,9 @@ export default function ProductListTable({
                       <td className="py-4 px-4">
                         <div 
                           onClick={() => mainImg && setPreviewImage(mainImg)}
+                          onMouseEnter={mainImg ? trackHover(product.images) : undefined}
+                          onMouseMove={mainImg ? trackHover(product.images) : undefined}
+                          onMouseLeave={() => setHoverPreview(null)}
                           className={`w-14 h-14 rounded-xl bg-panel-950 border border-panel-800 overflow-hidden flex items-center justify-center flex-shrink-0 cursor-pointer group relative ${
                             mainImg ? "hover:border-brass-500" : ""
                           }`}
@@ -551,6 +560,29 @@ export default function ProductListTable({
           </div>
         </div>
       )}
+
+      {hoverPreview && (() => {
+        const W = 360;
+        const H = W + (hoverPreview.images.length > 1 ? 64 : 0);
+        const left = Math.min(hoverPreview.x + 24, window.innerWidth - W - 12);
+        const top = Math.max(12, Math.min(hoverPreview.y - H / 2, window.innerHeight - H - 12));
+        return (
+          <div
+            aria-hidden
+            className="fixed z-[60] pointer-events-none rounded-2xl border border-brass-500/60 bg-panel-950 p-2 shadow-2xl"
+            style={{ left, top, width: W }}
+          >
+            <img src={hoverPreview.images[0]} alt="" className="w-full aspect-square object-cover rounded-xl" />
+            {hoverPreview.images.length > 1 && (
+              <div className="mt-2 grid grid-cols-6 gap-1.5">
+                {hoverPreview.images.slice(1, 7).map((src) => (
+                  <img key={src} src={src} alt="" className="w-full aspect-square object-cover rounded-md" />
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* Delete Confirmation Modal */}
       {deleteConfirmProduct && (
