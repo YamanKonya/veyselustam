@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=720, height=720" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=block" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 720px; height: 720px; overflow: hidden; background: #071a10; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #071a10; font-family: "Cormorant Garamond", Georgia, serif; }
+      .shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .layer { position: absolute; inset: 0; }
+      #vignette { background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%); pointer-events: none; }
+      #title { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 64px; pointer-events: none; }
+      #title h1 { color: #e9cf8f; font-weight: 600; font-size: 64px; letter-spacing: 0.42em; margin-right: -0.42em; text-shadow: 0 2px 24px rgba(0,0,0,0.65); }
+      #title .rule { width: 0; height: 1px; background: linear-gradient(90deg, transparent, #c5a059, transparent); margin-top: 10px; }
+      #title .sub { margin-top: 12px; color: #f3ecdc; font-size: 20px; letter-spacing: 0.5em; margin-right: -0.5em; opacity: 0.9; text-shadow: 0 2px 16px rgba(0,0,0,0.7); }
+      #endcard { background: radial-gradient(circle at 50% 42%, #164a30 0%, #0c2417 55%, #061410 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+      #pattern { position: absolute; inset: 0; background-image: url("pattern-seljuk-dark.svg"); background-size: 104px auto; opacity: 0.12; }
+      #endcard img { position: relative; width: 150px; height: auto; filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5)); }
+      #endcard .brand { position: relative; margin-top: 26px; color: #f3ecdc; font-size: 44px; font-weight: 500; letter-spacing: 0.32em; margin-right: -0.32em; }
+      #endcard .rule { position: relative; width: 220px; height: 1px; margin-top: 16px; background: linear-gradient(90deg, transparent, #c5a059, transparent); }
+      #endcard .tag { position: relative; margin-top: 14px; color: #c5a059; font-size: 22px; letter-spacing: 0.6em; margin-right: -0.6em; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="16.6" data-width="720" data-height="720">
+      <video id="v1" class="shot clip" src="assets/velvet.mp4" muted playsinline data-start="0" data-duration="5" data-track-index="0"></video>
+      <video id="v2" class="shot clip" src="assets/casket.mp4" muted playsinline data-start="4.4" data-duration="5" data-track-index="1"></video>
+      <video id="v3" class="shot clip" src="assets/slate.mp4" muted playsinline data-start="8.8" data-duration="5" data-track-index="2"></video>
+      <div id="vignette-l" class="layer clip" data-start="0" data-duration="16.6" data-track-index="3"><div id="vignette" class="layer"></div></div>
+      <div id="title-l" class="layer clip" data-start="0.5" data-duration="3.9" data-track-index="4">
+        <div id="title" class="layer">
+          <h1 id="t-name">SİDRE</h1>
+          <div id="t-rule" class="rule"></div>
+          <div id="t-sub" class="sub">925</div>
+        </div>
+      </div>
+      <div id="end-l" class="layer clip" data-start="13.2" data-duration="3.4" data-track-index="5">
+        <div id="endcard" class="layer">
+          <div id="pattern"></div>
+          <img id="e-logo" src="watermark.webp" alt="" />
+          <div id="e-brand" class="brand">VEYSEL USTAM</div>
+          <div id="e-rule" class="rule"></div>
+          <div id="e-tag" class="tag">SİDRE</div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      // Crossfades between the AI clips
+      tl.fromTo("#v2", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 4.4);
+      tl.fromTo("#v3", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 8.8);
+      // Title: letters rise out of a soft blur, gold rule draws, then everything lifts away
+      tl.fromTo("#t-name", { opacity: 0, y: 18, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, ease: "power3.out" }, 0.6);
+      tl.fromTo("#t-rule", { width: 0 }, { width: 260, duration: 1.0, ease: "power2.inOut" }, 1.2);
+      tl.fromTo("#t-sub", { opacity: 0 }, { opacity: 0.9, duration: 0.8, ease: "power1.out" }, 1.7);
+      tl.to("#title", { opacity: 0, y: -10, duration: 0.7, ease: "power1.in" }, 3.6);
+      // End card
+      tl.fromTo("#endcard", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 13.2);
+      tl.fromTo("#e-logo", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.9, ease: "power3.out" }, 13.5);
+      tl.fromTo("#e-brand", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 13.8);
+      tl.fromTo("#e-rule", { width: 0 }, { width: 220, duration: 0.8, ease: "power2.inOut" }, 14.1);
+      tl.fromTo("#e-tag", { opacity: 0 }, { opacity: 1, duration: 0.7, ease: "power1.out" }, 14.4);
+      tl.fromTo("#pattern", { opacity: 0 }, { opacity: 0.12, duration: 1.4, ease: "none" }, 13.2);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
