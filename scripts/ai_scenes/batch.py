@@ -11,7 +11,11 @@ from qwen_edit import edit
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PUB = os.path.join(REPO, "public", "images", "products")
-WORK = "C:/Users/ROGSTRIX/ComfyUI-work/scenes"
+WORK = os.environ.get("SCENES_DIR", "C:/Users/ROGSTRIX/ComfyUI-work/scenes")
+# The real stones are horizontal ovals: seen face-on the long axis runs across the
+# finger (left to right), about 4:3. The model tends to draw them upright, so say it.
+OVAL = ("The stone is a horizontal oval, about 4:3: its long axis runs left to right across the ring, "
+        "never upright or round. Keep this exact oval shape and proportion. ")
 
 STONES = {
     "akik": "polished deep red agate cabochon",
@@ -24,13 +28,15 @@ SCENES = {
     "slate": ("on wet black slate stone with small water droplets around it (not on the stone), dark background, warm rim light from one side and cool light from the other", 9),
     "casket": ("inside an open antique carved walnut jewelry box lined with dark green silk, warm candlelight in the blurred background", 6),
 }
+# Every angle keeps the real photo's viewpoint (the engraved side, stone seen as a
+# wide oval). Asking for front or top views makes the model draw an upright oval stone.
 ANGLES = [
-    ("hero", 1, "Three-quarter front view of the ring, the whole ring visible"),
-    ("front", 1, "Straight front view of the ring with the stone facing the camera, the whole ring visible"),
-    ("side", 4, "Side profile view of the ring showing the hand-engraved shoulder, the whole ring visible"),
-    ("top", 1, "Top-down view looking straight onto the stone, the whole ring visible"),
-    ("stone", 3, "Extreme macro close-up of the stone and its silver bezel, razor sharp detail, shallow depth of field"),
-    ("engrave", 4, "Extreme macro close-up of the hand-engraved floral pattern on the silver shoulder, razor sharp detail, shallow depth of field"),
+    ("hero", 1, "Keep exactly the same camera angle as the photo, the whole ring visible and centred"),
+    ("wide", 1, "Keep the same camera angle as the photo, the ring a little smaller in the frame so more of the scene shows"),
+    ("low", 4, "Keep the same camera angle as the photo, camera slightly lower so the ring looks monumental, the whole ring visible"),
+    ("side", 4, "Keep the same camera angle as the photo, showing the hand-engraved shoulder, the whole ring visible"),
+    ("stone", 3, "Close-up of the stone and its silver bezel from the same angle as the photo, razor sharp detail, shallow depth of field"),
+    ("engrave", 4, "Close-up of the hand-engraved floral pattern on the silver shoulder from the same angle as the photo, razor sharp detail"),
 ]
 
 for m in sys.argv[1:] or list(STONES):
@@ -42,7 +48,7 @@ for m in sys.argv[1:] or list(STONES):
             if os.path.exists(out):
                 continue
             src = os.path.join(PUB, f"sidre-{m}", f"sidre-{m}-{src_n}.jpg")
-            prompt = (f"Remove the hand and fingers holding the ring. {view}. Place this exact silver ring {desc}. "
+            prompt = (f"Remove the hand and fingers holding the ring. {view}. Place this exact silver ring {desc}. {OVAL}"
                       f"Keep the ring itself exactly as in the photo: same {STONES[m]}, same hand-engraved floral scroll pattern, "
                       "same bezel and the same tall flared shoulders. Premium luxury jewelry photograph, photorealistic, sharp focus on the ring.")
             secs = edit(src, out, prompt, seed, 4)
