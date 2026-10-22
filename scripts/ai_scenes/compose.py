@@ -118,6 +118,10 @@ def main():
         ImageDraw.Draw(lip).ellipse((cx - ring.width * 1.6, cy - 6 * k, cx + ring.width * 1.6, cy - 6 * k + ring.width * 1.1), fill=255)
         lip = lip.filter(ImageFilter.GaussianBlur(3 * k))
         comp = Image.composite(base, comp, lip)
+        placed = Image.new("L", plate.size, 0)
+        placed.paste(ring.getchannel("A"), (x, y))
+        ring_a = ImageChops.multiply(placed, ImageChops.invert(lip))
+        shadow_a = sh
     else:  # macro
         cx, width = float(a[4]) * k, float(a[5]) * k
         light, tone = a[6], a[7]
@@ -133,6 +137,20 @@ def main():
         sh = sh.filter(ImageFilter.GaussianBlur(40 * k))
         comp = Image.composite(Image.new("RGB", plate.size, (0, 0, 0)), plate, sh)
         comp.paste(ring, (x, y), ring)
+        ring_a = Image.new("L", plate.size, 0)
+        ring_a.paste(ring.getchannel("A"), (x, y))
+        shadow_a = sh
+
+    if "--layer" in a:
+        # foreground for video: the ring (and its shadow) over a moving plate
+        lp = a[a.index("--layer") + 1]
+        ra = np.asarray(ring_a).astype(np.float32) / 255
+        sa = np.asarray(shadow_a).astype(np.float32) / 255
+        total = ra + sa * (1 - ra)
+        col = np.asarray(comp).astype(np.float32) * (ra / np.maximum(total, 1e-4))[..., None]
+        rgba = np.dstack([np.clip(col, 0, 255), total * 255]).astype(np.uint8)
+        Image.fromarray(rgba, "RGBA").save(lp)
+        ring_a.save(lp.replace(".png", "-mask.png"))
 
     # gentle vignette ties it together
     v = Image.radial_gradient("L").resize((OUT, OUT)).point(lambda p: int(min(255, max(0, (p - 120) * 0.9))))

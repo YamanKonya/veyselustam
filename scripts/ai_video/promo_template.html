@@ -10,14 +10,29 @@
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { margin: 0; width: 720px; height: 720px; overflow: hidden; background: #071a10; }
       #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #071a10; font-family: "Cormorant Garamond", Georgia, serif; }
-      .shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-      .layer { position: absolute; inset: 0; }
-      #vignette { background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%); pointer-events: none; }
-      #title { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 64px; pointer-events: none; }
-      #title h1 { color: #e9cf8f; font-weight: 600; font-size: 64px; letter-spacing: 0.42em; margin-right: -0.42em; text-shadow: 0 2px 24px rgba(0,0,0,0.65); }
+      .cam { position: absolute; inset: 0; transform-origin: 50% 60%; }
+      .fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .blur { filter: blur(9px); transform: scale(1.04); }
+      /* gold light sweeping over the ring only (masked by the ring's own alpha) */
+      .sheen { position: absolute; inset: 0; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; mix-blend-mode: screen; overflow: hidden; }
+      .sheen i { position: absolute; top: -20%; bottom: -20%; width: 34%; left: 0;
+        background: linear-gradient(105deg, rgba(255,214,150,0) 0%, rgba(255,226,170,0.55) 50%, rgba(255,214,150,0) 100%); }
+      #sheen-a { -webkit-mask-image: url("assets/velvet-mask.png"); mask-image: url("assets/velvet-mask.png"); }
+      #sheen-b { -webkit-mask-image: url("assets/casket-mask.png"); mask-image: url("assets/casket-mask.png"); }
+      #sheen-c { -webkit-mask-image: url("assets/slate-mask.png"); mask-image: url("assets/slate-mask.png"); }
+      .fx { position: absolute; inset: 0; pointer-events: none; }
+      .glow { position: absolute; width: 46%; height: 46%; border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,190,110,0.55) 0%, rgba(255,160,80,0.18) 45%, rgba(255,150,70,0) 70%); mix-blend-mode: screen; }
+      .dust, .twinkles { position: absolute; inset: 0; }
+      .dust b { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(255,226,160,0.95), rgba(255,200,120,0)); }
+      .twinkles b { position: absolute; width: 14px; height: 14px; margin: -7px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(190,220,255,0.5) 30%, rgba(190,220,255,0) 70%); }
+      #vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%); pointer-events: none; }
+      #title { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 54px; pointer-events: none; }
+      #title h1 { color: #e9cf8f; font-weight: 600; font-size: 64px; letter-spacing: 0.42em; margin-right: -0.42em; text-shadow: 0 2px 24px rgba(0,0,0,0.75); }
       #title .rule { width: 0; height: 1px; background: linear-gradient(90deg, transparent, #c5a059, transparent); margin-top: 10px; }
-      #title .sub { margin-top: 12px; color: #f3ecdc; font-size: 20px; letter-spacing: 0.5em; margin-right: -0.5em; opacity: 0.9; text-shadow: 0 2px 16px rgba(0,0,0,0.7); }
-      #endcard { background: radial-gradient(circle at 50% 42%, #164a30 0%, #0c2417 55%, #061410 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+      #title .sub { margin-top: 12px; color: #f3ecdc; font-size: 20px; letter-spacing: 0.5em; margin-right: -0.5em; text-shadow: 0 2px 16px rgba(0,0,0,0.8); }
+      #endcard { position: absolute; inset: 0; background: radial-gradient(circle at 50% 42%, #164a30 0%, #0c2417 55%, #061410 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
       #pattern { position: absolute; inset: 0; background-image: url("pattern-seljuk-dark.svg"); background-size: 104px auto; opacity: 0.12; }
       #endcard img { position: relative; width: 150px; height: auto; filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5)); }
       #endcard .brand { position: relative; margin-top: 26px; color: #f3ecdc; font-size: 44px; font-weight: 500; letter-spacing: 0.32em; margin-right: -0.32em; }
@@ -27,19 +42,34 @@
   </head>
   <body>
     <div id="root" data-composition-id="main" data-start="0" data-duration="16.6" data-width="720" data-height="720">
-      <video id="v1" class="shot clip" src="assets/velvet.mp4" muted playsinline data-start="0" data-duration="5" data-track-index="0"></video>
-      <video id="v2" class="shot clip" src="assets/casket.mp4" muted playsinline data-start="4.4" data-duration="5" data-track-index="1"></video>
-      <video id="v3" class="shot clip" src="assets/slate.mp4" muted playsinline data-start="8.8" data-duration="5" data-track-index="2"></video>
-      <div id="vignette-l" class="layer clip" data-start="0" data-duration="16.6" data-track-index="3"><div id="vignette" class="layer"></div></div>
-      <div id="title-l" class="layer clip" data-start="0.5" data-duration="3.9" data-track-index="4">
-        <div id="title" class="layer">
+      <div id="cam-a" class="cam">
+        <img id="bg-a" class="fill clip" src="assets/plate-velvet.jpg" alt="" data-start="0" data-duration="5" data-track-index="0" />
+        <div id="fx-a" class="fx clip" data-start="0" data-duration="5" data-track-index="12"><div class="glow" style="left:2%;top:8%"></div><div class="dust"></div></div>
+        <img id="fg-a" class="fill clip" src="assets/velvet.png" alt="" data-start="0" data-duration="5" data-track-index="1" />
+        <div id="sh-a" class="clip" data-start="0" data-duration="5" data-track-index="2" style="position:absolute;inset:0"><div id="sheen-a" class="sheen"><i id="sw-a"></i></div></div>
+      </div>
+      <div id="cam-b" class="cam">
+        <img id="bg-b" class="fill clip" src="assets/plate-casket.jpg" alt="" data-start="4.4" data-duration="5" data-track-index="3" />
+        <div id="fx-b" class="fx clip" data-start="4.4" data-duration="5" data-track-index="13"><div class="glow" style="left:68%;top:2%"></div><div class="dust"></div></div>
+        <img id="fg-b" class="fill clip" src="assets/casket.png" alt="" data-start="4.4" data-duration="5" data-track-index="4" />
+        <div id="sh-b" class="clip" data-start="4.4" data-duration="5" data-track-index="5" style="position:absolute;inset:0"><div id="sheen-b" class="sheen"><i id="sw-b"></i></div></div>
+      </div>
+      <div id="cam-c" class="cam">
+        <img id="bg-c" class="fill blur clip" src="assets/plate-slate.jpg" alt="" data-start="8.8" data-duration="5" data-track-index="6" />
+        <div id="fx-c" class="fx clip" data-start="8.8" data-duration="5" data-track-index="14"><div class="twinkles"></div></div>
+        <img id="fg-c" class="fill clip" src="assets/slate.png" alt="" data-start="8.8" data-duration="5" data-track-index="7" />
+        <div id="sh-c" class="clip" data-start="8.8" data-duration="5" data-track-index="8" style="position:absolute;inset:0"><div id="sheen-c" class="sheen"><i id="sw-c"></i></div></div>
+      </div>
+      <div id="vig-l" class="clip" data-start="0" data-duration="16.6" data-track-index="9" style="position:absolute;inset:0"><div id="vignette"></div></div>
+      <div id="title-l" class="clip" data-start="0.4" data-duration="4.0" data-track-index="10" style="position:absolute;inset:0">
+        <div id="title">
           <h1 id="t-name">SİDRE</h1>
           <div id="t-rule" class="rule"></div>
           <div id="t-sub" class="sub">925</div>
         </div>
       </div>
-      <div id="end-l" class="layer clip" data-start="13.2" data-duration="3.4" data-track-index="5">
-        <div id="endcard" class="layer">
+      <div id="end-l" class="clip" data-start="13.2" data-duration="3.4" data-track-index="11" style="position:absolute;inset:0">
+        <div id="endcard">
           <div id="pattern"></div>
           <img id="e-logo" src="watermark.webp" alt="" />
           <div id="e-brand" class="brand">VEYSEL USTAM</div>
@@ -50,13 +80,55 @@
     </div>
     <script>
       const tl = gsap.timeline({ paused: true });
-      // Crossfades between the AI clips
-      tl.fromTo("#v2", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 4.4);
-      tl.fromTo("#v3", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 8.8);
-      // Title: letters rise out of a soft blur, gold rule draws, then everything lifts away
-      tl.fromTo("#t-name", { opacity: 0, y: 18, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, ease: "power3.out" }, 0.6);
-      tl.fromTo("#t-rule", { width: 0 }, { width: 260, duration: 1.0, ease: "power2.inOut" }, 1.2);
-      tl.fromTo("#t-sub", { opacity: 0 }, { opacity: 0.9, duration: 0.8, ease: "power1.out" }, 1.7);
+      const rnd = (i, k) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
+      // dust motes drifting up through the warm light
+      document.querySelectorAll(".dust").forEach((box, d) => {
+        const start = d === 0 ? 0 : 4.4;
+        for (let i = 0; i < 34; i++) {
+          const b = document.createElement("b");
+          const size = 2 + rnd(i, d + 1) * 5;
+          b.style.width = b.style.height = size + "px";
+          b.style.left = (rnd(i, d + 2) * 100) + "%";
+          b.style.top = (35 + rnd(i, d + 3) * 60) + "%";
+          box.appendChild(b);
+          const rise = 60 + rnd(i, d + 4) * 140;
+          tl.fromTo(b, { y: 0, x: 0, opacity: 0 }, { y: -rise, x: (rnd(i, d + 5) - 0.5) * 60, duration: 5, ease: "none" }, start);
+          tl.to(b, { opacity: 0.25 + rnd(i, d + 6) * 0.6, duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: 3 }, start + rnd(i, d + 7) * 0.8);
+        }
+      });
+      // flame flicker: a breathing glow with small irregular pulses
+      document.querySelectorAll(".glow").forEach((g, d) => {
+        const start = d === 0 ? 0 : 4.4;
+        for (let t = 0; t < 5; t += 0.16) {
+          tl.to(g, { opacity: 0.55 + rnd(Math.round(t * 100), d + 9) * 0.45, scale: 0.96 + rnd(Math.round(t * 100), d + 11) * 0.08, duration: 0.16, ease: "sine.inOut" }, start + t);
+        }
+      });
+      // droplet glints on the wet slate
+      document.querySelectorAll(".twinkles").forEach((box) => {
+        for (let i = 0; i < 26; i++) {
+          const b = document.createElement("b");
+          b.style.left = (8 + rnd(i, 21) * 84) + "%";
+          b.style.top = (62 + rnd(i, 22) * 34) + "%";
+          box.appendChild(b);
+          const at = 8.8 + rnd(i, 23) * 4.2;
+          tl.fromTo(b, { opacity: 0, scale: 0.3 }, { opacity: 0.9, scale: 1, duration: 0.35, ease: "power2.out" }, at);
+          tl.to(b, { opacity: 0, scale: 0.4, duration: 0.5, ease: "power2.in" }, at + 0.35);
+        }
+      });
+      // Slow camera push-ins: plate video and real ring move together
+      tl.fromTo("#cam-a", { scale: 1.0 }, { scale: 1.09, duration: 5, ease: "sine.inOut" }, 0);
+      tl.fromTo("#cam-b", { scale: 1.02, opacity: 0 }, { scale: 1.1, duration: 5, ease: "sine.inOut" }, 4.4);
+      tl.to("#cam-b", { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 4.4);
+      tl.fromTo("#cam-c", { scale: 1.08, xPercent: 2, opacity: 0 }, { scale: 1.0, xPercent: -2, duration: 5, ease: "sine.inOut" }, 8.8);
+      tl.to("#cam-c", { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 8.8);
+      // Gold light glides across the silver once per shot
+      tl.fromTo("#sw-a", { xPercent: -120 }, { xPercent: 320, duration: 1.8, ease: "power2.inOut" }, 1.6);
+      tl.fromTo("#sw-b", { xPercent: -120 }, { xPercent: 320, duration: 1.8, ease: "power2.inOut" }, 6.2);
+      tl.fromTo("#sw-c", { xPercent: -120 }, { xPercent: 320, duration: 1.8, ease: "power2.inOut" }, 10.6);
+      // Title
+      tl.fromTo("#t-name", { opacity: 0, y: 18, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, ease: "power3.out" }, 0.5);
+      tl.fromTo("#t-rule", { width: 0 }, { width: 260, duration: 1.0, ease: "power2.inOut" }, 1.1);
+      tl.fromTo("#t-sub", { opacity: 0 }, { opacity: 0.9, duration: 0.8, ease: "power1.out" }, 1.6);
       tl.to("#title", { opacity: 0, y: -10, duration: 0.7, ease: "power1.in" }, 3.6);
       // End card
       tl.fromTo("#endcard", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 13.2);
