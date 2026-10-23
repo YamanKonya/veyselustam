@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=720, height=720" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=block" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 720px; height: 720px; overflow: hidden; background: #050d09; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #050d09; font-family: "Cormorant Garamond", Georgia, serif; }
+      .layer { position: absolute; inset: 0; }
+      .shot { position: absolute; inset: 0; overflow: hidden; }
+      .shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      /* cinematic grade: a touch more contrast and warmth */
+      .graded { filter: contrast(1.08) saturate(1.06) brightness(0.98); }
+      .sheen { position: absolute; inset: 0; overflow: hidden; mix-blend-mode: screen; }
+      .sheen i { position: absolute; top: -30%; bottom: -30%; left: 0; width: 34%; transform: skewX(-16deg);
+        background: linear-gradient(90deg, rgba(255,214,150,0) 0%, rgba(255,228,175,0.22) 50%, rgba(255,214,150,0) 100%); }
+      #dust b { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(255,228,170,0.9), rgba(255,200,120,0)); }
+      #grain { position: absolute; inset: -50%; opacity: 0.07; mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+      #vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 46%, rgba(0,0,0,0) 52%, rgba(0,0,0,0.62) 100%); }
+      #bars { position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgba(197,160,89,0.0); }
+      #frame { position: absolute; inset: 16px; border: 1px solid rgba(197,160,89,0.0); }
+      #scrim { position: absolute; left: 0; right: 0; bottom: 0; height: 46%; background: linear-gradient(0deg, rgba(4,14,9,0.82) 0%, rgba(4,14,9,0.45) 45%, rgba(4,14,9,0) 100%); }
+      #intro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 56px; }
+      #intro .brand { color: #f3ecdc; font-weight: 600; font-size: 46px; letter-spacing: 0.36em; margin-right: -0.36em; text-shadow: 0 2px 22px rgba(0,0,0,0.85); }
+      #intro .rule { width: 0; height: 1px; margin-top: 12px; background: linear-gradient(90deg, transparent, #c5a059, transparent); }
+      #intro .sub { margin-top: 12px; color: #e3c789; font-size: 18px; letter-spacing: 0.55em; margin-right: -0.55em; text-shadow: 0 2px 16px rgba(0,0,0,0.85); }
+      #endcard { position: absolute; inset: 0; background: radial-gradient(circle at 50% 42%, #164a30 0%, #0c2417 55%, #061410 100%);
+        display: flex; flex-direction: column; align-items: center; justify-content: center; }
+      #pattern { position: absolute; inset: 0; background-image: url("pattern-seljuk-dark.svg"); background-size: 104px auto; opacity: 0.12; }
+      #endcard img { position: relative; width: 140px; height: auto; filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5)); }
+      #endcard .brand { position: relative; margin-top: 24px; color: #f3ecdc; font-size: 42px; font-weight: 500; letter-spacing: 0.32em; margin-right: -0.32em; }
+      #endcard .rule { position: relative; width: 220px; height: 1px; margin-top: 16px; background: linear-gradient(90deg, transparent, #c5a059, transparent); }
+      #endcard .tag { position: relative; margin-top: 14px; color: #c5a059; font-size: 20px; letter-spacing: 0.6em; margin-right: -0.6em; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="13" data-width="720" data-height="720">
+      <div id="s1" class="shot graded clip" data-start="0" data-duration="4.2" data-track-index="0"><img id="i1" src="assets/1.jpg" alt="" /></div>
+      <div id="s2" class="shot graded clip" data-start="3.6" data-duration="4.2" data-track-index="1"><img id="i2" src="assets/2.jpg" alt="" /></div>
+      <div id="s3" class="shot graded clip" data-start="7.2" data-duration="3.9" data-track-index="2"><img id="i3" src="assets/3.jpg" alt="" /></div>
+      <div id="sheen-l" class="layer clip" data-start="0" data-duration="10.6" data-track-index="3"><div class="sheen"><i id="sw"></i></div></div>
+      <div id="dust-l" class="layer clip" data-start="0" data-duration="10.6" data-track-index="4"><div id="dust" class="layer"></div></div>
+      <div id="grain-l" class="layer clip" data-start="0" data-duration="13" data-track-index="5"><div id="grain"></div></div>
+      <div id="vig-l" class="layer clip" data-start="0" data-duration="13" data-track-index="6"><div id="vignette"></div></div>
+      <div id="intro-l" class="layer clip" data-start="0" data-duration="3.4" data-track-index="7">
+        <div id="scrim"></div>
+        <div id="intro">
+          <div id="t-brand" class="brand">VEYSEL USTAM</div>
+          <div id="t-rule" class="rule"></div>
+          <div id="t-sub" class="sub">925</div>
+        </div>
+      </div>
+      <div id="end-l" class="layer clip" data-start="10.4" data-duration="2.6" data-track-index="8">
+        <div id="endcard">
+          <div id="pattern"></div>
+          <img id="e-logo" src="watermark.webp" alt="" />
+          <div id="e-brand" class="brand">VEYSEL USTAM</div>
+          <div id="e-rule" class="rule"></div>
+          <div id="e-tag" class="tag">925</div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const rnd = (i, k) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
+
+      // Three camera moves on the real photos: push in, drift, pull back
+      tl.fromTo("#i1", { scale: 1.04, xPercent: 0, yPercent: 0 }, { scale: 1.16, xPercent: -1.5, yPercent: -1, duration: 4.2, ease: "sine.inOut" }, 0);
+      tl.fromTo("#s2", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 3.6);
+      tl.fromTo("#i2", { scale: 1.14, xPercent: 2.5 }, { scale: 1.14, xPercent: -2.5, duration: 4.2, ease: "sine.inOut" }, 3.6);
+      tl.fromTo("#s3", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 7.2);
+      tl.fromTo("#i3", { scale: 1.2 }, { scale: 1.05, duration: 3.9, ease: "sine.out" }, 7.2);
+
+      // A gold light passes once per shot
+      [0.9, 4.6, 8.0].forEach((t) => tl.fromTo("#sw", { xPercent: -130 }, { xPercent: 400, duration: 1.7, ease: "power2.inOut" }, t));
+
+      // Dust motes drifting through the light
+      const dust = document.getElementById("dust");
+      for (let i = 0; i < 40; i++) {
+        const b = document.createElement("b");
+        const size = 2 + rnd(i, 1) * 5;
+        b.style.width = b.style.height = size + "px";
+        b.style.left = rnd(i, 2) * 100 + "%";
+        b.style.top = 20 + rnd(i, 3) * 80 + "%";
+        dust.appendChild(b);
+        tl.fromTo(b, { y: 0, x: 0, opacity: 0 }, { y: -(80 + rnd(i, 4) * 160), x: (rnd(i, 5) - 0.5) * 70, duration: 10.6, ease: "none" }, 0);
+        tl.to(b, { opacity: 0.2 + rnd(i, 6) * 0.55, duration: 1.4, ease: "sine.inOut", yoyo: true, repeat: 5 }, rnd(i, 7) * 1.5);
+      }
+      // Film grain shimmer (steps, like real grain)
+      for (let t = 0; t < 13; t += 0.083) tl.set("#grain", { x: (rnd(Math.round(t * 100), 8) - 0.5) * 120, y: (rnd(Math.round(t * 100), 9) - 0.5) * 120 }, t);
+
+      // Intro lockup over the first shot
+      tl.fromTo("#t-brand", { opacity: 0, y: 14, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.1, ease: "power3.out" }, 0.2);
+      tl.fromTo("#t-rule", { width: 0 }, { width: 240, duration: 0.9, ease: "power2.inOut" }, 0.7);
+      tl.fromTo("#t-sub", { opacity: 0 }, { opacity: 1, duration: 0.7, ease: "power1.out" }, 1.1);
+      tl.to(["#intro", "#scrim"], { opacity: 0, duration: 0.6, ease: "power1.in" }, 2.8);
+
+      // End card
+      tl.fromTo("#endcard", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.inOut" }, 10.4);
+      tl.fromTo("#e-logo", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.8, ease: "power3.out" }, 10.6);
+      tl.fromTo("#e-brand", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 10.85);
+      tl.fromTo("#e-rule", { width: 0 }, { width: 220, duration: 0.7, ease: "power2.inOut" }, 11.1);
+      tl.fromTo("#e-tag", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out" }, 10.95);
+      tl.fromTo("#pattern", { opacity: 0 }, { opacity: 0.12, duration: 1.2, ease: "none" }, 10.4);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
