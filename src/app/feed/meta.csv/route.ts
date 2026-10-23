@@ -1,5 +1,6 @@
 import { translateProduct } from "@/i18n/productTranslations";
 import { SITE_NAME, SITE_URL, absoluteUrl, listSeoProducts, listStockGroups } from "@/lib/seo";
+import { SALES_OPEN } from "@/lib/shop";
 
 // Product catalogue feed for Meta Commerce Manager (WhatsApp Business catalogue,
 // Instagram and Facebook shop). Commerce Manager fetches this URL on a schedule,
@@ -52,7 +53,8 @@ export async function GET() {
         id: p.id!,
         title: plain(p.title, 150),
         description: plain(p.description || p.title, 5000),
-        availability: inventory > 0 ? "in stock" : "out of stock",
+        // Matches the product page JSON-LD: while sales are closed everything is a pre-order
+        availability: !SALES_OPEN ? "preorder" : inventory > 0 ? "in stock" : "out of stock",
         condition: "new",
         price: `${p.price.toFixed(2)} TRY`,
         link: `${SITE_URL}/product/${encodeURIComponent(p.id!)}`,
