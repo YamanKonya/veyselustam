@@ -80,6 +80,8 @@ export const metadata: Metadata = {
     icon: "/images/logo-256.png",
     apple: "/images/logo-256.png",
   },
+  // Pinterest website claim (Settings → Claimed accounts); needed for the product catalogue
+  verification: { other: { "p:domain_verify": "d735687dc8c3e68a2793b01e3e600aad" } },
 };
 
 export default function RootLayout({
