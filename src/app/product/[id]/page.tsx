@@ -17,6 +17,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
 import { useRecentStore } from "@/store/useRecentStore";
 import ProductReviews from "@/components/product/ProductReviews";
+import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 import Link from "next/link";
 import { 
   ShoppingBag, 
@@ -48,11 +49,15 @@ export default function ProductDetailPage() {
   const id = params?.id as string;
   const { t, language } = useLanguage();
 
-  const [rawProduct, setProduct] = useState<Product | null>(null);
+  // Catalogue products render on the server straight away, so search engines (and
+  // the first paint) get the real title, description and photos, not a spinner.
+  // Firestore then refreshes it with the live data.
+  const seed = INITIAL_VEYSELUSTAM_PRODUCTS.find((p) => p.id === id) || null;
+  const [rawProduct, setProduct] = useState<Product | null>(seed);
   const product = rawProduct ? translateProduct(rawProduct, language) : null;
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!seed);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [selectedRingSize, setSelectedRingSize] = useState<string>("");
+  const [selectedRingSize, setSelectedRingSize] = useState<string>(seed?.ringSize?.[0] || "");
   const [quantity, setQuantity] = useState(1);
   const [sizeError, setSizeError] = useState("");
   const [addedToCart, setAddedToCart] = useState(false);
