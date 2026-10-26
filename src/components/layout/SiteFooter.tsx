@@ -25,6 +25,7 @@ export default function SiteFooter() {
         { label: t("footer_shopping_distance"), href: "/" },
         { label: t("footer_shopping_delivery"), href: "/" },
         { label: t("footer_shopping_warranty"), href: "/" },
+        { label: t("footer_shopping_returns"), href: "/iade" },
         { label: t("footer_shopping_bank"), href: "/" },
       ],
     },
