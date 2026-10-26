@@ -97,6 +97,28 @@ service cloud.firestore {
         && request.resource.data.seconds <= 14400;
     }
 
+    // Müşteri yorumları: herkes yalnızca onaylanmış yorumları okur. Siteden
+    // gelen yorum "pending" (onay bekliyor) olarak açılır; yönetici onaylar,
+    // siler ya da WhatsApp gibi başka yerden gelen yorumu doğrudan ekler.
+    function validReview(d) {
+      return d.keys().hasOnly(['productId', 'name', 'rating', 'text', 'lang', 'status', 'source', 'createdAt'])
+        && d.productId is string && d.productId.size() > 0 && d.productId.size() <= 80
+        && d.name is string && d.name.size() >= 2 && d.name.size() <= 60
+        && d.rating is int && d.rating >= 1 && d.rating <= 5
+        && d.text is string && d.text.size() >= 3 && d.text.size() <= 1500
+        && d.lang is string && d.lang.size() <= 5
+        && d.source in ['site', 'whatsapp', 'instagram'];
+    }
+    match /reviews/{reviewId} {
+      allow read: if resource.data.status == 'approved' || isAdmin();
+      allow create: if validReview(request.resource.data)
+        && ((request.resource.data.status == 'pending'
+             && request.resource.data.source == 'site'
+             && request.resource.data.createdAt == request.time)
+            || isAdmin());
+      allow update, delete: if isAdmin();
+    }
+
     // Müşteri profilleri: herkes yalnızca kendi profilini görür / yazar ve
     // kendine "admin" rolü veremez.
     match /users/{uid} {

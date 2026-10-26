@@ -12,7 +12,8 @@ import {
   ChevronLeft,
   KeyRound,
   Boxes,
-  BarChart3
+  BarChart3,
+  MessageSquareQuote
 } from "lucide-react";
 
 export default function AdminLayout({
@@ -78,6 +79,18 @@ export default function AdminLayout({
             >
               <BarChart3 className="w-4 h-4" />
               Ziyaretler
+            </Link>
+
+            <Link
+              href="/admin/reviews"
+              className={`flex items-center gap-3 px-4 py-3 text-xs sm:text-sm font-semibold rounded-xl transition ${
+                pathname === "/admin/reviews"
+                  ? "bg-brass-600 text-white shadow-lg shadow-brass-600/20"
+                  : "text-panel-400 hover:bg-panel-800 hover:text-panel-200"
+              }`}
+            >
+              <MessageSquareQuote className="w-4 h-4" />
+              Yorumlar
             </Link>
 
             <Link

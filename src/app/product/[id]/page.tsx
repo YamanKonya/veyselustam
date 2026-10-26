@@ -16,6 +16,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
 import { useRecentStore } from "@/store/useRecentStore";
+import ProductReviews from "@/components/product/ProductReviews";
 import Link from "next/link";
 import { 
   ShoppingBag, 
@@ -558,6 +559,7 @@ export default function ProductDetailPage() {
             </div>
           </div>
         </div>
+        {product.id && <ProductReviews productId={product.id} />}
       </main>
 
       <SiteFooter />
