@@ -7,7 +7,13 @@ const legacy = JSON.parse(readFileSync(new URL("./src/data/legacyRedirects.json"
 const nextConfig = {
   reactStrictMode: true,
   async redirects() {
-    return legacy.map(({ source, id }) => ({ source, destination: `/product/${id}`, permanent: true }));
+    // Old shop's category and info pages have no direct match: send them to the shop
+    const oldPages = ["/butun-urunler", "/cok-satanlar", "/nakkas-el-oymasi-tasli", "/erkek-urunlerimiz",
+      "/kadin-urunlerimiz", "/iletisim", "/hakkimizda", "/sss"];
+    return [
+      ...legacy.map(({ source, id }) => ({ source, destination: `/product/${id}`, permanent: true })),
+      ...oldPages.map((source) => ({ source, destination: "/", permanent: true })),
+    ];
   },
   images: {
     unoptimized: true,
