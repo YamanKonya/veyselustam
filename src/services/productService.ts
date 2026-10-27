@@ -16,7 +16,7 @@ import { Product } from "@/types";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 import { saveVideoBlob, getVideoBlobUrl } from "./videoStorage";
 import { toHorasanWording } from "@/lib/horasanWording";
-import { translationSourceKey } from "@/i18n/productTranslations";
+import { translationSourceKey, usesCatalogText } from "@/i18n/productTranslations";
 
 const PRODUCTS_COLLECTION = "products";
 const STORAGE_KEY = "vu_products_catalog_v4";
@@ -375,7 +375,7 @@ export const updateProduct = async (
 
   // Clearing a field in the form must remove it from Firestore, not keep the old value
   const firestoreFields: Record<string, unknown | FieldValue> = sanitizeForFirestore(updatedFields);
-  (["originalPrice", "discountPercent", "videoUrl", "memberPrice", "menus", "submenus"] as const).forEach((key) => {
+  (["originalPrice", "discountPercent", "videoUrl", "memberPrice", "menus", "submenus", "customText"] as const).forEach((key) => {
     if (key in productData && productData[key] === undefined) firestoreFields[key] = deleteField();
   });
 
@@ -574,6 +574,31 @@ export const migrateAgateWording = async (): Promise<number> => {
         (fields.description as string) ?? data.description ?? ""
       );
     }
+    await setDoc(d.ref, fields, { merge: true });
+    localProductsStore = localProductsStore.map((p) => (p.id === d.id ? { ...p, ...fields } : p));
+    updated++;
+  }
+  if (updated) notifySubscribers();
+  return updated;
+};
+
+// Pieces translated before Russian was added get their Russian text once (run from the
+// admin panel). Catalogue pieces are skipped: their Russian text is in the catalogue.
+export const fillMissingRussian = async (): Promise<number> => {
+  const snapshot = await getDocs(collection(db, PRODUCTS_COLLECTION));
+  let updated = 0;
+  for (const d of snapshot.docs) {
+    const data = { id: d.id, ...d.data() } as Product;
+    const fresh = data.i18nSource && data.i18nSource === translationSourceKey(data.title || "", data.description || "");
+    if (!fresh || data.title_ru || usesCatalogText(data)) continue;
+    const res = await fetch("/api/translate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ texts: [data.title || "", data.description || ""], targets: ["ru"] }),
+    });
+    if (!res.ok) break; // translation service busy: try again next time the panel opens
+    const [title_ru, description_ru] = (await res.json()).translations.ru as string[];
+    const fields = sanitizeForFirestore({ title_ru: title_ru || undefined, description_ru: description_ru || undefined });
     await setDoc(d.ref, fields, { merge: true });
     localProductsStore = localProductsStore.map((p) => (p.id === d.id ? { ...p, ...fields } : p));
     updated++;

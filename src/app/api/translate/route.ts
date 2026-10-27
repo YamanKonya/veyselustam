@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 // panel. Uses free Google Translate endpoints (no key); if one is rate-limited the
 // next provider is tried. Runs on the server so browsers never hit these hosts.
 
-const TARGETS = ["en", "es", "de", "ar"] as const;
+const TARGETS = ["en", "es", "de", "ar", "ru"] as const;
 type Target = (typeof TARGETS)[number];
 
 const MAX_TEXTS = 10;
@@ -101,8 +101,9 @@ const translateAll = async (texts: string[], target: Target) => {
 
 export async function POST(request: Request) {
   let texts: unknown;
+  let targets: unknown;
   try {
-    ({ texts } = await request.json());
+    ({ texts, targets } = await request.json());
   } catch {
     return NextResponse.json({ error: "Geçersiz istek." }, { status: 400 });
   }
@@ -124,7 +125,8 @@ export async function POST(request: Request) {
 
   try {
     const results = await Promise.all(
-      TARGETS.map(async (target) => {
+      // "targets" narrows the languages, e.g. to fill in a language added later
+      TARGETS.filter((t) => !Array.isArray(targets) || targets.includes(t)).map(async (target) => {
         const translated = payload.length ? await translateAll(payload, target) : [];
         const full = source.map(() => "");
         indexes.forEach((i, n) => (full[i] = translated[n]));

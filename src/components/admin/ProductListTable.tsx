@@ -75,11 +75,19 @@ export default function ProductListTable({
   const [menuNote, setMenuNote] = useState("");
   const [menuMode, setMenuMode] = useState<"add" | "move">("add");
 
+  // Search finds a piece by the name the site shows (in Turkish and the panel's language)
+  // as well as by its stored text and id; Turkish letters and accents are ignored
+  const fold = (s: string) =>
+    (s || "").toLocaleLowerCase("tr").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ı/g, "i").replace(/\s+/g, " ");
+  const query = fold(searchTerm).trim();
   const filteredProducts = products.filter((product) => {
-    const matchesSearch = 
-      product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (product.id && product.id.toLowerCase().includes(searchTerm.toLowerCase()));
+    const shown = translateProduct(product, "tr");
+    const shownHere = language === "tr" ? shown : translateProduct(product, language);
+    const matchesSearch =
+      !query ||
+      [shown.title, shown.description, shownHere.title, product.title, product.description, product.id || ""].some((s) =>
+        fold(s).includes(query)
+      );
     // the filter holds a new menu ("menu:erkek"), "menu:none" or an old category ("cat:…")
     const menus = productMenus(product);
     const matchesCategory =
@@ -660,7 +668,7 @@ export default function ProductListTable({
                           </button>
 
                           <button
-                            onClick={() => handleCloneProduct(product)}
+                            onClick={() => handleCloneProduct(translateProduct(rawProduct, "tr"))}
                             disabled={cloningId === product.id}
                             className="p-2 text-panel-400 hover:text-purple-400 hover:bg-panel-800 rounded-xl transition disabled:opacity-50"
                             title="Kopyala / Çoğalt"

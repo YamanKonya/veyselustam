@@ -4,7 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Product } from "@/types";
 import { useLanguage } from "@/context/LanguageContext";
-import { formatPrice, discountPercent } from "@/lib/format";
+import { discountPercent } from "@/lib/format";
+import { usePrice } from "@/lib/currency";
 import MemberPrice, { MemberDiscountNote } from "@/components/product/MemberPrice";
 import { imageAt, imageSrcSet } from "@/lib/image";
 import { useStockGroups, availableStock } from "@/services/stockService";
@@ -23,6 +24,7 @@ const playableVideo = (url?: string) => (url && /^(\/|https?:\/\/)/.test(url) ? 
 
 export default function ProductCard({ product, isAdded, onAddToCart }: ProductCardProps) {
   const { t } = useLanguage();
+  const { price } = usePrice();
   const video = playableVideo(product.videoUrl);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoArmed, setVideoArmed] = useState(false); // load the file only after the first hover
@@ -122,11 +124,11 @@ export default function ProductCard({ product, isAdded, onAddToCart }: ProductCa
         <div className="mt-2 mb-4 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
           {discount > 0 && (
             <span className="text-sm text-slate-500 line-through decoration-red-600/80 decoration-2 tabular-nums">
-              ₺{formatPrice(product.originalPrice!)}
+              {price(product.originalPrice!)}
             </span>
           )}
           <span className={`font-bold text-versace-green-900 tabular-nums ${discount > 0 ? "text-xl" : "text-lg"}`}>
-            ₺{formatPrice(product.price)}
+            {price(product.price)}
           </span>
         </div>
         <div className="-mt-2 mb-4 space-y-1">

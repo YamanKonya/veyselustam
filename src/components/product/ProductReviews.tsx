@@ -7,7 +7,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext";
 import { fetchApprovedReviews, submitReview, Review, REVIEW_LIMITS } from "@/services/reviewService";
 
-const LOCALES: Record<string, string> = { tr: "tr-TR", en: "en-GB", es: "es-ES", de: "de-DE", ar: "ar" };
+const LOCALES: Record<string, string> = { tr: "tr-TR", en: "en-GB", es: "es-ES", de: "de-DE", ar: "ar", ru: "ru-RU" };
 
 function Stars({ value, size = "w-4 h-4" }: { value: number; size?: string }) {
   return (

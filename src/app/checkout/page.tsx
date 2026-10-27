@@ -7,6 +7,7 @@ import Navbar from "@/components/layout/Navbar";
 import CartDrawer from "@/components/cart/CartDrawer";
 import { useCartStore } from "@/store/useCartStore";
 import { useAuth } from "@/context/AuthContext";
+import { usePrice } from "@/lib/currency";
 import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
 import { placeOrderWithStock, OutOfStockError } from "@/services/stockService";
@@ -37,6 +38,7 @@ export default function CheckoutPage() {
   const { user } = useAuth();
   const { items, getTotalAmount, clearCart } = useCartStore();
   const { t, language } = useLanguage();
+  const { price, inTl, tl } = usePrice();
 
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -373,7 +375,7 @@ export default function CheckoutPage() {
                   ) : (
                     <>
                       <Lock className="w-4 h-4" />
-                      <span>{t("complete_order")} • ₺{totalAmount.toLocaleString("tr-TR")}</span>
+                      <span>{t("complete_order")} • {tl(totalAmount)}</span>
                     </>
                   )}
                 </button>
@@ -416,11 +418,11 @@ export default function CheckoutPage() {
                         </p>
                       )}
                       <p className="text-slate-500 mt-1">
-                        {item.quantity} x ₺{item.product.price.toLocaleString("tr-TR")}
+                        {item.quantity} x {price(item.product.price)}
                       </p>
                     </div>
                     <span className="font-bold text-slate-900 flex-shrink-0">
-                      ₺{(item.product.price * item.quantity).toLocaleString("tr-TR")}
+                      {price(item.product.price * item.quantity)}
                     </span>
                   </div>
                 );
@@ -431,7 +433,7 @@ export default function CheckoutPage() {
               <div className="border-t border-slate-100 pt-4 space-y-2 text-sm text-slate-600">
                 <div className="flex justify-between">
                   <span>{t("cart_subtotal")}</span>
-                  <span>₺{totalAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}</span>
+                  <span>{price(totalAmount)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="flex items-center gap-1.5">
@@ -442,9 +444,12 @@ export default function CheckoutPage() {
                 <div className="flex justify-between font-extrabold text-slate-900 text-lg pt-3 border-t border-slate-200">
                   <span>{t("cart_total")}</span>
                   <span className="bg-gradient-to-r from-amber-800 to-amber-600 bg-clip-text text-transparent">
-                    ₺{totalAmount.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                    {price(totalAmount)}
                   </span>
                 </div>
+                {!inTl && (
+                  <p className="text-xs text-slate-500 text-end">{t("paid_in_try").replace("{amount}", tl(totalAmount))}</p>
+                )}
               </div>
             </div>
 

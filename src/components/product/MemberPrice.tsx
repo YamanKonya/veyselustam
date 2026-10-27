@@ -6,7 +6,7 @@ import { BadgePercent, Lock } from "lucide-react";
 import { Product } from "@/types";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
-import { formatPrice } from "@/lib/format";
+import { usePrice } from "@/lib/currency";
 
 /** The members-only price, when the piece has one below its sale price. */
 export const memberPriceOf = (p: Product) => (p.memberPrice && p.memberPrice > 0 && p.memberPrice < p.price ? p.memberPrice : undefined);
@@ -41,6 +41,7 @@ export function MemberDiscountNote({ productId, tone = "light" }: { productId?: 
 export default function MemberPrice({ product, tone = "light", size = "sm" }: { product: Product; tone?: "light" | "dark"; size?: "sm" | "lg" }) {
   const { user } = useAuth();
   const { t } = useLanguage();
+  const { price } = usePrice();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -54,7 +55,7 @@ export default function MemberPrice({ product, tone = "light", size = "sm" }: { 
     <div className={`flex flex-wrap items-center gap-x-2 gap-y-0.5 ${tone === "dark" ? "text-versace-gold-50/80" : "text-slate-600"} text-xs`}>
       <BadgePercent className={`w-4 h-4 ${accent}`} />
       <span className="font-semibold uppercase tracking-wider">{member ? t("member_price") : t("member_price_teaser")}</span>
-      <span className={`font-bold tabular-nums ${accent} ${amount}`}>₺{formatPrice(mp)}</span>
+      <span className={`font-bold tabular-nums ${accent} ${amount}`}>{price(mp)}</span>
       {!member && (
         <Link href={`/register?next=/product/${product.id}`} className={`font-semibold underline underline-offset-2 ${tone === "dark" ? "text-versace-gold-500" : "text-versace-gold-700"}`}>
           {t("member_join")}

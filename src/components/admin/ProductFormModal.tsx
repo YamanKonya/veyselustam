@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { Product } from "@/types";
 import { createProduct, updateProduct, uploadFileToStorage } from "@/services/productService";
-import { translationSourceKey } from "@/i18n/productTranslations";
+import { translationSourceKey, usesCatalogText } from "@/i18n/productTranslations";
+import { getCatalogContent } from "@/i18n/catalogContent";
 import { useStockGroups } from "@/services/stockService";
 import {
   X,
@@ -38,6 +39,10 @@ const DEFAULT_CATEGORIES = [
   "Diğer"
 ];
 
+const PRICE_STEP = 100; // the arrows on price fields move in 100 TL steps
+
+const sameText = (a: string, b: string) => a.replace(/\s+/g, " ").trim() === b.replace(/\s+/g, " ").trim();
+
 const STANDARD_RING_SIZES = [
   "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"
 ];
@@ -53,14 +58,17 @@ export default function ProductFormModal({
   const [title_es, setTitleEs] = useState("");
   const [title_de, setTitleDe] = useState("");
   const [title_ar, setTitleAr] = useState("");
+  const [title_ru, setTitleRu] = useState("");
 
   const [description, setDescription] = useState("");
   const [description_en, setDescriptionEn] = useState("");
   const [description_es, setDescriptionEs] = useState("");
   const [description_de, setDescriptionDe] = useState("");
   const [description_ar, setDescriptionAr] = useState("");
-  const [price, setPrice] = useState<number | "">("");
-  const [originalPrice, setOriginalPrice] = useState<number | "">("");
+  const [description_ru, setDescriptionRu] = useState("");
+  // listPrice: the normal price; salePrice: the discounted price customers pay (empty = no discount)
+  const [listPrice, setListPrice] = useState<number | "">("");
+  const [salePrice, setSalePrice] = useState<number | "">("");
   const [discountPercent, setDiscountPercent] = useState<number | "">("");
   const [memberPrice, setMemberPrice] = useState<number | "">("");
   const [menus, setMenus] = useState<string[]>([]); // empty = placed automatically
@@ -98,21 +106,35 @@ export default function ProductFormModal({
 
   useEffect(() => {
     if (productToEdit) {
-      setTitle(productToEdit.title || "");
-      setTitleEn(productToEdit.title_en || "");
-      setTitleEs(productToEdit.title_es || "");
-      setTitleDe(productToEdit.title_de || "");
-      setTitleAr(productToEdit.title_ar || "");
+      // Show the text the site shows: for original catalogue pieces that is the
+      // hand-written catalogue text, not the old imported text stored with them
+      const catalog = usesCatalogText(productToEdit)
+        ? (lang: Parameters<typeof getCatalogContent>[1]) => getCatalogContent(productToEdit.id, lang)!
+        : null;
+      const pick = (lang: "en" | "es" | "de" | "ar" | "ru", field: "title" | "description") =>
+        catalog ? catalog(lang)[field] : (productToEdit[`${field}_${lang}`] as string | undefined) || "";
+      const trTitle = catalog ? catalog("tr").title : productToEdit.title || "";
+      const trDesc = catalog ? catalog("tr").description : productToEdit.description || "";
+      setTitle(trTitle);
+      setTitleEn(pick("en", "title"));
+      setTitleEs(pick("es", "title"));
+      setTitleDe(pick("de", "title"));
+      setTitleAr(pick("ar", "title"));
+      setTitleRu(pick("ru", "title"));
 
-      setDescription(productToEdit.description || "");
-      setDescriptionEn(productToEdit.description_en || "");
-      setDescriptionEs(productToEdit.description_es || "");
-      setDescriptionDe(productToEdit.description_de || "");
-      setDescriptionAr(productToEdit.description_ar || "");
-      setI18nSource(productToEdit.i18nSource);
-      setPrice(productToEdit.price || 0);
-      setOriginalPrice(productToEdit.originalPrice || "");
-      setDiscountPercent(productToEdit.discountPercent || "");
+      setDescription(trDesc);
+      setDescriptionEn(pick("en", "description"));
+      setDescriptionEs(pick("es", "description"));
+      setDescriptionDe(pick("de", "description"));
+      setDescriptionAr(pick("ar", "description"));
+      setDescriptionRu(pick("ru", "description"));
+      setI18nSource(catalog ? translationSourceKey(trTitle, trDesc) : productToEdit.i18nSource);
+      const discounted = !!productToEdit.originalPrice && productToEdit.originalPrice > productToEdit.price;
+      setListPrice(discounted ? productToEdit.originalPrice! : productToEdit.price || 0);
+      setSalePrice(discounted ? productToEdit.price : "");
+      setDiscountPercent(
+        discounted ? Math.round(((productToEdit.originalPrice! - productToEdit.price) / productToEdit.originalPrice!) * 100) : ""
+      );
       setMemberPrice(productToEdit.memberPrice || "");
       setMenus(productToEdit.menus || []);
       setSubmenus(productToEdit.submenus || []);
@@ -146,6 +168,7 @@ export default function ProductFormModal({
     setTitleEs("");
     setTitleDe("");
     setTitleAr("");
+    setTitleRu("");
     setIsFeatured(false);
     setIsActive(true);
 
@@ -154,10 +177,11 @@ export default function ProductFormModal({
     setDescriptionEs("");
     setDescriptionDe("");
     setDescriptionAr("");
+    setDescriptionRu("");
     setI18nSource(undefined);
     setTranslateFailed(false);
-    setPrice("");
-    setOriginalPrice("");
+    setListPrice("");
+    setSalePrice("");
     setDiscountPercent("");
     setCategory(DEFAULT_CATEGORIES[0]);
     setCustomCategory("");
@@ -256,29 +280,59 @@ export default function ProductFormModal({
     }
   };
 
-  type Translations = Record<"en" | "es" | "de" | "ar", { title: string; description: string }>;
+  type TargetLang = "en" | "es" | "de" | "ar" | "ru";
+  type Translations = Record<TargetLang, { title: string; description: string }>;
 
-  const fetchTranslations = async (): Promise<Translations> => {
+  const fetchTranslations = async (targets?: TargetLang[]): Promise<Partial<Translations>> => {
     const res = await fetch("/api/translate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ texts: [title.trim(), description.trim()] }),
+      body: JSON.stringify({ texts: [title.trim(), description.trim()], targets }),
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || "Çeviri yapılamadı.");
-    const pick = (lang: keyof Translations) => ({
-      title: data.translations[lang][0] as string,
-      description: data.translations[lang][1] as string,
-    });
-    return { en: pick("en"), es: pick("es"), de: pick("de"), ar: pick("ar") };
+    const out: Partial<Translations> = {};
+    for (const [lang, texts] of Object.entries(data.translations as Record<TargetLang, string[]>)) {
+      out[lang as TargetLang] = { title: texts[0], description: texts[1] };
+    }
+    return out;
   };
 
-  const applyTranslations = (tr: Translations) => {
-    setTitleEn(tr.en.title); setDescriptionEn(tr.en.description);
-    setTitleEs(tr.es.title); setDescriptionEs(tr.es.description);
-    setTitleDe(tr.de.title); setDescriptionDe(tr.de.description);
-    setTitleAr(tr.ar.title); setDescriptionAr(tr.ar.description);
+  const applyTranslations = (tr: Partial<Translations>) => {
+    if (tr.en) { setTitleEn(tr.en.title); setDescriptionEn(tr.en.description); }
+    if (tr.es) { setTitleEs(tr.es.title); setDescriptionEs(tr.es.description); }
+    if (tr.de) { setTitleDe(tr.de.title); setDescriptionDe(tr.de.description); }
+    if (tr.ar) { setTitleAr(tr.ar.title); setDescriptionAr(tr.ar.description); }
+    if (tr.ru) { setTitleRu(tr.ru.title); setDescriptionRu(tr.ru.description); }
     setI18nSource(translationSourceKey(title, description));
+  };
+
+  // Price fields: the normal price and the % give the discounted price, and the
+  // discounted price gives the % back
+  const discounted = (list: number, pct: number) => Math.round(list * (1 - pct / 100));
+  const percentOff = (list: number, sale: number) => Math.round(((list - sale) / list) * 100);
+  const num = (v: string) => (v === "" ? "" : Number(v));
+
+  const onListPrice = (v: string) => {
+    const list = num(v);
+    setListPrice(list);
+    if (list === "" || !list) return;
+    if (discountPercent !== "" && Number(discountPercent) > 0) setSalePrice(discounted(list, Number(discountPercent)));
+    else if (salePrice !== "") setDiscountPercent(Math.max(0, percentOff(list, Number(salePrice))));
+  };
+
+  const onDiscountPercent = (v: string) => {
+    const pct = num(v);
+    setDiscountPercent(pct);
+    if (pct === "" || Number(pct) <= 0) setSalePrice("");
+    else if (listPrice !== "" && Number(listPrice) > 0) setSalePrice(discounted(Number(listPrice), Number(pct)));
+  };
+
+  const onSalePrice = (v: string) => {
+    const sale = num(v);
+    setSalePrice(sale);
+    if (sale === "") setDiscountPercent("");
+    else if (listPrice !== "" && Number(listPrice) > 0) setDiscountPercent(Math.max(0, percentOff(Number(listPrice), Number(sale))));
   };
 
   const handleAutoTranslate = async () => {
@@ -313,10 +367,13 @@ export default function ProductFormModal({
       setError("Ürün başlığı zorunludur.");
       return;
     }
-    if (price === "" || Number(price) <= 0) {
+    if (listPrice === "" || Number(listPrice) <= 0) {
       setError("Geçerli bir fiyat giriniz.");
       return;
     }
+    // A discount only counts when the discounted price is below the normal price
+    const isCampaignActive = salePrice !== "" && Number(salePrice) > 0 && Number(salePrice) < Number(listPrice);
+    const price = isCampaignActive ? Number(salePrice) : Number(listPrice);
 
     const finalCategory = category === "Diğer" && customCategory.trim() ? customCategory.trim() : category;
 
@@ -331,18 +388,22 @@ export default function ProductFormModal({
 
       // Translate when the Turkish text changed since the last translation (or never had one)
       const sourceKey = translationSourceKey(title, description);
-      let tr = {
+      let tr: Translations = {
         en: { title: title_en, description: description_en },
         es: { title: title_es, description: description_es },
         de: { title: title_de, description: description_de },
         ar: { title: title_ar, description: description_ar },
+        ru: { title: title_ru, description: description_ru },
       };
       let savedSource = i18nSource;
       const stale = i18nSource !== sourceKey || !title_en.trim() || !title_ar.trim();
-      if (stale && !translateFailed) {
+      // Pieces translated before Russian was added only need the Russian text
+      const missing: TargetLang[] = stale ? [] : (["en", "es", "de", "ar", "ru"] as const).filter((l) => !tr[l].title.trim());
+      if ((stale || missing.length) && !translateFailed) {
         try {
-          tr = await fetchTranslations();
-          applyTranslations(tr);
+          const fresh = await fetchTranslations(stale ? undefined : missing);
+          tr = { ...tr, ...fresh };
+          applyTranslations(fresh);
           savedSource = sourceKey;
         } catch (err: any) {
           setTranslateFailed(true);
@@ -357,29 +418,33 @@ export default function ProductFormModal({
         savedSource = undefined;
       }
 
-      // An old price only counts when it is above the sale price; the % always follows the prices
-      const isCampaignActive = originalPrice !== "" && Number(originalPrice) > Number(price);
-      const savedDiscount = isCampaignActive
-        ? Math.round(((Number(originalPrice) - Number(price)) / Number(originalPrice)) * 100)
-        : undefined;
+      // the % always follows the prices
+      const savedDiscount = isCampaignActive ? percentOff(Number(listPrice), price) : undefined;
+      // Original catalogue pieces keep showing the hand-written catalogue text (in every
+      // language) until their Turkish text is changed here
+      const catalogTr = productToEdit?.id ? getCatalogContent(productToEdit.id, "tr") : null;
+      const customText = catalogTr && !(sameText(title, catalogTr.title) && sameText(description, catalogTr.description)) ? true : undefined;
       const productData = {
         title: title.trim(),
         title_en: tr.en.title.trim() || undefined,
         title_es: tr.es.title.trim() || undefined,
         title_de: tr.de.title.trim() || undefined,
         title_ar: tr.ar.title.trim() || undefined,
+        title_ru: tr.ru.title.trim() || undefined,
 
         description: description.trim(),
         description_en: tr.en.description.trim() || undefined,
         description_es: tr.es.description.trim() || undefined,
         description_de: tr.de.description.trim() || undefined,
         description_ar: tr.ar.description.trim() || undefined,
+        description_ru: tr.ru.description.trim() || undefined,
         i18nSource: savedSource,
-        price: Number(price),
-        originalPrice: isCampaignActive ? Number(originalPrice) : undefined,
+        customText,
+        price,
+        originalPrice: isCampaignActive ? Number(listPrice) : undefined,
         discountPercent: savedDiscount,
         // a member price only counts when it is below the sale price
-        memberPrice: memberPrice !== "" && Number(memberPrice) > 0 && Number(memberPrice) < Number(price) ? Number(memberPrice) : undefined,
+        memberPrice: memberPrice !== "" && Number(memberPrice) > 0 && Number(memberPrice) < price ? Number(memberPrice) : undefined,
         menus: menus.length ? menus : undefined,
         submenus: submenus.length ? submenus : undefined,
         isCampaign: isCampaignActive,
@@ -449,7 +514,7 @@ export default function ProductFormModal({
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[80vh] overflow-y-auto custom-scrollbar">
+        <form noValidate onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[80vh] overflow-y-auto custom-scrollbar">
           {/* Title & Category */}
           <div className="space-y-4">
             <div>
@@ -546,7 +611,7 @@ export default function ProductFormModal({
               Ürün Açıklaması
             </label>
             <textarea
-              rows={3}
+              rows={6}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="💍 Malzeme: %925 Kaliteli Gümüştür 📦 Ücretsiz Kargo 🚚 Gönderim Süresi: 1-3 iş günü..."
@@ -561,12 +626,12 @@ export default function ProductFormModal({
               onClick={() => setShowTranslations(!showTranslations)}
               className="w-full px-4 py-3 bg-panel-900/50 hover:bg-panel-800 flex items-center justify-between transition"
             >
-              <span className="text-sm font-bold text-brass-500">Çeviriler (İngilizce, Arapça, İspanyolca, Almanca)</span>
+              <span className="text-sm font-bold text-brass-500">Çeviriler (İngilizce, Arapça, İspanyolca, Almanca, Rusça)</span>
               <span className="text-xs text-panel-400">{showTranslations ? "Gizle ▲" : "Göster ▼"}</span>
             </button>
             <div className="px-4 py-3 bg-panel-950 border-t border-panel-800 flex flex-wrap items-center justify-between gap-3">
               <p className="text-[11px] text-panel-400 max-w-md">
-                Kaydettiğinizde Türkçe metin otomatik olarak 4 dile çevrilir. Türkçe metni değiştirirseniz çeviriler yeniden yapılır.
+                Kaydettiğinizde Türkçe metin otomatik olarak 5 dile çevrilir. Türkçe metni değiştirirseniz çeviriler yeniden yapılır.
                 {i18nSource && i18nSource === translationSourceKey(title, description)
                   ? " Çeviriler güncel."
                   : " Çeviriler güncel değil; kayıtta yenilenecek."}
@@ -662,11 +727,30 @@ export default function ProductFormModal({
                   />
                 </div>
 
+                {/* Russian */}
+                <div className="space-y-3">
+                  <h4 className="text-xs font-bold text-panel-300 uppercase">Rusça (Русский)</h4>
+                  <input
+                    type="text"
+                    value={title_ru}
+                    onChange={editTranslation(setTitleRu)}
+                    placeholder="Russian Title"
+                    className="w-full px-4 py-2 bg-panel-900 border border-panel-800 rounded-lg text-sm text-white"
+                  />
+                  <textarea
+                    rows={2}
+                    value={description_ru}
+                    onChange={editTranslation(setDescriptionRu)}
+                    placeholder="Russian Description"
+                    className="w-full px-4 py-2 bg-panel-900 border border-panel-800 rounded-lg text-sm text-white resize-none"
+                  />
+                </div>
+
               </div>
             )}
           </div>
 
-          {/* Price, Original Price, Discount & Stock */}
+          {/* Prices: normal price + discount % give the discounted price (and back) */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">
@@ -677,46 +761,14 @@ export default function ProductFormModal({
                 <input
                   type="number"
                   min="0"
-                  step="0.01"
-                  required
-                  value={price}
-                  onChange={(e) => {
-                    const val = e.target.value === "" ? "" : Number(e.target.value);
-                    setPrice(val);
-                    if (originalPrice && val !== "") {
-                      const pct = Math.round(((Number(originalPrice) - Number(val)) / Number(originalPrice)) * 100);
-                      setDiscountPercent(pct > 0 ? pct : 0);
-                    }
-                  }}
-                  placeholder="5600.00"
+                  step={PRICE_STEP}
+                  value={listPrice}
+                  onChange={(e) => onListPrice(e.target.value)}
+                  placeholder="5600"
                   className="w-full pl-9 pr-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-white font-bold"
                 />
               </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">
-                İndirimsiz (Eski) Fiyat (₺)
-              </label>
-              <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-panel-500 font-bold text-sm">₺</span>
-                <input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={originalPrice}
-                  onChange={(e) => {
-                    const val = e.target.value === "" ? "" : Number(e.target.value);
-                    setOriginalPrice(val);
-                    if (val !== "" && price !== "") {
-                      const pct = Math.round(((Number(val) - Number(price)) / Number(val)) * 100);
-                      setDiscountPercent(pct > 0 ? pct : 0);
-                    }
-                  }}
-                  placeholder="İndirim yoksa boş bırakın"
-                  className="w-full pl-9 pr-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-panel-300 placeholder:text-panel-600 placeholder:font-normal [&:not(:placeholder-shown)]:line-through"
-                />
-              </div>
+              <p className="mt-1 text-[10px] text-panel-500">İndirim yoksa müşteri bu fiyatı öder.</p>
             </div>
 
             <div>
@@ -730,25 +782,33 @@ export default function ProductFormModal({
                   min="0"
                   max="99"
                   value={discountPercent}
-                  onChange={(e) => {
-                    const pct = e.target.value === "" ? "" : Number(e.target.value);
-                    setDiscountPercent(pct);
-                    if (pct !== "" && originalPrice) {
-                      const calculatedPrice = Math.round(Number(originalPrice) * (1 - Number(pct) / 100));
-                      setPrice(calculatedPrice);
-                    } else if (pct !== "" && price) {
-                      const calculatedOrig = Math.round(Number(price) / (1 - Number(pct) / 100));
-                      setOriginalPrice(calculatedOrig);
-                    }
-                  }}
-                  placeholder="—"
+                  onChange={(e) => onDiscountPercent(e.target.value)}
+                  placeholder="İndirim yoksa boş"
                   className="w-full pl-8 pr-4 py-3 bg-panel-950 border border-brass-500/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-brass-400 font-bold placeholder:text-panel-600 placeholder:font-normal"
                 />
               </div>
             </div>
-            {originalPrice !== "" && price !== "" && Number(originalPrice) <= Number(price) && (
+
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-2">
+                İndirimli Satış Fiyatı (₺)
+              </label>
+              <div className="relative">
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 font-bold text-sm">₺</span>
+                <input
+                  type="number"
+                  min="0"
+                  step={PRICE_STEP}
+                  value={salePrice}
+                  onChange={(e) => onSalePrice(e.target.value)}
+                  placeholder="% girince kendiliğinden oluşur"
+                  className="w-full pl-9 pr-4 py-3 bg-panel-950 border border-emerald-700/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-emerald-300 font-bold placeholder:text-panel-600 placeholder:font-normal"
+                />
+              </div>
+            </div>
+            {salePrice !== "" && listPrice !== "" && Number(salePrice) >= Number(listPrice) && (
               <p role="alert" className="md:col-span-3 -mt-1 text-xs text-amber-300">
-                İndirimsiz fiyat, satış fiyatından yüksek olmalı. Böyle kaydederseniz indirim gösterilmez ve eski fiyat silinir.
+                İndirimli fiyat, satış fiyatından düşük olmalı. Böyle kaydederseniz indirim gösterilmez.
               </p>
             )}
           </div>
@@ -762,14 +822,14 @@ export default function ProductFormModal({
                 <input
                   type="number"
                   min="0"
-                  step="0.01"
+                  step={PRICE_STEP}
                   value={memberPrice}
                   onChange={(e) => setMemberPrice(e.target.value === "" ? "" : Number(e.target.value))}
                   placeholder="Yoksa boş bırakın"
                   className="w-full pl-9 pr-4 py-3 bg-panel-950 border border-emerald-700/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-emerald-300 font-bold placeholder:text-panel-600 placeholder:font-normal"
                 />
               </span>
-              {memberPrice !== "" && price !== "" && Number(memberPrice) >= Number(price) && (
+              {memberPrice !== "" && listPrice !== "" && Number(memberPrice) >= Number(salePrice !== "" && Number(salePrice) < Number(listPrice) ? salePrice : listPrice) && (
                 <span role="alert" className="block mt-1.5 text-xs text-amber-300">Üye fiyatı satış fiyatından düşük olmalı; böyle kaydedilirse gösterilmez.</span>
               )}
             </label>
@@ -1190,9 +1250,9 @@ export default function ProductFormModal({
                     <span className="bg-black/75 backdrop-blur-md text-brass-400 text-[9px] font-bold px-2 py-0.5 rounded truncate max-w-[65%] shadow">
                       {category === "Diğer" && customCategory ? customCategory : category}
                     </span>
-                    {originalPrice && Number(originalPrice) > Number(price || 0) && (
+                    {salePrice !== "" && listPrice !== "" && Number(salePrice) < Number(listPrice) && (
                       <span className="bg-gradient-to-r from-red-600 to-brass-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded shrink-0 shadow">
-                        -%{discountPercent || Math.round(((Number(originalPrice) - Number(price)) / Number(originalPrice)) * 100)} İNDİRİM
+                        -%{percentOff(Number(listPrice), Number(salePrice))} İNDİRİM
                       </span>
                     )}
                   </div>

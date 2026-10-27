@@ -13,6 +13,7 @@ import { SALES_OPEN } from "@/lib/shop";
 import { Product } from "@/types";
 import { getProductById, getLocalProductById } from "@/services/productService";
 import { useCartStore } from "@/store/useCartStore";
+import { usePrice } from "@/lib/currency";
 import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
 import { useRecentStore } from "@/store/useRecentStore";
@@ -50,6 +51,7 @@ export default function ProductDetailPage() {
   const router = useRouter();
   const id = params?.id as string;
   const { t, language } = useLanguage();
+  const { price } = usePrice();
 
   // Catalogue products render on the server straight away, so search engines (and
   // the first paint) get the real title, description and photos, not a spinner.
@@ -391,7 +393,7 @@ export default function ProductDetailPage() {
                     <div className="flex flex-col">
                       <div className="flex items-center gap-2">
                         <span className="text-2xl sm:text-3xl font-semibold text-versace-green-900 tabular-nums">
-                          ₺{product.price.toLocaleString("tr-TR", { minimumFractionDigits: 0 })}
+                          {price(product.price)}
                         </span>
                         <span className="text-xs font-bold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-md">
                           -%{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)} {t("discount_label")}
@@ -399,10 +401,10 @@ export default function ProductDetailPage() {
                       </div>
                       <div className="flex items-center gap-2 mt-0.5">
                         <span className="text-sm text-slate-400 line-through font-medium">
-                          ₺{product.originalPrice.toLocaleString("tr-TR", { minimumFractionDigits: 0 })}
+                          {price(product.originalPrice)}
                         </span>
                         <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">
-                          {(product.originalPrice - product.price).toLocaleString("tr-TR")} ₺ {t("savings_label")}
+                          {price(product.originalPrice - product.price)} {t("savings_label")}
                         </span>
                       </div>
                       <div className="mt-1.5">
@@ -411,7 +413,7 @@ export default function ProductDetailPage() {
                     </div>
                   ) : (
                     <span className="text-2xl sm:text-3xl font-semibold text-versace-green-900 tabular-nums">
-                      ₺{product.price.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
+                      {price(product.price)}
                     </span>
                   )}
                   <div className="basis-full">
@@ -528,7 +530,7 @@ export default function ProductDetailPage() {
                   ) : (
                     <>
                       <ShoppingBag className="w-5 h-5" />
-                      <span>{left <= 0 ? t("sold_out") : `${t("add_to_cart")} • ₺${(product.price * quantity).toLocaleString("tr-TR")}`}</span>
+                      <span>{left <= 0 ? t("sold_out") : `${t("add_to_cart")} • ${price(product.price * quantity)}`}</span>
                     </>
                   )}
                 </button>

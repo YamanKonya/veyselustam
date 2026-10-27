@@ -31,17 +31,17 @@ interface CatalogEntry {
 }
 
 const STONES: Record<StoneKey, L> = {
-  natural_gem: { tr: "Doğal değerli taş", en: "Natural gemstone", es: "Piedra preciosa natural", de: "Natürlicher Edelstein", ar: "حجر كريم طبيعي" },
-  horasan_agate: { tr: "Doğal Horasan akiki", en: "Natural Khorasan agate", es: "Ágata natural de Jorasán", de: "Natürlicher Chorasan-Achat", ar: "عقيق خراساني طبيعي" },
-  agate: { tr: "Doğal akik", en: "Natural agate", es: "Ágata natural", de: "Natürlicher Achat", ar: "عقيق طبيعي" },
-  red_agate: { tr: "Doğal kızıl akik", en: "Natural red agate", es: "Ágata roja natural", de: "Natürlicher roter Achat", ar: "عقيق أحمر طبيعي" },
-  yellow_agate: { tr: "Doğal sarı akik", en: "Natural yellow agate", es: "Ágata amarilla natural", de: "Natürlicher gelber Achat", ar: "عقيق أصفر طبيعي" },
-  onyx: { tr: "Doğal oniks", en: "Natural onyx", es: "Ónix natural", de: "Natürlicher Onyx", ar: "أونيكس طبيعي" },
-  black_onyx: { tr: "Doğal siyah oniks", en: "Natural black onyx", es: "Ónix negro natural", de: "Natürlicher schwarzer Onyx", ar: "أونيكس أسود طبيعي" },
-  jasper: { tr: "Doğal jasper (casper)", en: "Natural jasper", es: "Jaspe natural", de: "Natürlicher Jaspis", ar: "يشب طبيعي" },
-  hematite: { tr: "Doğal hematit", en: "Natural hematite", es: "Hematita natural", de: "Natürlicher Hämatit", ar: "هيماتيت طبيعي" },
-  turquoise: { tr: "Doğal firuze", en: "Natural turquoise", es: "Turquesa natural", de: "Natürlicher Türkis", ar: "فيروز طبيعي" },
-  green_quartz: { tr: "Yeşil kuvars, fasetalı kesim", en: "Green quartz, faceted cut", es: "Cuarzo verde, talla facetada", de: "Grüner Quarz, facettiert", ar: "كوارتز أخضر، قطع مُضلّع" },
+  natural_gem: { tr: "Doğal değerli taş", en: "Natural gemstone", es: "Piedra preciosa natural", de: "Natürlicher Edelstein", ar: "حجر كريم طبيعي", ru: "Натуральный драгоценный камень" },
+  horasan_agate: { tr: "Doğal Horasan akiki", en: "Natural Khorasan agate", es: "Ágata natural de Jorasán", de: "Natürlicher Chorasan-Achat", ar: "عقيق خراساني طبيعي", ru: "Натуральный хорасанский агат" },
+  agate: { tr: "Doğal akik", en: "Natural agate", es: "Ágata natural", de: "Natürlicher Achat", ar: "عقيق طبيعي", ru: "Натуральный агат" },
+  red_agate: { tr: "Doğal kızıl akik", en: "Natural red agate", es: "Ágata roja natural", de: "Natürlicher roter Achat", ar: "عقيق أحمر طبيعي", ru: "Натуральный красный агат" },
+  yellow_agate: { tr: "Doğal sarı akik", en: "Natural yellow agate", es: "Ágata amarilla natural", de: "Natürlicher gelber Achat", ar: "عقيق أصفر طبيعي", ru: "Натуральный желтый агат" },
+  onyx: { tr: "Doğal oniks", en: "Natural onyx", es: "Ónix natural", de: "Natürlicher Onyx", ar: "أونيكس طبيعي", ru: "Натуральный оникс" },
+  black_onyx: { tr: "Doğal siyah oniks", en: "Natural black onyx", es: "Ónix negro natural", de: "Natürlicher schwarzer Onyx", ar: "أونيكس أسود طبيعي", ru: "Натуральный черный оникс." },
+  jasper: { tr: "Doğal jasper (casper)", en: "Natural jasper", es: "Jaspe natural", de: "Natürlicher Jaspis", ar: "يشب طبيعي", ru: "Натуральная яшма" },
+  hematite: { tr: "Doğal hematit", en: "Natural hematite", es: "Hematita natural", de: "Natürlicher Hämatit", ar: "هيماتيت طبيعي", ru: "Природный гематит" },
+  turquoise: { tr: "Doğal firuze", en: "Natural turquoise", es: "Turquesa natural", de: "Natürlicher Türkis", ar: "فيروز طبيعي", ru: "Натуральная бирюза" },
+  green_quartz: { tr: "Yeşil kuvars, fasetalı kesim", en: "Green quartz, faceted cut", es: "Cuarzo verde, talla facetada", de: "Grüner Quarz, facettiert", ar: "كوارتز أخضر، قطع مُضلّع", ru: "Зеленый кварц, граненая огранка" },
 };
 
 const LABELS: Record<Language, {
@@ -94,6 +94,15 @@ const LABELS: Record<Language, {
     care: "لأن الخاتم يحمل نقشًا مباركًا، نرجو خلعه قبل دخول دورة المياه.",
     serviceNote: "يُحدَّد السعر ومدة التسليم حسب التصميم؛ يرجى التواصل معنا قبل الطلب.",
   },
+  ru: {
+    material: "Материал", materialValue: "Серебро 925 пробы",
+    stone: "Камень", weight: "Вес", weightValue: (w) => `около ${w} г`,
+    craft: "Изготовление", craftValue: "Полностью ручная работа",
+    shipping: "Доставка", shippingValue: "Бесплатная доставка за 1–3 рабочих дня; отправляем по всему миру",
+    personalise: "Камень и надпись можно изготовить на заказ; свяжитесь с нами, чтобы обсудить детали.",
+    care: "Поскольку на кольце священная надпись, просим снимать его перед посещением туалета.",
+    serviceNote: "Цена и срок изготовления зависят от дизайна; пожалуйста, свяжитесь с нами перед заказом.",
+  },
 };
 
 const TITLES: Record<string, L> = {
@@ -103,6 +112,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre Sidre en plata cincelada a mano con hematita caligrafiada",
     de: "Sidre-Herrenring aus handziseliertem Silber mit kalligrafiertem Hämatit",
     ar: "خاتم رجالي «سِدرة» من الفضة المنقوشة يدويًا بحجر الهيماتيت المخطوط",
+    ru: "Серебряное мужское кольцо ручной чеканки с гематитом Сидре с каллиграфической гравировкой",
   },
   sidre_firuze: {
     tr: "Sidre Model Firuze Taşlı El Oyması Gümüş Erkek Yüzüğü",
@@ -110,6 +120,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre Sidre en plata cincelada a mano con turquesa",
     de: "Sidre-Herrenring aus handziseliertem Silber mit Türkis",
     ar: "خاتم رجالي «سِدرة» من الفضة المنقوشة يدويًا بحجر الفيروز",
+    ru: "Серебряное мужское кольцо с бирюзой и чеканкой ручной работы Sidre",
   },
   sidre_akik: {
     tr: "Sidre Model Kızıl Akik Taşlı El Oyması Gümüş Erkek Yüzüğü",
@@ -117,6 +128,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre Sidre en plata cincelada a mano con ágata roja",
     de: "Sidre-Herrenring aus handziseliertem Silber mit rotem Achat",
     ar: "خاتم رجالي «سِدرة» من الفضة المنقوشة يدويًا بحجر العقيق الأحمر",
+    ru: "Серебряное мужское кольцо ручной чеканки с красным агатом Сидре",
   },
   sidre_yesil: {
     tr: "Sidre Model Yeşil Kuvars Taşlı El Oyması Gümüş Erkek Yüzüğü",
@@ -124,6 +136,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre Sidre en plata cincelada a mano con cuarzo verde",
     de: "Sidre-Herrenring aus handziseliertem Silber mit grünem Quarz",
     ar: "خاتم رجالي «سِدرة» من الفضة المنقوشة يدويًا بحجر الكوارتز الأخضر",
+    ru: "Серебряное мужское кольцо с зеленым кварцем ручной чеканки Sidre",
   },
   zulfikar: {
     tr: "Zülfikâr Nakkaş İşlemeli El Yapımı Gümüş Erkek Yüzüğü",
@@ -131,6 +144,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre Zulfiqar en plata 925 grabado a mano",
     de: "Zulfiqar-Herrenring aus 925er Silber, von Hand graviert",
     ar: "خاتم رجالي ذو الفقار من الفضة عيار 925 منقوش يدويًا",
+    ru: "Мужское кольцо из стерлингового серебра Зульфикар с ручной гравировкой",
   },
   horasan: {
     tr: "El Yapımı Horasan Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -138,6 +152,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata 925 con ágata de Jorasán, hecho a mano",
     de: "Handgefertigter Herrenring aus 925er Silber mit Chorasan-Achat",
     ar: "خاتم رجالي من الفضة عيار 925 بحجر العقيق الخراساني، صناعة يدوية",
+    ru: "Мужское кольцо ручной работы из стерлингового серебра с агатом Хорасан",
   },
   ottoman_necklace: {
     tr: "El Oyması Akik Taşlı Osmanlı Gümüş Kolye",
@@ -145,6 +160,7 @@ const TITLES: Record<string, L> = {
     es: "Collar otomano de plata grabado a mano con ágata",
     de: "Osmanische Silberkette mit Achat, von Hand graviert",
     ar: "قلادة عثمانية من الفضة بحجر العقيق منقوشة يدويًا",
+    ru: "Османское серебряное колье с ручной гравировкой и агатом",
   },
   suleyman_necklace: {
     tr: "Hz. Süleyman Mührü Kazınmış Hematit Taşlı Kadın Kolye",
@@ -152,6 +168,7 @@ const TITLES: Record<string, L> = {
     es: "Collar de mujer de hematita con el Sello de Salomón grabado",
     de: "Damenkette mit Hämatit und eingraviertem Siegel Salomons",
     ar: "قلادة نسائية بحجر الهيماتيت منقوش عليها خاتم سليمان",
+    ru: "Женское колье из гематита с гравировкой «Печать Соломона»",
   },
   salavat_necklace: {
     tr: "Salavat-ı Şerife Oymalı Akik Taşlı Kadın Kolye",
@@ -159,6 +176,7 @@ const TITLES: Record<string, L> = {
     es: "Collar de mujer de ágata con la salawat grabada",
     de: "Damenkette mit Achat und eingravierter Salawat",
     ar: "قلادة نسائية بحجر العقيق منقوش عليها الصلاة على النبي ﷺ",
+    ru: "Женское колье из агата с гравировкой Салават",
   },
   subbuh: {
     tr: "“Subbûhun Kuddûsun” Kazınmış Oniks Taşlı Gümüş Erkek Yüzüğü",
@@ -166,6 +184,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ónix grabado «Subbuhun Quddusun»",
     de: "Herrenring aus Silber mit Onyx, graviert mit „Subbuhun Quddusun“",
     ar: "خاتم رجالي من الفضة بحجر الأونيكس منقوش عليه «سُبُّوحٌ قُدُّوسٌ»",
+    ru: "Серебряное мужское кольцо «Суббухун Куддусун» с гравировкой оникса",
   },
   tevhid_agate: {
     tr: "Kelime-i Tevhid Kazınmış Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -173,6 +192,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata y la Shahada grabada",
     de: "Herrenring aus Silber mit Achat und eingravierter Schahada",
     ar: "خاتم رجالي من الفضة بحجر العقيق منقوش عليه كلمة التوحيد",
+    ru: "Серебряное мужское кольцо с агатом Шахада с гравировкой",
   },
   tevhid_onyx: {
     tr: "Kelime-i Tevhid Kazınmış Oniks Taşlı Gümüş Erkek Yüzüğü",
@@ -180,6 +200,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ónix y la Shahada grabada",
     de: "Herrenring aus Silber mit Onyx und eingravierter Schahada",
     ar: "خاتم رجالي من الفضة بحجر الأونيكس منقوش عليه كلمة التوحيد",
+    ru: "Серебряное мужское кольцо с ониксом Шахада с гравировкой",
   },
   fatiha_agate: {
     tr: "Fatiha Suresi Kazınmış Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -187,6 +208,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata y la sura Al-Fatiha grabada",
     de: "Herrenring aus Silber mit Achat und eingravierter Sure Al-Fatiha",
     ar: "خاتم رجالي من الفضة بحجر العقيق منقوش عليه سورة الفاتحة",
+    ru: "Серебряное мужское кольцо с агатом с гравировкой Сура Аль-Фатиха",
   },
   hu_allah: {
     tr: "“Hû Allah” Kazınmış Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -194,6 +216,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata grabada «Hu Allah»",
     de: "Herrenring aus Silber mit Achat, graviert mit „Hu Allah“",
     ar: "خاتم رجالي من الفضة بحجر العقيق منقوش عليه «هو الله»",
+    ru: "Серебряное мужское кольцо с агатом «Ху Аллах» с гравировкой",
   },
   custom_name: {
     tr: "Kişiye Özel İsim Hat Yazılı Akik Taşlı Gümüş Yüzük",
@@ -201,6 +224,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata con ágata y nombre personalizado en caligrafía",
     de: "Silberring mit Achat und personalisierter Namenskalligrafie",
     ar: "خاتم فضة بحجر العقيق مع اسم مخصص بالخط العربي",
+    ru: "Серебряное кольцо с агатом с персонализированным именем и каллиграфией",
   },
   hasbiyallah: {
     tr: "“Hasbiyallâh” Kazınmış Sarı Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -208,6 +232,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata amarilla grabada «Hasbiyallah»",
     de: "Herrenring aus Silber mit gelbem Achat, graviert mit „Hasbiyallah“",
     ar: "خاتم رجالي من الفضة بحجر العقيق الأصفر منقوش عليه «حسبي الله»",
+    ru: "Серебряное мужское кольцо с желтым агатом «Хасбияллах»",
   },
   hic_agate: {
     tr: "Tasavvufi “Hiç” Kazınmış Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -215,6 +240,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata grabada «Hiç» (la nada sufí)",
     de: "Herrenring aus Silber mit Achat, graviert mit dem Sufi-Wort „Hiç“ (Nichts)",
     ar: "خاتم رجالي من الفضة بحجر العقيق منقوش عليه كلمة «هيچ» الصوفية",
+    ru: "Суфийское серебряное мужское кольцо с агатом «Hiç» (Ничто) с гравировкой",
   },
   hic_onyx: {
     tr: "Tasavvufi “Hiç” Kazınmış Oniks Taşlı Gümüş Erkek Yüzüğü",
@@ -222,6 +248,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ónix grabado «Hiç» (la nada sufí)",
     de: "Herrenring aus Silber mit Onyx, graviert mit dem Sufi-Wort „Hiç“ (Nichts)",
     ar: "خاتم رجالي من الفضة بحجر الأونيكس منقوش عليه كلمة «هيچ» الصوفية",
+    ru: "Суфийское серебряное мужское кольцо с ониксом «Hiç» («Ничто»)",
   },
   lagalibe_black_onyx: {
     tr: "“Lâ Gâlibe İllallah” Kazınmış Siyah Oniks Taşlı Gümüş Erkek Yüzüğü",
@@ -229,6 +256,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ónix negro grabado «La Ghaliba Illallah»",
     de: "Herrenring aus Silber mit schwarzem Onyx, graviert mit „La Ghaliba Illallah“",
     ar: "خاتم رجالي من الفضة بحجر الأونيكس الأسود منقوش عليه «لا غالب إلا الله»",
+    ru: "Серебряное мужское кольцо «La Ghaliba Illallah» с гравировкой из черного оникса",
   },
   lagalibe_red_agate: {
     tr: "“Lâ Gâlibe İllallah” Kazınmış Kırmızı Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -236,6 +264,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata roja grabada «La Ghaliba Illallah»",
     de: "Herrenring aus Silber mit rotem Achat, graviert mit „La Ghaliba Illallah“",
     ar: "خاتم رجالي من الفضة بحجر العقيق الأحمر منقوش عليه «لا غالب إلا الله»",
+    ru: "Серебряное мужское кольцо с красным агатом «Ла Галиба иллаллах»",
   },
   bismillah: {
     tr: "Besmele Kazınmış Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -243,6 +272,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata y la basmala en caligrafía",
     de: "Herrenring aus Silber mit Achat und Basmala-Kalligrafie",
     ar: "خاتم رجالي من الفضة بحجر العقيق منقوش عليه البسملة",
+    ru: "Серебряное мужское кольцо с агатом «Бисмилла» и каллиграфией",
   },
   suleyman_tilsim: {
     tr: "Hz. Süleyman Mührü ve Ayetlerle Çevrili Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -250,6 +280,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata, Sello de Salomón y aleyas grabadas",
     de: "Herrenring aus Silber mit Achat, Siegel Salomons und umlaufenden Versen",
     ar: "خاتم رجالي من الفضة بحجر العقيق عليه خاتم سليمان ومحاط بالآيات",
+    ru: "Серебряное мужское кольцо с агатом «Печать Соломона», окруженное стихами",
   },
   allah_agate: {
     tr: "Allah Lafzı Kazınmış Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -257,6 +288,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata y el nombre «Allah» grabado",
     de: "Herrenring aus Silber mit Achat und eingraviertem Namen „Allah“",
     ar: "خاتم رجالي من الفضة بحجر العقيق منقوش عليه لفظ الجلالة",
+    ru: "Серебряное мужское кольцо с каллиграфическим агатом «Аллах»",
   },
   allah_onyx: {
     tr: "Allah Lafzı Kazınmış Oniks Taşlı Gümüş Erkek Yüzüğü",
@@ -264,6 +296,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ónix y el nombre «Allah» grabado",
     de: "Herrenring aus Silber mit Onyx und eingraviertem Namen „Allah“",
     ar: "خاتم رجالي من الفضة بحجر الأونيكس منقوش عليه لفظ الجلالة",
+    ru: "Серебряное мужское кольцо с каллиграфическим ониксом «Аллах»",
   },
   salavat_ring: {
     tr: "Salavat-ı Şerife Kazınmış Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -271,6 +304,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata y la salawat grabada",
     de: "Herrenring aus Silber mit Achat und eingravierter Salawat",
     ar: "خاتم رجالي من الفضة بحجر العقيق منقوش عليه الصلاة على النبي ﷺ",
+    ru: "Серебряное мужское кольцо с агатом Салават с гравировкой",
   },
   tevbe129: {
     tr: "Tevbe Suresi 129. Ayet Kazınmış Kızıl Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -278,6 +312,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata roja y la aleya 9:129 (At-Tawba) grabada",
     de: "Herrenring aus Silber mit rotem Achat und eingraviertem Vers 9:129 (At-Tauba)",
     ar: "خاتم رجالي من الفضة بحجر العقيق الأحمر منقوش عليه الآية 129 من سورة التوبة",
+    ru: "Сура Ат-Тауба 9:129 Серебряное мужское кольцо с красным агатом с гравировкой",
   },
   kefa: {
     tr: "“Kefâ Bi'l-Mevti Vâizâ” Kazınmış Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -285,6 +320,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata grabada «Basta la muerte como consejera»",
     de: "Herrenring aus Silber mit Achat, graviert mit „Der Tod genügt als Mahner“",
     ar: "خاتم رجالي من الفضة بحجر العقيق منقوش عليه «كفى بالموت واعظًا»",
+    ru: "Серебряное мужское кольцо с агатом с гравировкой «Смерти достаточно в качестве увещевания»",
   },
   fatih_seal: {
     tr: "Fatih Sultan Mehmed Han Mühürlü Jasper Taşlı Gümüş Erkek Yüzüğü",
@@ -292,6 +328,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con jaspe y el sello del sultán Mehmed II",
     de: "Herrenring aus Silber mit Jaspis und dem Siegel Sultan Mehmeds II.",
     ar: "خاتم رجالي من الفضة بحجر اليشب منقوش عليه ختم السلطان محمد الفاتح",
+    ru: "Серебряное мужское кольцо султана Мехмеда Завоевателя с яшмой и печатью",
   },
   yasin58: {
     tr: "Yâsîn Suresi 58. Ayet Kazınmış Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -299,6 +336,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata y la aleya 36:58 (Ya-Sin) grabada",
     de: "Herrenring aus Silber mit Achat und eingraviertem Vers 36:58 (Ya-Sin)",
     ar: "خاتم رجالي من الفضة بحجر العقيق منقوش عليه الآية 58 من سورة يس",
+    ru: "Серебряное мужское кольцо с агатом суры Йа-Син 36:58 с гравировкой",
   },
   el_mulku: {
     tr: "“El-Mülkü Lillâh” Kazınmış Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -306,6 +344,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata grabada «Al-Mulku Lillah»",
     de: "Herrenring aus Silber mit Achat, graviert mit „Al-Mulku Lillah“",
     ar: "خاتم رجالي من الفضة بحجر العقيق منقوش عليه «الملك لله»",
+    ru: "Серебряное мужское кольцо с агатом «Аль-Мулку Лиллах» с гравировкой",
   },
   musavvir: {
     tr: "“El-Musavvir” El Oyması Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -313,6 +352,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata tallada a mano «Al-Musawwir»",
     de: "Herrenring aus Silber mit handgeschnitztem Achat „Al-Musawwir“",
     ar: "خاتم رجالي من الفضة بحجر العقيق المنقوش يدويًا «المصوِّر»",
+    ru: "Серебряное мужское кольцо с агатом «Аль-Мусаввир» ручной работы",
   },
   musavvir_horasan: {
     tr: "El Oyması “El-Musavvir” Horasan Akik Taşlı Gümüş Yüzük",
@@ -320,6 +360,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata con ágata de Jorasán tallada a mano «Al-Musawwir»",
     de: "Silberring mit handgeschnitztem Chorasan-Achat „Al-Musawwir“",
     ar: "خاتم فضة بحجر العقيق الخراساني المنقوش يدويًا «المصوِّر»",
+    ru: "Серебряное кольцо с хорасанским агатом ручной работы «Аль-Мусаввир»",
   },
   seref_sems: {
     tr: "Şerefü'ş-Şems El Oyması Sarı Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -327,6 +368,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata amarilla tallada a mano «Sharaf al-Shams»",
     de: "Herrenring aus Silber mit handgeschnitztem gelbem Achat „Sharaf al-Shams“",
     ar: "خاتم رجالي من الفضة بحجر العقيق الأصفر المنقوش يدويًا «شرف الشمس»",
+    ru: "Серебряное мужское кольцо с желтым агатом Шараф аль-Шамс ручной работы с резьбой",
   },
   ilahi: {
     tr: "“İlâhî Ente Maksûdî” Kazınmış Kırmızı Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -334,6 +376,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata roja grabada «Ilahi Anta Maqsudi»",
     de: "Herrenring aus Silber mit rotem Achat, graviert mit „Ilahi Anta Maqsudi“",
     ar: "خاتم رجالي من الفضة بحجر العقيق الأحمر منقوش عليه «إلهي أنت مقصودي»",
+    ru: "Серебряное мужское кольцо с красным агатом «Илахи Анта Максуди» с гравировкой",
   },
   suleyman: {
     tr: "Hz. Süleyman Mührü Kazınmış Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -341,6 +384,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata y el Sello de Salomón grabado",
     de: "Herrenring aus Silber mit Achat und eingraviertem Siegel Salomons",
     ar: "خاتم رجالي من الفضة بحجر العقيق منقوش عليه خاتم سليمان",
+    ru: "Серебряное мужское кольцо с агатом и гравировкой «Печать Соломона»",
   },
   suleyman_gold: {
     tr: "Hz. Süleyman Mührü Kazınmış Altın Kaplamalı Akik Taşlı Gümüş Yüzük",
@@ -348,6 +392,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata con ágata, Sello de Salomón y baño de oro",
     de: "Silberring mit Achat, Siegel Salomons und Vergoldung",
     ar: "خاتم فضة بحجر العقيق منقوش عليه خاتم سليمان مع طلاء ذهبي",
+    ru: "Серебряное кольцо «Печать Соломона» с агатом и позолотой",
   },
   ecirna: {
     tr: "“Allâhümme Ecirnâ Mine'n-Nâr” Kazınmış Gümüş Erkek Yüzüğü",
@@ -355,6 +400,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata grabado «Allahumma Ajirna min an-Nar»",
     de: "Herrenring aus Silber, graviert mit „Allahumma Ajirna min an-Nar“",
     ar: "خاتم رجالي من الفضة منقوش عليه «اللهم أجرنا من النار»",
+    ru: "Серебряное мужское кольцо с гравировкой «Аллахумма Аджирна Мин ан-Нар»",
   },
   hud: {
     tr: "Hûd Suresi El Oyması Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -362,6 +408,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata tallada a mano con la sura Hud",
     de: "Herrenring aus Silber mit handgeschnitztem Achat – Sure Hud",
     ar: "خاتم رجالي من الفضة بحجر العقيق منقوش يدويًا بآية من سورة هود",
+    ru: "Серебряное мужское кольцо с агатом Сура Худ с ручной резьбой",
   },
   ya_malik: {
     tr: "“Yâ Mâlike'l-Mülk” El Oyması Oniks Taşlı Gümüş Yüzük",
@@ -369,6 +416,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata con ónix tallado a mano «Ya Malik al-Mulk»",
     de: "Silberring mit handgeschnitztem Onyx „Ya Malik al-Mulk“",
     ar: "خاتم فضة بحجر الأونيكس المنقوش يدويًا «يا مالك الملك»",
+    ru: "Серебряное кольцо с ониксом ручной работы «Я Малик аль-Мульк»",
   },
   insirah: {
     tr: "İnşirâh Suresi 6. Ayet Kazınmış Sarı Akik Taşlı Gümüş Yüzük",
@@ -376,6 +424,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata con ágata amarilla y la aleya 94:6 (Ash-Sharh) grabada",
     de: "Silberring mit gelbem Achat und eingraviertem Vers 94:6 (Asch-Scharh)",
     ar: "خاتم فضة بحجر العقيق الأصفر منقوش عليه الآية 6 من سورة الشرح",
+    ru: "Сура Аш-Шарх 94:6 Серебряное кольцо с гравировкой из желтого агата",
   },
   design: {
     tr: "Kişiye Özel Çizim ve Tasarım",
@@ -383,6 +432,7 @@ const TITLES: Record<string, L> = {
     es: "Dibujo y diseño a medida",
     de: "Individuelle Zeichnung & Gestaltung",
     ar: "رسم وتصميم حسب الطلب",
+    ru: "Индивидуальный рисунок и дизайн",
   },
   sems: {
     tr: "Şems Suresi El Yapımı Horasan Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -390,6 +440,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con ágata de Jorasán y la sura Ash-Shams, hecho a mano",
     de: "Handgefertigter Herrenring aus Silber mit Chorasan-Achat – Sure Asch-Schams",
     ar: "خاتم رجالي من الفضة بحجر العقيق الخراساني بآية من سورة الشمس، صناعة يدوية",
+    ru: "Серебряное мужское кольцо с агатом Сура Аш-Шамс ручной работы из хорасанского агата",
   },
   fatiha_silver: {
     tr: "Fatiha Suresi İşlemeli El Yapımı Gümüş Erkek Yüzüğü",
@@ -397,6 +448,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de hombre en plata con la sura Al-Fatiha, hecho a mano",
     de: "Handgefertigter Herrenring aus Silber mit der Sure Al-Fatiha",
     ar: "خاتم رجالي من الفضة منقوش عليه سورة الفاتحة، صناعة يدوية",
+    ru: "Серебряное мужское кольцо ручной работы «Сура Аль-Фатиха»",
   },
   mumin44: {
     tr: "Mü'min Suresi 44. Ayet Yazılı Akik Taşlı Gümüş Yüzük",
@@ -404,6 +456,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata con ágata y la aleya 40:44 (Ghafir) grabada",
     de: "Silberring mit Achat und eingraviertem Vers 40:44 (Ghafir)",
     ar: "خاتم فضة بحجر العقيق منقوش عليه الآية 44 من سورة غافر",
+    ru: "Сура Гафир 40:44 Серебряное кольцо с гравировкой из агата",
   },
   kalem52: {
     tr: "Kalem Suresi Yazılı El Yapımı Hematit Taşlı Gümüş Yüzük",
@@ -411,6 +464,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata con hematita y la sura Al-Qalam grabada",
     de: "Silberring mit Hämatit und eingravierter Sure Al-Qalam",
     ar: "خاتم فضة بحجر الهيماتيت منقوش عليه آية من سورة القلم",
+    ru: "Серебряное кольцо с гематитом с гравировкой Сура Аль-Калам",
   },
   kufi_tevhid: {
     tr: "Kûfi Hat Kelime-i Tevhid Gümüş Yüzük",
@@ -418,6 +472,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata 925 con la Shahada en caligrafía cúfica",
     de: "Ring aus 925er Silber mit Schahada in kufischer Kalligrafie",
     ar: "خاتم فضة عيار 925 بكلمة التوحيد بالخط الكوفي",
+    ru: "Кольцо из стерлингового серебра с куфической каллиграфией Шахада",
   },
   ayetel_octagon: {
     tr: "Ayetel Kürsî Altın Yazılı Sekizgen Akik Yüzük – Kûfi Hat, Selçuklu Motifli",
@@ -425,6 +480,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo octogonal de ágata con Ayat al-Kursi en oro – motivos cúficos y selyúcidas",
     de: "Achteckiger Achatring mit Ayat al-Kursi in Gold – kufische & seldschukische Motive",
     ar: "خاتم عقيق ثماني الشكل بآية الكرسي بأحرف ذهبية – زخارف كوفية وسلجوقية",
+    ru: "Кольцо с восьмиугольным агатом «Аят аль-Курси» с золотыми буквами – куфические и сельджукские мотивы",
   },
   buda_gecer: {
     tr: "“Bu da Geçer Yâ Hû” Kızıl Akik Taşlı Gümüş Yüzük",
@@ -432,6 +488,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata con ágata roja «Esto también pasará»",
     de: "Silberring mit rotem Achat „Auch das geht vorüber“",
     ar: "خاتم فضة بحجر العقيق الأحمر «هذا أيضًا سيمضي»",
+    ru: "Серебряное кольцо с красным агатом «Это тоже пройдет»",
   },
   ayetel_nakkas: {
     tr: "Ayetel Kürsî Nakkaş Oymalı Akik Taşlı El Yapımı Gümüş Yüzük",
@@ -439,6 +496,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata con ágata tallada a mano con Ayat al-Kursi",
     de: "Silberring mit handgeschnitztem Achat – Ayat al-Kursi",
     ar: "خاتم فضة بحجر العقيق منقوش يدويًا بآية الكرسي",
+    ru: "Серебряное кольцо с агатом ручной работы Аят аль-Курси",
   },
   n_ayn: {
     tr: "Ayn Model Âl-i İmrân 27. Ayet Kazınmış Altıgen Akik Taşlı Gümüş Yüzük",
@@ -446,6 +504,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Ayn con ágata hexagonal grabada con Al Imran 3:27",
     de: "Silberring Ayn mit sechseckigem Achat und Gravur von Al Imran 3:27",
     ar: "خاتم «عين» من الفضة بحجر عقيق سداسي منقوش عليه الآية 27 من سورة آل عمران",
+    ru: "Серебряное кольцо Айн с шестиугольным агатом и гравировкой Аль Имрана 3:27",
   },
   n_kalkan: {
     tr: "Kalkan Model Sâffât 7 ve Yâsîn 58. Ayetler Yazılı Gümüş Erkek Yüzüğü",
@@ -453,6 +512,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Kalkan para hombre con As-Saffat 37:7 y Ya-Sin 36:58",
     de: "Herrenring Kalkan aus Silber mit As-Saffat 37:7 und Ya-Sin 36:58",
     ar: "خاتم «كالكان» الرجالي من الفضة بالآية 7 من سورة الصافات والآية 58 من سورة يس",
+    ru: "Серебряное мужское кольцо Калкан с Ас-Саффат 37:7 и Я-Син 36:58",
   },
   n_bab: {
     tr: "Bâb Model Besmele Kazınmış Siyah Oniks Taşlı Gümüş Erkek Yüzüğü",
@@ -460,6 +520,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Bab para hombre con ónix negro grabado con la Basmala",
     de: "Herrenring Bab aus Silber mit schwarzem Onyx und Basmala-Gravur",
     ar: "خاتم «باب» الرجالي من الفضة بحجر الأونيكس الأسود منقوش عليه البسملة",
+    ru: "Серебряное мужское кольцо Bab с черным ониксом и гравировкой басмалы",
   },
   n_misak: {
     tr: "Mîsak Model Kûfi Kelime-i Tevhid Kazınmış Siyah Oniks Gümüş Erkek Yüzüğü",
@@ -467,6 +528,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Misak para hombre con ónix negro y la Shahada en escritura cúfica",
     de: "Herrenring Misak aus Silber mit schwarzem Onyx und der Schahada in kufischer Schrift",
     ar: "خاتم «ميثاق» الرجالي من الفضة بحجر الأونيكس الأسود منقوش عليه كلمة التوحيد بالخط الكوفي",
+    ru: "Серебряное мужское кольцо Misak с черным ониксом и шахадой в куфическом письме",
   },
   n_elif: {
     tr: "Elif Model Kûfi “Lâ İlâhe İllallah” Kazınmış Dikdörtgen Akik Taşlı Gümüş Yüzük",
@@ -474,6 +536,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Elif con ágata rectangular y «La ilaha illallah» en escritura cúfica",
     de: "Silberring Elif mit rechteckigem Achat und „La ilaha illallah“ in kufischer Schrift",
     ar: "خاتم «ألف» من الفضة بحجر عقيق مستطيل منقوش عليه «لا إله إلا الله» بالخط الكوفي",
+    ru: "Серебряное кольцо Элиф с прямоугольным агатом и надписью «Ла иляха иллаллах» куфическим письмом",
   },
   n_sema: {
     tr: "Sema Model Doğal Firuze Taşlı El Oyması Gümüş Erkek Yüzüğü",
@@ -481,6 +544,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Sema para hombre con turquesa natural, grabado a mano",
     de: "Herrenring Sema aus handgraviertem Silber mit natürlichem Türkis",
     ar: "خاتم «سما» الرجالي من الفضة المنقوشة يدويًا بحجر الفيروز الطبيعي",
+    ru: "Серебряное мужское кольцо Sema с натуральной бирюзой и ручной гравировкой",
   },
   n_vahdet: {
     tr: "Vahdet Model “Lâ İlâhe İllallah” Kazınmış Oval Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -488,6 +552,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Vahdet para hombre con ágata oval grabada con «La ilaha illallah»",
     de: "Herrenring Vahdet aus Silber mit ovalem Achat und Gravur „La ilaha illallah“",
     ar: "خاتم «وحدة» الرجالي من الفضة بحجر عقيق بيضاوي منقوش عليه «لا إله إلا الله»",
+    ru: "Серебряное мужское кольцо с овальным агатом Вахдет с гравировкой «Ла иляха иллаллах»",
   },
   n_rumi: {
     tr: "Rumi Model Kûfi Kelime-i Tevhid ve Selçuklu Motifli Gümüş Erkek Yüzüğü",
@@ -495,6 +560,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Rumi para hombre con la Shahada cúfica y motivo selyúcida",
     de: "Herrenring Rumi aus Silber mit kufischer Schahada und seldschukischem Motiv",
     ar: "خاتم «رومي» الرجالي من الفضة بكلمة التوحيد بالخط الكوفي وزخرفة سلجوقية",
+    ru: "Серебряное мужское кольцо Руми с куфическим шахадой и мотивом сельджуков",
   },
   n_sekine: {
     tr: "Sekîne Model Yûsuf Suresi 64. Ayet Kazınmış Zirkon Taşlı Akik Gümüş Yüzük",
@@ -502,6 +568,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Sekine con ágata y circonitas, grabado con Yusuf 12:64",
     de: "Silberring Sekine mit Achat und Zirkonen, graviert mit Yusuf 12:64",
     ar: "خاتم «سكينة» من الفضة بحجر العقيق والزركون منقوش عليه الآية 64 من سورة يوسف",
+    ru: "Серебряное кольцо Секинэ с агатом и цирконами, выгравировано Юсуфом 12:64",
   },
   n_yakin: {
     tr: "Yakin Model “Lâ İlâhe İllallah” Kazınmış Dikdörtgen Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -509,6 +576,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Yakin para hombre con ágata rectangular grabada con «La ilaha illallah»",
     de: "Herrenring Yakin aus Silber mit rechteckigem Achat und Gravur „La ilaha illallah“",
     ar: "خاتم «يقين» الرجالي من الفضة بحجر عقيق مستطيل منقوش عليه «لا إله إلا الله»",
+    ru: "Серебряное мужское кольцо Yakin с прямоугольным агатом и гравировкой «Ла иляха иллаллах»",
   },
   n_edep: {
     tr: "Edep Model “Edep Yâ Hû” Kazınmış Sekizgen Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -516,6 +584,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Edep para hombre con ágata octogonal grabada con «Edep Ya Hu»",
     de: "Herrenring Edep aus Silber mit achteckigem Achat und Gravur „Edep Ya Hu“",
     ar: "خاتم «أدب» الرجالي من الفضة بحجر عقيق مثمن منقوش عليه «أدب يا هو»",
+    ru: "Серебряное мужское кольцо с восьмиугольным агатом Edep с гравировкой «Эдеп Я Ху»",
   },
   n_sir: {
     tr: "Sır Model Gizli Bölmeli Sekizgen Akik Taşlı El Oyması Gümüş Yüzük",
@@ -523,6 +592,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Sir con ágata octogonal, grabado a mano y compartimento secreto",
     de: "Silberring Sir mit achteckigem Achat, Handgravur und geheimem Fach",
     ar: "خاتم «سرّ» من الفضة المنقوشة يدويًا بحجر عقيق مثمن وحجرة سرية",
+    ru: "Серебряное кольцо Sir с восьмиугольным агатом и потайным отделением, ручной гравировкой",
   },
   n_hatem: {
     tr: "Hatem Model Mühr-i Nebevî Kazınmış Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -530,6 +600,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Hatem para hombre con ágata grabada con el sello del Profeta",
     de: "Herrenring Hatem aus Silber mit Achat und Gravur des Prophetensiegels",
     ar: "خاتم «خاتم» الرجالي من الفضة بحجر عقيق منقوش عليه الخاتم النبوي",
+    ru: "Серебряное мужское кольцо Хатем с агатом и выгравированной печатью Пророка",
   },
   n_vakar: {
     tr: "Vakar Model Sade Dikdörtgen Akik Taşlı El Oyması Gümüş Erkek Yüzüğü",
@@ -537,6 +608,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Vakar para hombre con ágata rectangular lisa, grabado a mano",
     de: "Herrenring Vakar aus handgraviertem Silber mit schlichtem rechteckigem Achat",
     ar: "خاتم «وقار» الرجالي من الفضة المنقوشة يدويًا بحجر عقيق مستطيل سادة",
+    ru: "Серебряное мужское кольцо Vakar с прямоугольным агатом и ручной гравировкой Vakar",
   },
   n_ihlas: {
     tr: "İhlas Model “İyyâke Na'büdü” Yazılı Gümüş Erkek Yüzüğü",
@@ -544,6 +616,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Ihlas para hombre con «Iyyaka na'budu» (Al-Fatiha 1:5)",
     de: "Herrenring Ihlas aus Silber mit „Iyyaka na'budu“ (Al-Fatiha 1:5)",
     ar: "خاتم «إخلاص» الرجالي من الفضة منقوش عليه «إياك نعبد وإياك نستعين»",
+    ru: "Серебряное мужское кольцо Ихлас с надписью «Ийяка набуду» (Аль-Фатиха 1:5)",
   },
   n_tevekkul: {
     tr: "Tevekkül Model Fâtiha 5. Ayet Kazınmış Dikdörtgen Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -551,6 +624,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Tevekkul para hombre con ágata rectangular grabada con Al-Fatiha 1:5",
     de: "Herrenring Tevekkul aus Silber mit rechteckigem Achat und Gravur von Al-Fatiha 1:5",
     ar: "خاتم «توكل» الرجالي من الفضة بحجر عقيق مستطيل منقوش عليه الآية 5 من سورة الفاتحة",
+    ru: "Серебряное мужское кольцо Тевеккул с прямоугольным агатом и гравировкой Аль-Фатиха 1:5",
   },
   n_beka: {
     tr: "Beka Model “Yâ Hayyu Yâ Kayyûm” Kazınmış Hematit Taşlı Gümüş Erkek Yüzüğü",
@@ -558,6 +632,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Beka para hombre con hematita grabada con «Ya Hayyu Ya Qayyum»",
     de: "Herrenring Beka aus Silber mit Hämatit und Gravur „Ya Hayyu Ya Qayyum“",
     ar: "خاتم «بقاء» الرجالي من الفضة بحجر الهيماتيت منقوش عليه «يا حي يا قيوم»",
+    ru: "Серебряное мужское кольцо Beka с гематитом и гравировкой «Ya Hayyu Ya Qayyum»",
   },
   n_heybet: {
     tr: "Heybet Model Figür Oymalı Büyük Akik Taşlı El Yapımı Gümüş Erkek Yüzüğü",
@@ -565,6 +640,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Heybet para hombre con gran ágata tallada a mano con figuras",
     de: "Herrenring Heybet aus Silber mit großem, figürlich handgeschnitztem Achat",
     ar: "خاتم «هيبة» الرجالي من الفضة بحجر عقيق كبير منقوش يدويًا برسوم",
+    ru: "Heybet Большое серебряное мужское кольцо с агатом и фигурной сценой ручной работы",
   },
   n_vav: {
     tr: "Vav Model Vav Harfi Kazınmış Altın Kaplama Detaylı Akik Taşlı Gümüş Yüzük",
@@ -572,6 +648,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Vav con ágata, la letra Vav y detalles bañados en oro",
     de: "Silberring Vav mit Achat, dem Buchstaben Vav und vergoldeten Details",
     ar: "خاتم «واو» من الفضة بحجر عقيق منقوش عليه حرف الواو وتفاصيل مطلية بالذهب",
+    ru: "Серебряное кольцо Вав с агатом и буквой Вав и позолоченными деталями",
   },
   n_girift: {
     tr: "Girift Model Ajur İşçilikli Harf Formlu Taşsız Gümüş Yüzük",
@@ -579,6 +656,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Girift calado con formas de letras entrelazadas",
     de: "Silberring Girift in Durchbrucharbeit mit verschlungenen Buchstabenformen",
     ar: "خاتم «جريفت» من الفضة المخرّمة بأشكال حروف متداخلة",
+    ru: "Ажурное серебряное кольцо Girift с переплетенными буквами",
   },
   n_emin: {
     tr: "Emin Model Mühr-i Nebevî Kazınmış Yuvarlak Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -586,6 +664,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Emin para hombre con ágata redonda grabada con el sello del Profeta",
     de: "Herrenring Emin aus Silber mit rundem Achat und Gravur des Prophetensiegels",
     ar: "خاتم «أمين» الرجالي من الفضة بحجر عقيق مستدير منقوش عليه الخاتم النبوي",
+    ru: "Серебряное мужское кольцо Emin с круглым агатом и гравировкой печати Пророка",
   },
   n_semse: {
     tr: "Şemse Model Besmele Kazınmış Madalyon Desenli Yuvarlak Akik Taşlı Gümüş Yüzük",
@@ -593,6 +672,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Semse con ágata redonda y la Basmala en un medallón solar",
     de: "Silberring Semse mit rundem Achat und der Basmala in einem Sonnenmedaillon",
     ar: "خاتم «شمسة» من الفضة بحجر عقيق مستدير منقوش عليه البسملة داخل شمسة",
+    ru: "Серебряное кольцо с агатом \"Семсе\" с басмалой в медальоне \"Солнце\"",
   },
   n_vav_kolye: {
     tr: "Vav Model Vav Harfi Kazınmış Akik Taşlı Gümüş Kolye",
@@ -600,6 +680,7 @@ const TITLES: Record<string, L> = {
     es: "Collar de plata Vav con ágata y la letra Vav",
     de: "Silberkette Vav mit Achat und dem Buchstaben Vav",
     ar: "قلادة «واو» من الفضة بحجر عقيق منقوش عليه حرف الواو",
+    ru: "Серебряное колье Вав с агатом и буквой Вав",
   },
   u_gulsen: {
     tr: "Gülşen Model Çiçek Oymalı Horasan Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -607,6 +688,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Gulsen para hombre con ágata de Jorasán y flores grabadas",
     de: "Herrenring Gulsen aus Silber mit Chorasan-Achat und Blumengravur",
     ar: "خاتم «كلشن» الرجالي من الفضة بحجر العقيق الخراساني ونقوش الزهور",
+    ru: "Серебряное мужское кольцо с агатом Хорасан с гравировкой цветов Гюльсен",
   },
   u_hilye: {
     tr: "Hilye Model Altın Kaplama Detaylı Horasan Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -614,6 +696,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Hilye para hombre con ágata de Jorasán y detalles bañados en oro",
     de: "Herrenring Hilye aus Silber mit Chorasan-Achat und vergoldeten Details",
     ar: "خاتم «حلية» الرجالي من الفضة بحجر العقيق الخراساني وتفاصيل مطلية بالذهب",
+    ru: "Серебряное мужское кольцо Hilye Khorasan с агатом и позолоченными деталями",
   },
   u_revak: {
     tr: "Revâk Model Ajur Yanlı Horasan Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -621,6 +704,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Revak para hombre con ágata de Jorasán y laterales calados",
     de: "Herrenring Revak aus Silber mit Chorasan-Achat und durchbrochenen Seiten",
     ar: "خاتم «رواق» الرجالي من الفضة بحجر العقيق الخراساني وجانبين مخرّمين",
+    ru: "Серебряное мужское кольцо с агатом Ревак Хорасан с ажурными сторонами",
   },
   u_mizan: {
     tr: "Mizan Model Mühür Detaylı Horasan Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -628,6 +712,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Mizan para hombre con ágata de Jorasán y detalle de sello",
     de: "Herrenring Mizan aus Silber mit Chorasan-Achat und Siegeldetail",
     ar: "خاتم «ميزان» الرجالي من الفضة بحجر العقيق الخراساني وتفصيل الختم",
+    ru: "Серебряное мужское кольцо Мизан Хорасан с агатом и печатью",
   },
   u_vefa: {
     tr: "Vefa Model Sade Kasa Horasan Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -635,6 +720,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Vefa para hombre con ágata de Jorasán y montura sobria",
     de: "Herrenring Vefa aus Silber mit Chorasan-Achat und schlichter Fassung",
     ar: "خاتم «وفاء» الرجالي من الفضة بحجر العقيق الخراساني وإطار بسيط",
+    ru: "Серебряное мужское кольцо Vefa Khorasan с агатом в чистой оправе",
   },
   u_kerem: {
     tr: "Kerem Model İri Oval Horasan Akik Taşlı El Oyması Gümüş Erkek Yüzüğü",
@@ -642,6 +728,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Kerem para hombre con gran ágata oval de Jorasán, grabado a mano",
     de: "Herrenring Kerem aus handgraviertem Silber mit großem ovalem Chorasan-Achat",
     ar: "خاتم «كرم» الرجالي من الفضة المنقوشة يدويًا بحجر عقيق خراساني بيضاوي كبير",
+    ru: "Керем Большое овальное мужское кольцо с агатом Хорасан и ручной гравировкой",
   },
   u_vecd: {
     tr: "Vecd Model Koyu Horasan Akik Taşlı Kıvrık Dal Oymalı Gümüş Erkek Yüzüğü",
@@ -649,6 +736,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Vecd para hombre con ágata oscura de Jorasán y volutas grabadas",
     de: "Herrenring Vecd aus Silber mit dunklem Chorasan-Achat und Rankengravur",
     ar: "خاتم «وجد» الرجالي من الفضة بحجر عقيق خراساني داكن ونقوش الأغصان",
+    ru: "Серебряное мужское кольцо Vecd с темным хорасанским агатом и гравировкой",
   },
   u_mihrap: {
     tr: "Mihrap Model Siyah Mineli Oymalı İri Horasan Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -656,6 +744,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Mihrap para hombre con gran ágata de Jorasán y grabado ennegrecido",
     de: "Herrenring Mihrap aus Silber mit großem Chorasan-Achat und schwarz ausgelegter Gravur",
     ar: "خاتم «محراب» الرجالي من الفضة بحجر عقيق خراساني كبير ونقوش مملوءة بالأسود",
+    ru: "Большое серебряное мужское кольцо с хорасанским агатом Михрап с черной гравировкой",
   },
   u_yekta: {
     tr: "Yektâ Model Boncuk Yuvalı Altın Detaylı Horasan Akik Taşlı Gümüş Yüzük",
@@ -663,6 +752,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Yekta con ágata de Jorasán, bisel de cuentas y detalles dorados",
     de: "Silberring Yekta mit Chorasan-Achat, Perlfassung und goldenen Details",
     ar: "خاتم «يكتا» من الفضة بحجر العقيق الخراساني وإطار مخرز وتفاصيل ذهبية",
+    ru: "Серебряное кольцо Yekta Khorasan с агатом, безелем из бисера и золотыми деталями",
   },
   u_nadide: {
     tr: "Nadide Model Ajur Omuzlu Horasan Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -670,6 +760,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Nadide para hombre con ágata de Jorasán y hombros calados",
     de: "Herrenring Nadide aus Silber mit Chorasan-Achat und durchbrochenen Schultern",
     ar: "خاتم «نادرة» الرجالي من الفضة بحجر العقيق الخراساني وكتفين مخرّمين",
+    ru: "Серебряное мужское кольцо Надиде Хорасан с агатом и ажурными плечами",
   },
   u_berceste: {
     tr: "Berceste Model Tırtıklı Omuzlu Horasan Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -677,6 +768,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Berceste para hombre con ágata de Jorasán y hombros texturizados",
     de: "Herrenring Berceste aus Silber mit Chorasan-Achat und strukturierten Schultern",
     ar: "خاتم «برجسته» الرجالي من الفضة بحجر العقيق الخراساني وكتفين محبّبين",
+    ru: "Berceste Khorasan Серебряное мужское кольцо с агатом и текстурированными плечами",
   },
   u_tuba: {
     tr: "Tûbâ Model Dal Oymalı Ajur Horasan Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -684,6 +776,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Tuba para hombre con ágata de Jorasán y ramas caladas",
     de: "Herrenring Tuba aus Silber mit Chorasan-Achat und durchbrochenen Ästen",
     ar: "خاتم «طوبى» الرجالي من الفضة بحجر العقيق الخراساني وأغصان مخرّمة",
+    ru: "Серебряное мужское кольцо Туба Хорасан с агатом и ажурными ветками",
   },
   u_ferid: {
     tr: "Ferîd Model Altın Kaplama Taçlı Koyu Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -691,6 +784,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Ferid para hombre con ágata oscura y corona bañada en oro",
     de: "Herrenring Ferid aus Silber mit dunklem Achat und vergoldeter Krone",
     ar: "خاتم «فريد» الرجالي من الفضة بحجر عقيق داكن وتاج مطلي بالذهب",
+    ru: "Серебряное мужское кольцо Ferid с темным агатом и позолоченной короной",
   },
   u_ziba: {
     tr: "Zîbâ Model İnce Kasa Horasan Akik Taşlı Gümüş Yüzük",
@@ -698,6 +792,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Ziba fino con ágata de Jorasán",
     de: "Schmaler Silberring Ziba mit Chorasan-Achat",
     ar: "خاتم «زيبا» الرفيع من الفضة بحجر العقيق الخراساني",
+    ru: "Серебряное кольцо Ziba Slim с агатом Хорасан",
   },
   u_ikrar: {
     tr: "İkrâr Model Kelime-i Tevhid Kazınmış Yuvarlak Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -705,6 +800,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Ikrar para hombre con ágata redonda grabada con la Shahada",
     de: "Herrenring Ikrar aus Silber mit rundem Achat und Schahada-Gravur",
     ar: "خاتم «إقرار» الرجالي من الفضة بحجر عقيق مستدير منقوش عليه كلمة التوحيد",
+    ru: "Серебряное мужское кольцо Ikrar с круглым агатом и гравировкой Шахада",
   },
   u_ahid: {
     tr: "Ahid Model Kelime-i Tevhid Kazınmış İnce Dikdörtgen Akik Taşlı Gümüş Yüzük",
@@ -712,6 +808,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Ahid con ágata rectangular fina grabada con la Shahada",
     de: "Silberring Ahid mit schmalem rechteckigem Achat und Schahada-Gravur",
     ar: "خاتم «عهد» من الفضة بحجر عقيق مستطيل رفيع منقوش عليه كلمة التوحيد",
+    ru: "Тонкое прямоугольное серебряное кольцо Ahid с агатом и гравировкой Шахада",
   },
   u_sancak: {
     tr: "Sancak Model “Lâ Gâlibe İllallah” Kazınmış Sekizgen Oniks Taşlı Gümüş Erkek Yüzüğü",
@@ -719,6 +816,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Sancak para hombre con ónix octogonal grabado con «La ghaliba illallah»",
     de: "Herrenring Sancak aus Silber mit achteckigem Onyx und Gravur „La ghaliba illallah“",
     ar: "خاتم «صنجق» الرجالي من الفضة بحجر أونيكس مثمن منقوش عليه «لا غالب إلا الله»",
+    ru: "Серебряное мужское кольцо Sancak с восьмиугольным ониксом и гравировкой «La ghaliba illallah»",
   },
   u_secaat: {
     tr: "Şecâat Model “Lâ Gâlibe İllallah” Kazınmış İri Oval Siyah Oniks Gümüş Erkek Yüzüğü",
@@ -726,6 +824,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Secaat para hombre con gran ónix negro oval y «La ghaliba illallah»",
     de: "Herrenring Secaat aus Silber mit großem ovalem schwarzem Onyx und „La ghaliba illallah“",
     ar: "خاتم «شجاعة» الرجالي من الفضة بحجر أونيكس أسود بيضاوي كبير و«لا غالب إلا الله»",
+    ru: "Secaat Большое овальное серебряное мужское кольцо с черным ониксом и надписью «La ghaliba illallah»",
   },
   u_feyz: {
     tr: "Feyz Model Besmele Kazınmış Akik Taşlı Geniş Kasa Gümüş Erkek Yüzüğü",
@@ -733,6 +832,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Feyz para hombre de aro ancho con ágata grabada con la Basmala",
     de: "Herrenring Feyz aus Silber mit breiter Schiene und Achat mit Basmala-Gravur",
     ar: "خاتم «فيض» الرجالي من الفضة بإطار عريض وحجر عقيق منقوش عليه البسملة",
+    ru: "Серебряное мужское кольцо Фейз с агатом и широким шинкой, с гравировкой басмалы",
   },
   u_ridvan: {
     tr: "Rıdvân Model Besmele Kazınmış Tırnaklı Yuva Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -740,6 +840,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Ridvan para hombre con ágata en garras grabada con la Basmala",
     de: "Herrenring Ridvan aus Silber mit Achat in Krappenfassung und Basmala-Gravur",
     ar: "خاتم «رضوان» الرجالي من الفضة بحجر عقيق في إطار بمخالب منقوش عليه البسملة",
+    ru: "Серебряное мужское кольцо Ризван с агатом в оправе в виде когтей, с гравировкой басмалы",
   },
   u_kubbe: {
     tr: "Kubbe Model Besmele Kazınmış Altıgen Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -747,6 +848,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Kubbe para hombre con ágata hexagonal grabada con la Basmala",
     de: "Herrenring Kubbe aus Silber mit sechseckigem Achat und Basmala-Gravur",
     ar: "خاتم «قبة» الرجالي من الفضة بحجر عقيق سداسي منقوش عليه البسملة",
+    ru: "Серебряное мужское кольцо Kubbe с шестиугольным агатом и гравировкой басмалы",
   },
   u_husu: {
     tr: "Huşû Model Besmele Kazınmış Siyah Oniks Taşlı Gümüş Erkek Yüzüğü",
@@ -754,6 +856,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Husu para hombre con ónix negro grabado con la Basmala",
     de: "Herrenring Husu aus Silber mit schwarzem Onyx und Basmala-Gravur",
     ar: "خاتم «خشوع» الرجالي من الفضة بحجر الأونيكس الأسود منقوش عليه البسملة",
+    ru: "Серебряное мужское кольцо Husu с черным ониксом и гравировкой басмалы",
   },
   u_nur: {
     tr: "Nûr Model Allah Lafzı Kazınmış Kızıl Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -761,6 +864,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Nur para hombre con ágata roja grabada con el nombre de Allah",
     de: "Herrenring Nur aus Silber mit rotem Achat und dem Namen Allahs",
     ar: "خاتم «نور» الرجالي من الفضة بحجر عقيق أحمر منقوش عليه لفظ الجلالة",
+    ru: "Серебряное мужское кольцо Нур с красным агатом и выгравированным именем Аллаха",
   },
   u_ziya: {
     tr: "Ziyâ Model Allah Lafzı Kazınmış Taçlı Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -768,6 +872,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Ziya para hombre con ágata coronada grabada con el nombre de Allah",
     de: "Herrenring Ziya aus Silber mit gekröntem Achat und dem Namen Allahs",
     ar: "خاتم «ضياء» الرجالي من الفضة بحجر عقيق متوّج منقوش عليه لفظ الجلالة",
+    ru: "Серебряное мужское кольцо с коронованным агатом Зия с выгравированным именем Аллаха",
   },
   u_kemal: {
     tr: "Kemâl Model “El-Mülkü Lillâh” Kazınmış Kızıl Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -775,6 +880,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Kemal para hombre con ágata roja grabada con «Al-Mulku lillah»",
     de: "Herrenring Kemal aus Silber mit rotem Achat und Gravur „Al-Mulku lillah“",
     ar: "خاتم «كمال» الرجالي من الفضة بحجر عقيق أحمر منقوش عليه «الملك لله»",
+    ru: "Серебряное мужское кольцо Кемаля с красным агатом и гравировкой «Аль-Мулку лиллах»",
   },
   u_celal: {
     tr: "Celâl Model “El-Mülkü Lillâh” Kazınmış Koyu Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -782,6 +888,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Celal para hombre con ágata oscura grabada con «Al-Mulku lillah»",
     de: "Herrenring Celal aus Silber mit dunklem Achat und Gravur „Al-Mulku lillah“",
     ar: "خاتم «جلال» الرجالي من الفضة بحجر عقيق داكن منقوش عليه «الملك لله»",
+    ru: "Серебряное мужское кольцо с темным агатом Celal с гравировкой «Аль-Мулку лиллах»",
   },
   u_kible: {
     tr: "Kıble Model Hûd Suresi Kazınmış Koyu Akik Taşlı Altın Çerçeveli Gümüş Yüzük",
@@ -789,6 +896,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Kible con ágata oscura y marco dorado, grabado con la sura Hud",
     de: "Silberring Kible mit dunklem Achat und Goldrahmen, Gravur aus Sure Hud",
     ar: "خاتم «قبلة» من الفضة بحجر عقيق داكن وإطار ذهبي منقوش عليه من سورة هود",
+    ru: "Серебряное кольцо Kible с темным агатом в золотой оправе, выгравировано на основе суры Худ",
   },
   u_tarik: {
     tr: "Tarîk Model Hûd Suresi Kazınmış Kızıl Akik Taşlı Altın Çerçeveli Gümüş Yüzük",
@@ -796,6 +904,7 @@ const TITLES: Record<string, L> = {
     es: "Anillo de plata Tarik con ágata roja y marco dorado, grabado con la sura Hud",
     de: "Silberring Tarik mit rotem Achat und Goldrahmen, Gravur aus Sure Hud",
     ar: "خاتم «طريق» من الفضة بحجر عقيق أحمر وإطار ذهبي منقوش عليه من سورة هود",
+    ru: "Серебряное кольцо Тарик с красным агатом в золотой оправе, выгравировано на основе суры Худ",
   },
 };
 
@@ -806,6 +915,7 @@ const STORIES: Record<string, L> = {
     es: "Sidre es el engaste distintivo de nuestro taller: cada cara del aro se cincela a mano con la técnica tradicional de grabado, con motivos de ramas en espiral y rumi. El mismo engaste se elabora con distintas piedras naturales. En esta pieza, la caligrafía está grabada a mano sobre la hematita.",
     de: "Sidre ist die Signaturfassung unserer Werkstatt: Jede Seite der Ringschiene wird in traditioneller Gravurtechnik mit Rankenwerk und Rumi-Motiven von Hand ziseliert. Dieselbe Fassung entsteht mit verschiedenen Natursteinen. Bei diesem Stück ist Kalligrafie von Hand in den Hämatit graviert.",
     ar: "«سِدرة» هو التصميم المميّز لورشتنا: يُنقش كل وجه من جسم الخاتم يدويًا بتقنية النقش التقليدية بزخارف الأغصان الملتفة والرومي. ويُصنع التصميم نفسه بأحجار طبيعية مختلفة. في هذا الخاتم نُقش خطّ عربي يدويًا على حجر الهيماتيت.",
+    ru: "Сидре — визитная карточка нашей мастерской: каждая грань браслета вырезана вручную в традиционной технике гравировки с использованием завитков ветвей и мотивов руми. Одна и та же фурнитура выполнена из разных натуральных камней. В этом изделии каллиграфия выгравирована вручную на камне гематите.",
   },
   sidre_firuze: {
     tr: "Sidre, atölyemizin imza kasasıdır: kasanın her yüzü geleneksel kalem işi (gravür) tekniğiyle, kıvrık dal ve rumi motifleriyle elde işlenir. Aynı kasa farklı doğal taşlarla hazırlanır. Bu modelde, damarlı dokusuyla her taşı birbirinden farklı olan doğal firuze kullanılmıştır.",
@@ -813,6 +923,7 @@ const STORIES: Record<string, L> = {
     es: "Sidre es el engaste distintivo de nuestro taller: cada cara del aro se cincela a mano con la técnica tradicional de grabado, con motivos de ramas en espiral y rumi. El mismo engaste se elabora con distintas piedras naturales. Esta pieza lleva turquesa natural, cuya matriz veteada hace única cada piedra.",
     de: "Sidre ist die Signaturfassung unserer Werkstatt: Jede Seite der Ringschiene wird in traditioneller Gravurtechnik mit Rankenwerk und Rumi-Motiven von Hand ziseliert. Dieselbe Fassung entsteht mit verschiedenen Natursteinen. Dieses Stück ist mit natürlichem Türkis gefasst, dessen geäderte Matrix jeden Stein einzigartig macht.",
     ar: "«سِدرة» هو التصميم المميّز لورشتنا: يُنقش كل وجه من جسم الخاتم يدويًا بتقنية النقش التقليدية بزخارف الأغصان الملتفة والرومي. ويُصنع التصميم نفسه بأحجار طبيعية مختلفة. رُصّع هذا الخاتم بالفيروز الطبيعي الذي تجعل عروقه كل حجر فريدًا.",
+    ru: "Сидре — визитная карточка нашей мастерской: каждая грань браслета вырезана вручную в традиционной технике гравировки с использованием завитков ветвей и мотивов руми. Одна и та же фурнитура выполнена из разных натуральных камней. Это изделие украшено натуральной бирюзой, чья прожилковая матрица делает каждый камень уникальным.",
   },
   sidre_akik: {
     tr: "Sidre, atölyemizin imza kasasıdır: kasanın her yüzü geleneksel kalem işi (gravür) tekniğiyle, kıvrık dal ve rumi motifleriyle elde işlenir. Aynı kasa farklı doğal taşlarla hazırlanır. Bu modelde derin renkli, parlak cilalı doğal kızıl akik kullanılmıştır.",
@@ -820,6 +931,7 @@ const STORIES: Record<string, L> = {
     es: "Sidre es el engaste distintivo de nuestro taller: cada cara del aro se cincela a mano con la técnica tradicional de grabado, con motivos de ramas en espiral y rumi. El mismo engaste se elabora con distintas piedras naturales. Esta pieza lleva un ágata roja natural de tono profundo y pulido brillante.",
     de: "Sidre ist die Signaturfassung unserer Werkstatt: Jede Seite der Ringschiene wird in traditioneller Gravurtechnik mit Rankenwerk und Rumi-Motiven von Hand ziseliert. Dieselbe Fassung entsteht mit verschiedenen Natursteinen. Dieses Stück ist mit einem tieffarbigen, hochglanzpolierten natürlichen roten Achat gefasst.",
     ar: "«سِدرة» هو التصميم المميّز لورشتنا: يُنقش كل وجه من جسم الخاتم يدويًا بتقنية النقش التقليدية بزخارف الأغصان الملتفة والرومي. ويُصنع التصميم نفسه بأحجار طبيعية مختلفة. رُصّع هذا الخاتم بعقيق أحمر طبيعي عميق اللون مصقول بلمعان.",
+    ru: "Сидре — визитная карточка нашей мастерской: каждая грань браслета вырезана вручную в традиционной технике гравировки с использованием завитков ветвей и мотивов руми. Одна и та же фурнитура выполнена из разных натуральных камней. Это изделие украшено полированным натуральным красным агатом глубоких тонов.",
   },
   sidre_yesil: {
     tr: "Sidre, atölyemizin imza kasasıdır: kasanın her yüzü geleneksel kalem işi (gravür) tekniğiyle, kıvrık dal ve rumi motifleriyle elde işlenir. Aynı kasa farklı doğal taşlarla hazırlanır. Bu modelde, ışığı yüzeylerinde kıran fasetalı kesim yeşil kuvars kullanılmıştır.",
@@ -827,6 +939,7 @@ const STORIES: Record<string, L> = {
     es: "Sidre es el engaste distintivo de nuestro taller: cada cara del aro se cincela a mano con la técnica tradicional de grabado, con motivos de ramas en espiral y rumi. El mismo engaste se elabora con distintas piedras naturales. Esta pieza lleva un cuarzo verde facetado que juega con la luz en cada faceta.",
     de: "Sidre ist die Signaturfassung unserer Werkstatt: Jede Seite der Ringschiene wird in traditioneller Gravurtechnik mit Rankenwerk und Rumi-Motiven von Hand ziseliert. Dieselbe Fassung entsteht mit verschiedenen Natursteinen. Dieses Stück ist mit einem facettierten grünen Quarz gefasst, der das Licht in seinen Facetten bricht.",
     ar: "«سِدرة» هو التصميم المميّز لورشتنا: يُنقش كل وجه من جسم الخاتم يدويًا بتقنية النقش التقليدية بزخارف الأغصان الملتفة والرومي. ويُصنع التصميم نفسه بأحجار طبيعية مختلفة. رُصّع هذا الخاتم بكوارتز أخضر مُضلّع القطع يعكس الضوء على أوجهه.",
+    ru: "Сидре — визитная карточка нашей мастерской: каждая грань браслета вырезана вручную в традиционной технике гравировки с использованием завитков ветвей и мотивов руми. Одна и та же фурнитура выполнена из разных натуральных камней. Это изделие украшено ограненным зеленым кварцем, который отражает свет на своих гранях.",
   },
   zulfikar: {
     tr: "Zülfikâr motifi, nakkaş oyma tekniğiyle kasaya elde işlenmiştir. Güçlü duruşuyla günlük kullanıma da özel günlere de yakışan bir erkek yüzüğü.",
@@ -834,6 +947,7 @@ const STORIES: Record<string, L> = {
     es: "El motivo Zulfiqar está grabado a mano en el aro con la técnica tradicional de talla nakkaş. Un anillo de hombre de carácter fuerte, ideal para el día a día y para ocasiones especiales.",
     de: "Das Zulfiqar-Motiv ist in traditioneller Nakkaş-Gravurtechnik von Hand in die Ringschiene geschnitten. Ein markanter Herrenring für den Alltag wie für besondere Anlässe.",
     ar: "نُقش زخرف ذو الفقار يدويًا على جسم الخاتم بتقنية النقّاش التقليدية. خاتم رجالي ذو حضور قوي يناسب الاستخدام اليومي والمناسبات الخاصة.",
+    ru: "Мотив Зульфикара выгравирован на шинке вручную в традиционной технике резьбы наккаш. Эффектное мужское кольцо, которое подойдет как для повседневного ношения, так и для особых случаев.",
   },
   horasan: {
     tr: "Doğal Horasan akikiyle elde işlenen, gösterişli ve güçlü duruşlu bir erkek yüzüğü. Bir erkeğe verilebilecek en anlamlı hediyelerden biri.",
@@ -841,6 +955,7 @@ const STORIES: Record<string, L> = {
     es: "Un imponente anillo de hombre, trabajado a mano alrededor de un ágata natural de Jorasán. Uno de los regalos más especiales para un hombre.",
     de: "Ein eindrucksvoller Herrenring, von Hand rund um einen natürlichen Chorasan-Achat gefertigt. Eines der bedeutungsvollsten Geschenke für einen Mann.",
     ar: "خاتم رجالي فخم مصنوع يدويًا حول حجر عقيق خراساني طبيعي، ومن أثمن الهدايا التي يمكن تقديمها للرجل.",
+    ru: "Внушительное мужское кольцо, изготовленное вручную из натурального хорасанского агата. Один из самых значимых подарков, который можно подарить мужчине.",
   },
   ottoman_necklace: {
     tr: "Gümüş üzerine el oymasıyla işlenmiş, akik taşlı Osmanlı kolye. Vintage çizgisiyle her kombine karakter katar.",
@@ -848,6 +963,7 @@ const STORIES: Record<string, L> = {
     es: "Collar otomano con piedra de ágata y plata grabada a mano con motivos tradicionales. Su estilo vintage aporta carácter a cualquier conjunto.",
     de: "Eine osmanische Kette mit Achat, das Silber von Hand mit traditionellen Motiven graviert. Ihr Vintage-Charakter verleiht jedem Outfit Ausdruck.",
     ar: "قلادة عثمانية بحجر العقيق، فضتها منقوشة يدويًا بزخارف تقليدية، وطابعها العتيق يضفي تميزًا على كل إطلالة.",
+    ru: "Османское колье с агатом, серебро с ручной гравировкой традиционных мотивов. Его винтажный характер украсит любой наряд.",
   },
   suleyman_necklace: {
     tr: "Hematit taşın üzerine Hz. Süleyman'ın mührü elde kazınmıştır. Zarif ve anlamlı bir kadın kolyesi.",
@@ -855,6 +971,7 @@ const STORIES: Record<string, L> = {
     es: "El Sello de Salomón está grabado a mano sobre una piedra de hematita. Un collar femenino elegante y lleno de significado.",
     de: "Das Siegel Salomons ist von Hand in einen Hämatit graviert. Eine elegante, bedeutungsvolle Damenkette.",
     ar: "نُقش خاتم سليمان عليه السلام يدويًا على حجر الهيماتيت؛ قلادة نسائية أنيقة وذات معنى.",
+    ru: "Печать Соломона выгравирована вручную на гематите. Элегантное и значимое колье для женщин.",
   },
   salavat_necklace: {
     tr: "Akik taşın üzerine Salavat-ı Şerife elde oyulmuştur. Zarif ve anlamlı bir kadın kolyesi.",
@@ -862,6 +979,7 @@ const STORIES: Record<string, L> = {
     es: "Sobre el ágata está tallada a mano una salawat, la bendición sobre el Profeta ﷺ. Un collar femenino elegante y lleno de significado.",
     de: "In den Achat ist von Hand eine Salawat – der Segensgruß auf den Propheten ﷺ – geschnitten. Eine elegante, bedeutungsvolle Damenkette.",
     ar: "نُقشت الصلاة على النبي ﷺ يدويًا على حجر العقيق؛ قلادة نسائية أنيقة وذات معنى.",
+    ru: "Салават — благословение Пророка ﷺ — вырезан вручную на агате. Элегантное и значимое колье для женщин.",
   },
   subbuh: {
     tr: "Taşın üzerinde “Subbûhun Kuddûsun Rabbunâ ve Rabbü'l-melâiketi ve'r-rûh” yazılıdır: Hz. İbrâhim'in (a.s.) dilinden düşürmediği zikir.",
@@ -869,6 +987,7 @@ const STORIES: Record<string, L> = {
     es: "La piedra lleva las palabras «Subbuhun Quddusun, Rabbuna wa Rabbul-mala'ikati war-Ruh», el dhikr que el profeta Ibrahim (la paz sea con él) repetía sin cesar.",
     de: "Der Stein trägt die Worte „Subbuhun Quddusun, Rabbuna wa Rabbul-mala'ikati war-Ruh“ – das Gedenken, das der Prophet Ibrahim (Friede sei mit ihm) unablässig sprach.",
     ar: "نُقش على الحجر: «سُبُّوحٌ قُدُّوسٌ ربُّنا وربُّ الملائكةِ والرُّوح»، الذكر الذي لم يكن يفارق لسان سيدنا إبراهيم عليه السلام.",
+    ru: "На камне написаны слова «Суббухун Куддусун, Раббуна ва Раббул-малаикати война-Рух» — напоминание, которое Пророк Ибрагим (мир ему) никогда не переставал повторять.",
   },
   tevhid: {
     tr: "Taşın üzerine hat sanatıyla Kelime-i Tevhid kazınmıştır: “Lâ ilâhe illallah Muhammedün Resûlullah” — Allah'tan başka ilah yoktur, Muhammed Allah'ın elçisidir.",
@@ -876,6 +995,7 @@ const STORIES: Record<string, L> = {
     es: "La Shahada está grabada en la piedra en caligrafía: «La ilaha illallah, Muhammadun Rasulullah», no hay más dios que Allah y Muhammad es el Mensajero de Allah.",
     de: "Die Schahada ist in Kalligrafie in den Stein graviert: „La ilaha illallah, Muhammadun Rasulullah“ – es gibt keinen Gott außer Allah, und Muhammad ist der Gesandte Allahs.",
     ar: "نُقشت كلمة التوحيد على الحجر بالخط العربي: «لا إله إلا الله محمد رسول الله».",
+    ru: "На камне каллиграфическим шрифтом выгравирована Шахада: «Ля иляха илляЛлах, Мухаммадун Расулуллах» — нет бога, кроме Аллаха, и Мухаммад — Посланник Аллаха.",
   },
   fatiha: {
     tr: "Akik taşın üzerine Fatiha Suresi elde kazınmıştır.",
@@ -883,6 +1003,7 @@ const STORIES: Record<string, L> = {
     es: "La sura Al-Fatiha, la que abre el Corán, está grabada a mano sobre el ágata.",
     de: "Die Sure Al-Fatiha, die Eröffnungssure des Korans, ist von Hand in den Achat graviert.",
     ar: "نُقشت سورة الفاتحة يدويًا على حجر العقيق.",
+    ru: "Сура Аль-Фатиха, первая глава Корана, выгравирована вручную на агате.",
   },
   hu_allah: {
     tr: "Taşın ortasında “Hû Allah” yazılıdır; yüzüğün yanlarında sırasıyla “Lâ ilâhe illallah”, “Lâ gâlibe illallah” ve “El-kuvvetü lillâh” işlenmiştir.",
@@ -890,6 +1011,7 @@ const STORIES: Record<string, L> = {
     es: "«Hu Allah» ocupa el centro de la piedra, y los laterales del anillo llevan «La ilaha illallah», «La ghaliba illallah» y «Al-quwwatu lillah».",
     de: "„Hu Allah“ steht in der Mitte des Steins, die Seiten des Rings tragen nacheinander „La ilaha illallah“, „La ghaliba illallah“ und „Al-quwwatu lillah“.",
     ar: "يتوسط الحجرَ نقشُ «هو الله»، وعلى جانبي الخاتم على التوالي: «لا إله إلا الله»، «لا غالب إلا الله»، «القوة لله».",
+    ru: "«Ху Аллах» находится в центре камня, а по бокам кольца по очереди написаны «Ля иляха илляЛлах», «Ля галиба илляЛлах» и «Аль-куввату лиллах».",
   },
   custom_name: {
     tr: "Fotoğraftaki örnekte taşın üzerine hat sanatıyla “Moody” ismi yazılmıştır. Siparişinizden sonra bizimle iletişime geçip taşa yazılacak ismi bildirmeniz yeterli.",
@@ -897,6 +1019,7 @@ const STORIES: Record<string, L> = {
     es: "En el ejemplo de la foto, el nombre «Moody» está escrito en la piedra en caligrafía. Tras su pedido, contáctenos e indíquenos el nombre que desea grabar.",
     de: "Im gezeigten Beispiel steht der Name „Moody“ in Kalligrafie auf dem Stein. Teilen Sie uns nach der Bestellung einfach den gewünschten Namen mit.",
     ar: "في المثال المعروض كُتب اسم «Moody» على الحجر بالخط العربي. بعد الطلب، تواصل معنا وأخبرنا بالاسم الذي تريد نقشه.",
+    ru: "В показанном примере имя «Муди» написано на камне каллиграфией. После заказа просто свяжитесь с нами и сообщите имя, которое вы хотите выгравировать.",
   },
   hasbiyallah: {
     tr: "Taşa Tevbe Suresi'nin 129. ayeti işlenmiştir: “Hasbiyallâhü lâ ilâhe illâ hû, aleyhi tevekkeltü ve hüve rabbü'l-arşi'l-azîm” — Allah bana yeter; O'ndan başka ilah yoktur. Ben yalnızca O'na güvenip dayandım; O, yüce Arş'ın Rabbidir.",
@@ -904,6 +1027,7 @@ const STORIES: Record<string, L> = {
     es: "La piedra lleva la aleya 129 de la sura At-Tawba: «Hasbiyallahu la ilaha illa huwa, alayhi tawakkaltu wa huwa rabbul-arshil-azim», Allah me basta; no hay más dios que Él. En Él confío, y Él es el Señor del Trono Inmenso.",
     de: "Der Stein trägt Vers 129 der Sure At-Tauba: „Hasbiyallahu la ilaha illa huwa, alayhi tawakkaltu wa huwa rabbul-arshil-azim“ – Allah genügt mir; es gibt keinen Gott außer Ihm. Auf Ihn vertraue ich, und Er ist der Herr des gewaltigen Thrones.",
     ar: "نُقشت على الحجر الآية 129 من سورة التوبة: «حَسْبِيَ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ ۖ عَلَيْهِ تَوَكَّلْتُ ۖ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ».",
+    ru: "На камне записан аят 129 суры Ат-Тауба: «Хасбияллаху ла иляха илля хува, алейхи таваккалту ва хува раббул-аршиль-азим» — Мне достаточно Аллаха; нет бога, кроме Него. На Него я уповаю, и Он — Господь Могущественного Трона.",
   },
   hic: {
     tr: "Taşın üzerine tasavvufta nefsin hiçliğini ve tevazuyu anlatan “Hiç” yazısı kazınmıştır.",
@@ -911,6 +1035,7 @@ const STORIES: Record<string, L> = {
     es: "La piedra lleva grabada la palabra «Hiç», «nada», expresión sufí de la humildad y de la nada del ego ante lo Divino.",
     de: "In den Stein ist „Hiç“ – „nichts“ – graviert, der sufische Ausdruck der Demut und der Nichtigkeit des Selbst vor dem Göttlichen.",
     ar: "نُقشت على الحجر كلمة «هيچ» أي «لا شيء»، وهي تعبير صوفي عن التواضع وفناء النفس أمام الله.",
+    ru: "На камне выгравировано слово «Хич» — «ничто» — суфийское выражение смирения и ничтожества личности перед Божественным.",
   },
   lagalibe: {
     tr: "Taşa “Lâ gâlibe illallah” işlenmiştir: Allah'tan başka galip yoktur.",
@@ -918,6 +1043,7 @@ const STORIES: Record<string, L> = {
     es: "La piedra lleva grabado «La ghaliba illallah»: no hay más vencedor que Allah.",
     de: "In den Stein ist „La ghaliba illallah“ graviert – es gibt keinen Sieger außer Allah.",
     ar: "نُقش على الحجر: «لا غالب إلا الله».",
+    ru: "На камне выгравировано «Ля галиба илляЛлах» — нет победителя, кроме Аллаха.",
   },
   bismillah: {
     tr: "Akik taşın üzerine hat sanatıyla Besmele kazınmıştır: “Bismillâhirrahmânirrahîm” — Rahmân ve Rahîm olan Allah'ın adıyla.",
@@ -925,6 +1051,7 @@ const STORIES: Record<string, L> = {
     es: "La basmala está grabada en el ágata en caligrafía: «Bismillahir-Rahmanir-Rahim», en el nombre de Allah, el Clemente, el Misericordioso.",
     de: "Die Basmala ist in Kalligrafie in den Achat graviert: „Bismillahir-Rahmanir-Rahim“ – im Namen Allahs, des Allerbarmers, des Barmherzigen.",
     ar: "نُقشت البسملة على حجر العقيق بالخط العربي: «بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ».",
+    ru: "На агате каллиграфически выгравировано басмалу: «Бисмиллахир-Рахманир-Рахим» — во имя Аллаха Милостивого, Милосердного.",
   },
   suleyman_tilsim: {
     tr: "Akik taşın üzerine Hz. Süleyman'ın (a.s.) mührü kazınmış, mührün içine Besmele yazılmıştır. Yüzüğün tamamı ayetlerle çevrelenmiştir.",
@@ -932,6 +1059,7 @@ const STORIES: Record<string, L> = {
     es: "El Sello de Salomón (la paz sea con él) está grabado en el ágata con la basmala en su interior, y todo el anillo está rodeado de aleyas coránicas.",
     de: "Das Siegel Salomons (Friede sei mit ihm) ist mit der Basmala im Inneren in den Achat graviert, und der ganze Ring ist von Koranversen umgeben.",
     ar: "نُقش خاتم سليمان عليه السلام على حجر العقيق وفي داخله البسملة، والخاتم كله محاط بآيات قرآنية.",
+    ru: "Печать Соломона (мир ему) выгравирована на агате с басмалой внутри, а все кольцо окружено стихами Корана.",
   },
   allah: {
     tr: "Taşın üzerine hat sanatıyla Allah lafzı kazınmıştır.",
@@ -939,6 +1067,7 @@ const STORIES: Record<string, L> = {
     es: "El nombre de Allah está grabado en la piedra en caligrafía.",
     de: "Der Name Allahs ist in Kalligrafie in den Stein graviert.",
     ar: "نُقش لفظ الجلالة «الله» على الحجر بالخط العربي.",
+    ru: "На камне каллиграфически выгравировано имя Аллаха.",
   },
   salavat: {
     tr: "Akik taşın üzerine hat sanatıyla Salavat-ı Şerife kazınmıştır.",
@@ -946,6 +1075,7 @@ const STORIES: Record<string, L> = {
     es: "Una salawat, la bendición sobre el Profeta ﷺ, está grabada en el ágata en caligrafía.",
     de: "Eine Salawat – der Segensgruß auf den Propheten ﷺ – ist in Kalligrafie in den Achat graviert.",
     ar: "نُقشت الصلاة على النبي ﷺ على حجر العقيق بالخط العربي.",
+    ru: "Салават — благословение Пророка ﷺ — выгравирован на агате каллиграфией.",
   },
   kefa: {
     tr: "Taşın üzerine Arapça hatla “Kefâ bi'l-mevti vâizâ” (كَفَى بِالْمَوْتِ وَاعِظًا) yazılmıştır: Öğüt verici olarak ölüm yeter.",
@@ -953,6 +1083,7 @@ const STORIES: Record<string, L> = {
     es: "La piedra lleva en caligrafía árabe «Kafa bil-mawti wa'iza» (كَفَى بِالْمَوْتِ وَاعِظًا): basta la muerte como consejera.",
     de: "Der Stein trägt in arabischer Kalligrafie „Kafa bil-mawti wa'iza“ (كَفَى بِالْمَوْتِ وَاعِظًا) – der Tod genügt als Mahner.",
     ar: "نُقش على الحجر بالخط العربي: «كَفَى بِالْمَوْتِ وَاعِظًا».",
+    ru: "На камне арабской каллиграфией написано «Кафа бил-мавти ваиза» (كَفَى بِالْمَوْتِ وَاعِظًا) — смерти достаточно в качестве увещевания.",
   },
   fatih_seal: {
     tr: "Jasper taşın üzerine Fatih Sultan Mehmed Han'ın mührü işlenmiştir.",
@@ -960,6 +1091,7 @@ const STORIES: Record<string, L> = {
     es: "El sello del sultán Mehmed II, el Conquistador de Constantinopla, está grabado en el jaspe.",
     de: "Das Siegel Sultan Mehmeds II., des Eroberers Konstantinopels, ist in den Jaspis graviert.",
     ar: "نُقش ختم السلطان محمد الفاتح على حجر اليشب.",
+    ru: "На яшме выгравирована печать султана Мехмеда II, завоевателя Константинополя.",
   },
   yasin58: {
     tr: "Akik taşın üzerine hat sanatıyla Yâsîn Suresi'nin 58. ayeti kazınmıştır: “Selâmün kavlen min rabbin rahîm” — Çok merhametli bir Rab'den, söz olarak selam.",
@@ -967,6 +1099,7 @@ const STORIES: Record<string, L> = {
     es: "La aleya 58 de la sura Ya-Sin está grabada en el ágata en caligrafía: «Salamun qawlan min rabbin rahim», «Paz», palabra de un Señor Misericordioso.",
     de: "Vers 58 der Sure Ya-Sin ist in Kalligrafie in den Achat graviert: „Salamun qawlan min rabbin rahim“ – „Friede!“, als Wort von einem barmherzigen Herrn.",
     ar: "نُقشت الآية 58 من سورة يس على حجر العقيق بالخط العربي: «سَلَامٌ قَوْلًا مِّن رَّبٍّ رَّحِيمٍ».",
+    ru: "На агате каллиграфически выгравирован стих 58 суры Йа-Син: «Саламун кавлан мин раббин рахим» — «Мир», слово Милосердного Господа.",
   },
   el_mulku: {
     tr: "Akik taşın üzerine hat sanatıyla “El-Mülkü lillâh” kazınmıştır: Mülk Allah'ındır.",
@@ -974,6 +1107,7 @@ const STORIES: Record<string, L> = {
     es: "«Al-Mulku lillah» está grabado en el ágata en caligrafía: todo dominio pertenece a Allah.",
     de: "„Al-Mulku lillah“ ist in Kalligrafie in den Achat graviert – alle Herrschaft gehört Allah.",
     ar: "نُقش على حجر العقيق بالخط العربي: «المُلكُ لله».",
+    ru: "На агате каллиграфически выгравировано «Аль-Мулку лиллях» — вся власть принадлежит Аллаху.",
   },
   musavvir: {
     tr: "Akik taşın üzerine Allah'ın güzel isimlerinden “El-Musavvir” (her şeye şekil veren) Arapça hatla elde oyulmuştur.",
@@ -981,6 +1115,7 @@ const STORIES: Record<string, L> = {
     es: "«Al-Musawwir», el Formador, uno de los bellos nombres de Allah, está tallado a mano en el ágata en caligrafía árabe.",
     de: "„Al-Musawwir“ – der Gestalter, einer der schönen Namen Allahs – ist von Hand in arabischer Kalligrafie in den Achat geschnitten.",
     ar: "نُقش اسم «المصوِّر» من أسماء الله الحسنى يدويًا على حجر العقيق بالخط العربي.",
+    ru: "«Аль-Мусаввир» — Создатель, одно из прекрасных имен Аллаха — вырезано на агате вручную арабской каллиграфией.",
   },
   musavvir_signed: {
     tr: "Veysel Usta imzalı bu koleksiyon yüzüğünde, Allah'ın isimlerinden “El-Musavvir” taşın üzerine elde oyulmuştur. Kasası geleneksel el kalemi oymasıyla işlenmiştir; farklı oymalar kişiye özel yapılabilir.",
@@ -988,6 +1123,7 @@ const STORIES: Record<string, L> = {
     es: "En este anillo de colección firmado por el maestro Veysel, «Al-Musawwir», uno de los nombres de Allah, está tallado a mano en la piedra. El aro está trabajado con cincelado tradicional a mano, y se pueden realizar otras inscripciones por encargo.",
     de: "Bei diesem von Meister Veysel signierten Sammlerring ist „Al-Musawwir“, einer der Namen Allahs, von Hand in den Stein geschnitten. Die Ringschiene ist in traditioneller Handziselierung gearbeitet; andere Inschriften fertigen wir auf Wunsch.",
     ar: "في هذا الخاتم من مجموعة Veysel Usta الموقّعة، نُقش اسم «المصوِّر» من أسماء الله يدويًا على الحجر، وزُيّن جسم الخاتم بالنقش اليدوي التقليدي، ويمكن تنفيذ نقوش أخرى حسب الطلب.",
+    ru: "В этом коллекционном кольце, подписанном мастером Вейселем, на камне вручную вырезано «Аль-Мусаввир», одно из имен Аллаха. Шинка обработана традиционной ручной гравировкой, другие надписи могут быть выполнены на заказ.",
   },
   seref_sems: {
     tr: "Sarı akik taşın üzerine el oymasıyla Şerefü'ş-Şems kazınmıştır; geleneksel olarak manevi değeri yüksek kabul edilir.",
@@ -995,6 +1131,7 @@ const STORIES: Record<string, L> = {
     es: "Sharaf al-Shams está tallado a mano en el ágata amarilla, un diseño al que tradicionalmente se atribuye un gran valor espiritual.",
     de: "Sharaf al-Shams ist von Hand in den gelben Achat geschnitten – ein Motiv, dem traditionell hoher spiritueller Wert beigemessen wird.",
     ar: "نُقش «شرف الشمس» يدويًا على حجر العقيق الأصفر، وهو نقش يُعدّ تقليديًا ذا قيمة روحية عالية.",
+    ru: "Шараф аль-Шамс вырезан вручную на желтом агате, этот узор традиционно пользуется большим духовным уважением.",
   },
   ilahi: {
     tr: "Kırmızı akik taşın üzerine “İlâhî ente maksûdî ve rızâke matlûbî” kazınmıştır: Allah'ım, maksadım Sensin; istediğim Senin rızan.",
@@ -1002,6 +1139,7 @@ const STORIES: Record<string, L> = {
     es: "El ágata roja lleva grabado «Ilahi anta maqsudi wa ridaka matlubi»: Dios mío, Tú eres mi meta y Tu complacencia es lo que busco.",
     de: "In den roten Achat ist „Ilahi anta maqsudi wa ridaka matlubi“ graviert – mein Gott, Du bist mein Ziel, und Dein Wohlgefallen ist, was ich suche.",
     ar: "نُقش على حجر العقيق الأحمر: «إلهي أنت مقصودي ورضاك مطلوبي».",
+    ru: "На красном агате выгравировано: «Илахи анта максуди ва ридака матлуби» — мой Господь, Ты — моя цель, и Твоё удовольствие — это то, чего я ищу.",
   },
   suleyman: {
     tr: "Akik taşın üzerine Hz. Süleyman'ın (a.s.) mührü kazınmış, mührün içine Besmele yazılmıştır.",
@@ -1009,6 +1147,7 @@ const STORIES: Record<string, L> = {
     es: "El Sello de Salomón (la paz sea con él) está grabado en el ágata, con la basmala escrita en su interior.",
     de: "Das Siegel Salomons (Friede sei mit ihm) ist in den Achat graviert, im Inneren steht die Basmala.",
     ar: "نُقش خاتم سليمان عليه السلام على حجر العقيق وفي داخله البسملة.",
+    ru: "Печать Соломона (мир ему) выгравирована на агате, а внутри написана басмала.",
   },
   suleyman_gold: {
     tr: "Akik taşın üzerine Hz. Süleyman'ın (a.s.) mührü kazınmış, mührün içine Besmele yazılmıştır. 925 ayar gümüş kasası sarı altın kaplamadır.",
@@ -1016,6 +1155,7 @@ const STORIES: Record<string, L> = {
     es: "El Sello de Salomón (la paz sea con él) está grabado en el ágata con la basmala en su interior. El aro de plata 925 tiene un baño de oro amarillo.",
     de: "Das Siegel Salomons (Friede sei mit ihm) ist mit der Basmala im Inneren in den Achat graviert. Die Ringschiene aus 925er Silber ist gelbvergoldet.",
     ar: "نُقش خاتم سليمان عليه السلام على حجر العقيق وفي داخله البسملة، وجسم الخاتم من الفضة عيار 925 مطلي بالذهب الأصفر.",
+    ru: "Печать Соломона (мир ему) выгравирована на агате с басмалой внутри. Шинка из серебра 925 пробы покрыт покрытием из желтого золота.",
   },
   ecirna: {
     tr: "Gümüşün üzerine “Allâhümme ecirnâ mine'n-nâr” (Allah'ım, bizi ateşten koru) kazınmış; yuvası ve alt kısımları ayetlerle işlenmiştir. Eşsiz bir erkek yüzüğü.",
@@ -1023,6 +1163,7 @@ const STORIES: Record<string, L> = {
     es: "En la plata está grabado «Allahumma ajirna min an-nar», oh Allah, protégenos del Fuego, y el engaste y la parte inferior están trabajados con aleyas coránicas. Un anillo de hombre único.",
     de: "In das Silber ist „Allahumma ajirna min an-nar“ – o Allah, bewahre uns vor dem Feuer – graviert; Fassung und Unterseite sind mit Koranversen gearbeitet. Ein einzigartiger Herrenring.",
     ar: "نُقش على الفضة: «اللهم أجرنا من النار»، وزُيّنت القاعدة والأجزاء السفلية بآيات قرآنية؛ خاتم رجالي فريد من نوعه.",
+    ru: "«Аллахумма аджирна мин ан-нар» — «О Аллах, защити нас от Огня» — выгравировано на серебре, а оправа и нижняя сторона украшены стихами Корана. Поистине уникальное мужское кольцо.",
   },
   hud: {
     tr: "Akik taşın üzerine el oymasıyla Hûd Suresi'nden “Emrolunduğun gibi dosdoğru ol” ayeti kazınmıştır. Peygamber Efendimizin (s.a.v.) “Beni Hûd Suresi ihtiyarlattı” buyurduğu suredir.",
@@ -1030,6 +1171,7 @@ const STORIES: Record<string, L> = {
     es: "La aleya de la sura Hud «Mantente firme tal como se te ha ordenado» está tallada a mano en el ágata. Es la sura de la que el Profeta ﷺ dijo: «Hud me ha encanecido».",
     de: "Der Vers aus Sure Hud „So bleib standhaft, wie dir befohlen wurde“ ist von Hand in den Achat geschnitten. Über diese Sure sagte der Prophet ﷺ: „Hud hat mich ergrauen lassen.“",
     ar: "نُقشت يدويًا على حجر العقيق آية من سورة هود: «فَاسْتَقِمْ كَمَا أُمِرْتَ»، وهي السورة التي قال فيها النبي ﷺ: «شيّبتني هود».",
+    ru: "Стих из суры Худ «Так оставайтесь стойкими, как вам велено» вырезан вручную на агате. Это сура, о которой Пророк ﷺ сказал: «Худ сделал мои волосы седыми».",
   },
   ya_malik: {
     tr: "Oniks taşın üzerine el oymasıyla “Yâ Mâlike'l-mülk” kazınmıştır: Ey bütün kâinatın tek sahibi ve hükümdarı olan Allah.",
@@ -1037,6 +1179,7 @@ const STORIES: Record<string, L> = {
     es: "«Ya Malik al-Mulk» está tallado a mano en el ónix: oh Allah, único Dueño y Soberano de toda la creación.",
     de: "„Ya Malik al-Mulk“ ist von Hand in den Onyx geschnitten – o Allah, alleiniger Besitzer und Herrscher der ganzen Schöpfung.",
     ar: "نُقش يدويًا على حجر الأونيكس: «يا مالك الملك».",
+    ru: "На ониксе вручную вырезана надпись «Йа Малик аль-Мульк» — О Аллах, единственный Владелец и Повелитель всего творения.",
   },
   insirah: {
     tr: "Sarı akik üzerine İnşirâh Suresi'nin 6. ayeti işlenmiştir: “İnne mea'l-usri yüsrâ” (إِنَّ مَعَ الْعُسْرِ يُسْرًا) — Muhakkak zorlukla beraber bir kolaylık vardır. Özel sipariş olarak üretilmiştir; yazısı sarı altın kaplamadır.",
@@ -1044,6 +1187,7 @@ const STORIES: Record<string, L> = {
     es: "La aleya 6 de la sura Ash-Sharh está trabajada en el ágata amarilla: «Inna ma'al-usri yusra» (إِنَّ مَعَ الْعُسْرِ يُسْرًا), ciertamente, con la dificultad llega la facilidad. Elaborado por encargo, con las letras bañadas en oro amarillo.",
     de: "Vers 6 der Sure Asch-Scharh ist in den gelben Achat gearbeitet: „Inna ma'al-usri yusra“ (إِنَّ مَعَ الْعُسْرِ يُسْرًا) – wahrlich, mit der Erschwernis kommt die Erleichterung. Als Sonderanfertigung entstanden, die Schrift gelbvergoldet.",
     ar: "نُقشت على العقيق الأصفر الآية 6 من سورة الشرح: «إِنَّ مَعَ الْعُسْرِ يُسْرًا». صُنع حسب الطلب، والكتابة مطلية بالذهب الأصفر.",
+    ru: "На желтом агате вырезан 6-й стих суры Аш-Шарх: «Инна ма'ал-усри йусра» (إِنَّ مَعَ الْعُسْرِ يُسْرًا) — действительно, за трудностями приходит облегчение. Изготовлено по специальному заказу, надпись покрыта желтым золотом.",
   },
   design: {
     tr: "Hayalinizdeki yüzüğü birlikte tasarlayalım: önce fikrinizi dinliyor, çizimini hazırlıyoruz; onayınızın ardından yüzüğünüzü tamamen elde üretiyoruz.",
@@ -1051,6 +1195,7 @@ const STORIES: Record<string, L> = {
     es: "Diseñemos juntos el anillo que imagina: escuchamos su idea, preparamos un dibujo y, una vez aprobado, elaboramos su anillo totalmente a mano.",
     de: "Gestalten wir gemeinsam den Ring, den Sie sich vorstellen: Wir hören uns Ihre Idee an, fertigen eine Zeichnung an und arbeiten Ihren Ring nach Ihrer Freigabe vollständig von Hand.",
     ar: "لنصمّم معًا الخاتم الذي تحلم به: نستمع إلى فكرتك ونُعدّ رسمًا له، وبعد موافقتك نصنع خاتمك يدويًا بالكامل.",
+    ru: "Давайте вместе спроектируем задуманное вами кольцо: выслушаем вашу идею, подготовим чертеж и, как только вы его одобрите, сделаем ваше кольцо полностью вручную.",
   },
   sems: {
     tr: "Veysel Usta imzalı bu koleksiyon yüzüğü, Bursa Ulu Camii'ndeki Şems Suresi hattından esinlenerek hazırlanmıştır. Taşın üzerinde “Güneşe ve onun aydınlığına andolsun” ayeti zarif bir hatla yer alır; kasası geleneksel el kalemi oymasıyla işlenmiştir.",
@@ -1058,6 +1203,7 @@ const STORIES: Record<string, L> = {
     es: "Este anillo de colección, firmado por el maestro Veysel, se inspira en la caligrafía de la sura Ash-Shams de la Gran Mezquita de Bursa. La aleya «Por el sol y su resplandor» adorna la piedra en una elegante caligrafía, y el aro está trabajado con cincelado tradicional a mano.",
     de: "Dieser von Meister Veysel signierte Sammlerring ist von der Kalligrafie der Sure Asch-Schams in der Großen Moschee von Bursa inspiriert. Der Vers „Bei der Sonne und ihrem Glanz“ ziert den Stein in eleganter Schrift; die Ringschiene ist in traditioneller Handziselierung gearbeitet.",
     ar: "خاتم من مجموعة Veysel Usta الموقّعة، مستوحى من لوحة سورة الشمس في الجامع الكبير ببورصة. تزيّن الحجرَ آيةُ «وَالشَّمْسِ وَضُحَاهَا» بخط أنيق، وجسم الخاتم منقوش بالنقش اليدوي التقليدي.",
+    ru: "Это коллекционное кольцо, подписанное мастером Вейселем, вдохновлено каллиграфией суры Аш-Шамс в Большой мечети Бурсы. Стих «По солнцу и сиянию его» украшает камень элегантным шрифтом, а шинка украшена традиционной ручной гравировкой.",
   },
   fatiha_silver: {
     tr: "Usta imzalı bir koleksiyon parçası: Fatiha Suresi gümüşün üzerine zarif sülüs hatla işlenmiştir.",
@@ -1065,6 +1211,7 @@ const STORIES: Record<string, L> = {
     es: "Una pieza de colección firmada por el maestro: la sura Al-Fatiha está trabajada en la plata en elegante caligrafía thuluth.",
     de: "Ein vom Meister signiertes Sammlerstück: Die Sure Al-Fatiha ist in eleganter Thuluth-Kalligrafie in das Silber gearbeitet.",
     ar: "قطعة من مجموعة موقّعة من المعلّم: نُقشت سورة الفاتحة على الفضة بخط الثلث الأنيق.",
+    ru: "Предмет коллекции, подписанный мастером: сура Аль-Фатиха высечена на серебре элегантной каллиграфией сулут.",
   },
   mumin44: {
     tr: "Veysel Usta imzalı bu koleksiyon yüzüğünde taşın üzerine Mü'min Suresi'nin 44. ayeti yazılmıştır: “Ve ufevvidu emrî ilallâh” (وَأُفَوِّضُ أَمْرِي إِلَى اللَّهِ) — İşimi tamamen Allah'a bırakıyorum. Taşı tamamen elde işlenmiş, kasası geleneksel el kalemi oymasıyla hazırlanmıştır.",
@@ -1072,6 +1219,7 @@ const STORIES: Record<string, L> = {
     es: "Este anillo de colección, firmado por el maestro Veysel, lleva la aleya 44 de la sura Ghafir (Al-Mu'min): «Wa ufawwidu amri ilallah» (وَأُفَوِّضُ أَمْرِي إِلَى اللَّهِ), y encomiendo mi asunto a Allah. La piedra está grabada totalmente a mano y el aro trabajado con cincelado tradicional.",
     de: "Dieser von Meister Veysel signierte Sammlerring trägt Vers 44 der Sure Ghafir (Al-Mu'min): „Wa ufawwidu amri ilallah“ (وَأُفَوِّضُ أَمْرِي إِلَى اللَّهِ) – und ich überlasse meine Angelegenheit Allah. Der Stein ist vollständig von Hand graviert, die Ringschiene traditionell handziseliert.",
     ar: "خاتم من مجموعة Veysel Usta الموقّعة، نُقشت على حجره الآية 44 من سورة غافر: «وَأُفَوِّضُ أَمْرِي إِلَى اللَّهِ ۚ إِنَّ اللَّهَ بَصِيرٌ بِالْعِبَادِ». الحجر منقوش يدويًا بالكامل، وجسم الخاتم بالنقش اليدوي التقليدي.",
+    ru: "На этом коллекционном кольце, подписанном Мастером Вейзелем, указан стих 44 суры Гафир (Аль-Мумин): «Ва уфаввиду амри илаллах» (وَأُفَوِّضُ أَمْرِي إِلَى اللَّهِ) — и я доверяю свое дело Аллаху. Камень выгравирован полностью вручную, а шинка обработан традиционной ручной гравировкой.",
   },
   kalem52: {
     tr: "Veysel Usta imzalı bu koleksiyon yüzüğünde taşın üzerine Kalem Suresi'nin 52. ayeti yazılmıştır: “Ve mâ hüve illâ zikrun li'l-âlemîn” (وَمَا هُوَ إِلَّا ذِكْرٌ لِلْعَالَمِينَ) — O, âlemler için ancak bir öğüttür. Nazara karşı okunan ayetlerden olduğu için özellikle seçilmiştir.",
@@ -1079,6 +1227,7 @@ const STORIES: Record<string, L> = {
     es: "Este anillo de colección, firmado por el maestro Veysel, lleva la aleya 52 de la sura Al-Qalam: «Wa ma huwa illa dhikrun lil-'alamin» (وَمَا هُوَ إِلَّا ذِكْرٌ لِلْعَالَمِينَ), y no es sino un recordatorio para los mundos. Se eligió porque tradicionalmente se recita como protección contra el mal de ojo.",
     de: "Dieser von Meister Veysel signierte Sammlerring trägt Vers 52 der Sure Al-Qalam: „Wa ma huwa illa dhikrun lil-'alamin“ (وَمَا هُوَ إِلَّا ذِكْرٌ لِلْعَالَمِينَ) – und er ist nichts als eine Ermahnung für die Welten. Er wurde gewählt, weil er traditionell zum Schutz vor dem bösen Blick rezitiert wird.",
     ar: "خاتم من مجموعة Veysel Usta الموقّعة، نُقشت على حجره الآية 52 من سورة القلم: «وَمَا هُوَ إِلَّا ذِكْرٌ لِّلْعَالَمِينَ»، وقد اختيرت لأنها تُقرأ تقليديًا للتحصين من العين.",
+    ru: "На этом коллекционном кольце, подписанном Мастером Вейселем, изображен 52-й стих суры Аль-Калам: «Ва ма хува илля зикрун лил-'аламин» (وَمَا هُوَ إِلَّا ذِكْرٌ لِلْعَالَمِينَ). — и это не что иное, как напоминание мирам. Оно было выбрано потому, что его традиционно читают для защиты от сглаза.",
   },
   kufi_tevhid: {
     tr: "Üst yüzeyinde kûfi hatla Kelime-i Tevhid, alt kısmında ise yuvarlak içinde sülüs hatla “Muhammedün Resûlullah” yazılıdır. El işçiliğiyle üretildiği için her yüzük benzersizdir; kadın ve erkek kullanımına uygundur.",
@@ -1086,6 +1235,7 @@ const STORIES: Record<string, L> = {
     es: "La Shahada recorre la parte superior en caligrafía cúfica, y «Muhammadun Rasulullah» aparece debajo en un medallón en escritura thuluth. Al ser hecho a mano, cada anillo es único; apto para hombre y mujer.",
     de: "Die Schahada zieht sich in kufischer Kalligrafie über die Oberseite, darunter steht in einem Medaillon „Muhammadun Rasulullah“ in Thuluth-Schrift. Da handgefertigt, ist jeder Ring ein Unikat; für Damen und Herren geeignet.",
     ar: "تعلو الخاتمَ كلمةُ التوحيد بالخط الكوفي، وفي أسفله داخل دائرة «محمد رسول الله» بخط الثلث. ولأنه مصنوع يدويًا فكل خاتم فريد، ويناسب الرجال والنساء.",
+    ru: "Шахада проходит вверху, написанная куфической каллиграфией, а надпись «Мухаммадун Расулуллах» находится в круге внизу, написанная шрифтом сулут. Каждое кольцо сделано вручную и уникально; подходит для мужчин и женщин.",
   },
   ayetel_octagon: {
     tr: "Veysel Usta'nın tamamen el işçiliğiyle ürettiği özel bir tasarım. Sekizgen kasanın üzerindeki akik taşa Ayetel Kürsî büyük bir özenle işlenmiş, yazı kısmı parlak ve dayanıklı olması için altın kaplamayla tamamlanmıştır. Kasa, kûfi hat ve Selçuklu motifleriyle süslenmiştir.",
@@ -1093,6 +1243,7 @@ const STORIES: Record<string, L> = {
     es: "Un diseño especial realizado íntegramente a mano por el maestro Veysel. Ayat al-Kursi está trabajada con gran cuidado sobre el ágata engastada en un aro octogonal, y las letras están bañadas en oro para un acabado brillante y duradero. El aro está adornado con caligrafía cúfica y motivos selyúcidas.",
     de: "Ein besonderer Entwurf, vollständig von Meister Veysel handgefertigt. Ayat al-Kursi ist mit großer Sorgfalt in den Achat auf der achteckigen Ringschiene gearbeitet; die Schrift ist für einen strahlenden, dauerhaften Glanz vergoldet. Die Schiene ziert kufische Kalligrafie mit seldschukischen Motiven.",
     ar: "تصميم خاص صنعه Veysel Usta يدويًا بالكامل. نُقشت آية الكرسي بعناية فائقة على حجر العقيق المثبّت في جسم ثماني الشكل، وطُليت الكتابة بالذهب لتبقى لامعة ومتينة، وزُيّن الجسم بالخط الكوفي والزخارف السلجوقية.",
+    ru: "Особый дизайн, выполненный полностью вручную мастером Вейзелем. Аят аль-Курси с особой тщательностью обработан на агате в восьмиугольной ленте, а надпись покрыта золотом, что придает яркий и долговечный вид. Шинка украшена куфической каллиграфией и сельджукскими мотивами.",
   },
   ayetel_nakkas: {
     tr: "Tamamen el emeğiyle hazırlanmış özel bir çalışma. Sekizgen kasanın üzerindeki akik taşa nakkaş oymasıyla Ayetel Kürsî işlenmiş, yazı kısmı altın kaplamayla tamamlanarak hem manevi hem estetik bir derinlik kazanmıştır.",
@@ -1100,6 +1251,7 @@ const STORIES: Record<string, L> = {
     es: "Una pieza especial hecha íntegramente a mano. Ayat al-Kursi está tallada con la técnica nakkaş en el ágata del aro octogonal, y las letras bañadas en oro le dan profundidad espiritual y estética.",
     de: "Ein besonderes, vollständig handgefertigtes Stück. Ayat al-Kursi ist in Nakkaş-Technik in den Achat der achteckigen Ringschiene geschnitten; die vergoldete Schrift verleiht ihm spirituelle wie ästhetische Tiefe.",
     ar: "قطعة خاصة مصنوعة يدويًا بالكامل. نُقشت آية الكرسي بتقنية النقّاش على حجر العقيق في الجسم الثماني، والكتابة المطلية بالذهب تمنحه عمقًا روحيًا وجماليًا.",
+    ru: "Особая вещь, сделанная полностью вручную. Аят аль-Курси вырезан на агате восьмиугольной полосы в технике наккаш, а позолоченные буквы придают ему как духовную, так и эстетическую глубину.",
   },
   buda_gecer: {
     tr: "Kızıl akik taşın üzerine el yazması Osmanlıca “Bu da geçer yâ Hû” oyulmuştur. Kasası kalem işi (gravür) tekniğiyle tamamen elde yapılmıştır; geleneksel işçilikle modern kullanımı buluşturan tek üretim bir modeldir.",
@@ -1107,6 +1259,7 @@ const STORIES: Record<string, L> = {
     es: "«Bu da geçer yâ Hû», «esto también pasará», está tallado en el ágata roja en escritura otomana manuscrita. El aro está hecho íntegramente a mano con cincelado; una pieza única que une la artesanía tradicional con el uso moderno.",
     de: "„Bu da geçer yâ Hû“ – „auch das geht vorüber“ – ist in handgeschriebener osmanischer Schrift in den roten Achat geschnitten. Die Ringschiene ist vollständig von Hand ziseliert; ein Einzelstück, das traditionelles Handwerk mit modernem Tragen verbindet.",
     ar: "نُقشت عبارة «Bu da geçer yâ Hû» أي «هذا أيضًا سيمضي» بالخط العثماني اليدوي على حجر العقيق الأحمر. جسم الخاتم مصنوع يدويًا بالكامل بتقنية النقش بالقلم؛ قطعة فريدة تجمع الصنعة التقليدية بالاستخدام العصري.",
+    ru: "«Bu da geçer yâ Hû» — «и это пройдет» — вырезано на красном агате рукописным османским письмом. Шинка изготовлен полностью вручную с использованием ручной гравировки; единственное в своем роде изделие, которое объединяет традиционное ремесло с современной одеждой.",
   },
   n_ayn: {
     tr: "Altıgen Horasan akik taşın ortasında “Ayn” ve “Mim” harfleri yer alır; örnekte Azime ve Mustafa isimlerinin baş harfleridir ve sizin seçtiğiniz harflerle kişiye özel işlenebilir. Taşın çevresine sülüs hatla Âl-i İmrân Suresi'nin 27. ayeti kazınmıştır: “Geceyi gündüze katarsın, gündüzü geceye katarsın; ölüden diriyi çıkarırsın, diriden ölüyü çıkarırsın; dilediğine hesapsız rızık verirsin.” Ayet, gecenin ve gündüzün, hayatın ve rızkın tek sahibinin Allah olduğunu hatırlatır; bu yüzden bereket ve hayırlı rızık niyetiyle okunur.",
@@ -1114,6 +1267,7 @@ const STORIES: Record<string, L> = {
     es: "En el centro del ágata hexagonal de Jorasán están las letras «Ayn» y «Mim», aquí las iniciales de los nombres Azime y Mustafa, que pueden sustituirse por las que usted elija. Alrededor de la piedra está grabada en caligrafía thuluth la aleya 27 de la sura Al Imran: «Haces que la noche entre en el día y el día en la noche; sacas lo vivo de lo muerto y lo muerto de lo vivo; y das provisión a quien quieres sin medida». La aleya recuerda que la noche y el día, la vida y el sustento pertenecen solo a Allah; por eso se recita con la intención de bendición y sustento lícito.",
     de: "In der Mitte des sechseckigen Chorasan-Achats stehen die Buchstaben „Ayn“ und „Mim“ – hier die Initialen der Namen Azime und Mustafa –, die durch Initialen Ihrer Wahl ersetzt werden können. Rund um den Stein ist in Thuluth-Kalligrafie Vers 27 der Sure Al Imran graviert: „Du lässt die Nacht in den Tag übergehen und den Tag in die Nacht; Du bringst das Lebendige aus dem Toten hervor und das Tote aus dem Lebendigen; und Du versorgst, wen Du willst, ohne zu rechnen.“ Der Vers erinnert daran, dass Nacht und Tag, Leben und Versorgung allein Allah gehören; deshalb wird er in der Absicht von Segen und rechtmäßiger Versorgung rezitiert.",
     ar: "في وسط حجر العقيق الخراساني السداسي حرفا «العين» و«الميم»، وهما هنا الحرفان الأولان من اسمي عزيمة ومصطفى، ويمكن نقش الحرفين اللذين تختارهما. ونُقشت حول الحجر بخط الثلث الآية 27 من سورة آل عمران: «تُولِجُ اللَّيْلَ فِي النَّهَارِ وَتُولِجُ النَّهَارَ فِي اللَّيْلِ وَتُخْرِجُ الْحَيَّ مِنَ الْمَيِّتِ وَتُخْرِجُ الْمَيِّتَ مِنَ الْحَيِّ وَتَرْزُقُ مَن تَشَاءُ بِغَيْرِ حِسَابٍ». تذكّر الآية بأن الليل والنهار والحياة والرزق لله وحده، ولذلك تُقرأ بنية البركة والرزق الحلال.",
+    ru: "В центре шестиугольного хорасанского агата расположены буквы «Айн» и «Мим» — здесь инициалы имен Азиме и Мустафы — и их можно заменить инициалами по вашему выбору. Вокруг камня каллиграфией сулут высечен 27-й стих суры «Аль-Имран»: «Ты превращаешь ночь в день и день в ночь; Ты выводишь живое из мертвых и мертвое из живых; и Ты даешь пропитание, кому пожелаешь, без меры». Этот аят напоминает нам, что день и ночь, жизнь и обеспечение принадлежат одному Аллаху, поэтому его читают с намерением благословения и законного обеспечения.",
   },
   n_kalkan: {
     tr: "Yüzüğün üst yüzüne Sâffât Suresi'nin 7. ayeti işlenmiştir: “Ve hıfzan min külli şeytânin mârid” — Onu (göğü) itaatten çıkmış her şeytandan koruduk. Yan bantta ise Yâsîn Suresi'nin 58. ayeti yer alır: “Selâmün kavlen min rabbin rahîm” — Çok merhametli bir Rab'den, söz olarak selam. İki ayet birlikte, kulu her türlü kötülükten koruyanın ve ona selam ve esenlik verenin yalnızca Allah olduğunu hatırlatır; bu yüzden yüzüğe “Kalkan” adını verdik.",
@@ -1121,6 +1275,7 @@ const STORIES: Record<string, L> = {
     es: "La parte superior del anillo lleva la aleya 7 de la sura As-Saffat: «Wa hifzan min kulli shaytanin marid», y como protección contra todo demonio rebelde. La banda lateral lleva la aleya 58 de la sura Ya-Sin: «Salamun qawlan min rabbin rahim», «Paz», palabra de un Señor Misericordioso. Juntas recuerdan que la protección contra todo mal y la paz misma vienen solo de Allah; por eso llamamos a este anillo «Kalkan», el escudo.",
     de: "Die Oberseite des Rings trägt Vers 7 der Sure As-Saffat: „Wa hifzan min kulli shaytanin marid“ – und als Schutz vor jedem rebellischen Teufel. Das seitliche Band trägt Vers 58 der Sure Ya-Sin: „Salamun qawlan min rabbin rahim“ – „Friede!“, als Wort von einem barmherzigen Herrn. Zusammen erinnern die beiden Verse daran, dass Schutz vor allem Übel und Frieden selbst allein von Allah kommen – deshalb heißt dieser Ring „Kalkan“, der Schild.",
     ar: "نُقشت على وجه الخاتم الآية 7 من سورة الصافات: «وَحِفْظًا مِّن كُلِّ شَيْطَانٍ مَّارِدٍ»، وعلى الشريط الجانبي الآية 58 من سورة يس: «سَلَامٌ قَوْلًا مِّن رَّبٍّ رَّحِيمٍ». تذكّر الآيتان معًا بأن الحفظ من كل شر والسلام نفسه من الله وحده، ولذلك سمّينا هذا الخاتم «كالكان» أي الدرع.",
+    ru: "На вершине кольца находится стих 7 суры Ас-Саффат: «Ва хифзан мин кулли шайтанин марид» — и как защита от всякого мятежного дьявола. На боковой шинке изображен стих 58 суры Йа-Син: «Саламун кавлан мин раббин рахим» — «Мир», слово Милосердного Господа. Вместе эти два стиха напоминают нам, что защита от всякого вреда и сам мир исходят только от Аллаха — поэтому мы назвали это кольцо «Калкан», то есть щит.",
   },
   n_bab: {
     tr: "Siyah oniks taşın üzerine hat sanatıyla Besmele kazınmıştır: “Bismillâhirrahmânirrahîm” — Rahmân ve Rahîm olan Allah'ın adıyla. Her hayırlı işe Allah'ın adıyla başlamak sünnettir; Besmele, işin bereketine açılan ilk kapıdır. Bu yüzden yüzüğe “Kapı” anlamına gelen “Bâb” adını verdik.",
@@ -1128,6 +1283,7 @@ const STORIES: Record<string, L> = {
     es: "La Basmala está grabada en el ónix negro en caligrafía: «Bismillahir-Rahmanir-Rahim», en el nombre de Allah, el Clemente, el Misericordioso. Comenzar toda buena obra en el nombre de Allah es práctica del Profeta ﷺ; la Basmala es la primera puerta que abre una tarea a la bendición. Por eso llamamos a este anillo «Bab», la puerta.",
     de: "Die Basmala ist in Kalligrafie in den schwarzen Onyx graviert: „Bismillahir-Rahmanir-Rahim“ – im Namen Allahs, des Allerbarmers, des Barmherzigen. Jedes gute Werk im Namen Allahs zu beginnen, ist Brauch des Propheten ﷺ; die Basmala ist die erste Tür, die ein Werk dem Segen öffnet. Darum heißt dieser Ring „Bab“, die Tür.",
     ar: "نُقشت البسملة على حجر الأونيكس الأسود بالخط العربي: «بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ». ومن السنة أن يُبدأ كل عمل صالح باسم الله، فالبسملة أول باب يُفتح به العمل على البركة، ولذلك سمّينا هذا الخاتم «باب».",
+    ru: "На черном ониксе басмала выгравирована каллиграфией: «Бисмиллахир-Рахманир-Рахим» — во имя Аллаха Милостивого, Милосердного. Начинать каждое доброе дело во имя Аллаха – это практика Пророка ﷺ; Басмала – это первая дверь, открывающая задачу благословения. Поэтому мы назвали это кольцо «Баб», дверь.",
   },
   n_misak: {
     tr: "Siyah oniks taşın üzerine kûfi hatla Kelime-i Tevhid kazınmıştır: “Lâ ilâhe illallah Muhammedün Resûlullah” — Allah'tan başka ilah yoktur, Muhammed Allah'ın elçisidir. Peygamber Efendimiz ﷺ “Zikrin en faziletlisi Lâ ilâhe illallah'tır” buyurmuştur (Tirmizî). Tevhid, insanın yaratılışta Rabbine verdiği sözün özüdür; bu yüzden yüzüğe “sağlam söz, ahit” anlamındaki “Mîsak” adını verdik.",
@@ -1135,6 +1291,7 @@ const STORIES: Record<string, L> = {
     es: "La Shahada está grabada en el ónix negro en escritura cúfica: «La ilaha illallah Muhammadun Rasulullah», no hay más dios que Allah y Muhammad es el Mensajero de Allah. El Profeta ﷺ dijo: «El mejor recuerdo es La ilaha illallah» (Tirmidhi). El tawhid es el corazón del pacto que el alma hizo con su Señor al ser creada; por eso llamamos a este anillo «Misak», el pacto solemne.",
     de: "Die Schahada ist in kufischer Schrift in den schwarzen Onyx graviert: „La ilaha illallah Muhammadun Rasulullah“ – es gibt keinen Gott außer Allah, und Muhammad ist der Gesandte Allahs. Der Prophet ﷺ sagte: „Das beste Gedenken ist La ilaha illallah“ (Tirmidhi). Der Tauhid ist der Kern des Bundes, den die Seele bei ihrer Erschaffung mit ihrem Herrn schloss – darum heißt dieser Ring „Misak“, der feierliche Bund.",
     ar: "نُقشت كلمة التوحيد على حجر الأونيكس الأسود بالخط الكوفي: «لا إله إلا الله محمد رسول الله». قال النبي ﷺ: «أفضل الذكر لا إله إلا الله» (رواه الترمذي). والتوحيد جوهر الميثاق الذي أخذه الله على الأرواح، ولذلك سمّينا هذا الخاتم «ميثاق».",
+    ru: "На черном ониксе куфическим письмом выгравирована Шахада: «Ля иляха илляЛлах Мухаммадун Расулуллах» — нет бога, кроме Аллаха, и Мухаммад — Посланник Аллаха. Пророк ﷺ сказал: «Лучшее воспоминание – Ля иляха илляЛлах» (Тирмизи). Таухид — это сердце завета, который душа заключила со своим Господом при творении, поэтому мы назвали это кольцо «Мисак», торжественный завет.",
   },
   n_elif: {
     tr: "Dikdörtgen akik taşın üzerine kûfi hatla “Lâ ilâhe illallah” kazınmıştır: Allah'tan başka ilah yoktur. Peygamber Efendimiz ﷺ “Zikrin en faziletlisi Lâ ilâhe illallah'tır” buyurmuştur (Tirmizî). Yüzüğe, harflerin ilki olan ve tek başına dimdik duruşuyla Allah'ın birliğini simgeleyen “Elif” adını verdik; ince ve zarif kasası günlük kullanıma uygundur.",
@@ -1142,6 +1299,7 @@ const STORIES: Record<string, L> = {
     es: "«La ilaha illallah» está grabado en el ágata rectangular en escritura cúfica: no hay más dios que Allah. El Profeta ﷺ dijo: «El mejor recuerdo es La ilaha illallah» (Tirmidhi). Llamamos al anillo «Elif», la primera letra del alfabeto, cuyo trazo recto y solitario simboliza la unicidad de Allah; su montura fina y elegante es ideal para el uso diario.",
     de: "„La ilaha illallah“ ist in kufischer Schrift in den rechteckigen Achat graviert: Es gibt keinen Gott außer Allah. Der Prophet ﷺ sagte: „Das beste Gedenken ist La ilaha illallah“ (Tirmidhi). Wir nannten den Ring „Elif“ nach dem ersten Buchstaben des Alphabets, dessen einzelner aufrechter Strich für die Einheit Allahs steht; die schmale, feine Fassung eignet sich für den Alltag.",
     ar: "نُقشت «لا إله إلا الله» على حجر العقيق المستطيل بالخط الكوفي. قال النبي ﷺ: «أفضل الذكر لا إله إلا الله» (رواه الترمذي). وسمّينا الخاتم «ألف»، أول الحروف، الذي يرمز بقامته المنتصبة وحدها إلى وحدانية الله، وإطاره الرفيع الأنيق مناسب للاستعمال اليومي.",
+    ru: "На прямоугольном агате куфическим письмом выгравировано «Ла иляха иллаллах»: нет бога, кроме Аллаха. Пророк ﷺ сказал: «Лучшее воспоминание – Ля иляха илляЛлах» (Тирмизи). Мы назвали кольцо «Элиф», первую букву алфавита, чья прямая линия символизирует единство Аллаха; его тонкая, изысканная оправа подходит для повседневного ношения.",
   },
   n_sema: {
     tr: "Doğal firuze taşı, damarlı dokusuyla her parçada farklı bir gökyüzü manzarası sunar; kasanın her yüzü kıvrık dal motifleriyle elde oyulmuştur. Firuze, Anadolu'da asırlardır göğün rengi ve kötülüklere karşı koruyucu bir taş olarak bilinir. Yüzüğe, gökyüzünü ve yüceliği anlatan “Sema” adını verdik.",
@@ -1149,6 +1307,7 @@ const STORIES: Record<string, L> = {
     es: "La turquesa natural, con sus vetas, muestra un cielo distinto en cada pieza; cada cara de la montura está grabada a mano con hojas en espiral. En Anatolia, la turquesa se conoce desde hace siglos como el color del cielo y una piedra protectora. Llamamos al anillo «Sema», el cielo y todo lo elevado.",
     de: "Der natürliche Türkis zeigt mit seiner geäderten Matrix in jedem Stück einen anderen Himmel; jede Seite der Fassung ist von Hand mit Rankenmotiven graviert. In Anatolien gilt der Türkis seit Jahrhunderten als Farbe des Himmels und als Schutzstein. Wir nannten den Ring „Sema“ – der Himmel und alles Erhabene.",
     ar: "يُظهر حجر الفيروز الطبيعي بعروقه سماءً مختلفة في كل قطعة، ونُقشت كل أوجه الإطار يدويًا بزخارف الأغصان الملتفة. وقد عُرف الفيروز في الأناضول منذ قرون بأنه لون السماء وحجر للحماية، فسمّينا الخاتم «سما».",
+    ru: "Натуральная бирюза с прожилками в каждом изделии демонстрирует разное небо; на каждой стороне декорации вручную выгравированы закручивающиеся листья. В Анатолии бирюза на протяжении веков была известна как цвет неба и камень защиты. Мы назвали кольцо «Сема», небо и все высокое.",
   },
   n_vahdet: {
     tr: "Oval akik taşın üzerine, iki yanı çiçek motifleriyle çevrili “Lâ ilâhe illallah” kazınmıştır: Allah'tan başka ilah yoktur. Kasanın yanlarında taşın altını gösteren ajur (delikli) işçilik ve kalem işi oymalar vardır. Tevhid, kâinattaki sayısız çokluğun ardında tek olan Yaratıcı'yı görmektir; bu yüzden yüzüğe “birlik” anlamındaki “Vahdet” adını verdik.",
@@ -1156,6 +1315,7 @@ const STORIES: Record<string, L> = {
     es: "«La ilaha illallah», no hay más dios que Allah, está grabado en el ágata oval entre dos motivos florales. Los laterales de la montura tienen un calado que deja ver la parte inferior de la piedra, junto con grabado a buril. El tawhid es ver al único Creador detrás de la incontable multiplicidad de la creación; por eso llamamos al anillo «Vahdet», la unidad.",
     de: "„La ilaha illallah“ – es gibt keinen Gott außer Allah – ist zwischen zwei Blumenmotiven in den ovalen Achat graviert. Die Seiten der Fassung zeigen Durchbrucharbeit, die die Unterseite des Steins freigibt, und Stichelgravur. Tauhid heißt, hinter der unzähligen Vielfalt der Schöpfung den einen Schöpfer zu sehen – darum heißt der Ring „Vahdet“, die Einheit.",
     ar: "نُقشت «لا إله إلا الله» على حجر العقيق البيضاوي بين زخرفتين نباتيتين، وفي جانبي الإطار تخريم يُظهر أسفل الحجر مع نقش يدوي. والتوحيد أن ترى الخالق الواحد وراء كثرة المخلوقات، ولذلك سمّينا الخاتم «وحدة».",
+    ru: "«Ля иляха иллаллах» — нет бога, кроме Аллаха — выгравировано на овальном агате между двумя цветочными мотивами. По бокам оправы имеется ажур, открывающий нижнюю сторону камня, а также ручная чеканка. Таухид означает видеть Единого Творца за бесчисленным множеством творений, поэтому мы назвали кольцо «Вахдет», единство.",
   },
   n_rumi: {
     tr: "Gümüşün üst yüzüne kûfi hatla “Lâ ilâhe illallah”, alt kısmına sülüs hatla “Muhammedün Resûlullah” yazılmış; üst tarafa geleneksel Selçuklu motifi işlenmiştir. Kelime-i Tevhid, İslam'ın özü ve imanın ilk sözüdür. Yüzüğe, Selçuklu ve Osmanlı süslemesinin temeli olan ve Anadolu toprağına kök salmayı anlatan “Rumi” adını verdik.",
@@ -1163,6 +1323,7 @@ const STORIES: Record<string, L> = {
     es: "La parte superior de la plata lleva «La ilaha illallah» en escritura cúfica, la inferior «Muhammadun Rasulullah» en thuluth, y encima se ha trabajado un motivo selyúcida tradicional. La Shahada es la esencia del islam y la primera palabra de la fe. Llamamos al anillo «Rumi» por el ornamento clásico selyúcida y otomano, símbolo de raíces en la tierra de Anatolia.",
     de: "Die Oberseite des Silbers trägt „La ilaha illallah“ in kufischer Schrift, der untere Teil „Muhammadun Rasulullah“ in Thuluth, darüber ein traditionelles seldschukisches Motiv. Die Schahada ist der Kern des Islam und das erste Wort des Glaubens. Wir nannten den Ring „Rumi“ nach dem klassischen seldschukischen und osmanischen Ornament, einem Sinnbild der Verwurzelung in Anatolien.",
     ar: "نُقشت على وجه الفضة «لا إله إلا الله» بالخط الكوفي، وفي أسفله «محمد رسول الله» بخط الثلث، وفوقها زخرفة سلجوقية تقليدية. وكلمة التوحيد جوهر الإسلام وأول كلمة في الإيمان، وسمّينا الخاتم «رومي» نسبةً إلى الزخرفة السلجوقية والعثمانية الأصيلة.",
+    ru: "На верхней части серебра изображена надпись «Ла иляха иллаллах» куфическим письмом, на нижней части — «Мухаммадун Расулуллах» сулутом, а выше выполнен традиционный сельджукский мотив. Шахада – это суть Ислама и первое слово веры. Мы назвали кольцо «Руми» в честь классического сельджукского и османского орнамента, символа корней на анатолийской земле.",
   },
   n_sekine: {
     tr: "Oval akik taşın üzerine Yûsuf Suresi'nin 64. ayeti kazınmıştır: “Fallâhu hayrun hâfizâ ve hüve erhamü'r-râhimîn” — Allah en hayırlı koruyucudur ve O, merhametlilerin en merhametlisidir. Bu söz, Hz. Yakup'un oğlunu yolculuğa gönderirken onu Allah'a emanet ettiği andan gelir; sevdiklerini Rabbine emanet edip kalbi ferahlatan bir teslimiyettir. Taş, altın kaplama pençelerle tutturulmuş, etrafı ve omuzları siyah zirkon taşlarla işlenmiştir.",
@@ -1170,6 +1331,7 @@ const STORIES: Record<string, L> = {
     es: "La aleya 64 de la sura Yusuf está grabada en el ágata oval: «Fallahu khayrun hafizan wa huwa arhamur-rahimin», Allah es el mejor guardián y Él es el más misericordioso de los misericordiosos. Son las palabras del profeta Yaqub al confiar a su hijo a Allah antes de un viaje: una entrega que confía a nuestros seres queridos a nuestro Señor y da paz al corazón. La piedra está sujeta con garras bañadas en oro, y su contorno y los hombros llevan circonitas negras.",
     de: "Vers 64 der Sure Yusuf ist in den ovalen Achat graviert: „Fallahu khayrun hafizan wa huwa arhamur-rahimin“ – Allah ist der beste Hüter, und Er ist der Barmherzigste der Barmherzigen. Es sind die Worte des Propheten Yaqub, als er seinen Sohn vor einer Reise Allah anvertraute: eine Hingabe, die unsere Liebsten unserem Herrn anvertraut und dem Herzen Ruhe schenkt. Der Stein wird von vergoldeten Krappen gehalten, Einfassung und Schultern sind mit schwarzen Zirkonen besetzt.",
     ar: "نُقشت على حجر العقيق البيضاوي الآية 64 من سورة يوسف: «فَاللَّهُ خَيْرٌ حَافِظًا ۖ وَهُوَ أَرْحَمُ الرَّاحِمِينَ». وهي قول نبي الله يعقوب حين استودع ابنه الله قبل السفر؛ تسليمٌ يودِع الأحبةَ عند ربهم ويبعث السكينة في القلب. ويثبّت الحجرَ مخالب مطلية بالذهب، ويحيط به وبكتفي الخاتم أحجار الزركون السوداء.",
+    ru: "На овальном агате выгравирован 64-й стих суры «Юсуф»: «Фаллаху хайрун хафизан ва хува архамур-рахимин» — Аллах — лучший хранитель, и Он — Самый Милосердный из милостивых. Это слова Пророка Якуба, когда он вверил своего сына Аллаху перед путешествием: капитуляция, которая вверяет наших близких нашему Господу и приносит мир в сердце. Камень удерживаются позолоченными когтями, а его окантовка и выступы украшены черными цирконами.",
   },
   n_yakin: {
     tr: "Dikdörtgen akik taşın üzerine hat sanatıyla “Lâ ilâhe illallah” kazınmıştır: Allah'tan başka ilah yoktur. Kasanın omuzları kalem işi oymalarla, yanları ise noktalı işçilikle elde işlenmiştir. Tevhid sözü, şüpheden arınmış sarsılmaz bir imanın ifadesidir; yüzüğe bu yüzden “kesin bilgi, sarsılmaz inanç” anlamındaki “Yakin” adını verdik.",
@@ -1177,6 +1339,7 @@ const STORIES: Record<string, L> = {
     es: "«La ilaha illallah», no hay más dios que Allah, está grabado en el ágata rectangular en caligrafía. Los hombros de la montura están cincelados a mano y los laterales terminados con un trabajo de puntos. La palabra del tawhid expresa una fe libre de dudas; por eso llamamos al anillo «Yakin», la certeza.",
     de: "„La ilaha illallah“ – es gibt keinen Gott außer Allah – ist in Kalligrafie in den rechteckigen Achat graviert. Die Schultern der Fassung sind von Hand ziseliert, die Seiten mit Punktarbeit veredelt. Das Wort des Tauhid drückt einen Glauben ohne Zweifel aus – darum heißt der Ring „Yakin“, die Gewissheit.",
     ar: "نُقشت «لا إله إلا الله» على حجر العقيق المستطيل بالخط العربي، ونُقش كتفا الإطار يدويًا وزُيّن جانباه بعمل منقّط. وكلمة التوحيد تعبير عن إيمان خالٍ من الشك، ولذلك سمّينا الخاتم «يقين».",
+    ru: "«Ля иляха иллаллах» — нет бога, кроме Аллаха — выгравировано на прямоугольном агате каллиграфией. Плечи оправы вычеканены вручную, а бока отделаны пунктиром. Слово таухид выражает веру, свободную от сомнений, поэтому мы назвали кольцо «Якин», то есть уверенность.",
   },
   n_edep: {
     tr: "Sekizgen akik taşın üzerine hat sanatıyla “Edep yâ Hû” kazınmıştır. Tekke ve dergâh kapılarının üzerine yazılan bu söz, “Ey Hû (Allah), edep!” demektir: Her an Allah'ın huzurunda olduğunu bilerek sözünü, bakışını ve davranışını edeple korumak. Kasanın yanları siyah mineli motiflerle elde işlenmiştir.",
@@ -1184,6 +1347,7 @@ const STORIES: Record<string, L> = {
     es: "«Edep ya Hu» está grabado en el ágata octogonal en caligrafía. Escrita sobre las puertas de las logias sufíes, la frase significa «¡Cortesía, oh Hu (Allah)!»: cuidar las palabras, la mirada y la conducta con delicadeza, sabiendo que uno está siempre en presencia de Allah. Los laterales de la montura están trabajados a mano con motivos ennegrecidos.",
     de: "„Edep ya Hu“ ist in Kalligrafie in den achteckigen Achat graviert. Der Spruch, der über den Türen der Sufi-Konvente steht, bedeutet „Anstand, o Hu (Allah)!“: Worte, Blick und Verhalten mit Feingefühl zu hüten, im Wissen, stets in Allahs Gegenwart zu sein. Die Seiten der Fassung sind von Hand mit schwarz ausgelegten Motiven gearbeitet.",
     ar: "نُقشت عبارة «أدب يا هو» على حجر العقيق المثمن بالخط العربي، وهي عبارة تُكتب فوق أبواب التكايا، ومعناها: الأدبَ يا هو (يا الله)؛ أي أن يحفظ المرء قوله ونظره وسلوكه بالأدب لعلمه أنه في حضرة الله دائمًا. ونُقش جانبا الإطار يدويًا بزخارف مملوءة بالأسود.",
+    ru: "На восьмиугольном агате каллиграфически выгравировано «Эдеп я Ху». Написанная над дверями суфийских лож, эта фраза означает «Вежливость, о Ху (Аллах)!»: следить за своими словами, взглядом и поведением с утонченностью, зная, что человек всегда находится в присутствии Аллаха. Боковые стороны декора обработаны вручную с использованием мотивов с черной заливкой.",
   },
   n_sir: {
     tr: "Sekizgen akik taşın üzerindeki kapak açılır ve altında gizli bir bölme ortaya çıkar; kapağın iç yüzü de elde hat işlemesiyle süslenmiştir. Kapağın dış yüzü geometrik motiflerle işlenmiştir. Kasanın yanlarındaki desenlerde ise Osmanlı gümüş işçiliğinin en zahmetli ve en kıymetli tekniklerinden biri olan savat kullanılmıştır: gümüşe elle oyulan desenlerin içi gümüş, bakır, kurşun ve kükürtten hazırlanan siyah savat alaşımıyla doldurulur, ardından ateşte eritilerek metale kalıcı olarak işlenir. Böylece motifler, gümüşün parlaklığı karşısında zamanla silinmeyen derin bir siyahla belirginleşir; bu emek isteyen teknik sayesinde yüzük, asırlık bir zanaatin imzasını taşır. Yüzüğe, yalnızca Allah ile kul arasında kalan gizli hali anlatan “Sır” adını verdik; içine küçük bir dua ya da sevdiğinize ait bir hatıra saklayabilirsiniz.",
@@ -1191,6 +1355,7 @@ const STORIES: Record<string, L> = {
     es: "La tapa sobre el ágata octogonal se abre y deja ver un compartimento secreto; el interior de la tapa está adornado con caligrafía grabada a mano. El exterior de la tapa lleva motivos geométricos, y los dibujos de los laterales de la montura están realizados en savat (nielado), una de las técnicas más laboriosas y apreciadas de la platería otomana: los surcos tallados a mano en la plata se rellenan con una aleación negra de plata, cobre, plomo y azufre, que luego se funde al fuego y queda unida para siempre al metal. Así los motivos resaltan con un negro profundo que no se borra frente al brillo de la plata y dan al anillo la firma de un oficio centenario. Llamamos al anillo «Sir», el secreto que queda entre el siervo y Allah; dentro puede guardar una pequeña oración o un recuerdo de un ser querido.",
     de: "Der Deckel über dem achteckigen Achat lässt sich öffnen und gibt ein geheimes Fach frei; die Innenseite des Deckels ist mit handgravierter Kalligrafie geschmückt. Die Außenseite trägt geometrische Motive; die Muster an den Seiten der Fassung sind in Savat-Technik (Niello) gearbeitet, einer der aufwendigsten und geschätztesten Techniken der osmanischen Silberschmiedekunst: Die von Hand ins Silber gravierten Vertiefungen werden mit einer schwarzen Legierung aus Silber, Kupfer, Blei und Schwefel gefüllt, die anschließend im Feuer geschmolzen und dauerhaft mit dem Metall verbunden wird. So heben sich die Motive in einem tiefen, unvergänglichen Schwarz vom Glanz des Silbers ab und verleihen dem Ring die Handschrift eines jahrhundertealten Handwerks. Wir nannten den Ring „Sir“, das Geheimnis, das zwischen dem Diener und Allah bleibt; darin lässt sich ein kleines Gebet oder ein Andenken an einen geliebten Menschen aufbewahren.",
     ar: "يُفتح الغطاء فوق حجر العقيق المثمن فتظهر تحته حجرة سرية، ويزيّن باطنَ الغطاء خطٌّ منقوش يدويًا، وظاهرَه زخارف هندسية. أما جانبا الإطار فقد نُفّذت نقوشهما بتقنية «السَّواد» (النيلّو)، وهي من أدقّ فنون الصياغة العثمانية وأثمنها: تُملأ النقوش المحفورة يدويًا في الفضة بخليط أسود من الفضة والنحاس والرصاص والكبريت، ثم يُصهر بالنار فيلتحم بالمعدن التحامًا دائمًا، فتبرز الزخارف بسوادٍ عميق لا يزول أمام لمعان الفضة، ويحمل الخاتم بذلك توقيع حرفة عمرها قرون. وسمّينا الخاتم «سرّ» وهو الحال الخفي بين العبد وربه، ويمكنك أن تحفظ فيه دعاءً صغيرًا أو تذكارًا من شخص عزيز.",
+    ru: "Крышка над восьмиугольным агатом открывается, открывая потайное отделение, а внутренняя часть крышки украшена каллиграфией, выгравированной вручную. Внешняя сторона крышки украшена геометрическими мотивами, а узоры по бокам оправы выполнены саватом (чернью), одной из самых требовательных и ценных техник османского серебряного дела: вырезанные вручную канавки в серебре заполняются черным сплавом серебра, меди, свинца и серы, который затем плавится в огне и навсегда вплавляется в металл. Мотивы глубокого черного цвета, которые не стираются под воздействием блеска серебра, придают кольцу свидетельство многовекового ремесла. Мы назвали кольцо «Сэр», тайну, которая остается между слугой и Аллахом; внутри можно хранить небольшую молитву или подарок на память о близком человеке.",
   },
   n_hatem: {
     tr: "Akik taşın üzerine Mühr-i Nebevî kazınmıştır: alttan yukarıya “Muhammed”, “Resûl” ve “Allah” kelimeleriyle “Muhammedün Resûlullah”. Peygamber Efendimiz ﷺ krallara gönderdiği mektupları üzerinde bu yazının bulunduğu gümüş yüzüğüyle mühürlerdi (Buhârî). Yüzüğe, “mühür” ve “sonuncu” anlamıyla Hâtemü'l-Enbiyâ'yı hatırlatan “Hatem” adını verdik; taşın etrafı örgü motifiyle, kasası noktalı işçilikle çevrilidir.",
@@ -1198,6 +1363,7 @@ const STORIES: Record<string, L> = {
     es: "El sello del Profeta está grabado en el ágata: de abajo arriba, las palabras «Muhammad», «Rasul» y «Allah», que se leen «Muhammadun Rasulullah». El Profeta ﷺ sellaba las cartas que enviaba a los reyes con un anillo de plata que llevaba estas palabras (Bujari). Llamamos al anillo «Hatem», que significa sello y también el último, en recuerdo del Sello de los Profetas; la piedra está enmarcada por un motivo de cordón y la montura por un trabajo de puntos.",
     de: "Das Siegel des Propheten ist in den Achat graviert: von unten nach oben die Wörter „Muhammad“, „Rasul“ und „Allah“, gelesen „Muhammadun Rasulullah“. Der Prophet ﷺ siegelte die Briefe, die er an Könige sandte, mit einem Silberring, der diese Worte trug (Buchari). Wir nannten den Ring „Hatem“ – Siegel und zugleich der Letzte –, in Erinnerung an das Siegel der Propheten; den Stein rahmt ein Kordelmotiv, die Fassung eine Punktarbeit.",
     ar: "نُقش على حجر العقيق الخاتم النبوي: من الأسفل إلى الأعلى «محمد» ثم «رسول» ثم «الله»، فتُقرأ «محمد رسول الله». وكان النبي ﷺ يختم الكتب التي أرسلها إلى الملوك بخاتم من فضة نُقش عليه هذا (رواه البخاري). وسمّينا الخاتم «خاتم» تذكيرًا بخاتم النبيين، ويحيط بالحجر نقش مجدول وبالإطار عمل منقّط.",
+    ru: "На агате выгравирована печать Пророка: снизу вверх слова «Мухаммед», «Расул» и «Аллах», читающиеся «Мухаммадун Расулуллах». Пророк ﷺ запечатывал письма, которые он отправлял царям, серебряным кольцом с этими словами (Бухари). Мы назвали кольцо «Хатем», что означает «печать» и «последнее», напоминая «Печать Пророков»; камень обрамлен веревочным мотивом, а оправа выполнена пунктиром.",
   },
   n_vakar: {
     tr: "Pürüzsüz, derin kızıl renkli dikdörtgen akik taş, kenarları elde oyulmuş gümüş bir kasaya oturtulmuştur. Yazısız, sade çizgisi her kıyafetle uyum sağlar ve günlük kullanım için idealdir. Yüzüğe, kibre düşmeden duran ağırbaşlılığı anlatan “Vakar” adını verdik; dilerseniz taşa isim ya da dua işlenebilir.",
@@ -1205,6 +1371,7 @@ const STORIES: Record<string, L> = {
     es: "Un ágata rectangular lisa, de rojo profundo, se asienta en una montura de plata con laterales grabados a mano. Sin inscripción, sus líneas limpias combinan con cualquier atuendo y son ideales para el uso diario. Llamamos al anillo «Vakar», la dignidad serena que no cae en la soberbia; si lo desea, se puede grabar un nombre o una oración en la piedra.",
     de: "Ein glatter, tiefroter rechteckiger Achat sitzt in einer Silberfassung mit handgravierten Seiten. Ohne Inschrift passt seine klare Linie zu jeder Kleidung und eignet sich für den Alltag. Wir nannten den Ring „Vakar“, die ruhige Würde ohne Hochmut; auf Wunsch kann ein Name oder Gebet in den Stein graviert werden.",
     ar: "حجر عقيق مستطيل أملس بلون أحمر عميق، مثبّت في إطار فضي منقوش الجانبين يدويًا. خطوطه البسيطة بلا كتابة تناسب كل لباس والاستعمال اليومي، وسمّيناه «وقار» أي الرزانة بلا كبر، ويمكن نقش اسم أو دعاء على الحجر عند الطلب.",
+    ru: "Гладкий прямоугольный агат темно-красного цвета помещен в серебряную оправу с выгравированными вручную сторонами. Без надписи, его чистые линии сочетаются с любым нарядом и подходят для повседневной носки. Мы назвали кольцо «Вакар», тихое достоинство, лишенное гордости; При желании на камне можно выгравировать имя или молитву.",
   },
   n_ihlas: {
     tr: "Gümüşün üzerine kabartma hatla Fâtiha Suresi'nin 5. ayeti işlenmiştir: “İyyâke na'büdü ve iyyâke neste'în” — Yalnız Sana kulluk eder, yalnız Senden yardım dileriz. Her namazda tekrarlanan bu ayet, ibadetin yalnızca Allah için yapılmasının ve O'ndan başkasına el açmamanın özüdür. Yüzüğe bu yüzden saf samimiyet anlamındaki “İhlas” adını verdik.",
@@ -1212,6 +1379,7 @@ const STORIES: Record<string, L> = {
     es: "La aleya 5 de la sura Al-Fatiha está trabajada en la plata en caligrafía en relieve: «Iyyaka na'budu wa iyyaka nasta'in», solo a Ti adoramos y solo a Ti pedimos ayuda. Repetida en cada oración, esta aleya es la esencia de adorar solo a Allah y no acudir a nadie más que a Él; por eso llamamos al anillo «Ihlas», la sinceridad pura.",
     de: "Vers 5 der Sure Al-Fatiha ist in erhabener Kalligrafie ins Silber gearbeitet: „Iyyaka na'budu wa iyyaka nasta'in“ – Dir allein dienen wir, und Dich allein bitten wir um Hilfe. Dieser Vers, in jedem Gebet wiederholt, ist der Kern davon, allein Allah zu dienen und sich an niemanden sonst zu wenden – darum heißt der Ring „Ihlas“, aufrichtige Reinheit.",
     ar: "نُقشت على الفضة بخط بارز الآية الخامسة من سورة الفاتحة: «إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ». وهذه الآية التي تتكرر في كل صلاة جوهر إخلاص العبادة لله وحده وألا يُستعان بغيره، ولذلك سمّينا الخاتم «إخلاص».",
+    ru: "На серебре рельефной каллиграфией высечен 5-й стих суры «Аль-Фатиха»: «Ийяка набуду ва ийяка настаин» — Тебе одному мы поклоняемся, и Тебя одного просим о помощи. Повторяемый в каждой молитве, этот стих является сутью поклонения одному только Аллаху и обращения ни к кому, кроме Него, поэтому мы назвали кольцо «Ихлас», чистая искренность.",
   },
   n_tevekkul: {
     tr: "Dikdörtgen akik taşın üzerine kûfi tarzda Fâtiha Suresi'nin 5. ayeti kazınmıştır: “İyyâke na'büdü ve iyyâke neste'în” — Yalnız Sana kulluk eder, yalnız Senden yardım dileriz. Ayet, kulun elinden gelen gayreti gösterip sonucu Allah'a bırakmasının, yani tevekkülün özüdür. Kasanın omuzları kalem işi oymalarla elde işlenmiştir.",
@@ -1219,6 +1387,7 @@ const STORIES: Record<string, L> = {
     es: "La aleya 5 de la sura Al-Fatiha está grabada en el ágata rectangular en estilo cúfico: «Iyyaka na'budu wa iyyaka nasta'in», solo a Ti adoramos y solo a Ti pedimos ayuda. La aleya es la esencia del tawakkul: hacer todo lo posible y dejar el resultado en manos de Allah. Los hombros de la montura están cincelados a mano.",
     de: "Vers 5 der Sure Al-Fatiha ist im kufischen Stil in den rechteckigen Achat graviert: „Iyyaka na'budu wa iyyaka nasta'in“ – Dir allein dienen wir, und Dich allein bitten wir um Hilfe. Der Vers ist der Kern des Tawakkul: sein Bestes zu geben und das Ergebnis Allah zu überlassen. Die Schultern der Fassung sind von Hand ziseliert.",
     ar: "نُقشت على حجر العقيق المستطيل بأسلوب كوفي الآية الخامسة من سورة الفاتحة: «إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ». وهي جوهر التوكل: أن يبذل العبد جهده ثم يفوّض النتيجة إلى الله. ونُقش كتفا الإطار يدويًا.",
+    ru: "На прямоугольном агате в куфическом стиле выгравирован 5-й стих суры «Аль-Фатиха»: «Ийяка на'буду ва ийяка настаин» — Тебе одному мы поклоняемся, и Тебя одного просим о помощи. В этом аяте заключена суть таваккуля: делать все возможное и оставлять результат на усмотрение Аллаха. Плечи оправы чеканены вручную.",
   },
   n_beka: {
     tr: "Hematit taşın üzerine hat sanatıyla “Yâ Hayyu yâ Kayyûm” kazınmıştır: Ey her zaman diri olan, ey her şeyi ayakta tutan Allah. Peygamber Efendimiz ﷺ bir sıkıntıyla karşılaştığında “Yâ Hayyu yâ Kayyûm, bi rahmetike esteğîs” — Ey Hayy, ey Kayyûm, rahmetinle yardım dilerim — diye dua ederdi (Tirmizî). Yüzüğe, sonsuz olanın yalnızca Allah olduğunu anlatan “Beka” adını verdik; kasası kıvrık dal oymalarıyla işlenmiştir.",
@@ -1226,6 +1395,7 @@ const STORIES: Record<string, L> = {
     es: "«Ya Hayyu ya Qayyum», oh Siempre Vivo, oh Sustentador de todo, está grabado en la hematita en caligrafía. Cuando el Profeta ﷺ pasaba por una dificultad, rezaba: «Ya Hayyu ya Qayyum, bi rahmatika astaghith», oh Siempre Vivo, oh Sustentador, por Tu misericordia pido ayuda (Tirmidhi). Llamamos al anillo «Beka», lo perdurable, porque solo Allah permanece; la montura está grabada con hojas en espiral.",
     de: "„Ya Hayyu ya Qayyum“ – o ewig Lebendiger, o Erhalter von allem – ist in Kalligrafie in den Hämatit graviert. Wenn den Propheten ﷺ etwas bedrückte, betete er: „Ya Hayyu ya Qayyum, bi rahmatika astaghith“ – o ewig Lebendiger, o Erhalter, bei Deiner Barmherzigkeit suche ich Hilfe (Tirmidhi). Wir nannten den Ring „Beka“, das Ewige, denn nur Allah bleibt; die Fassung ist mit Rankenmotiven graviert.",
     ar: "نُقشت «يا حي يا قيوم» على حجر الهيماتيت بالخط العربي. وكان النبي ﷺ إذا كربه أمر قال: «يا حيُّ يا قيومُ برحمتك أستغيث» (رواه الترمذي). وسمّينا الخاتم «بقاء» لأن الباقي هو الله وحده، ونُقش إطاره بزخارف الأغصان الملتفة.",
+    ru: "«Йа Хайю йа Кайюм» — «О Вечно Живущий, О Вседержитель» — выгравировано на гематите каллиграфической надписью. Всякий раз, когда Пророк ﷺ был обеспокоен, он молился: «Йа Хайю йа Кайюм, би рахматика астагит» — О Вечноживущий, о Поддерживающий, по Твоей милости я обращаюсь за помощью (Тирмизи). Мы назвали кольцо «Бека», вечное, ибо только Аллах выдерживает; обстановка выгравирована прокручивающимися листьями.",
   },
   n_heybet: {
     tr: "İri, yuvarlak akik taşın üzerine el oymasıyla kanatlarını açmış bir kartal, iki yanında aslan figürleri ve üstte hilal ile yıldız işlenmiştir. Taşı çevreleyen kasa dalgalı kalem işi oymalarla, omuzları çiçek motifleriyle süslenmiştir. Gücü ve asaleti anlatan bu güçlü kompozisyona, bakanda saygı uyandıran duruşu anlatan “Heybet” adını verdik.",
@@ -1233,6 +1403,7 @@ const STORIES: Record<string, L> = {
     es: "Una gran ágata redonda está tallada a mano con un águila de alas desplegadas, figuras de leones a cada lado y una media luna con estrella encima. La montura alrededor de la piedra está grabada con ondas cinceladas y los hombros con motivos florales. Para esta composición de fuerza y nobleza elegimos el nombre «Heybet», una presencia que inspira respeto.",
     de: "Ein großer runder Achat ist von Hand mit einem Adler mit ausgebreiteten Schwingen, Löwenfiguren zu beiden Seiten sowie Halbmond und Stern darüber geschnitzt. Die Fassung um den Stein ist mit fließenden ziselierten Wellen, die Schultern mit Blumenmotiven graviert. Für diese kraftvolle Komposition aus Stärke und Adel wählten wir den Namen „Heybet“ – eine Ausstrahlung, die Respekt gebietet.",
     ar: "نُقش على حجر العقيق الكبير المستدير يدويًا نسرٌ باسط جناحيه، وعلى جانبيه أسدان، وفوقه هلال ونجمة. ويحيط بالحجر إطار منقوش بموجات يدوية، وزُيّن كتفاه بزخارف نباتية. ولهذا التكوين الذي يعبّر عن القوة والأصالة اخترنا اسم «هيبة».",
+    ru: "На большом круглом агате вручную вырезано изображение орла, расправившего крылья, фигур львов по обе стороны, а также полумесяца и звезды наверху. Оправа вокруг камня украшена струящимися волнами ручной чеканки, а плечи - цветочными мотивами. Для этого смелого сочетания силы и благородства мы выбрали имя «Эйбет», присутствие которого вызывает уважение.",
   },
   n_vav: {
     tr: "Akik taşın üzerine, kıvrık dal motiflerinin ortasında Vav harfi elde oyulmuştur. Tasavvufta Vav, ana rahmindeki ceninin ve secdeye kapanan kulun şeklini andırdığı için tevazunun ve kulluğun sembolüdür. Taşı altın kaplama bir taç çevreler; omuzlar sarı zirkon taşlarla ve kalem işi oymalarla süslenmiştir.",
@@ -1240,6 +1411,7 @@ const STORIES: Record<string, L> = {
     es: "La letra Vav está tallada a mano en el ágata entre hojas en espiral. En el sufismo, la Vav, con forma de niño en el vientre materno y de siervo postrado, es símbolo de humildad y servidumbre. Una corona bañada en oro enmarca la piedra, y los hombros llevan circonitas amarillas y grabado a buril.",
     de: "Der Buchstabe Vav ist inmitten von Rankenmotiven von Hand in den Achat geschnitzt. Im Sufismus gilt das Vav, das einem Kind im Mutterleib und einem in Niederwerfung gebeugten Diener gleicht, als Sinnbild der Demut und Dienerschaft. Eine vergoldete Krone umrahmt den Stein, die Schultern sind mit gelben Zirkonen und Stichelgravur verziert.",
     ar: "نُقش حرف الواو يدويًا على حجر العقيق وسط زخارف الأغصان الملتفة. والواو في التصوف رمز للتواضع والعبودية، لأنه يشبه الجنين في رحم أمه والعبد الساجد. ويحيط بالحجر تاج مطلي بالذهب، وزُيّن الكتفان بأحجار زركون صفراء ونقش يدوي.",
+    ru: "Буква Вав вырезана вручную на агате среди завитков листьев. В суфизме Вав в форме ребенка в утробе матери и склоненного в поклоне слуги является символом смирения и служения. Позолоченная корона обрамляет камень, а плечики украшены желтыми цирконами и гравировкой ручной чеканки.",
   },
   n_girift: {
     tr: "Taşsız bu yüzükte gümüş, iç içe geçmiş harf formlarıyla ajur (delikli) olarak şekillendirilmiştir; ışık boşluklardan geçerek her açıdan farklı bir görünüm verir. Hat sanatında harflerin iç içe girdiği girift kompozisyonlardan ilham alınmıştır. Yüzüğe, karmaşık görünen ama kusursuz bir düzene sahip olan hayatı ve kaderi anlatan “Girift” adını verdik.",
@@ -1247,6 +1419,7 @@ const STORIES: Record<string, L> = {
     es: "En este anillo sin piedra, la plata está calada con formas de letras entrelazadas; la luz que atraviesa los huecos le da un aspecto distinto desde cada ángulo. Se inspira en las composiciones girift de la caligrafía, donde las letras se entretejen. Llamamos al anillo «Girift», intrincado, como la vida y el destino, que parecen enredados pero siguen un orden perfecto.",
     de: "Bei diesem Ring ohne Stein ist das Silber in Durchbrucharbeit aus verschlungenen Buchstabenformen gestaltet; das Licht, das durch die Öffnungen fällt, gibt ihm aus jedem Winkel ein anderes Aussehen. Vorbild sind die Girift-Kompositionen der Kalligrafie, in denen Buchstaben ineinandergreifen. Wir nannten den Ring „Girift“, verschlungen – wie Leben und Schicksal, die verworren scheinen und doch einer vollkommenen Ordnung folgen.",
     ar: "في هذا الخاتم الخالي من الحجر شُكّلت الفضة تخريمًا بأشكال حروف متداخلة، فيمر الضوء من فتحاتها ليمنحها مظهرًا مختلفًا من كل زاوية. وهو مستوحى من التراكيب المتداخلة في فن الخط، وسمّيناه «جريفت» أي المتشابك، كالحياة والقدر يبدوان متشابكين وهما على نظام محكم.",
+    ru: "В этом кольце без камней серебро имеет ажурную форму из переплетенных букв; Свет, проходящий через отверстия, придает разный вид со всех сторон. Он вдохновлен каллиграфическими композициями, в которых буквы переплетаются друг с другом. Мы назвали кольцо «Гирифт», сложное — как жизнь и судьба, которые кажутся запутанными, но следуют безупречному порядку.",
   },
   n_emin: {
     tr: "Yuvarlak akik taşın üzerine, örgü motifli bir çerçeve içinde Mühr-i Nebevî kazınmıştır: alttan yukarıya “Muhammed”, “Resûl” ve “Allah” — Muhammedün Resûlullah. Peygamber Efendimiz ﷺ mektuplarını bu yazının bulunduğu gümüş yüzüğüyle mühürlerdi (Buhârî). Yüzüğe, O'nun peygamberlikten önce de “güvenilir” diye anıldığı “el-Emîn” lakabından gelen “Emin” adını verdik.",
@@ -1254,6 +1427,7 @@ const STORIES: Record<string, L> = {
     es: "El sello del Profeta está grabado en el ágata redonda dentro de un marco de cordón: de abajo arriba, «Muhammad», «Rasul» y «Allah», Muhammadun Rasulullah. El Profeta ﷺ sellaba sus cartas con un anillo de plata que llevaba estas palabras (Bujari). Llamamos al anillo «Emin» por su título al-Amin, «el digno de confianza», con el que era conocido incluso antes de la profecía.",
     de: "Das Siegel des Propheten ist in einem Kordelrahmen in den runden Achat graviert: von unten nach oben „Muhammad“, „Rasul“ und „Allah“ – Muhammadun Rasulullah. Der Prophet ﷺ siegelte seine Briefe mit einem Silberring, der diese Worte trug (Buchari). Wir nannten den Ring „Emin“ nach seinem Beinamen al-Amin, „der Vertrauenswürdige“, unter dem er schon vor dem Prophetentum bekannt war.",
     ar: "نُقش على حجر العقيق المستدير داخل إطار مجدول الخاتمُ النبوي: من الأسفل إلى الأعلى «محمد» ثم «رسول» ثم «الله». وكان النبي ﷺ يختم كتبه بخاتم من فضة نُقش عليه هذا (رواه البخاري). وسمّينا الخاتم «أمين» من لقبه ﷺ «الأمين» الذي عُرف به قبل البعثة.",
+    ru: "Печать Пророка выгравирована на круглом агате в рамке с веревочным мотивом: снизу вверх «Мухаммад», «Расул» и «Аллах» — Мухаммадун Расулулла. Пророк ﷺ запечатывал свои письма серебряным кольцом с этими словами (Бухари). Мы назвали кольцо «Эмин» в честь его титула аль-Амин, «надежный», под которым он был известен еще до пророчества.",
   },
   n_semse: {
     tr: "Yuvarlak akik taşın ortasındaki madalyonun içine hat sanatıyla Besmele kazınmış, madalyonun çevresi taşın kenarına kadar uzanan rûmî kıvrımlarla oyulmuştur. Her hayırlı işe Allah'ın adıyla başlamak sünnettir; Besmele, kulun her adımını Rahmân ve Rahîm olan Rabbine bağlar. Bu düzen, kitap kaplarında ve kubbelerde merkezden dışa yayılan güneş motifini andırdığı için yüzüğe “Şemse” adını verdik.",
@@ -1261,6 +1435,7 @@ const STORIES: Record<string, L> = {
     es: "La Basmala está tallada en caligrafía dentro de un medallón en el centro del ágata redonda, y el campo que lo rodea está tallado con volutas rumi hasta el borde de la piedra. Comenzar toda buena obra en el nombre de Allah es práctica del Profeta ﷺ; la Basmala une cada paso del siervo al Clemente, al Misericordioso. Como el diseño recuerda el motivo solar que irradia del centro en encuadernaciones y cúpulas, llamamos al anillo «Semse».",
     de: "Die Basmala ist in Kalligrafie in ein Medaillon in der Mitte des runden Achats geschnitzt, das Feld darum mit Rumi-Ranken bis zum Rand des Steins. Jedes gute Werk im Namen Allahs zu beginnen, ist Brauch des Propheten ﷺ; die Basmala verbindet jeden Schritt des Dieners mit dem Allerbarmer, dem Barmherzigen. Weil das Muster an das Sonnenmotiv erinnert, das auf Bucheinbänden und Kuppeln aus der Mitte strahlt, nannten wir den Ring „Semse“.",
     ar: "نُقشت البسملة بالخط العربي داخل شمسة في وسط حجر العقيق المستدير، ونُقش ما حولها بزخارف رومية ملتفة حتى حافة الحجر. ومن السنة أن يُبدأ كل عمل صالح باسم الله، فالبسملة تصل كل خطوة للعبد بربه الرحمن الرحيم. ولأن التصميم يشبه زخرفة الشمسة المشعّة من المركز في جلود الكتب والقباب سمّينا الخاتم «شمسة».",
+    ru: "Басмала каллиграфически вырезана внутри медальона в центре круглого агата, а поле вокруг него изрезано свитками руми, доходящими до края камня. Начинать каждое доброе дело во имя Аллаха – это практика Пророка ﷺ; Басмала привязывает каждый шаг слуги к Милостивому, Милосердному. Поскольку дизайн напоминает солнечный мотив, исходящий из центра обложек книг и куполов, мы назвали кольцо «Семсе».",
   },
   n_vav_kolye: {
     tr: "Yuvarlak akik taşın üzerine Vav harfi elde oyulmuş, taş kalem işi süslemeli gümüş bir çerçeveye oturtulmuştur; kolyenin arka yüzü geometrik motiflerle işlenmiştir. Tasavvufta Vav, ana rahmindeki ceninin ve secdeye kapanan kulun şeklini andırdığı için tevazunun ve kulluğun sembolüdür. Gümüş zinciriyle birlikte sunulur; kadın ve erkek kullanımına uygundur.",
@@ -1268,6 +1443,7 @@ const STORIES: Record<string, L> = {
     es: "La letra Vav está tallada a mano en un ágata redonda engastada en un marco de plata cincelado; el reverso del colgante lleva motivos geométricos. En el sufismo, la Vav, con forma de niño en el vientre materno y de siervo postrado, es símbolo de humildad y servidumbre. Se entrega con cadena de plata y es apto para mujer y hombre.",
     de: "Der Buchstabe Vav ist von Hand in einen runden Achat geschnitzt, der in einem ziselierten Silberrahmen sitzt; die Rückseite des Anhängers trägt geometrische Motive. Im Sufismus gilt das Vav, das einem Kind im Mutterleib und einem in Niederwerfung gebeugten Diener gleicht, als Sinnbild der Demut und Dienerschaft. Mit Silberkette, für Damen und Herren geeignet.",
     ar: "نُقش حرف الواو يدويًا على حجر عقيق مستدير مثبت في إطار فضي منقوش، ونُقش ظهر القلادة بزخارف هندسية. والواو في التصوف رمز للتواضع والعبودية لأنه يشبه الجنين في رحم أمه والعبد الساجد. تُقدَّم مع سلسلة فضية، وتناسب النساء والرجال.",
+    ru: "Буква Вав вырезана вручную на круглом агате в серебряной рамке ручной чеканки; задняя часть кулона связана геометрическими мотивами. В суфизме Вав в форме ребенка в утробе матери и склоненного в поклоне слуги является символом смирения и служения. Он поставляется с серебряной цепочкой и подходит как женщинам, так и мужчинам.",
   },
   bismillah_onyx: {
     tr: "Siyah oniks taşın üzerine hat sanatıyla Besmele kazınmıştır: “Bismillâhirrahmânirrahîm” — Rahmân ve Rahîm olan Allah'ın adıyla.",
@@ -1275,6 +1451,7 @@ const STORIES: Record<string, L> = {
     es: "La basmala está grabada en el ónix negro en caligrafía: «Bismillahir-Rahmanir-Rahim», en el nombre de Allah, el Clemente, el Misericordioso.",
     de: "Die Basmala ist in Kalligrafie in den schwarzen Onyx graviert: „Bismillahir-Rahmanir-Rahim“ – im Namen Allahs, des Allerbarmers, des Barmherzigen.",
     ar: "نُقشت البسملة على حجر الأونيكس الأسود بالخط العربي: «بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ».",
+    ru: "На черном ониксе басмала выгравирована каллиграфией: «Бисмиллахир-Рахманир-Рахим» — во имя Аллаха Милостивого, Милосердного.",
   },
 };
 
@@ -1287,6 +1464,7 @@ const NOTES: Record<string, L> = {
     es: "La piedra va en un engaste de garras y los laterales están cubiertos de grandes flores y hojas talladas. Gulsen, «jardín de rosas», toma su nombre de este trabajo floral.",
     de: "Der Stein sitzt in einer Krappenfassung, die Seiten sind mit großen geschnitzten Blüten und Blättern bedeckt. Gulsen, „Rosengarten“, verdankt seinen Namen dieser floralen Arbeit.",
     ar: "ثُبّت الحجر في إطار بمخالب، وغُطّي جانبا الخاتم بنقوش كبيرة للزهور والأوراق، ومن هذا العمل المزهر أخذ «كلشن» أي حديقة الورد اسمه.",
+    ru: "Камень помещен в оправу в виде когтя, а стороны кольца покрыты большими резными цветами и листьями. Гюльсен, «розарий», получил свое название от этого цветочного произведения.",
   },
   u_hilye: {
     tr: "Kasanın omuzlarındaki kıvrık dal oymaları altın kaplama hatlarla vurgulanmış, siyah zemin üzerinde gümüş desen öne çıkarılmıştır. Hilye, “süs, zinet” anlamıyla bu zarif işçiliğe ad olmuştur.",
@@ -1294,6 +1472,7 @@ const NOTES: Record<string, L> = {
     es: "Las volutas de los hombros están realzadas con líneas bañadas en oro, y el dibujo de plata destaca sobre un fondo ennegrecido. Hilye, «adorno», da nombre a este trabajo refinado.",
     de: "Die Ranken an den Schultern sind mit vergoldeten Linien betont, das Silbermuster hebt sich von einem geschwärzten Grund ab. Hilye, „Schmuck“, gibt dieser feinen Arbeit ihren Namen.",
     ar: "أُبرزت نقوش الأغصان على الكتفين بخطوط مطلية بالذهب، ويظهر النقش الفضي على أرضية مسودّة، و«حلية» أي الزينة اسمٌ لهذا العمل الرقيق.",
+    ru: "Завитки на плечах выделены позолоченными линиями, а серебряный узор выделяется на черненом фоне. Хиле, «украшение», называет эту изысканную работу.",
   },
   u_revak: {
     tr: "Kasanın yanları ajur (delikli) kemerler ve rûmî motiflerle işlenmiş, ışık bu boşluklardan taşın altına süzülür. Avluları çevreleyen kemerli gölgelikler olan revaklardan esinlenerek “Revâk” adını verdik.",
@@ -1301,6 +1480,7 @@ const NOTES: Record<string, L> = {
     es: "Los laterales están calados con arcos y motivos rumi que dejan pasar la luz bajo la piedra. Lo llamamos «Revak» por los pórticos de arcos que rodean los patios de las mezquitas.",
     de: "Die Seiten sind in Durchbrucharbeit mit Bögen und Rumi-Motiven gearbeitet, sodass Licht unter den Stein fällt. Der Name „Revak“ erinnert an die Bogengänge um Moscheehöfe.",
     ar: "نُقش جانبا الخاتم بأقواس مخرّمة وزخارف رومية يمر منها الضوء تحت الحجر، وسمّيناه «رواق» تيمّنًا بالأروقة المقوّسة حول صحون المساجد.",
+    ru: "Боковые стороны обработаны ажурными арками и мотивами руми, пропускающими свет под камень. Мы назвали его «Ревак» в честь аркадных портиков вокруг дворов мечети.",
   },
   u_mizan: {
     tr: "Taşın yuvası boncuk dizisiyle çevrilmiş, omuzlardan birine yuvarlak bir mühür yüzeyi yerleştirilmiştir; bu yüzey dilerseniz harf veya isimle kişiselleştirilebilir. “Terazi, ölçü” anlamındaki Mizan, iki yanın dengeli duruşunu anlatır.",
@@ -1308,6 +1488,7 @@ const NOTES: Record<string, L> = {
     es: "El bisel está rodeado de cuentas y uno de los hombros lleva un sello redondo que puede personalizarse con una letra o un nombre. Mizan, «la balanza», habla del equilibrio de sus dos lados.",
     de: "Die Fassung ist von Perlen umgeben, eine Schulter trägt eine runde Siegelfläche, die mit einem Buchstaben oder Namen personalisiert werden kann. Mizan, „die Waage“, steht für das Gleichgewicht beider Seiten.",
     ar: "يحيط بالإطار عقدٌ من الخرز، ويحمل أحد الكتفين سطح ختم مستديرًا يمكن نقش حرف أو اسم عليه، و«ميزان» يعبّر عن توازن جانبيه.",
+    ru: "Безель украшен бусинами, а на одном плече имеется круглая уплотнительная поверхность, на которую можно персонализировать букву или имя. Мизан, «равновесие», говорит о сбалансированной гармонии двух сторон.",
   },
   u_vefa: {
     tr: "Pürüzsüz bir yuvaya oturan taşın yanında yalnızca omuzlar zarif bir oymayla işlenmiştir; ince yapısıyla her gün takılmaya uygundur. Bezm-i Elest'te verilen söze sadakati anlatan “Vefa”, ömür boyu taşınacak bir yüzüğe yakışır.",
@@ -1315,6 +1496,7 @@ const NOTES: Record<string, L> = {
     es: "La piedra va en un bisel liso y solo los hombros llevan un grabado delicado; su línea fina es ideal para el uso diario. Vefa, la fidelidad al pacto primordial, conviene a un anillo para toda la vida.",
     de: "Der Stein sitzt in einer glatten Fassung, nur die Schultern tragen eine feine Gravur; die schlanke Form eignet sich für jeden Tag. Vefa, die Treue zum Urbund, passt zu einem Ring fürs Leben.",
     ar: "يستقر الحجر في إطار أملس ولا يحمل النقش إلا الكتفان، وبنيته الرفيعة مناسبة للاستعمال اليومي، و«وفاء» أي الوفاء بالعهد الأول يليق بخاتم يُلبس العمر كله.",
+    ru: "Камень заключен в гладкий безель, и только на плечах имеется изящная гравировка; его тонкая конструкция подходит для повседневного ношения. Вефа, верность изначальному завету, подходит кольцу, предназначенному для ношения на всю жизнь.",
   },
   u_kerem: {
     tr: "İri ve açık tonlu oval taş, geniş omuzları saran kıvrık yaprak oymalarıyla çerçevelenmiştir. Karşılıksız cömertliği anlatan “Kerem”, taşın gösterişli ve cömert duruşuna ad olmuştur.",
@@ -1322,6 +1504,7 @@ const NOTES: Record<string, L> = {
     es: "Una gran piedra oval de tono claro está enmarcada por hombros anchos envueltos en hojas en espiral. Kerem, la generosidad sin esperar nada, da nombre a su presencia amplia y generosa.",
     de: "Ein großer, heller ovaler Stein wird von breiten Schultern mit Rankenblättern gerahmt. Kerem, Großzügigkeit ohne Gegenleistung, benennt seine kraftvolle, großzügige Erscheinung.",
     ar: "حجر بيضاوي كبير فاتح اللون يحيط به كتفان عريضان تلفّهما نقوش الأوراق، و«كرم» أي الجود بلا مقابل اسمٌ لحضوره السخي المهيب.",
+    ru: "Большой светлый овальный камень обрамлен широкими плечами, обернутыми завитками листьев. Керем, щедрость, которая ничего не просит взамен, называет смелое и щедрое присутствие камня.",
   },
   u_vecd: {
     tr: "Derin, koyu kızıl tonlu taşı saran kasa, birbirine dolanan kıvrık dal oymalarıyla baştan sona işlenmiştir. Zikirle ruhun coşkuya gelmesini anlatan “Vecd”, bu akıcı desenin ruhunu yansıtır.",
@@ -1329,6 +1512,7 @@ const NOTES: Record<string, L> = {
     es: "Una piedra de rojo oscuro y profundo va en una montura grabada por completo con volutas entrelazadas. Vecd, el éxtasis del alma en el recuerdo de Allah, refleja el espíritu fluido del dibujo.",
     de: "Ein tiefdunkelroter Stein sitzt in einer durchgehend mit verschlungenen Ranken gravierten Fassung. Vecd, die Verzückung der Seele im Gedenken, spiegelt den fließenden Geist des Musters.",
     ar: "حجر أحمر داكن عميق في إطار نُقش كله بأغصان متشابكة، و«وجد» أي نشوة الروح بالذكر يعكس روح هذا النقش المنساب.",
+    ru: "Глубокий темно-красный камень находится в оправе, украшенной переплетающимися свитками. Вечд, восторг души при воспоминании, отражает плавный дух узора.",
   },
   u_mihrap: {
     tr: "Geniş taşı tutan omuzlar, siyah mine dolgulu çiçek ve kemer motifleriyle derin bir kontrast kazanır. Kemer biçimli omuz detayları camideki mihrabı andırdığı için yüzüğe “Mihrap” adını verdik.",
@@ -1336,6 +1520,7 @@ const NOTES: Record<string, L> = {
     es: "Los hombros que sujetan la ancha piedra ganan contraste con motivos de flores y arcos ennegrecidos. Como los arcos de los hombros recuerdan el mihrab de una mezquita, lo llamamos «Mihrap».",
     de: "Die Schultern, die den breiten Stein halten, gewinnen durch schwarz ausgelegte Blüten- und Bogenmotive tiefen Kontrast. Da die Bogenformen an den Mihrab einer Moschee erinnern, heißt der Ring „Mihrap“.",
     ar: "يكتسب الكتفان الحاملان للحجر العريض تباينًا عميقًا بزخارف زهور وأقواس مملوءة بالأسود، ولأن الأقواس تذكّر بمحراب المسجد سمّيناه «محراب».",
+    ru: "Плечи, удерживающие широкий камень, создают глубокий контраст с черными цветочными и арочными мотивами. Поскольку арочные детали плеча напоминают михраб мечети, мы назвали кольцо «Михрап».",
   },
   u_yekta: {
     tr: "Taşın yuvası iri boncuklarla çevrilmiş, omuzlardaki kıvrımlar altın kaplama noktalarla zenginleştirilmiştir. “Eşi benzeri olmayan, tek” anlamındaki Yektâ, bu tek üretim parçanın adıdır.",
@@ -1343,6 +1528,7 @@ const NOTES: Record<string, L> = {
     es: "El bisel está rodeado de grandes cuentas y las volutas de los hombros se enriquecen con puntos bañados en oro. Yekta, «único en su clase», da nombre a esta pieza de producción única.",
     de: "Die Fassung ist von großen Perlen umgeben, die Ranken an den Schultern sind mit vergoldeten Punkten verziert. Yekta, „einzigartig“, benennt dieses Einzelstück.",
     ar: "يحيط بالإطار خرز كبير، وزُيّنت نقوش الكتفين بنقاط مطلية بالذهب، و«يكتا» أي الفريد الذي لا نظير له اسمٌ لهذه القطعة الوحيدة.",
+    ru: "Безель украшен крупными бусинами, а завитки на плечах украшены позолоченными точками. Йекта, «единственный в своем роде», называет это изделие, сделанное в единственном экземпляре.",
   },
   u_nadide: {
     tr: "Omuzlar dantel gibi ajur işçilikle oyulmuş, taşın yuvası ince tırnaklarla tutturulmuştur. “Az bulunur, görülmemiş güzellikte” anlamındaki Nadide, bu ince işçiliğe ad olmuştur.",
@@ -1350,6 +1536,7 @@ const NOTES: Record<string, L> = {
     es: "Los hombros están calados como un encaje y la piedra va sujeta con finas garras. Nadide, «raro, de belleza nunca vista», da nombre a esta delicada artesanía.",
     de: "Die Schultern sind wie Spitze durchbrochen, der Stein wird von feinen Krappen gehalten. Nadide, „selten, von nie gesehener Schönheit“, benennt diese zarte Handarbeit.",
     ar: "خُرّم الكتفان كالدانتيل، وثُبّت الحجر بمخالب دقيقة، و«نادرة» أي القليلة ذات الجمال غير المسبوق اسمٌ لهذه الصنعة الرقيقة.",
+    ru: "Плечи пронизаны, как кружева, ажуром, а камень удерживаются тонкими когтями. Надид называет это тонкое мастерство «редкой, невиданной красоты».",
   },
   u_berceste: {
     tr: "Omuzlar ince tırtıklı bir dokuyla işlenmiş, taşın çevresi altın kaplama bir çizgiyle vurgulanmıştır. Bir eserin en seçkin, tek başına ayakta duran parçasına verilen ad olan “Berceste”, bu yüzüğe yakışır.",
@@ -1357,6 +1544,7 @@ const NOTES: Record<string, L> = {
     es: "Los hombros llevan una fina textura moleteada y una línea bañada en oro realza el contorno de la piedra. Berceste, el verso más bello de un poema, que se sostiene por sí solo, le sienta bien.",
     de: "Die Schultern tragen eine feine Rändelstruktur, eine vergoldete Linie betont die Einfassung des Steins. Berceste, der schönste Vers eines Gedichts, der für sich steht, passt zu diesem Ring.",
     ar: "نُقش الكتفان بملمس محبّب دقيق، وأُبرز محيط الحجر بخط مطلي بالذهب، و«برجسته» أي أجمل بيت في القصيدة القائم بذاته اسم يليق بهذا الخاتم.",
+    ru: "Плечики обработаны тонкой рифленой текстурой, а позолоченная линия подчеркивает окантовку камня. Берчесте, лучшая строка стихотворения, стоящая сама по себе, подходит к этому кольцу.",
   },
   u_tuba: {
     tr: "Kasanın yanları, taşı kucaklayan ağaç dalları biçiminde ajur olarak oyulmuştur. Cennette kökleri yukarıda, dalları aşağıda olduğu anlatılan Tûbâ ağacından esinlenerek yüzüğe “Tûbâ” adını verdik.",
@@ -1364,6 +1552,7 @@ const NOTES: Record<string, L> = {
     es: "Los laterales están calados en forma de ramas que abrazan la piedra. Lo llamamos «Tuba» por el árbol del Paraíso del que se dice que tiene las raíces arriba y las ramas abajo.",
     de: "Die Seiten sind in Form von Ästen durchbrochen, die den Stein umarmen. Der Name „Tuba“ erinnert an den Paradiesbaum, dessen Wurzeln oben und Zweige unten sein sollen.",
     ar: "خُرّم جانبا الخاتم على هيئة أغصان شجرة تحتضن الحجر، وسمّيناه «طوبى» تيمّنًا بشجرة الجنة.",
+    ru: "Боковые стороны пронизаны в виде ветвей деревьев, обнимающих камень. Мы назвали кольцо «Туба» в честь райского дерева, у которого, как говорят, корни вверху, а ветви внизу.",
   },
   u_ferid: {
     tr: "Koyu tonlu taşı altın kaplama sivri bir taç tutar; omuzlar sık noktalı bir dokuyla işlenmiştir. “Tek olan, benzeri bulunmayan” anlamındaki Ferîd, bu gösterişli kontrastın adıdır.",
@@ -1371,6 +1560,7 @@ const NOTES: Record<string, L> = {
     es: "Una corona puntiaguda bañada en oro sujeta la piedra oscura, y los hombros llevan una densa textura de puntos. Ferid, «el sin igual», da nombre a este llamativo contraste.",
     de: "Eine spitze vergoldete Krone hält den dunklen Stein, die Schultern tragen eine dichte Punktstruktur. Ferid, „der Unvergleichliche“, benennt diesen markanten Kontrast.",
     ar: "يمسك الحجر الداكن تاج مدبّب مطلي بالذهب، ونُقش الكتفان بملمس منقّط كثيف، و«فريد» أي الذي لا نظير له اسمٌ لهذا التباين اللافت.",
+    ru: "Остроконечная позолоченная корона удерживает темный камень, а плечи выполнены в плотную пунктирную текстуру. Ферид, «непревзойденный», называет этот поразительный контраст.",
   },
   u_ziba: {
     tr: "Daha ince ve hafif kasasıyla, taşı tırnaklı yuvada taşıyan zarif bir model; omuzlardaki ok biçimli oymalar ona hareket katar. “Süslü, göze hoş gelen” anlamındaki Zîbâ, bu zarafete ad olmuştur.",
@@ -1378,6 +1568,7 @@ const NOTES: Record<string, L> = {
     es: "Una montura más fina y ligera lleva la piedra en garras, y los grabados en forma de flecha de los hombros le dan movimiento. Ziba, «grácil, agradable a la vista», da nombre a esta elegancia.",
     de: "Eine schmalere, leichtere Fassung hält den Stein in Krappen, pfeilförmige Gravuren an den Schultern geben ihm Bewegung. Ziba, „anmutig, gefällig“, benennt diese Eleganz.",
     ar: "إطار أرفع وأخف يحمل الحجر بمخالب، وتمنحه النقوش السهمية على الكتفين حركة، و«زيبا» أي البهيّ المريح للعين اسمٌ لهذه الأناقة.",
+    ru: "Более тонкая и легкая оправа удерживает камень в когтях, а стреловидные гравюры на плечах придают ему движение. Зиба, «изящная, приятная глазу», называет это элегантностью.",
   },
   u_ikrar: {
     tr: "Bu modelde yazı yuvarlak taşın tamamına yayılmış, kasa baştan sona ince oymalarla işlenmiştir. Hakkı dille söylemeyi ve imanı mühürlemeyi anlatan “İkrâr”, Kelime-i Tevhid'in ta kendisidir.",
@@ -1385,6 +1576,7 @@ const NOTES: Record<string, L> = {
     es: "En este modelo la inscripción ocupa toda la piedra redonda y la montura está finamente grabada por completo. Ikrar, declarar la verdad y sellar la fe, es la Shahada misma.",
     de: "Bei diesem Modell erstreckt sich die Inschrift über den ganzen runden Stein, die Fassung ist durchgehend fein graviert. Ikrar, das Bekennen der Wahrheit und Besiegeln des Glaubens, ist die Schahada selbst.",
     ar: "في هذا الطراز تمتد الكتابة على الحجر المستدير كله، ونُقش الإطار نقشًا دقيقًا من أوله إلى آخره، و«إقرار» أي النطق بالحق وختم الإيمان هو كلمة التوحيد نفسها.",
+    ru: "В этой модели надпись распространяется по всему круглому камню, а оправа мелко выгравирована повсюду. Икрар, провозглашение истины вслух и скрепление веры, является самой Шахадой.",
   },
   u_ahid: {
     tr: "İnce ve uzun dikdörtgen taş, yazıyı tek satırda taşır; kasanın gövdesi kıvrık dal oymalarıyla sarılmıştır. Yaratılışta Allah'a verilen sözü anlatan “Ahid”, imanın bu yalın beyanına ad olmuştur.",
@@ -1392,6 +1584,7 @@ const NOTES: Record<string, L> = {
     es: "La piedra rectangular, larga y fina, lleva la inscripción en una sola línea, y el aro está envuelto en volutas grabadas. Ahid, el pacto hecho con Allah en la creación, da nombre a esta sencilla declaración de fe.",
     de: "Der lange, schmale rechteckige Stein trägt die Inschrift in einer Zeile, die Ringschiene ist von Rankengravur umgeben. Ahid, der bei der Erschaffung mit Allah geschlossene Bund, benennt dieses schlichte Glaubensbekenntnis.",
     ar: "يحمل الحجر المستطيل الطويل الرفيع الكتابة في سطر واحد، وتلتف حول الحلقة نقوش الأغصان، و«عهد» أي الميثاق مع الله عند الخلق اسمٌ لهذا الإعلان البسيط للإيمان.",
+    ru: "На длинном тонком прямоугольном камне нанесена надпись в одну линию, а шинка украшен завитками. Ахид, завет, заключенный с Аллахом при творении, называет это простое заявление веры.",
   },
   u_sancak: {
     tr: "Bu modelde yazı köşeli, sekizgen bir taşa işlenmiş; omuzlar kalem işi oymalarla süslenmiştir. Endülüs'te Elhamra Sarayı'nın duvarlarını süsleyen bu söz, birliğin ve davanın sembolü olan “Sancak” adıyla taşınır.",
@@ -1399,6 +1592,7 @@ const NOTES: Record<string, L> = {
     es: "Aquí la inscripción va en una piedra octogonal y angulosa, con hombros cincelados a mano. La frase que adorna los muros de la Alhambra lleva el nombre de «Sancak», el estandarte de la unidad.",
     de: "Hier ist die Inschrift auf einem kantigen, achteckigen Stein, die Schultern sind von Hand ziseliert. Der Spruch, der die Wände der Alhambra schmückt, trägt den Namen „Sancak“, das Banner der Einheit.",
     ar: "نُقشت الكتابة هنا على حجر مثمن ذي زوايا، وزُيّن الكتفان بنقش يدوي، وهذه العبارة التي تزيّن جدران قصر الحمراء تُحمل باسم «صنجق» أي راية الوحدة.",
+    ru: "Здесь надпись помещена на угловатом восьмиугольном камне с высеченными вручную плечами. Фраза, украшающая стены Альгамбры, носит название «Санчак», знамя единства.",
   },
   u_secaat: {
     tr: "Bu modelde yazı iri, oval siyah oniksin tamamına geniş bir hatla yayılmış, kasa kıvrık oymalarla çevrilmiştir. Hak yolundaki korkusuzluğu anlatan “Şecâat”, “Allah'tan başka galip yoktur” diyen bir kalbin yiğitliğidir.",
@@ -1406,6 +1600,7 @@ const NOTES: Record<string, L> = {
     es: "Aquí la inscripción se extiende en caligrafía amplia por un gran ónix negro oval, enmarcado por volutas grabadas. Secaat, la valentía en el camino de la verdad, es el coraje de un corazón que dice «no hay vencedor sino Allah».",
     de: "Hier zieht sich die Inschrift in kräftiger Kalligrafie über einen großen ovalen schwarzen Onyx, gerahmt von Rankengravur. Secaat, Furchtlosigkeit auf dem Weg der Wahrheit, ist der Mut eines Herzens, das sagt: „Es gibt keinen Sieger außer Allah.“",
     ar: "تمتد الكتابة هنا بخط عريض على حجر أونيكس أسود بيضاوي كبير يحيط به نقش ملتف، و«شجاعة» أي الإقدام في طريق الحق هي شجاعة قلب يقول «لا غالب إلا الله».",
+    ru: "Здесь надпись жирным каллиграфическим шрифтом расположена на большом овальном черном ониксе, обрамленном завитковой гравировкой. Секаат, бесстрашие на пути истины, — это смелость сердца, говорящего: «Нет победителя, кроме Аллаха».",
   },
   u_feyz: {
     tr: "Bu modelde Besmele, dikey bir düzende taşın ortasına işlenmiş; geniş gümüş kasa iri yaprak oymalarıyla sarılmıştır. İlahi kaynaktan kalbe durmaksızın dökülen bereketi anlatan “Feyz”, Besmele ile başlayan her işin nasibidir.",
@@ -1413,6 +1608,7 @@ const NOTES: Record<string, L> = {
     es: "Aquí la Basmala va en vertical en el centro de la piedra, y el ancho aro de plata está envuelto en grandes hojas grabadas. Feyz, la bendición que fluye sin cesar al corazón, es la parte de toda obra que empieza con la Basmala.",
     de: "Hier steht die Basmala senkrecht in der Mitte des Steins, die breite Silberschiene ist von großen Blattgravuren umhüllt. Feyz, der Segen, der unaufhörlich ins Herz strömt, ist der Anteil jedes mit der Basmala begonnenen Werks.",
     ar: "نُقشت البسملة هنا عموديًا في وسط الحجر، والتفت حول الحلقة الفضية العريضة نقوش أوراق كبيرة، و«فيض» أي البركة المتدفقة على القلب هي نصيب كل عمل بُدئ بالبسملة.",
+    ru: "Здесь басмала установлена ​​вертикально в центре камня, а широкая серебряная шинка обернута крупными гравюрами из листьев. Фейз, благословение, непрестанно струящееся в сердце, является долей каждого дела, начатого с басмала.",
   },
   u_ridvan: {
     tr: "Taş ince tırnaklarla tutturulmuş, kasanın yanları çiçekli kalem işiyle süslenmiştir. Allah'ın kulundan razı olmasını anlatan “Rıdvân”, Besmele ile başlanan bir hayatın en güzel neticesidir.",
@@ -1420,6 +1616,7 @@ const NOTES: Record<string, L> = {
     es: "La piedra va sujeta con finas garras y los laterales llevan un cincelado floral. Ridvan, la complacencia de Allah con Su siervo, es el mejor fruto de una vida que empieza con la Basmala.",
     de: "Der Stein wird von feinen Krappen gehalten, die Seiten tragen florale Ziselierung. Ridvan, Allahs Wohlgefallen an Seinem Diener, ist die schönste Frucht eines mit der Basmala begonnenen Lebens.",
     ar: "ثُبّت الحجر بمخالب دقيقة، وزُيّن الجانبان بنقش يدوي مزهر، و«رضوان» أي رضا الله عن عبده أجمل ثمرة لحياة بُدئت بالبسملة.",
+    ru: "Камень удерживается тонкими когтями, а по бокам нанесена цветочная ручная чеканка. Ризван, благоволение Аллаха Своему рабу, является лучшим плодом жизни, начавшейся с басмалы.",
   },
   u_kubbe: {
     tr: "Bu modelde Besmele, yüksek kubbeli altıgen bir taşın merkezine işlenmiştir; taş, kenarlarından tırnaklarla tutturulmuştur. Taşın kubbe gibi yükselen formu, kâinatın kuşatıcılığını anlatan İslam mimarisindeki kubbeyi andırır.",
@@ -1427,6 +1624,7 @@ const NOTES: Record<string, L> = {
     es: "Aquí la Basmala va en el centro de una piedra hexagonal de cúpula alta sujeta por garras en sus bordes. Su forma abovedada recuerda la cúpula de la arquitectura islámica, imagen del cielo que todo lo abarca.",
     de: "Hier steht die Basmala in der Mitte eines hoch gewölbten sechseckigen Steins, der an den Kanten von Krappen gehalten wird. Seine Kuppelform erinnert an die Kuppel der islamischen Architektur, ein Bild des allumfassenden Himmels.",
     ar: "نُقشت البسملة هنا في وسط حجر سداسي مقبّب مرتفع تمسكه المخالب من أطرافه، ويذكّر ارتفاعه المقبّب بالقبة في العمارة الإسلامية رمزًا للسماء المحيطة.",
+    ru: "Здесь Басмала находится в центре шестиугольного камня с высоким куполом, удерживаемого когтями по краям. Куполообразное возвышение камня напоминает купол исламской архитектуры, образ всеобъемлющего неба.",
   },
   u_husu: {
     tr: "Bu modelde Besmele, sade ve parlak bir gümüş kasaya oturan siyah oniks taşa işlenmiştir. Allah'ın huzurunda duyulan derin saygıyı anlatan “Huşû”, siyahın sükûnetine en çok yakışan addır.",
@@ -1434,6 +1632,7 @@ const NOTES: Record<string, L> = {
     es: "Aquí la Basmala está grabada en un ónix negro engastado en un aro de plata liso y pulido. Husu, la profunda reverencia ante Allah, es el nombre que mejor conviene a la calma del negro.",
     de: "Hier ist die Basmala in einen schwarzen Onyx graviert, der in einer schlichten, polierten Silberschiene sitzt. Husu, die tiefe Ehrfurcht in Allahs Gegenwart, passt am besten zur Ruhe des Schwarz.",
     ar: "نُقشت البسملة هنا على حجر أونيكس أسود في حلقة فضية بسيطة مصقولة، و«خشوع» أي الهيبة العميقة في حضرة الله أليق اسم بسكينة اللون الأسود.",
+    ru: "Здесь Басмала выгравирована на черном ониксе, оправленном в простую полированную серебряную ленту. Хусу, глубокое почтение, испытываемое в присутствии Аллаха, — это имя, которое лучше всего соответствует спокойствию черного цвета.",
   },
   u_nur: {
     tr: "Bu modelde Allah lafzı, canlı kızıl tonlu bir taşa işlenmiş; taş ince tırnaklı bir taçla tutturulmuştur. “Allah göklerin ve yerin nurudur” (Nûr, 35) ayetini hatırlatan “Nûr”, karanlığı ve kibri boğan ilahi ışığın adıdır.",
@@ -1441,6 +1640,7 @@ const NOTES: Record<string, L> = {
     es: "Aquí el nombre de Allah está grabado en una piedra de rojo vivo sujeta por una fina corona de garras. Nur recuerda la aleya «Allah es la Luz de los cielos y de la tierra» (An-Nur 24:35), la luz que disipa la oscuridad.",
     de: "Hier ist der Name Allahs in einen leuchtend roten Stein graviert, den eine feine Krappenkrone hält. Nur erinnert an den Vers „Allah ist das Licht der Himmel und der Erde“ (An-Nur 24:35), das Licht, das die Dunkelheit vertreibt.",
     ar: "نُقش لفظ الجلالة هنا على حجر أحمر زاهٍ يمسكه تاج دقيق المخالب، و«نور» يذكّر بقوله تعالى: «اللَّهُ نُورُ السَّمَاوَاتِ وَالْأَرْضِ» (النور: 35).",
+    ru: "Здесь имя Аллаха выгравировано на ярко-красном камне, который удерживается тонкой короной в виде когтей. Нур вспоминает стих «Аллах – Свет небес и земли» (Ан-Нур 24:35), божественный свет, рассеивающий тьму.",
   },
   u_ziya: {
     tr: "Bu modelde taşı altın tonlu bir taç çevreler; kasanın yanları sık yaprak oymalarıyla işlenmiştir. Özünden gelen, dışarıdan alınmayan aydınlığı anlatan “Ziyâ”, taşın içten parlayan rengine ad olmuştur.",
@@ -1448,6 +1648,7 @@ const NOTES: Record<string, L> = {
     es: "Aquí una corona de tono dorado rodea la piedra y los laterales están densamente grabados con hojas. Ziya, un resplandor que nace de dentro y no de fuera, da nombre al brillo interior de la piedra.",
     de: "Hier umgibt eine goldtonige Krone den Stein, die Seiten sind dicht mit Blättern graviert. Ziya, ein Leuchten von innen statt von außen, benennt das innere Glühen des Steins.",
     ar: "يحيط بالحجر هنا تاج ذهبي اللون، ونُقش الجانبان بأوراق كثيفة، و«ضياء» أي النور النابع من الذات اسمٌ لتوهّج الحجر الداخلي.",
+    ru: "Здесь камень окружает золотистая корона, а по бокам густо выгравированы листья. Зия, сияние, исходящее изнутри, а не снаружи, называет внутреннее сияние камня.",
   },
   u_kemal: {
     tr: "Bu modelde yazı kızıl tonlu oval taşa işlenmiş; taşı tırnaklı bir yuva ve ajur oymalı omuzlar çevreler. Olgunluğu ve hamlıktan kurtulmayı anlatan “Kemâl”, her şeyin gerçek sahibinin Allah olduğunu bilen kalbin derecesidir.",
@@ -1455,6 +1656,7 @@ const NOTES: Record<string, L> = {
     es: "Aquí la inscripción va en una piedra oval roja en un engaste de garras con hombros calados. Kemal, la madurez, es el grado de un corazón que sabe que Allah es el verdadero dueño de todo.",
     de: "Hier steht die Inschrift auf einem ovalen roten Stein in einer Krappenfassung mit durchbrochenen Schultern. Kemal, die Reife, ist die Stufe eines Herzens, das weiß, dass Allah der wahre Besitzer von allem ist.",
     ar: "نُقشت الكتابة هنا على حجر بيضاوي أحمر في إطار بمخالب وكتفين مخرّمين، و«كمال» أي النضج هو مقام القلب الذي يعلم أن المالك الحق لكل شيء هو الله.",
+    ru: "Здесь надпись находится на овальном красном камне, удерживаемом в когтевой оправе с ажурными плечами. Кемаль, зрелость и свобода от грубости, — это ранг сердца, которое знает, что Аллах — истинный хозяин всего.",
   },
   u_celal: {
     tr: "Bu modelde yazı koyu tonlu oval taşa işlenmiş, taşın çevresi geometrik meander (Grek) bordürüyle sarılmıştır. Allah'ın büyüklüğünü ve kudretini anlatan “Celâl”, mülkün yalnızca O'na ait olduğunun ihtişamlı bir ifadesidir.",
@@ -1462,6 +1664,7 @@ const NOTES: Record<string, L> = {
     es: "Aquí la inscripción va en una piedra oval oscura enmarcada por una greca geométrica. Celal, la majestad y el poder de Allah, es una expresión solemne de que el dominio le pertenece solo a Él.",
     de: "Hier steht die Inschrift auf einem dunklen ovalen Stein, gerahmt von einem geometrischen Mäanderband. Celal, Allahs Majestät und Macht, ist ein erhabener Ausdruck dafür, dass alle Herrschaft Ihm allein gehört.",
     ar: "نُقشت الكتابة هنا على حجر بيضاوي داكن يحيط به إطار هندسي متعرج، و«جلال» أي عظمة الله وقدرته تعبير مهيب عن أن الملك له وحده.",
+    ru: "Здесь надпись выполнена на темном овальном камне, обрамленном геометрической меандровой каймой. Джелаль, величие и могущество Аллаха, является великим выражением того, что власть принадлежит Ему одному.",
   },
   u_kible: {
     tr: "Bu modelde koyu tonlu dikdörtgen taş altın kaplama bir çerçeveye oturtulmuştur. “Emrolunduğun gibi dosdoğru ol” ayetinin anlattığı istikameti, sapmadan gidilen doğru yönelişi anlatan “Kıble” adıyla taşır.",
@@ -1469,6 +1672,7 @@ const NOTES: Record<string, L> = {
     es: "Aquí la piedra rectangular oscura va en un marco bañado en oro. Lleva la rectitud de la aleya «Mantente firme como se te ha ordenado» con el nombre de «Kible», la dirección verdadera seguida sin desviarse.",
     de: "Hier sitzt der dunkle rechteckige Stein in einem vergoldeten Rahmen. Er trägt die Standhaftigkeit des Verses „Sei standhaft, wie dir befohlen wurde“ unter dem Namen „Kible“, die wahre Richtung ohne Abweichen.",
     ar: "يستقر الحجر المستطيل الداكن هنا في إطار مطلي بالذهب، ويحمل استقامة قوله تعالى «فَاسْتَقِمْ كَمَا أُمِرْتَ» باسم «قبلة» أي الوجهة الحق بلا انحراف.",
+    ru: "Здесь темный прямоугольный камень помещен в позолоченную оправу. Он несет в себе стойкость стиха «Стой, как тебе повелено» под названием «Кибл», истинное направление, которому следует следовать, не отклоняясь.",
   },
   u_tarik: {
     tr: "Bu modelde canlı kızıl tonlu dikdörtgen taş altın kaplama bir çerçeveye oturtulmuştur. İnsanı nefsinden sıyırıp Rabbine götüren manevi yolu anlatan “Tarîk”, dosdoğru olma emrinin yol arkadaşıdır.",
@@ -1476,6 +1680,7 @@ const NOTES: Record<string, L> = {
     es: "Aquí una piedra rectangular de rojo vivo va en un marco bañado en oro. Tarik, el camino espiritual que lleva del ego al Señor, acompaña al mandato de mantenerse firme.",
     de: "Hier sitzt ein leuchtend roter rechteckiger Stein in einem vergoldeten Rahmen. Tarik, der geistige Weg, der den Menschen vom Ego zu seinem Herrn führt, begleitet das Gebot der Standhaftigkeit.",
     ar: "يستقر الحجر المستطيل الأحمر الزاهي هنا في إطار مطلي بالذهب، و«طريق» أي السلوك الذي يأخذ الإنسان من نفسه إلى ربه رفيقُ الأمر بالاستقامة.",
+    ru: "Здесь ярко-красный прямоугольный камень помещен в позолоченную оправу. Тарик, духовный путь, ведущий человека от себя к своему Господу, является спутником повеления стоять твердо.",
   },
 };
 

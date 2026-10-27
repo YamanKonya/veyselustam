@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { imageAt } from "@/lib/image";
-import { formatPrice } from "@/lib/format";
+import { usePrice } from "@/lib/currency";
 import { SALES_OPEN } from "@/lib/shop";
 import { useCartStore } from "@/store/useCartStore";
 import { useLanguage } from "@/context/LanguageContext";
@@ -22,6 +22,7 @@ export default function CartDrawer() {
   } = useCartStore();
 
   const { t, language } = useLanguage();
+  const { price, inTl, tl } = usePrice();
   const [mounted, setMounted] = useState(false);
   const [isRendered, setIsRendered] = useState(false);
   const router = useRouter();
@@ -168,7 +169,7 @@ export default function CartDrawer() {
                             </button>
                           </div>
                           <span className="font-semibold text-versace-green-900 tabular-nums">
-                            ₺{formatPrice(item.product.price * item.quantity)}
+                            {price(item.product.price * item.quantity)}
                           </span>
                         </div>
                       </div>
@@ -185,7 +186,7 @@ export default function CartDrawer() {
               <dl className="space-y-2.5 text-sm">
                 <div className="flex justify-between text-slate-600">
                   <dt>{t("cart_subtotal")}</dt>
-                  <dd className="tabular-nums">₺{formatPrice(totalAmount)}</dd>
+                  <dd className="tabular-nums">{price(totalAmount)}</dd>
                 </div>
                 <div className="flex justify-between text-slate-600">
                   <dt className="flex items-center gap-1.5">
@@ -196,9 +197,12 @@ export default function CartDrawer() {
                 <div className="flex justify-between items-baseline pt-3 border-t border-versace-gold-100">
                   <dt className="font-semibold text-versace-green-900">{t("cart_total")}</dt>
                   <dd className="font-display text-3xl text-versace-green-900 tabular-nums lining-nums">
-                    ₺{formatPrice(totalAmount)}
+                    {price(totalAmount)}
                   </dd>
                 </div>
+                {!inTl && (
+                  <p className="text-xs text-slate-500 text-end">{t("paid_in_try").replace("{amount}", tl(totalAmount))}</p>
+                )}
               </dl>
 
               <button

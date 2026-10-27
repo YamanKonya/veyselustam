@@ -16,13 +16,18 @@ export interface Product {
   title_es?: string;
   title_de?: string;
   title_ar?: string;
+  title_ru?: string;
   description: string;
   description_en?: string;
   description_es?: string;
   description_de?: string;
   description_ar?: string;
+  description_ru?: string;
   /** translationSourceKey of the Turkish text the stored translations were made from */
   i18nSource?: string;
+  /** set by the admin form when the piece was given text of its own; the hand-written
+   *  catalogue text is then no longer shown in its place */
+  customText?: boolean;
   price: number;
   originalPrice?: number;
   discountPercent?: number;

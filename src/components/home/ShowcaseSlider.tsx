@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight, ShoppingBag, Check, Pause, Play } from "luci
 import { Product } from "@/types";
 import { useLanguage } from "@/context/LanguageContext";
 import { useCartStore } from "@/store/useCartStore";
-import { formatPrice } from "@/lib/format";
+import { usePrice } from "@/lib/currency";
 import MemberPrice, { MemberDiscountNote } from "@/components/product/MemberPrice";
 import { imageAt, imageSrcSet } from "@/lib/image";
 import { useStockGroups, availableStock } from "@/services/stockService";
@@ -21,6 +21,7 @@ interface ShowcaseSliderProps {
 
 export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
   const { t, dir } = useLanguage();
+  const { price } = usePrice();
   const { addItem } = useCartStore();
   const { groups } = useStockGroups();
 
@@ -206,11 +207,11 @@ export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
             <div className="mt-6 flex flex-wrap items-baseline gap-x-4 gap-y-1 justify-center lg:justify-start">
               {hasDiscount && (
                 <span className="text-lg sm:text-xl text-versace-gold-50/60 line-through decoration-red-400 decoration-2 tabular-nums lining-nums">
-                  ₺{formatPrice(product.originalPrice!)}
+                  {price(product.originalPrice!)}
                 </span>
               )}
               <span className="font-display text-3xl sm:text-4xl text-versace-gold-500 tabular-nums lining-nums">
-                ₺{formatPrice(product.price)}
+                {price(product.price)}
               </span>
             </div>
             <div className="mt-3 flex flex-col gap-1.5 items-center lg:items-start">
