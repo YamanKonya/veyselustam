@@ -108,7 +108,7 @@ export const productSubmenus = (p: Product): SubMenuId[] => {
   if (text.includes("şeref")) out.push("seref");
   if (text.includes("yeşil akik")) out.push("yesil");
   if (text.includes("horasan")) out.push("horasan");
-  if (text.includes("kızıl akik")) out.push("kizil");
+  if (/kızıl akik|kırmızı akik/.test(text)) out.push("kizil");
   return out;
 };
 
