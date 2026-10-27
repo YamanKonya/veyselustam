@@ -14,7 +14,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
 import { ChevronUp, X } from "lucide-react";
 import { imageAt, imageSrcSet } from "@/lib/image";
-import { MENUS, MenuId, productMenus } from "@/lib/menus";
+import { MENUS, SUBMENUS, FilterId, inFilter } from "@/lib/menus";
 import { forMember } from "@/components/product/MemberPrice";
 import { useAuth } from "@/context/AuthContext";
 
@@ -34,7 +34,7 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>(INITIAL_VEYSELUSTAM_PRODUCTS);
   const [globalSearch, setGlobalSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<{ label: string; match: string[] } | null>(null);
-  const [menuFilter, setMenuFilter] = useState<MenuId | null>(null);
+  const [menuFilter, setMenuFilter] = useState<FilterId | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const { t, language } = useLanguage();
@@ -71,16 +71,23 @@ export default function Home() {
   // Header menus: "menu-filter" events on this page, or ?menu= when arriving from another page
   useEffect(() => {
     const pick = (id: string | null) => {
-      if (!MENUS.some((m) => m.id === id)) return;
+      if (![...MENUS, ...SUBMENUS].some((m) => m.id === id)) return;
       setGlobalSearch("");
       setCategoryFilter(null);
-      setMenuFilter(id as MenuId);
+      setMenuFilter(id as FilterId);
     };
     pick(new URLSearchParams(window.location.search).get("menu"));
     const onMenu = (e: Event) => pick((e as CustomEvent<string>).detail);
     window.addEventListener("menu-filter", onMenu);
     return () => window.removeEventListener("menu-filter", onMenu);
   }, []);
+
+  // "Erkek Yüzük · Hematit Taş" for a subcategory, the menu name otherwise
+  const menuChipLabel = (id: FilterId) => {
+    const sub = SUBMENUS.find((m) => m.id === id);
+    if (sub) return `${t(MENUS.find((m) => m.id === sub.parent)!.key)} · ${t(sub.key)}`;
+    return t(MENUS.find((m) => m.id === id)!.key);
+  };
 
   const clearMenu = () => {
     setMenuFilter(null);
@@ -134,7 +141,7 @@ export default function Home() {
       if (menuFilter) {
         filtered = filtered.filter((p) => {
           const raw = products.find((o) => o.id === p.id);
-          return !!raw && productMenus(raw).includes(menuFilter);
+          return !!raw && inFilter(raw, menuFilter);
         });
       }
       if (categoryFilter) {
@@ -259,7 +266,7 @@ export default function Home() {
                     onClick={clearMenu}
                     className="inline-flex items-center gap-1.5 px-3 py-1 bg-versace-green-900 text-versace-gold-50 hover:bg-versace-green-700"
                   >
-                    {t(MENUS.find((m) => m.id === menuFilter)!.key)} <X className="w-3.5 h-3.5" />
+                    {menuChipLabel(menuFilter)} <X className="w-3.5 h-3.5" />
                   </button>
                 )}
                 {categoryFilter && (

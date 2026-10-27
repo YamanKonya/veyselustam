@@ -5,14 +5,14 @@ import { LayoutList, AlertCircle } from "lucide-react";
 import { Product } from "@/types";
 import { subscribeProducts } from "@/services/productService";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
-import { MENUS, MENU_LABELS, MenuId, productMenus, saveMenuSettings, useMenuSettings } from "@/lib/menus";
+import { MENUS, MENU_LABELS, SUBMENU_LABELS, FilterId, inFilter, isSubMenu, subMenusOf, saveMenuSettings, useMenuSettings } from "@/lib/menus";
 
 // Switch the header menus on and off. A menu with no products yet (e.g. brooches)
 // stays hidden until its pieces are added and it is ticked here.
 export default function AdminMenusPage() {
   const enabled = useMenuSettings();
   const [products, setProducts] = useState<Product[]>(INITIAL_VEYSELUSTAM_PRODUCTS);
-  const [saving, setSaving] = useState<MenuId | null>(null);
+  const [saving, setSaving] = useState<FilterId | null>(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -20,13 +20,14 @@ export default function AdminMenusPage() {
     return () => unsub();
   }, []);
 
+  // each menu followed by its stone subcategories
+  const rows = useMemo(() => MENUS.flatMap((m) => [m.id as FilterId, ...subMenusOf(m.id).map((sm) => sm.id as FilterId)]), []);
   const counts = useMemo(() => {
-    const c = Object.fromEntries(MENUS.map((m) => [m.id, 0])) as Record<MenuId, number>;
-    products.filter((p) => p.isActive !== false).forEach((p) => productMenus(p).forEach((id) => c[id]++));
-    return c;
-  }, [products]);
+    const active = products.filter((p) => p.isActive !== false);
+    return Object.fromEntries(rows.map((id) => [id, active.filter((p) => inFilter(p, id)).length])) as Record<FilterId, number>;
+  }, [products, rows]);
 
-  const toggle = async (id: MenuId) => {
+  const toggle = async (id: FilterId) => {
     setSaving(id);
     setError("");
     try {
@@ -50,7 +51,8 @@ export default function AdminMenusPage() {
         </h1>
         <p className="text-sm text-panel-400 mt-1">
           Sitenin üst menüsünde hangi başlıkların görüneceğini seçin. Ürünler menülere kategorisine göre otomatik yerleşir;
-          ürün düzenleme ekranındaki “Menüler” kutularından elle de seçebilirsiniz.
+          ürün düzenleme ekranındaki “Menüler” kutularından elle de seçebilirsiniz. Erkek Yüzük’ün altındaki taş
+          kategorileri sitede açılır menü olarak görünür; ürünleri toplu taşımak için Ürünler listesindeki “Menüye ata” bölümünü kullanın.
         </p>
       </div>
 
@@ -61,12 +63,18 @@ export default function AdminMenusPage() {
       )}
 
       <ul className="bg-panel-900 border border-panel-800 rounded-2xl divide-y divide-panel-800">
-        {MENUS.map((m) => {
+        {rows.map((id) => {
+          const m = { id };
+          const sub = isSubMenu(id);
+          const label = sub ? SUBMENU_LABELS[id] : MENU_LABELS[id];
           const on = enabled[m.id];
           return (
-            <li key={m.id} className="flex items-center justify-between gap-4 p-4">
+            <li key={m.id} className={`flex items-center justify-between gap-4 p-4 ${sub ? "ps-10 bg-panel-950/40" : ""}`}>
               <div>
-                <p className="text-sm font-bold text-panel-100">{MENU_LABELS[m.id]}</p>
+                <p className={sub ? "text-sm font-semibold text-panel-200" : "text-sm font-bold text-panel-100"}>
+                  {sub && <span className="text-panel-500 me-1.5">›</span>}
+                  {label}
+                </p>
                 <p className={`text-xs mt-0.5 ${counts[m.id] ? "text-panel-400" : "text-amber-300"}`}>
                   {counts[m.id] ? `${counts[m.id]} aktif ürün` : "Henüz ürün yok"}
                 </p>
@@ -79,7 +87,7 @@ export default function AdminMenusPage() {
                   checked={on}
                   disabled={saving === m.id}
                   onChange={() => toggle(m.id)}
-                  aria-label={`${MENU_LABELS[m.id]} menüsü`}
+                  aria-label={`${label} ${sub ? "alt kategorisi" : "menüsü"}`}
                   className="peer sr-only"
                 />
                 <span

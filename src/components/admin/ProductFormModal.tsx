@@ -5,12 +5,12 @@ import { Product } from "@/types";
 import { createProduct, updateProduct, uploadFileToStorage } from "@/services/productService";
 import { translationSourceKey } from "@/i18n/productTranslations";
 import { useStockGroups } from "@/services/stockService";
-import { 
-  X, 
-  Upload, 
-  Plus, 
-  Trash2, 
-  Check, 
+import {
+  X,
+  Upload,
+  Plus,
+  Trash2,
+  Check,
   Image as ImageIcon,
   Loader2,
   AlertCircle,
@@ -19,7 +19,7 @@ import {
   ArrowRight,
   Sparkles
 } from "lucide-react";
-import { MENUS, MENU_LABELS, productMenus } from "@/lib/menus";
+import { MENUS, MENU_LABELS, SUBMENUS, SUBMENU_LABELS, productMenus, productSubmenus } from "@/lib/menus";
 
 interface ProductFormModalProps {
   isOpen: boolean;
@@ -64,6 +64,8 @@ export default function ProductFormModal({
   const [discountPercent, setDiscountPercent] = useState<number | "">("");
   const [memberPrice, setMemberPrice] = useState<number | "">("");
   const [menus, setMenus] = useState<string[]>([]); // empty = placed automatically
+  const [submenus, setSubmenus] = useState<string[]>([]); // stones under Erkek Yüzük; empty = automatic
+  const [newFirst, setNewFirst] = useState(false); // a newly added photo was picked as the main image
   const [category, setCategory] = useState(DEFAULT_CATEGORIES[0]);
   const [customCategory, setCustomCategory] = useState("");
   const [stock, setStock] = useState<number | "">(10);
@@ -76,7 +78,7 @@ export default function ProductFormModal({
   const [newFiles, setNewFiles] = useState<File[]>([]);
   const [filePreviews, setFilePreviews] = useState<string[]>([]);
   const [imageUrlInput, setImageUrlInput] = useState("");
-  
+
   // Custom Hover Video state
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -113,9 +115,10 @@ export default function ProductFormModal({
       setDiscountPercent(productToEdit.discountPercent || "");
       setMemberPrice(productToEdit.memberPrice || "");
       setMenus(productToEdit.menus || []);
+      setSubmenus(productToEdit.submenus || []);
       setVideoUrl(productToEdit.videoUrl || "");
       setVideoFile(null);
-      
+
       setIsFeatured(productToEdit.isFeatured || false);
       setIsActive(productToEdit.isActive !== false);
 
@@ -165,6 +168,7 @@ export default function ProductFormModal({
     setExistingImages([]);
     setNewFiles([]);
     setFilePreviews([]);
+    setNewFirst(false);
     setImageUrlInput("");
     setVideoUrl("");
     setVideoFile(null);
@@ -216,12 +220,24 @@ export default function ProductFormModal({
     setExistingImages(existingImages.filter((_, i) => i !== index));
   };
 
+  // Click any photo to make it the main (first) image
   const handleMakeMainImage = (index: number) => {
+    setNewFirst(false);
     if (index === 0) return;
     const updated = [...existingImages];
     const [selected] = updated.splice(index, 1);
     updated.unshift(selected);
     setExistingImages(updated);
+  };
+
+  const handleMakeNewFileMain = (index: number) => {
+    const files = [...newFiles];
+    const previews = [...filePreviews];
+    const [file] = files.splice(index, 1);
+    const [preview] = previews.splice(index, 1);
+    setNewFiles([file, ...files]);
+    setFilePreviews([preview, ...previews]);
+    setNewFirst(true);
   };
 
   const handleAddImageUrl = () => {
@@ -365,6 +381,7 @@ export default function ProductFormModal({
         // a member price only counts when it is below the sale price
         memberPrice: memberPrice !== "" && Number(memberPrice) > 0 && Number(memberPrice) < Number(price) ? Number(memberPrice) : undefined,
         menus: menus.length ? menus : undefined,
+        submenus: submenus.length ? submenus : undefined,
         isCampaign: isCampaignActive,
         isFeatured: isFeatured,
         isActive: isActive,
@@ -377,9 +394,9 @@ export default function ProductFormModal({
       };
 
       if (productToEdit && productToEdit.id) {
-        await updateProduct(productToEdit.id, productData, newFiles);
+        await updateProduct(productToEdit.id, productData, newFiles, newFirst && newFiles.length > 0);
       } else {
-        await createProduct(productData, newFiles);
+        await createProduct(productData, newFiles, newFirst && newFiles.length > 0);
       }
 
       onSuccess();
@@ -392,6 +409,10 @@ export default function ProductFormModal({
       setLoading(false);
     }
   };
+
+
+  // what the automatic placement would do with the form as it stands
+  const draftProduct = { title, description, category: category === "Diğer" ? customCategory : category, isFeatured, id: productToEdit?.id } as Product;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
@@ -562,7 +583,7 @@ export default function ProductFormModal({
             </div>
             {showTranslations && (
               <div className="p-4 bg-panel-950 space-y-6">
-                
+
                 {/* English */}
                 <div className="space-y-3">
                   <h4 className="text-xs font-bold text-panel-300 uppercase">İngilizce (English)</h4>
@@ -770,11 +791,41 @@ export default function ProductFormModal({
                   );
                 })}
               </div>
+              {(menus.length ? menus.includes("erkek") : productMenus(draftProduct).includes("erkek")) && (
+                <div className="mt-3">
+                  <span className="block text-[11px] font-semibold uppercase tracking-wider text-panel-500 mb-1.5">Erkek Yüzük taşı</span>
+                  <div className="flex flex-wrap gap-2">
+                    {SUBMENUS.map((m) => {
+                      const on = submenus.includes(m.id);
+                      return (
+                        <label key={m.id} className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer border ${on ? "bg-emerald-700 border-emerald-600 text-white" : "bg-panel-900 border-panel-700 text-panel-300"}`}>
+                          <input
+                            type="checkbox"
+                            className="sr-only"
+                            checked={on}
+                            onChange={() => setSubmenus(on ? submenus.filter((x) => x !== m.id) : [...submenus, m.id])}
+                          />
+                          {SUBMENU_LABELS[m.id]}
+                        </label>
+                      );
+                    })}
+                  </div>
+                  <p className="mt-1.5 text-xs text-panel-500">
+                    {submenus.length
+                      ? "Ürün yalnızca seçtiğiniz taş kategorilerinde görünür."
+                      : `Seçim yapmazsanız taşına göre otomatik yerleşir: ${
+                          productSubmenus({ ...draftProduct, menus: menus.length ? menus : undefined })
+                            .map((id) => SUBMENU_LABELS[id])
+                            .join(", ") || "hiçbiri"
+                        }.`}
+                  </p>
+                </div>
+              )}
               <p className="mt-2 text-xs text-panel-500">
                 {menus.length
                   ? "Ürün yalnızca seçtiğiniz menülerde görünür."
                   : `Seçim yapmazsanız otomatik yerleşir: ${
-                      productMenus({ title, description, category: category === "Diğer" ? customCategory : category, isFeatured, id: productToEdit?.id } as any)
+                      productMenus(draftProduct)
                         .map((id) => MENU_LABELS[id])
                         .join(", ") || "hiçbir menü"
                     }.`}
@@ -891,7 +942,7 @@ export default function ProductFormModal({
             <label className="block text-xs font-semibold uppercase tracking-wider text-panel-400">
               Ürün Görselleri
             </label>
-            
+
             {/* File upload drag & drop area */}
             <div className="border-2 border-dashed border-panel-800 hover:border-brass-500/50 rounded-2xl p-6 text-center cursor-pointer bg-panel-950/60 transition group">
               <input
@@ -936,55 +987,67 @@ export default function ProductFormModal({
               <div className="space-y-2 pt-2">
                 <p className="text-[11px] text-panel-400 font-medium flex items-center gap-1">
                   <Star className="w-3 h-3 text-brass-500 fill-brass-500" />
-                  İlk görsel ana ürün resmi olarak kullanılacaktır.
+                  Ana görsel yapmak istediğiniz fotoğrafa tıklayın.
                 </p>
 
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                   {/* Existing Image URLs */}
                   {existingImages.map((url, idx) => (
-                    <div 
-                      key={`existing-${idx}`} 
+                    <div
+                      key={`existing-${idx}`}
                       className={`relative group rounded-xl overflow-hidden border aspect-square bg-panel-950 ${
-                        idx === 0 ? "border-brass-500 shadow-md shadow-brass-500/20" : "border-panel-800"
+                        idx === 0 && !newFirst ? "border-brass-500 ring-2 ring-brass-500 shadow-md shadow-brass-500/20" : "border-panel-800 hover:border-brass-500/60 cursor-pointer"
                       }`}
                     >
-                      <img src={url} alt={`Görsel ${idx + 1}`} className="w-full h-full object-cover" />
-                      
-                      {idx === 0 && (
+                      <button
+                        type="button"
+                        onClick={() => handleMakeMainImage(idx)}
+                        title={idx === 0 && !newFirst ? "Ana görsel" : "Ana görsel yap"}
+                        className="absolute inset-0 w-full h-full"
+                      >
+                        <img src={url} alt={`Görsel ${idx + 1}`} className="w-full h-full object-cover" />
+                      </button>
+
+                      {idx === 0 && !newFirst && (
                         <span className="absolute top-1 left-1 bg-brass-500 text-[9px] font-bold text-panel-950 px-1.5 py-0.5 rounded shadow">
                           Ana Görsel
                         </span>
                       )}
 
-                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-1">
-                        {idx !== 0 && (
-                          <button
-                            type="button"
-                            onClick={() => handleMakeMainImage(idx)}
-                            className="p-1.5 bg-brass-500 text-panel-950 rounded-lg text-xs font-bold transition hover:scale-105"
-                            title="Ana Görsel Yap"
-                          >
-                            <Star className="w-3.5 h-3.5 fill-panel-950" />
-                          </button>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveExistingImage(idx)}
-                          className="p-1.5 bg-red-600 text-white rounded-lg text-xs transition hover:scale-105"
-                          title="Sil"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
+                      {!(idx === 0 && !newFirst) && (
+                        <span className="pointer-events-none absolute bottom-1 inset-x-1 text-center bg-black/70 text-[9px] font-bold text-white py-0.5 rounded opacity-0 group-hover:opacity-100 transition">
+                          Ana görsel yap
+                        </span>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveExistingImage(idx)}
+                        className="absolute top-1 right-1 p-1 bg-red-600 text-white rounded-md text-xs opacity-0 group-hover:opacity-100 transition"
+                        title="Sil"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   ))}
 
                   {/* New File Previews */}
                   {filePreviews.map((previewUrl, idx) => (
-                    <div key={`new-${idx}`} className="relative group rounded-xl overflow-hidden border border-brass-500/60 aspect-square bg-panel-950">
-                      <img src={previewUrl} alt="Yeni Yüklenen" className="w-full h-full object-cover" />
-                      <span className="absolute top-1 left-1 bg-emerald-500 text-[9px] font-bold text-white px-1.5 py-0.5 rounded">
-                        Yeni
+                    <div
+                      key={`new-${idx}`}
+                      className={`relative group rounded-xl overflow-hidden border aspect-square bg-panel-950 ${
+                        newFirst && idx === 0 ? "border-brass-500 ring-2 ring-brass-500" : "border-brass-500/60 cursor-pointer"
+                      }`}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => handleMakeNewFileMain(idx)}
+                        title={newFirst && idx === 0 ? "Ana görsel" : "Ana görsel yap"}
+                        className="absolute inset-0 w-full h-full"
+                      >
+                        <img src={previewUrl} alt="Yeni Yüklenen" className="w-full h-full object-cover" />
+                      </button>
+                      <span className={`absolute top-1 left-1 text-[9px] font-bold px-1.5 py-0.5 rounded ${newFirst && idx === 0 ? "bg-brass-500 text-panel-950" : "bg-emerald-500 text-white"}`}>
+                        {newFirst && idx === 0 ? "Ana Görsel" : "Yeni"}
                       </span>
                       <button
                         type="button"
@@ -1093,8 +1156,8 @@ export default function ProductFormModal({
                   </span>
                   <span className="text-[10px] text-panel-400 font-normal hidden sm:inline">Ana sayfada aynen böyle görünecektir</span>
                 </div>
-                
-                <div 
+
+                <div
                   className="group relative aspect-square max-w-[200px] mx-auto rounded-2xl overflow-hidden border border-panel-800 bg-panel-900 cursor-pointer shadow-xl"
                   onMouseEnter={(e) => {
                     const vid = e.currentTarget.querySelector("video");
@@ -1102,9 +1165,9 @@ export default function ProductFormModal({
                   }}
                 >
                   {existingImages.length > 0 || filePreviews.length > 0 ? (
-                    <img 
-                      src={existingImages[0] || filePreviews[0]} 
-                      alt="Önizleme" 
+                    <img
+                      src={(newFirst && filePreviews[0]) || existingImages[0] || filePreviews[0]}
+                      alt="Önizleme"
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                     />
                   ) : (

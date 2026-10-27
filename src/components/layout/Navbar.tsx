@@ -9,9 +9,9 @@ import LanguageSelector from "@/components/layout/LanguageSelector";
 import SocialIcons from "@/components/layout/SocialIcons";
 import { whatsappLink } from "@/lib/contact";
 import { SALES_OPEN } from "@/lib/shop";
-import { MENUS, MenuId, openMenu, useMenuSettings } from "@/lib/menus";
+import { MENUS, FilterId, openMenu, subMenusOf, useMenuSettings } from "@/lib/menus";
 import { useAuth } from "@/context/AuthContext";
-import { ShoppingBag, Search, Menu, X, Phone, UserRound, LogOut } from "lucide-react";
+import { ShoppingBag, Search, Menu, X, Phone, UserRound, LogOut, ChevronDown } from "lucide-react";
 
 export default function Navbar() {
   const { toggleCart, getTotalItems } = useCartStore();
@@ -48,9 +48,10 @@ export default function Navbar() {
   };
 
   const menus = MENUS.filter((m) => enabledMenus[m.id]);
+  const subsOf = (id: (typeof MENUS)[number]["id"]) => subMenusOf(id).filter((s) => enabledMenus[s.id]);
 
   // On the home page filter in place; elsewhere go home with the menu in the URL.
-  const goToMenu = (e: React.MouseEvent, id: MenuId) => {
+  const goToMenu = (e: React.MouseEvent, id: FilterId) => {
     closeMenu();
     if (window.location.pathname === "/") {
       e.preventDefault();
@@ -162,16 +163,48 @@ export default function Navbar() {
       {/* Category bar (desktop) */}
       <div className="hidden lg:block bg-white border-b border-slate-200">
         <nav className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-8">
-          {menus.map((m) => (
-            <Link
-              key={m.id}
-              href={`/?menu=${m.id}#koleksiyon`}
-              onClick={(e) => goToMenu(e, m.id)}
-              className="py-3 text-xs font-semibold text-versace-green-900 hover:text-versace-gold-700 transition-colors tracking-widest uppercase border-b-2 border-transparent hover:border-versace-gold-700"
-            >
-              {t(m.key)}
-            </Link>
-          ))}
+          {menus.map((m) => {
+            const subs = subsOf(m.id);
+            return (
+              <div key={m.id} className="relative group">
+                <Link
+                  href={`/?menu=${m.id}#koleksiyon`}
+                  onClick={(e) => goToMenu(e, m.id)}
+                  aria-haspopup={subs.length ? "true" : undefined}
+                  className="py-3 text-xs font-semibold text-versace-green-900 hover:text-versace-gold-700 transition-colors tracking-widest uppercase border-b-2 border-transparent hover:border-versace-gold-700 flex items-center gap-1"
+                >
+                  {t(m.key)}
+                  {subs.length > 0 && <ChevronDown className="w-3.5 h-3.5 transition-transform group-hover:rotate-180" />}
+                </Link>
+                {subs.length > 0 && (
+                  <div className="absolute start-1/2 -translate-x-1/2 rtl:translate-x-1/2 top-full pt-px z-40 invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 transition-opacity">
+                    <ul className="min-w-56 bg-white border border-slate-200 shadow-xl py-2">
+                      <li>
+                        <Link
+                          href={`/?menu=${m.id}#koleksiyon`}
+                          onClick={(e) => goToMenu(e, m.id)}
+                          className="block px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-versace-gold-700 hover:bg-slate-50"
+                        >
+                          {t("menu_all_of")}
+                        </Link>
+                      </li>
+                      {subs.map((sm) => (
+                        <li key={sm.id}>
+                          <Link
+                            href={`/?menu=${sm.id}#koleksiyon`}
+                            onClick={(e) => goToMenu(e, sm.id)}
+                            className="block px-5 py-2.5 text-sm text-versace-green-900 hover:bg-slate-50 hover:text-versace-gold-700 whitespace-nowrap"
+                          >
+                            {t(sm.key)}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </nav>
       </div>
 
@@ -203,14 +236,25 @@ export default function Navbar() {
 
         <nav className="flex-1 overflow-y-auto py-2 flex flex-col">
           {menus.map((m) => (
-            <Link
-              key={m.id}
-              href={`/?menu=${m.id}#koleksiyon`}
-              onClick={(e) => goToMenu(e, m.id)}
-              className="p-4 text-sm font-semibold text-versace-green-900 border-b border-slate-50 hover:bg-slate-50"
-            >
-              {t(m.key)}
-            </Link>
+            <React.Fragment key={m.id}>
+              <Link
+                href={`/?menu=${m.id}#koleksiyon`}
+                onClick={(e) => goToMenu(e, m.id)}
+                className="p-4 text-sm font-semibold text-versace-green-900 border-b border-slate-50 hover:bg-slate-50"
+              >
+                {t(m.key)}
+              </Link>
+              {subsOf(m.id).map((sm) => (
+                <Link
+                  key={sm.id}
+                  href={`/?menu=${sm.id}#koleksiyon`}
+                  onClick={(e) => goToMenu(e, sm.id)}
+                  className="ps-8 pe-4 py-3 text-sm text-slate-600 border-b border-slate-50 hover:bg-slate-50"
+                >
+                  {t(sm.key)}
+                </Link>
+              ))}
+            </React.Fragment>
           ))}
           {member ? (
             <button

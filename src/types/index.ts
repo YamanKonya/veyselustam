@@ -41,6 +41,7 @@ export interface Product {
   memberPrice?: number;
   /** header menus this piece appears under; empty = guessed from its category */
   menus?: string[];
+  submenus?: string[]; // stone subcategories under a menu (e.g. Hematit under Erkek Yüzük)
   /** bumped in the catalogue when its image set changes; the admin panel then
    *  copies the new image list to Firestore once */
   imagesVersion?: number;

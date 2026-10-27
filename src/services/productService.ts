@@ -317,14 +317,15 @@ export const subscribeProducts = (onUpdate: (products: Product[]) => void) => {
 // Add a new product manually
 export const createProduct = async (
   productData: Omit<Product, "id">,
-  imageFiles: File[] = []
+  imageFiles: File[] = [],
+  uploadsFirst = false // a new photo was picked as the main image
 ): Promise<string> => {
-  const uploadedImageUrls: string[] = [...(productData.images || [])];
-
+  const uploaded: string[] = [];
   for (const file of imageFiles) {
-    const url = await uploadImageToStorage(file);
-    uploadedImageUrls.push(url);
+    uploaded.push(await uploadImageToStorage(file));
   }
+  const existing = productData.images || [];
+  const uploadedImageUrls = uploadsFirst ? [...uploaded, ...existing] : [...existing, ...uploaded];
 
   const newId = `vu-prod-${Date.now()}`;
   const newProduct: Product = {
@@ -350,14 +351,15 @@ export const createProduct = async (
 export const updateProduct = async (
   id: string,
   productData: Partial<Product>,
-  newImageFiles: File[] = []
+  newImageFiles: File[] = [],
+  uploadsFirst = false // a new photo was picked as the main image
 ): Promise<void> => {
-  const uploadedImageUrls: string[] = [...(productData.images || [])];
-
+  const uploaded: string[] = [];
   for (const file of newImageFiles) {
-    const url = await uploadImageToStorage(file);
-    uploadedImageUrls.push(url);
+    uploaded.push(await uploadImageToStorage(file));
   }
+  const existing = productData.images || [];
+  const uploadedImageUrls = uploadsFirst ? [...uploaded, ...existing] : [...existing, ...uploaded];
 
   const updatedFields = {
     ...productData,
@@ -373,7 +375,7 @@ export const updateProduct = async (
 
   // Clearing a field in the form must remove it from Firestore, not keep the old value
   const firestoreFields: Record<string, unknown | FieldValue> = sanitizeForFirestore(updatedFields);
-  (["originalPrice", "discountPercent", "videoUrl", "memberPrice", "menus"] as const).forEach((key) => {
+  (["originalPrice", "discountPercent", "videoUrl", "memberPrice", "menus", "submenus"] as const).forEach((key) => {
     if (key in productData && productData[key] === undefined) firestoreFields[key] = deleteField();
   });
 
@@ -490,11 +492,20 @@ export const toggleFeaturedProduct = async (id: string): Promise<boolean> => {
   return newStatus;
 };
 
-// Header menus of one piece; null hands it back to automatic placement
-export const setProductMenus = (id: string, menus: string[] | null) => {
-  localProductsStore = localProductsStore.map((p) => (p.id === id ? { ...p, menus: menus ?? undefined } : p));
+// Header menus and stone subcategories of one piece. Only the keys passed change;
+// null hands that list back to automatic placement.
+export const setProductPlacement = (id: string, change: { menus?: string[] | null; submenus?: string[] | null }) => {
+  const local: Partial<Product> = {};
+  const remote: Record<string, unknown | FieldValue> = {};
+  (["menus", "submenus"] as const).forEach((key) => {
+    if (!(key in change)) return;
+    const value = change[key];
+    local[key] = value ?? undefined;
+    remote[key] = value ?? deleteField();
+  });
+  localProductsStore = localProductsStore.map((p) => (p.id === id ? { ...p, ...local } : p));
   notifySubscribers();
-  syncProductInBackground("menü", id, { menus: menus ?? deleteField() });
+  syncProductInBackground("menü", id, remote);
 };
 
 // Toggle Active / Passive (Aktif / Pasif)

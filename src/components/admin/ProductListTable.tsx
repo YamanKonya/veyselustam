@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { Product } from "@/types";
-import { deleteProduct, createProduct, toggleFeaturedProduct, toggleActiveProduct, setProductMenus } from "@/services/productService";
-import { MENUS, MENU_LABELS, MenuId, productMenus } from "@/lib/menus";
+import { deleteProduct, createProduct, toggleFeaturedProduct, toggleActiveProduct, setProductPlacement } from "@/services/productService";
+import { MENUS, MENU_LABELS, SUBMENUS, SUBMENU_LABELS, FilterId, MenuId, inFilter, isSubMenu, productMenus, productSubmenus } from "@/lib/menus";
 import BulkCampaignModal from "./BulkCampaignModal";
 import { 
   Edit3, 
@@ -73,6 +73,7 @@ export default function ProductListTable({
   const categories = ["Hepsi", ...Array.from(new Set(products.map((p) => p.category)))];
   const [menuBusy, setMenuBusy] = useState(false);
   const [menuNote, setMenuNote] = useState("");
+  const [menuMode, setMenuMode] = useState<"add" | "move">("add");
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch = 
@@ -84,7 +85,7 @@ export default function ProductListTable({
     const matchesCategory =
       selectedCategory === "Hepsi" ||
       (selectedCategory === "menu:none" && menus.length === 0) ||
-      (selectedCategory.startsWith("menu:") && menus.includes(selectedCategory.slice(5) as MenuId)) ||
+      (selectedCategory.startsWith("menu:") && selectedCategory !== "menu:none" && inFilter(product, selectedCategory.slice(5) as FilterId)) ||
       (selectedCategory.startsWith("cat:") && product.category === selectedCategory.slice(4));
     
     let matchesStatus = true;
@@ -115,28 +116,46 @@ export default function ProductListTable({
 
   const selectedProducts = products.filter((p) => p.id && selectedProductIds.includes(p.id));
 
-  // Menus of the selected pieces: add (or, if all already have it, remove) one menu,
-  // or hand them back to automatic placement. A guessed placement becomes explicit.
-  const applyMenu = async (id: MenuId | "auto") => {
+  const filterLabel = (id: FilterId) => (isSubMenu(id) ? SUBMENU_LABELS[id] : MENU_LABELS[id]);
+  const sortMenus = (ids: string[]) => MENUS.map((m) => m.id).filter((m) => ids.includes(m));
+  const sortSubs = (ids: string[]) => SUBMENUS.map((m) => m.id).filter((m) => ids.includes(m));
+
+  // Selected pieces and one menu or stone subcategory.
+  // "add": add it (or, if all already have it, take it away); "move": it becomes their only
+  // menu / stone. A subcategory also puts the piece in its parent menu. A guessed placement
+  // becomes explicit; "auto" hands both lists back to automatic placement.
+  const applyMenu = async (id: FilterId | "auto") => {
     if (!selectedProducts.length) return;
-    const allHave = id !== "auto" && selectedProducts.every((p) => productMenus(p).includes(id));
+    const allHave = id !== "auto" && selectedProducts.every((p) => inFilter(p, id));
+    const removing = menuMode === "add" && allHave;
     setMenuBusy(true);
     setMenuNote("");
     try {
       selectedProducts.forEach((p) => {
-        if (id === "auto") return setProductMenus(p.id!, null);
-        const current = productMenus(p);
-        const next = allHave ? current.filter((m) => m !== id) : Array.from(new Set([...current, id]));
-        // keep the header order
-        setProductMenus(p.id!, MENUS.map((m) => m.id).filter((m) => next.includes(m)));
+        if (id === "auto") return setProductPlacement(p.id!, { menus: null, submenus: null });
+        const menus = productMenus(p) as string[];
+        if (isSubMenu(id)) {
+          const subs = productSubmenus(p) as string[];
+          const parent = SUBMENUS.find((m) => m.id === id)!.parent;
+          const nextSubs = removing ? subs.filter((m) => m !== id) : menuMode === "move" ? [id] : [...subs, id];
+          setProductPlacement(p.id!, {
+            submenus: sortSubs(nextSubs),
+            ...(removing || menus.includes(parent) ? {} : { menus: sortMenus([...menus, parent]) }),
+          });
+        } else {
+          const nextMenus = removing ? menus.filter((m) => m !== id) : menuMode === "move" ? [id] : [...menus, id];
+          setProductPlacement(p.id!, { menus: sortMenus(nextMenus) });
+        }
       });
       const n = selectedProducts.length;
       setMenuNote(
         id === "auto"
           ? `${n} ürün otomatik yerleşime döndü.`
-          : allHave
-          ? `${n} ürün "${MENU_LABELS[id]}" menüsünden çıkarıldı.`
-          : `${n} ürün "${MENU_LABELS[id]}" menüsüne eklendi.`
+          : removing
+          ? `${n} ürün "${filterLabel(id)}" bölümünden çıkarıldı.`
+          : menuMode === "move"
+          ? `${n} ürün "${filterLabel(id)}" bölümüne taşındı.`
+          : `${n} ürün "${filterLabel(id)}" bölümüne eklendi.`
       );
     } catch {
       setMenuNote("Menüler kaydedilemedi, tekrar deneyin.");
@@ -224,9 +243,16 @@ export default function ProductListTable({
             <option value="Hepsi">{t("cat_all")}</option>
             <optgroup label="Menüler">
               {MENUS.map((m) => (
-                <option key={m.id} value={`menu:${m.id}`}>
-                  {MENU_LABELS[m.id]} ({products.filter((p) => productMenus(p).includes(m.id)).length})
-                </option>
+                <React.Fragment key={m.id}>
+                  <option value={`menu:${m.id}`}>
+                    {MENU_LABELS[m.id]} ({products.filter((p) => productMenus(p).includes(m.id)).length})
+                  </option>
+                  {SUBMENUS.filter((sm) => sm.parent === m.id).map((sm) => (
+                    <option key={sm.id} value={`menu:${sm.id}`}>
+                      {"\u00a0\u00a0\u00a0› "}{SUBMENU_LABELS[sm.id]} ({products.filter((p) => productSubmenus(p).includes(sm.id)).length})
+                    </option>
+                  ))}
+                </React.Fragment>
               ))}
               <option value="menu:none">Hiçbir menüde değil ({products.filter((p) => productMenus(p).length === 0).length})</option>
             </optgroup>
@@ -298,7 +324,7 @@ export default function ProductListTable({
           </span>
           <span className="text-panel-400">
             {selectedProducts.length
-              ? `${selectedProducts.length} ürün seçili. Bir menüye tıklayın: seçilenler o menüye eklenir (hepsinde zaten varsa çıkarılır).`
+              ? `${selectedProducts.length} ürün seçili. Bir menüye ya da taşa tıklayın. Ekle: seçilenler oraya da girer (hepsinde zaten varsa çıkarılır). Taşı: seçilenler yalnızca orada kalır.`
               : "Listeden ürünleri işaretleyin ya da filtreleyip hepsini seçin, sonra menüye tıklayın."}
           </span>
           {filteredProducts.length > 0 && (
@@ -316,31 +342,58 @@ export default function ProductListTable({
             </button>
           )}
         </div>
-        <div className="flex flex-wrap gap-2">
-          {MENUS.map((m) => {
-            const have = selectedProducts.filter((p) => productMenus(p).includes(m.id)).length;
-            const all = selectedProducts.length > 0 && have === selectedProducts.length;
-            return (
-              <button
-                key={m.id}
-                type="button"
-                disabled={!selectedProducts.length || menuBusy}
-                onClick={() => applyMenu(m.id)}
-                className={`px-3 py-2 rounded-xl text-xs font-semibold border transition disabled:opacity-40 ${
-                  all ? "bg-brass-600 border-brass-500 text-white" : have ? "bg-brass-500/15 border-brass-500/40 text-brass-300" : "bg-panel-950 border-panel-700 text-panel-200 hover:border-brass-500"
-                }`}
-              >
-                {all ? "✓ " : "+ "}
-                {MENU_LABELS[m.id]}
-                {have > 0 && !all && <span className="ms-1 opacity-70">({have})</span>}
-              </button>
-            );
-          })}
+        <div role="group" aria-label="Atama şekli" className="flex items-center gap-1 bg-panel-950 p-1 border border-panel-800 rounded-xl self-start">
+          {([
+            ["add", "Ekle", "Seçilenler mevcut menülerine ek olarak buraya da girer"],
+            ["move", "Taşı", "Seçilenler yalnızca tıkladığınız menüde / taşta kalır"],
+          ] as const).map(([mode, label, hint]) => (
+            <button
+              key={mode}
+              type="button"
+              aria-pressed={menuMode === mode}
+              title={hint}
+              onClick={() => setMenuMode(mode)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${menuMode === mode ? "bg-brass-600 text-white" : "text-panel-400 hover:text-white"}`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        {(
+          [
+            ["Menüler", MENUS.map((m) => m.id as FilterId)],
+            ["Erkek Yüzük taşları", SUBMENUS.map((m) => m.id as FilterId)],
+          ] as const
+        ).map(([title, ids]) => (
+          <div key={title} className="flex flex-wrap items-center gap-2">
+            <span className="w-36 text-[11px] font-semibold uppercase tracking-wider text-panel-500">{title}</span>
+            {ids.map((id) => {
+              const have = selectedProducts.filter((p) => inFilter(p, id)).length;
+              const all = selectedProducts.length > 0 && have === selectedProducts.length;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  disabled={!selectedProducts.length || menuBusy}
+                  onClick={() => applyMenu(id)}
+                  className={`px-3 py-2 rounded-xl text-xs font-semibold border transition disabled:opacity-40 ${
+                    all ? "bg-brass-600 border-brass-500 text-white" : have ? "bg-brass-500/15 border-brass-500/40 text-brass-300" : "bg-panel-950 border-panel-700 text-panel-200 hover:border-brass-500"
+                  }`}
+                >
+                  {all ? "✓ " : menuMode === "move" ? "→ " : "+ "}
+                  {filterLabel(id)}
+                  {have > 0 && !all && <span className="ms-1 opacity-70">({have})</span>}
+                </button>
+              );
+            })}
+          </div>
+        ))}
+        <div>
           <button
             type="button"
             disabled={!selectedProducts.length || menuBusy}
             onClick={() => applyMenu("auto")}
-            title="Seçilenlerin elle verilen menülerini siler; kategorisine göre otomatik yerleşir"
+            title="Seçilenlerin elle verilen menülerini ve taşlarını siler; kategorisine göre otomatik yerleşir"
             className="px-3 py-2 rounded-xl text-xs font-semibold border border-panel-700 bg-panel-950 text-panel-400 hover:text-white transition disabled:opacity-40 inline-flex items-center gap-1.5"
           >
             {menuBusy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RotateCcw className="w-3.5 h-3.5" />} Otomatiğe döndür
@@ -486,6 +539,17 @@ export default function ProductListTable({
                               }`}
                             >
                               {MENU_LABELS[m]}
+                            </span>
+                          ))}
+                          {productSubmenus(product).map((m) => (
+                            <span
+                              key={m}
+                              title={product.submenus ? "Elle seçildi" : "Otomatik yerleşti"}
+                              className={`px-2 py-0.5 rounded-md text-[11px] font-semibold whitespace-nowrap ${
+                                product.submenus ? "bg-emerald-700 text-white" : "bg-emerald-500/10 border border-dashed border-emerald-500/40 text-emerald-300"
+                              }`}
+                            >
+                              › {SUBMENU_LABELS[m]}
                             </span>
                           ))}
                           {productMenus(product).length === 0 && <span className="text-[11px] text-amber-300">Menüsüz</span>}
