@@ -45,6 +45,7 @@ export const DEFAULT_ENABLED: Record<FilterId, boolean> = {
   seref: true,
   yesil: false,
   horasan: true,
+  kizil: true,
 };
 
 // Stone subcategories under "Erkek Yüzük". Each is switched on or off like a menu.
@@ -56,6 +57,7 @@ export const SUBMENUS = [
   { id: "seref", parent: "erkek", key: "sub_seref" },
   { id: "yesil", parent: "erkek", key: "sub_yesil" },
   { id: "horasan", parent: "erkek", key: "sub_horasan" },
+  { id: "kizil", parent: "erkek", key: "sub_kizil" },
 ] as const;
 
 export type SubMenuId = (typeof SUBMENUS)[number]["id"];
@@ -70,6 +72,7 @@ export const SUBMENU_LABELS: Record<SubMenuId, string> = {
   seref: "Şeref-ül Şems",
   yesil: "Yeşil Akik",
   horasan: "Horasan Akik",
+  kizil: "Kızıl Akik",
 };
 
 export const isSubMenu = (id: string): id is SubMenuId => SUBMENUS.some((m) => m.id === id);
@@ -105,6 +108,7 @@ export const productSubmenus = (p: Product): SubMenuId[] => {
   if (text.includes("şeref")) out.push("seref");
   if (text.includes("yeşil akik")) out.push("yesil");
   if (text.includes("horasan")) out.push("horasan");
+  if (text.includes("kızıl akik")) out.push("kizil");
   return out;
 };
 
