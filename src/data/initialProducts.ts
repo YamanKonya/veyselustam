@@ -3680,7 +3680,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
   {
     "id": "vu-sir",
     "title": "Sır Model Gizli Bölmeli Sekizgen Akik Taşlı El Oyması Gümüş Yüzük",
-    "description": "Sekizgen akik taşın üzerindeki kapak açılır ve altında gizli bir bölme ortaya çıkar; kapağın iç yüzü de elde hat işlemesiyle süslenmiştir. Kapağın dış yüzü geometrik motiflerle, kasanın yanları siyah mineli desenlerle işlenmiştir. Yüzüğe, yalnızca Allah ile kul arasında kalan gizli hali anlatan “Sır” adını verdik; içine küçük bir dua ya da sevdiğinize ait bir hatıra saklayabilirsiniz.",
+    "description": "Sekizgen akik taşın üzerindeki kapak açılır ve altında gizli bir bölme ortaya çıkar; kapağın iç yüzü de elde hat işlemesiyle süslenmiştir. Kapağın dış yüzü geometrik motiflerle işlenmiştir. Kasanın yanlarındaki desenlerde ise Osmanlı gümüş işçiliğinin en zahmetli ve en kıymetli tekniklerinden biri olan savat kullanılmıştır: gümüşe elle oyulan desenlerin içi gümüş, bakır, kurşun ve kükürtten hazırlanan siyah savat alaşımıyla doldurulur, ardından ateşte eritilerek metale kalıcı olarak işlenir. Böylece motifler, gümüşün parlaklığı karşısında zamanla silinmeyen derin bir siyahla belirginleşir; bu emek isteyen teknik sayesinde yüzük, asırlık bir zanaatin imzasını taşır. Yüzüğe, yalnızca Allah ile kul arasında kalan gizli hali anlatan “Sır” adını verdik; içine küçük bir dua ya da sevdiğinize ait bir hatıra saklayabilirsiniz.",
     "price": 13700,
     "images": [
       "/images/products/sir/sir-1.jpg",
