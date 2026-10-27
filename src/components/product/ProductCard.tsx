@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Product } from "@/types";
 import { useLanguage } from "@/context/LanguageContext";
 import { formatPrice, discountPercent } from "@/lib/format";
-import MemberPrice from "@/components/product/MemberPrice";
+import MemberPrice, { MemberDiscountNote } from "@/components/product/MemberPrice";
 import { imageAt, imageSrcSet } from "@/lib/image";
 import { useStockGroups, availableStock } from "@/services/stockService";
 import { AdminEditButton } from "@/components/admin/AdminEditProvider";
@@ -129,7 +129,8 @@ export default function ProductCard({ product, isAdded, onAddToCart }: ProductCa
             ₺{formatPrice(product.price)}
           </span>
         </div>
-        <div className="-mt-2 mb-4">
+        <div className="-mt-2 mb-4 space-y-1">
+          {discount > 0 && <MemberDiscountNote productId={product.id} />}
           <MemberPrice product={product} />
         </div>
 

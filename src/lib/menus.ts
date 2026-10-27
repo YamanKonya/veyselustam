@@ -43,7 +43,7 @@ const SIGNATURE_CATEGORIES = ["özel el yapımı gümüş yüzükler", "nakkaş 
 
 /** Menus a product appears under: its own choice, or a guess from its category and title. */
 export const productMenus = (p: Product): MenuId[] => {
-  if (p.menus?.length) return p.menus as MenuId[];
+  if (p.menus) return p.menus as MenuId[]; // set by hand (an empty list hides it from every menu)
   const cat = (p.category || "").toLocaleLowerCase("tr");
   const text = `${p.title} ${p.description}`.toLocaleLowerCase("tr");
   if (cat.includes("özel yapım") && text.includes("tasarım")) return []; // design service

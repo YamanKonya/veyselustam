@@ -488,6 +488,13 @@ export const toggleFeaturedProduct = async (id: string): Promise<boolean> => {
   return newStatus;
 };
 
+// Header menus of one piece; null hands it back to automatic placement
+export const setProductMenus = (id: string, menus: string[] | null) => {
+  localProductsStore = localProductsStore.map((p) => (p.id === id ? { ...p, menus: menus ?? undefined } : p));
+  notifySubscribers();
+  syncProductInBackground("menü", id, { menus: menus ?? deleteField() });
+};
+
 // Toggle Active / Passive (Aktif / Pasif)
 export const toggleActiveProduct = async (id: string): Promise<boolean> => {
   let newStatus = false;

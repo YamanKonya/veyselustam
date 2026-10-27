@@ -5,6 +5,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { AdminEditProvider } from "@/components/admin/AdminEditProvider";
 import VisitTracker from "@/components/VisitTracker";
+import WhatsAppChat from "@/components/layout/WhatsAppChat";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, storeJsonLd } from "@/lib/seo";
 
 // latin-ext carries the Turkish glyphs (ğ, ş, ı, İ)
@@ -106,6 +107,7 @@ export default function RootLayout({
             <AdminEditProvider>
               {children}
               <VisitTracker />
+              <WhatsAppChat />
             </AdminEditProvider>
           </AuthProvider>
         </LanguageProvider>

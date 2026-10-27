@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { BadgePercent } from "lucide-react";
+import { BadgePercent, Lock } from "lucide-react";
 import { Product } from "@/types";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
@@ -16,6 +16,26 @@ export const forMember = (p: Product, isMember: boolean): Product => {
   const mp = memberPriceOf(p);
   return isMember && mp ? { ...p, price: mp } : p;
 };
+
+// Under a discounted price: the discount is for members; guests get a link to join.
+export function MemberDiscountNote({ productId, tone = "light" }: { productId?: string; tone?: "light" | "dark" }) {
+  const { user } = useAuth();
+  const { t } = useLanguage();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const member = mounted && !!user;
+  return (
+    <p className={`flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] font-semibold uppercase tracking-wider ${tone === "dark" ? "text-versace-gold-500" : "text-versace-gold-700"}`}>
+      <Lock className="w-3.5 h-3.5" aria-hidden="true" />
+      {t("member_discount_note")}
+      {!member && (
+        <Link href={`/register${productId ? `?next=/product/${productId}` : ""}`} className="normal-case tracking-normal underline underline-offset-2">
+          {t("member_join")}
+        </Link>
+      )}
+    </p>
+  );
+}
 
 // Under the normal price: members see their price, guests see it as a reason to join.
 export default function MemberPrice({ product, tone = "light", size = "sm" }: { product: Product; tone?: "light" | "dark"; size?: "sm" | "lg" }) {

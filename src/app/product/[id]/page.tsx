@@ -17,7 +17,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
 import { useRecentStore } from "@/store/useRecentStore";
 import ProductReviews from "@/components/product/ProductReviews";
-import MemberPrice, { forMember } from "@/components/product/MemberPrice";
+import MemberPrice, { forMember, MemberDiscountNote } from "@/components/product/MemberPrice";
 import { useAuth } from "@/context/AuthContext";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 import Link from "next/link";
@@ -404,6 +404,9 @@ export default function ProductDetailPage() {
                         <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">
                           {(product.originalPrice - product.price).toLocaleString("tr-TR")} ₺ {t("savings_label")}
                         </span>
+                      </div>
+                      <div className="mt-1.5">
+                        <MemberDiscountNote productId={product.id} />
                       </div>
                     </div>
                   ) : (
