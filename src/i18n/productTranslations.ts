@@ -3,6 +3,7 @@ import { Language } from "./translations";
 import { getCatalogContent } from "./catalogContent";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 import { toHorasanWording } from "@/lib/horasanWording";
+import { RU_BACKFILL } from "./ruBackfill";
 
 // Category Translation Dictionary for all 6 languages
 export const CATEGORY_TRANSLATIONS: Record<string, Record<Language, string>> = {
@@ -118,7 +119,7 @@ export const usesCatalogText = (product: Product) => {
  * 1. The hand-written catalogue text, while the product still has its original title
  *    and has not been given its own text in the admin panel.
  * 2. Translations saved with the product, if they were made from its current Turkish text
- *    (Russian falls back to the English translation for products saved before Russian existed).
+ *    (Russian: the prepared Russian text for pieces saved before Russian existed, then English).
  * 3. The Turkish text unchanged — never a half-translated mix.
  */
 export function translateProduct(product: Product, lang: Language): Product {
@@ -133,7 +134,12 @@ export function translateProduct(product: Product, lang: Language): Product {
   const baseDesc = cleanProductText(product.description);
 
   if (lang !== "tr") {
-    const fresh = product.i18nSource && product.i18nSource === translationSourceKey(product.title, product.description);
+    const sourceKey = translationSourceKey(product.title, product.description);
+    const fresh = product.i18nSource && product.i18nSource === sourceKey;
+    const backfill = lang === "ru" && !product.title_ru && product.id ? RU_BACKFILL[product.id] : undefined;
+    if (backfill && backfill.source === sourceKey) {
+      return { ...product, category, title: backfill.title, description: cleanProductText(backfill.description) };
+    }
     for (const l of lang === "ru" ? (["ru", "en"] as const) : [lang]) {
       const storedTitle = product[`title_${l}` as keyof Product] as string | undefined;
       const storedDesc = product[`description_${l}` as keyof Product] as string | undefined;
