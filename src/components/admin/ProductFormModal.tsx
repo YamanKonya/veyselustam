@@ -30,7 +30,7 @@ interface ProductFormModalProps {
 
 const DEFAULT_CATEGORIES = [
   "Nakkaş El Oyması Taşlı",
-  "Horasan ve Yemen Akik Taşlı",
+  "Horasan Akik Taşlı",
   "Özel Yapım Ürünler",
   "El Yapımı Gümüş Kolye",
   "Kadın Takı",

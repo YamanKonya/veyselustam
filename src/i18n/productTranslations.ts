@@ -2,6 +2,7 @@ import { Product } from "@/types";
 import { Language } from "./translations";
 import { getCatalogContent } from "./catalogContent";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
+import { toHorasanWording } from "@/lib/horasanWording";
 
 // Category Translation Dictionary for all 5 languages
 export const CATEGORY_TRANSLATIONS: Record<string, Record<Language, string>> = {
@@ -12,12 +13,12 @@ export const CATEGORY_TRANSLATIONS: Record<string, Record<Language, string>> = {
     de: "Nakkaş – handgeschnitzte Steine",
     ar: "أحجار منقوشة يدويًا بفن النقّاش",
   },
-  "Horasan ve Yemen Akik Taşlı": {
-    tr: "Horasan ve Yemen Akik Taşlı",
-    en: "Khorasan & Yemeni Agate",
-    es: "Ágata de Jorasán y Yemen",
-    de: "Chorasan- & Jemen-Achat",
-    ar: "عقيق خراساني ويمني",
+  "Horasan Akik Taşlı": {
+    tr: "Horasan Akik Taşlı",
+    en: "Khorasan Agate",
+    es: "Ágata de Jorasán",
+    de: "Chorasan-Achat",
+    ar: "عقيق خراساني",
   },
   "El Yapımı Gümüş Kolye": {
     tr: "El Yapımı Gümüş Kolye",
@@ -63,10 +64,10 @@ export const CATEGORY_TRANSLATIONS: Record<string, Record<Language, string>> = {
   },
 };
 
-// Strip shop self-promotion links and stray replacement characters from imported text
+// Strip shop self-promotion links and stray replacement characters from imported text;
+// old "Yemen akik" wording reads as Khorasan agate (saved products may still carry it)
 const cleanProductText = (text: string): string => {
-  return (text || "")
-    .normalize("NFC")
+  return toHorasanWording((text || "").normalize("NFC"))
     .replace(/[•\s]*Web Sayfamızı Ziyaret Etmeyi Unutmayın!?:?\s*(https?:\/\/[^\s]+)?/gi, "")
     .replace(/https?:\/\/(www\.)?veyselustam\.com[^\s]*/gi, "")
     .replace(/[�﷿]/g, "")

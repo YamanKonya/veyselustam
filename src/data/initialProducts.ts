@@ -61,7 +61,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/b1015b58-801f-4256-aebe-9f528123b441/1080/1732876879897.webp"
     ],
     "videoUrl": "/videos/vu-prod-1.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -107,7 +107,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/6b77218d-9349-4962-9330-3d6e6428d462/1080/1732972724718.webp"
     ],
     "videoUrl": "/videos/vu-prod-2.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -155,7 +155,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/21e3ea74-3378-44eb-9aa9-d25a1e41d9ea/1080/1733091725664.webp"
     ],
     "videoUrl": "/videos/vu-prod-3.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -203,7 +203,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/0862f2d0-0d94-4c52-b9c7-9a890698270a/1080/1733091725366.webp"
     ],
     "videoUrl": "/videos/vu-prod-4.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -251,7 +251,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/a0a7ddbb-039c-4171-8497-3f81510e40c9/1080/1733091725511.webp"
     ],
     "videoUrl": "/videos/vu-prod-5.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -299,7 +299,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/edbd04f7-942e-4fc4-ac07-78816fb3464c/1080/1733091725475.webp"
     ],
     "videoUrl": "/videos/vu-prod-6.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -347,7 +347,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/04aab6d6-d36c-4181-8466-0bcfbc700072/1080/1733091725793.webp"
     ],
     "videoUrl": "/videos/vu-prod-7.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -393,7 +393,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/b0d23e30-46f3-41c6-9965-3ffd965eebf8/1080/il-1140xn.webp"
     ],
     "videoUrl": "/videos/vu-prod-8.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -441,7 +441,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/bce9ad1c-aeb4-4ff7-bbaa-eadde87abfae/1080/1733091725701.webp"
     ],
     "videoUrl": "/videos/vu-prod-9.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -488,7 +488,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/434c6c87-9d57-4b77-afec-4113bd411486/1080/1733091725402.webp"
     ],
     "videoUrl": "/videos/vu-prod-10.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -536,7 +536,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/e9a725eb-f7f8-4c18-ae27-42e64cb1df6d/1080/1733091725626.webp"
     ],
     "videoUrl": "/videos/vu-prod-11.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -583,7 +583,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/3b2a8574-a509-4fe1-8241-56bb9120710e/1080/1733091725817.webp"
     ],
     "videoUrl": "/videos/vu-prod-12.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -631,7 +631,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/d646ff39-97f9-466c-b070-c030a803ee79/1080/1733091725895.webp"
     ],
     "videoUrl": "/videos/vu-prod-13.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -679,7 +679,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/30235fdd-c028-445a-8362-8960fa35a60f/1080/1733091725438.webp"
     ],
     "videoUrl": "/videos/vu-prod-14.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -906,7 +906,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/videos/12b70023-d1d5-479c-951a-7f0a014982a9/dd4602aa-7c08-4553-8001-0448925101e3/original.mp4"
     ],
     "videoUrl": "/videos/vu-prod-19.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -954,7 +954,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/videos/12b70023-d1d5-479c-951a-7f0a014982a9/e5dc3685-9d5f-4460-8da8-613157acf304/original.mp4"
     ],
     "videoUrl": "/videos/vu-prod-20.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1001,7 +1001,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/videos/12b70023-d1d5-479c-951a-7f0a014982a9/7ec68160-0ac1-4044-8f4b-d29993eec08b/original.mp4"
     ],
     "videoUrl": "/videos/vu-prod-21.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1093,7 +1093,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/340c9a93-e38f-45e7-b812-d1081a6716e7/1080/1729638896190.webp"
     ],
     "videoUrl": "/videos/vu-prod-23.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1138,7 +1138,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/37f966d8-7f33-40c4-99a2-af574cd61bb5/1080/1729639160090.webp"
     ],
     "videoUrl": "/videos/vu-prod-24.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1233,7 +1233,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/videos/12b70023-d1d5-479c-951a-7f0a014982a9/a0164414-55a5-4940-b210-d4dd99becdb7/original.mp4"
     ],
     "videoUrl": "/videos/vu-prod-26.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1277,7 +1277,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/ccd58e0d-5d4c-45f4-bda7-9b3c6b084411/1080/1731334982324.webp"
     ],
     "videoUrl": "/videos/vu-prod-27.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1326,7 +1326,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/1b7786e1-c9c8-42f6-8cb7-1330f4f23fd5/1080/1749024485894.webp"
     ],
     "videoUrl": "/videos/vu-prod-28.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1375,7 +1375,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/1ff0b545-8c16-4196-8f84-023584ed4f80/1080/1733266698180.webp"
     ],
     "videoUrl": "/videos/vu-prod-29.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1468,7 +1468,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/videos/12b70023-d1d5-479c-951a-7f0a014982a9/89713cd4-103f-4954-89e3-b29e95d9b82d/original.mp4"
     ],
     "videoUrl": "/videos/vu-prod-31.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1517,7 +1517,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/45fd0ae7-530a-4878-969b-428623f08418/1080/1736508012605.webp"
     ],
     "videoUrl": "/videos/vu-prod-32.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1563,7 +1563,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/9f33c76b-b8b5-4004-8126-56b8df959540/1080/1736691277495.webp"
     ],
     "videoUrl": "/videos/vu-prod-33.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1656,7 +1656,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/d11ac47e-a990-45f1-b1f4-342abf9fcd4f/1080/il-1140xn.webp"
     ],
     "videoUrl": "/videos/vu-prod-35.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1705,7 +1705,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/videos/12b70023-d1d5-479c-951a-7f0a014982a9/ef7ef7d6-0ed8-47e5-b27b-be91592a7222/original.mp4"
     ],
     "videoUrl": "/videos/vu-prod-36.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1754,7 +1754,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/cbcf93d9-7509-44bc-98ac-da20a3b93773/1080/1738732454069.webp"
     ],
     "videoUrl": "/videos/vu-prod-37.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1803,7 +1803,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/28f5455d-0b92-41f2-88b9-5d7834bf87ea/1080/1742191352602.webp"
     ],
     "videoUrl": "/videos/vu-prod-38.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1901,7 +1901,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/75b9c326-f017-4123-8180-34dfc7c5bc19/1080/1743599648029.webp"
     ],
     "videoUrl": "/videos/vu-prod-40.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -1999,7 +1999,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/videos/12b70023-d1d5-479c-951a-7f0a014982a9/90ee1e42-69ed-4d25-b2e1-5e60db67ab5c/original.mp4"
     ],
     "videoUrl": "/videos/vu-prod-42.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -2048,7 +2048,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/videos/12b70023-d1d5-479c-951a-7f0a014982a9/9c06849b-babc-4b23-a0f0-4b678d96e6ac/original.mp4"
     ],
     "videoUrl": "/videos/vu-prod-43.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -2097,7 +2097,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/2f3b97a0-c442-4a78-b943-078ce76ae234/1080/1746419248584.webp"
     ],
     "videoUrl": "/videos/vu-prod-44.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -2146,7 +2146,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/7bf9a5d1-965b-4a7c-bdd7-af102ded340a/1080/img-20240207-121146.webp"
     ],
     "videoUrl": "/videos/vu-prod-45.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -2192,7 +2192,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/c62f783c-dca1-4d07-9dcb-2b770cf6bc78/1080/il-1140xn.webp"
     ],
     "videoUrl": "/videos/vu-prod-46.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -2285,7 +2285,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/b0c26653-cf81-478d-b21f-0f081fe0648e/1080/il-1140xn.webp"
     ],
     "videoUrl": "/videos/vu-prod-48.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -2329,7 +2329,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/5e89b391-8040-4890-8886-0e0bff945cfe/1080/img-20220402-161059.webp"
     ],
     "videoUrl": "/videos/vu-prod-49.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -2373,7 +2373,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/714b6b40-99de-45f3-9be5-74e362dbb1b0/1080/1729639160102.webp"
     ],
     "videoUrl": "/videos/vu-prod-50.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -2460,7 +2460,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/86f9a8e6-05c2-48a4-b7ed-cd7d535324d2/1080/1752924425438.webp"
     ],
     "videoUrl": "/videos/vu-prod-52.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -2504,7 +2504,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/490e8355-a0ec-44a7-8be8-4632e59e6af4/1080/1752924425438.webp"
     ],
     "videoUrl": "/videos/vu-prod-53.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -2593,7 +2593,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/9e11469f-c0fa-400f-a78f-b62f33ce3807/1080/adsiz-tasarim.webp"
     ],
     "videoUrl": "/videos/vu-prod-55.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -2667,7 +2667,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
   },
   {
     "id": "vu-prod-57",
-    "title": "Şems Suresi – El Yapımı Yemen Akik Erkek Yüzüğü",
+    "title": "Şems Suresi – El Yapımı Horasan Akik Erkek Yüzüğü",
     "description": "Veysel Usta imzalı bu özel koleksiyon yüzüğü , Bursa Ulu Camii’nde bulunan Şems Suresi hat yazısından esinlenerek hazırlanmıştır. Yüzüğün taşı tamamen el yapımıdır ve usta tarafından işlenmiştir. Taşın üzerinde, “Güneşe ve onun aydınlığına andolsun” ayeti zarif bir hat formunda yer alır. Kasa kısmı, geleneksel el kalem",
     "price": 11850,
     "images": [
@@ -2682,7 +2682,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/7b8ae0e4-0004-4d76-a9b5-85e3ec606485/1080/img-7355.webp"
     ],
     "videoUrl": "/videos/vu-prod-57.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -2704,13 +2704,13 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "stock": 10,
     "originalUrl": "https://veyselustam.com/sems-suresi-el-yapimi-yemen-akik-erkek-yuzugu",
     "createdAt": "2026-10-07T11:17:24.596Z",
-    "title_en": "Şems Suresi – Handcrafted Yemen Agate Men's Ring",
+    "title_en": "Şems Suresi – Handcrafted Khorasan Agate Men's Ring",
     "description_en": "This special collection piece signed by Master Veysel Ring , Inspired by the Surah Ash-Shams calligraphy at Bursa Grand Mosque. the ring's gemstone is 100% handcrafted and carved by the master artisan. The verse 'By the Sun and its brightness' is engraved in elegant calligraphic script. Kasa kısmı, geleneksel el kalem",
-    "title_es": "Şems Suresi – Artesanal Ágata de Yemen Anillo para Hombre",
+    "title_es": "Şems Suresi – Artesanal Ágata de Jorasán Anillo para Hombre",
     "description_es": "Esta pieza de colección especial firmada por el Maestro Veysel Anillo , Inspirado en la caligrafía de la Sura Ash-Shams de la Gran Mezquita de Bursa. la piedra del anillo es 100% artesanal y trabajada por el maestro. El versículo 'Por el Sol y su resplandor' está grabado en una elegante caligrafía. Kasa kısmı, geleneksel el kalem",
-    "title_de": "Şems Suresi – Handgefertigt Jemen Achat Herrenring",
+    "title_de": "Şems Suresi – Handgefertigt Chorasan-Achat Herrenring",
     "description_de": "Dieses Schmuckstück aus der Spezialkollektion von Meister Veysel Ring , Inspiriert von der Surah Ash-Shams Kalligraphie in der Großen Moschee von Bursa. der Edelstein des Rings ist zu 100% Handarbeit und vom Meister gefertigt. Der Vers 'Bei der Sonne und ihrem Glanz' ist in eleganter Kalligraphie eingraviert. Kasa kısmı, geleneksel el kalem",
-    "title_ar": "Şems Suresi – صناعة يدوية عقيق يمني خاتم رجالي",
+    "title_ar": "Şems Suresi – صناعة يدوية عقيق خراساني خاتم رجالي",
     "description_ar": "هذه القطعة الفريدة من مجموعة المعلم فيصل الخاصة خاتم , مستوحى من خط سورة الشمس الموجود في جامع بورصة الكبير. حجر الخاتم مصنوع يدويًا بالكامل وتم نقشه بدقة بواسطة المعلم. منقوش على الحجر آية 'والشمس وضحاها' بخط عربي أنيق. Kasa kısmı, geleneksel el kalem"
   },
   {
@@ -2778,7 +2778,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/videos/12b70023-d1d5-479c-951a-7f0a014982a9/599a43e3-e541-49af-b248-067b1f8fc617/original.mp4"
     ],
     "videoUrl": "/videos/vu-prod-59.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -2875,7 +2875,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/videos/12b70023-d1d5-479c-951a-7f0a014982a9/21bcd933-92d1-4d13-a052-c25dac8c55b8/original.mp4"
     ],
     "videoUrl": "/videos/vu-prod-61.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -2968,7 +2968,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/0d1d03e8-8a00-4b1b-aa5b-30022fab64d2/1080/img-20251113-171329.webp"
     ],
     "videoUrl": "/videos/vu-prod-63.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -3273,7 +3273,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
   {
     "id": "vu-ayn",
     "title": "Ayn Model Âl-i İmrân 27. Ayet Kazınmış Altıgen Akik Taşlı Gümüş Yüzük",
-    "description": "Altıgen Horasan-Yemen akik taşın ortasında “Ayn” ve “Mim” harfleri yer alır; örnekte Azime ve Mustafa isimlerinin baş harfleridir ve sizin seçtiğiniz harflerle kişiye özel işlenebilir. Taşın çevresine sülüs hatla Âl-i İmrân Suresi'nin 27. ayeti kazınmıştır: “Geceyi gündüze katarsın, gündüzü geceye katarsın; ölüden diriyi çıkarırsın, diriden ölüyü çıkarırsın; dilediğine hesapsız rızık verirsin.” Ayet, gecenin ve gündüzün, hayatın ve rızkın tek sahibinin Allah olduğunu hatırlatır; bu yüzden bereket ve hayırlı rızık niyetiyle okunur.",
+    "description": "Altıgen Horasan akik taşın ortasında “Ayn” ve “Mim” harfleri yer alır; örnekte Azime ve Mustafa isimlerinin baş harfleridir ve sizin seçtiğiniz harflerle kişiye özel işlenebilir. Taşın çevresine sülüs hatla Âl-i İmrân Suresi'nin 27. ayeti kazınmıştır: “Geceyi gündüze katarsın, gündüzü geceye katarsın; ölüden diriyi çıkarırsın, diriden ölüyü çıkarırsın; dilediğine hesapsız rızık verirsin.” Ayet, gecenin ve gündüzün, hayatın ve rızkın tek sahibinin Allah olduğunu hatırlatır; bu yüzden bereket ve hayırlı rızık niyetiyle okunur.",
     "price": 13700,
     "images": [
       "/images/products/ayn/ayn-1.jpg",
@@ -3287,7 +3287,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/ayn/ayn-9.jpg"
     ],
     "videoUrl": "/videos/vu-ayn.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -3425,7 +3425,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/elif/elif-10.jpg"
     ],
     "videoUrl": "/videos/vu-elif.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -3501,7 +3501,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/vahdet/vahdet-10.jpg"
     ],
     "videoUrl": "/videos/vu-vahdet.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -3576,7 +3576,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/sekine/sekine-10.jpg"
     ],
     "videoUrl": "/videos/vu-sekine.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -3617,7 +3617,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/yakin/yakin-10.jpg"
     ],
     "videoUrl": "/videos/vu-yakin.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -3654,7 +3654,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/edep/edep-6.jpg"
     ],
     "videoUrl": "/videos/vu-edep.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -3734,7 +3734,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/hatem/hatem-9.jpg"
     ],
     "videoUrl": "/videos/vu-hatem.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -3770,7 +3770,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/vakar/vakar-5.jpg"
     ],
     "videoUrl": "/videos/vu-vakar.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -3843,7 +3843,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/tevekkul/tevekkul-10.jpg"
     ],
     "videoUrl": "/videos/vu-tevekkul.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -3921,7 +3921,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/heybet/heybet-10.jpg"
     ],
     "videoUrl": "/videos/vu-heybet.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -3962,7 +3962,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/vav/vav-10.jpg"
     ],
     "videoUrl": "/videos/vu-vav.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -4044,7 +4044,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/emin/emin-10.jpg"
     ],
     "videoUrl": "/videos/vu-emin.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",
@@ -4083,7 +4083,7 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
       "/images/products/semse/semse-8.jpg"
     ],
     "videoUrl": "/videos/vu-semse.mp4",
-    "category": "Horasan ve Yemen Akik Taşlı",
+    "category": "Horasan Akik Taşlı",
     "ringSize": [
       "15",
       "16",

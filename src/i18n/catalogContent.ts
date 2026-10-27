@@ -10,7 +10,6 @@ type L = Record<Language, string>;
 type StoneKey =
   | "natural_gem"
   | "horasan_agate"
-  | "yemen_agate"
   | "agate"
   | "red_agate"
   | "yellow_agate"
@@ -34,7 +33,6 @@ interface CatalogEntry {
 const STONES: Record<StoneKey, L> = {
   natural_gem: { tr: "Doğal değerli taş", en: "Natural gemstone", es: "Piedra preciosa natural", de: "Natürlicher Edelstein", ar: "حجر كريم طبيعي" },
   horasan_agate: { tr: "Doğal Horasan akiki", en: "Natural Khorasan agate", es: "Ágata natural de Jorasán", de: "Natürlicher Chorasan-Achat", ar: "عقيق خراساني طبيعي" },
-  yemen_agate: { tr: "Doğal Yemen akiki", en: "Natural Yemeni agate", es: "Ágata natural de Yemen", de: "Natürlicher jemenitischer Achat", ar: "عقيق يمني طبيعي" },
   agate: { tr: "Doğal akik", en: "Natural agate", es: "Ágata natural", de: "Natürlicher Achat", ar: "عقيق طبيعي" },
   red_agate: { tr: "Doğal kızıl akik", en: "Natural red agate", es: "Ágata roja natural", de: "Natürlicher roter Achat", ar: "عقيق أحمر طبيعي" },
   yellow_agate: { tr: "Doğal sarı akik", en: "Natural yellow agate", es: "Ágata amarilla natural", de: "Natürlicher gelber Achat", ar: "عقيق أصفر طبيعي" },
@@ -387,11 +385,11 @@ const TITLES: Record<string, L> = {
     ar: "رسم وتصميم حسب الطلب",
   },
   sems: {
-    tr: "Şems Suresi El Yapımı Yemen Akik Taşlı Gümüş Erkek Yüzüğü",
-    en: "Surah Ash-Shams Handcrafted Yemeni Agate Silver Men's Ring",
-    es: "Anillo de hombre en plata con ágata yemení y la sura Ash-Shams, hecho a mano",
-    de: "Handgefertigter Herrenring aus Silber mit jemenitischem Achat – Sure Asch-Schams",
-    ar: "خاتم رجالي من الفضة بحجر العقيق اليمني بآية من سورة الشمس، صناعة يدوية",
+    tr: "Şems Suresi El Yapımı Horasan Akik Taşlı Gümüş Erkek Yüzüğü",
+    en: "Surah Ash-Shams Handcrafted Khorasan Agate Silver Men's Ring",
+    es: "Anillo de hombre en plata con ágata de Jorasán y la sura Ash-Shams, hecho a mano",
+    de: "Handgefertigter Herrenring aus Silber mit Chorasan-Achat – Sure Asch-Schams",
+    ar: "خاتم رجالي من الفضة بحجر العقيق الخراساني بآية من سورة الشمس، صناعة يدوية",
   },
   fatiha_silver: {
     tr: "Fatiha Suresi İşlemeli El Yapımı Gümüş Erkek Yüzüğü",
@@ -1111,11 +1109,11 @@ const STORIES: Record<string, L> = {
     ar: "نُقشت عبارة «Bu da geçer yâ Hû» أي «هذا أيضًا سيمضي» بالخط العثماني اليدوي على حجر العقيق الأحمر. جسم الخاتم مصنوع يدويًا بالكامل بتقنية النقش بالقلم؛ قطعة فريدة تجمع الصنعة التقليدية بالاستخدام العصري.",
   },
   n_ayn: {
-    tr: "Altıgen Horasan-Yemen akik taşın ortasında “Ayn” ve “Mim” harfleri yer alır; örnekte Azime ve Mustafa isimlerinin baş harfleridir ve sizin seçtiğiniz harflerle kişiye özel işlenebilir. Taşın çevresine sülüs hatla Âl-i İmrân Suresi'nin 27. ayeti kazınmıştır: “Geceyi gündüze katarsın, gündüzü geceye katarsın; ölüden diriyi çıkarırsın, diriden ölüyü çıkarırsın; dilediğine hesapsız rızık verirsin.” Ayet, gecenin ve gündüzün, hayatın ve rızkın tek sahibinin Allah olduğunu hatırlatır; bu yüzden bereket ve hayırlı rızık niyetiyle okunur.",
-    en: "At the centre of the hexagonal Khorasan–Yemeni agate are the letters “Ayn” and “Mim” — here the initials of the names Azime and Mustafa — and they can be replaced with the initials of your choice. Around the stone, verse 27 of Surah Al Imran is carved in thuluth calligraphy: “You make the night pass into the day and the day into the night; You bring the living out of the dead and the dead out of the living; and You give provision to whom You will without measure.” The verse reminds us that night and day, life and provision belong to Allah alone, which is why it is recited with the intention of blessing and lawful provision.",
-    es: "En el centro del ágata hexagonal de Jorasán y Yemen están las letras «Ayn» y «Mim», aquí las iniciales de los nombres Azime y Mustafa, que pueden sustituirse por las que usted elija. Alrededor de la piedra está grabada en caligrafía thuluth la aleya 27 de la sura Al Imran: «Haces que la noche entre en el día y el día en la noche; sacas lo vivo de lo muerto y lo muerto de lo vivo; y das provisión a quien quieres sin medida». La aleya recuerda que la noche y el día, la vida y el sustento pertenecen solo a Allah; por eso se recita con la intención de bendición y sustento lícito.",
-    de: "In der Mitte des sechseckigen Chorasan-Jemen-Achats stehen die Buchstaben „Ayn“ und „Mim“ – hier die Initialen der Namen Azime und Mustafa –, die durch Initialen Ihrer Wahl ersetzt werden können. Rund um den Stein ist in Thuluth-Kalligrafie Vers 27 der Sure Al Imran graviert: „Du lässt die Nacht in den Tag übergehen und den Tag in die Nacht; Du bringst das Lebendige aus dem Toten hervor und das Tote aus dem Lebendigen; und Du versorgst, wen Du willst, ohne zu rechnen.“ Der Vers erinnert daran, dass Nacht und Tag, Leben und Versorgung allein Allah gehören; deshalb wird er in der Absicht von Segen und rechtmäßiger Versorgung rezitiert.",
-    ar: "في وسط حجر العقيق الخراساني اليمني السداسي حرفا «العين» و«الميم»، وهما هنا الحرفان الأولان من اسمي عزيمة ومصطفى، ويمكن نقش الحرفين اللذين تختارهما. ونُقشت حول الحجر بخط الثلث الآية 27 من سورة آل عمران: «تُولِجُ اللَّيْلَ فِي النَّهَارِ وَتُولِجُ النَّهَارَ فِي اللَّيْلِ وَتُخْرِجُ الْحَيَّ مِنَ الْمَيِّتِ وَتُخْرِجُ الْمَيِّتَ مِنَ الْحَيِّ وَتَرْزُقُ مَن تَشَاءُ بِغَيْرِ حِسَابٍ». تذكّر الآية بأن الليل والنهار والحياة والرزق لله وحده، ولذلك تُقرأ بنية البركة والرزق الحلال.",
+    tr: "Altıgen Horasan akik taşın ortasında “Ayn” ve “Mim” harfleri yer alır; örnekte Azime ve Mustafa isimlerinin baş harfleridir ve sizin seçtiğiniz harflerle kişiye özel işlenebilir. Taşın çevresine sülüs hatla Âl-i İmrân Suresi'nin 27. ayeti kazınmıştır: “Geceyi gündüze katarsın, gündüzü geceye katarsın; ölüden diriyi çıkarırsın, diriden ölüyü çıkarırsın; dilediğine hesapsız rızık verirsin.” Ayet, gecenin ve gündüzün, hayatın ve rızkın tek sahibinin Allah olduğunu hatırlatır; bu yüzden bereket ve hayırlı rızık niyetiyle okunur.",
+    en: "At the centre of the hexagonal Khorasan agate are the letters “Ayn” and “Mim” — here the initials of the names Azime and Mustafa — and they can be replaced with the initials of your choice. Around the stone, verse 27 of Surah Al Imran is carved in thuluth calligraphy: “You make the night pass into the day and the day into the night; You bring the living out of the dead and the dead out of the living; and You give provision to whom You will without measure.” The verse reminds us that night and day, life and provision belong to Allah alone, which is why it is recited with the intention of blessing and lawful provision.",
+    es: "En el centro del ágata hexagonal de Jorasán están las letras «Ayn» y «Mim», aquí las iniciales de los nombres Azime y Mustafa, que pueden sustituirse por las que usted elija. Alrededor de la piedra está grabada en caligrafía thuluth la aleya 27 de la sura Al Imran: «Haces que la noche entre en el día y el día en la noche; sacas lo vivo de lo muerto y lo muerto de lo vivo; y das provisión a quien quieres sin medida». La aleya recuerda que la noche y el día, la vida y el sustento pertenecen solo a Allah; por eso se recita con la intención de bendición y sustento lícito.",
+    de: "In der Mitte des sechseckigen Chorasan-Achats stehen die Buchstaben „Ayn“ und „Mim“ – hier die Initialen der Namen Azime und Mustafa –, die durch Initialen Ihrer Wahl ersetzt werden können. Rund um den Stein ist in Thuluth-Kalligrafie Vers 27 der Sure Al Imran graviert: „Du lässt die Nacht in den Tag übergehen und den Tag in die Nacht; Du bringst das Lebendige aus dem Toten hervor und das Tote aus dem Lebendigen; und Du versorgst, wen Du willst, ohne zu rechnen.“ Der Vers erinnert daran, dass Nacht und Tag, Leben und Versorgung allein Allah gehören; deshalb wird er in der Absicht von Segen und rechtmäßiger Versorgung rezitiert.",
+    ar: "في وسط حجر العقيق الخراساني السداسي حرفا «العين» و«الميم»، وهما هنا الحرفان الأولان من اسمي عزيمة ومصطفى، ويمكن نقش الحرفين اللذين تختارهما. ونُقشت حول الحجر بخط الثلث الآية 27 من سورة آل عمران: «تُولِجُ اللَّيْلَ فِي النَّهَارِ وَتُولِجُ النَّهَارَ فِي اللَّيْلِ وَتُخْرِجُ الْحَيَّ مِنَ الْمَيِّتِ وَتُخْرِجُ الْمَيِّتَ مِنَ الْحَيِّ وَتَرْزُقُ مَن تَشَاءُ بِغَيْرِ حِسَابٍ». تذكّر الآية بأن الليل والنهار والحياة والرزق لله وحده، ولذلك تُقرأ بنية البركة والرزق الحلال.",
   },
   n_kalkan: {
     tr: "Yüzüğün üst yüzüne Sâffât Suresi'nin 7. ayeti işlenmiştir: “Ve hıfzan min külli şeytânin mârid” — Onu (göğü) itaatten çıkmış her şeytandan koruduk. Yan bantta ise Yâsîn Suresi'nin 58. ayeti yer alır: “Selâmün kavlen min rabbin rahîm” — Çok merhametli bir Rab'den, söz olarak selam. İki ayet birlikte, kulu her türlü kötülükten koruyanın ve ona selam ve esenlik verenin yalnızca Allah olduğunu hatırlatır; bu yüzden yüzüğe “Kalkan” adını verdik.",
@@ -1543,7 +1541,7 @@ const ENTRIES: Record<string, CatalogEntry> = {
   "vu-prod-54": { title: "ya_malik", story: "ya_malik", stone: "onyx", weight: "19–22", sacred: true },
   "vu-prod-55": { title: "insirah", story: "insirah", stone: "yellow_agate", sacred: true },
   "vu-prod-56": { title: "design", story: "design", service: true },
-  "vu-prod-57": { title: "sems", story: "sems", stone: "yemen_agate", sacred: true },
+  "vu-prod-57": { title: "sems", story: "sems", stone: "horasan_agate", sacred: true },
   "vu-prod-58": { title: "fatiha_silver", story: "fatiha_silver", weight: "25", sacred: true },
   "vu-prod-59": { title: "mumin44", story: "mumin44", stone: "agate", sacred: true },
   "vu-prod-60": { title: "kalem52", story: "kalem52", stone: "hematite", sacred: true },

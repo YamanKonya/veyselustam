@@ -5,7 +5,7 @@
 SIZES = [str(n) for n in range(15, 31)]
 
 P = [
- dict(key="ayn", stone="horasan_agate", sacred=True, cat="Horasan ve Yemen Akik Taşlı", price=13700,
+ dict(key="ayn", stone="horasan_agate", sacred=True, cat="Horasan Akik Taşlı", price=13700,
   photos=[19, 20, 14, 15, 22, 17, 16, 18, 21],
   title=dict(
    tr="Ayn Model Âl-i İmrân 27. Ayet Kazınmış Altıgen Akik Taşlı Gümüş Yüzük",
@@ -14,11 +14,11 @@ P = [
    de="Silberring Ayn mit sechseckigem Achat und Gravur von Al Imran 3:27",
    ar="خاتم «عين» من الفضة بحجر عقيق سداسي منقوش عليه الآية 27 من سورة آل عمران"),
   story=dict(
-   tr="Altıgen Horasan-Yemen akik taşın ortasında “Ayn” ve “Mim” harfleri yer alır; örnekte Azime ve Mustafa isimlerinin baş harfleridir ve sizin seçtiğiniz harflerle kişiye özel işlenebilir. Taşın çevresine sülüs hatla Âl-i İmrân Suresi'nin 27. ayeti kazınmıştır: “Geceyi gündüze katarsın, gündüzü geceye katarsın; ölüden diriyi çıkarırsın, diriden ölüyü çıkarırsın; dilediğine hesapsız rızık verirsin.” Ayet, gecenin ve gündüzün, hayatın ve rızkın tek sahibinin Allah olduğunu hatırlatır; bu yüzden bereket ve hayırlı rızık niyetiyle okunur.",
-   en="At the centre of the hexagonal Khorasan–Yemeni agate are the letters “Ayn” and “Mim” — here the initials of the names Azime and Mustafa — and they can be replaced with the initials of your choice. Around the stone, verse 27 of Surah Al Imran is carved in thuluth calligraphy: “You make the night pass into the day and the day into the night; You bring the living out of the dead and the dead out of the living; and You give provision to whom You will without measure.” The verse reminds us that night and day, life and provision belong to Allah alone, which is why it is recited with the intention of blessing and lawful provision.",
-   es="En el centro del ágata hexagonal de Jorasán y Yemen están las letras «Ayn» y «Mim», aquí las iniciales de los nombres Azime y Mustafa, que pueden sustituirse por las que usted elija. Alrededor de la piedra está grabada en caligrafía thuluth la aleya 27 de la sura Al Imran: «Haces que la noche entre en el día y el día en la noche; sacas lo vivo de lo muerto y lo muerto de lo vivo; y das provisión a quien quieres sin medida». La aleya recuerda que la noche y el día, la vida y el sustento pertenecen solo a Allah; por eso se recita con la intención de bendición y sustento lícito.",
-   de="In der Mitte des sechseckigen Chorasan-Jemen-Achats stehen die Buchstaben „Ayn“ und „Mim“ – hier die Initialen der Namen Azime und Mustafa –, die durch Initialen Ihrer Wahl ersetzt werden können. Rund um den Stein ist in Thuluth-Kalligrafie Vers 27 der Sure Al Imran graviert: „Du lässt die Nacht in den Tag übergehen und den Tag in die Nacht; Du bringst das Lebendige aus dem Toten hervor und das Tote aus dem Lebendigen; und Du versorgst, wen Du willst, ohne zu rechnen.“ Der Vers erinnert daran, dass Nacht und Tag, Leben und Versorgung allein Allah gehören; deshalb wird er in der Absicht von Segen und rechtmäßiger Versorgung rezitiert.",
-   ar="في وسط حجر العقيق الخراساني اليمني السداسي حرفا «العين» و«الميم»، وهما هنا الحرفان الأولان من اسمي عزيمة ومصطفى، ويمكن نقش الحرفين اللذين تختارهما. ونُقشت حول الحجر بخط الثلث الآية 27 من سورة آل عمران: «تُولِجُ اللَّيْلَ فِي النَّهَارِ وَتُولِجُ النَّهَارَ فِي اللَّيْلِ وَتُخْرِجُ الْحَيَّ مِنَ الْمَيِّتِ وَتُخْرِجُ الْمَيِّتَ مِنَ الْحَيِّ وَتَرْزُقُ مَن تَشَاءُ بِغَيْرِ حِسَابٍ». تذكّر الآية بأن الليل والنهار والحياة والرزق لله وحده، ولذلك تُقرأ بنية البركة والرزق الحلال.")),
+   tr="Altıgen Horasan akik taşın ortasında “Ayn” ve “Mim” harfleri yer alır; örnekte Azime ve Mustafa isimlerinin baş harfleridir ve sizin seçtiğiniz harflerle kişiye özel işlenebilir. Taşın çevresine sülüs hatla Âl-i İmrân Suresi'nin 27. ayeti kazınmıştır: “Geceyi gündüze katarsın, gündüzü geceye katarsın; ölüden diriyi çıkarırsın, diriden ölüyü çıkarırsın; dilediğine hesapsız rızık verirsin.” Ayet, gecenin ve gündüzün, hayatın ve rızkın tek sahibinin Allah olduğunu hatırlatır; bu yüzden bereket ve hayırlı rızık niyetiyle okunur.",
+   en="At the centre of the hexagonal Khorasan agate are the letters “Ayn” and “Mim” — here the initials of the names Azime and Mustafa — and they can be replaced with the initials of your choice. Around the stone, verse 27 of Surah Al Imran is carved in thuluth calligraphy: “You make the night pass into the day and the day into the night; You bring the living out of the dead and the dead out of the living; and You give provision to whom You will without measure.” The verse reminds us that night and day, life and provision belong to Allah alone, which is why it is recited with the intention of blessing and lawful provision.",
+   es="En el centro del ágata hexagonal de Jorasán están las letras «Ayn» y «Mim», aquí las iniciales de los nombres Azime y Mustafa, que pueden sustituirse por las que usted elija. Alrededor de la piedra está grabada en caligrafía thuluth la aleya 27 de la sura Al Imran: «Haces que la noche entre en el día y el día en la noche; sacas lo vivo de lo muerto y lo muerto de lo vivo; y das provisión a quien quieres sin medida». La aleya recuerda que la noche y el día, la vida y el sustento pertenecen solo a Allah; por eso se recita con la intención de bendición y sustento lícito.",
+   de="In der Mitte des sechseckigen Chorasan-Achats stehen die Buchstaben „Ayn“ und „Mim“ – hier die Initialen der Namen Azime und Mustafa –, die durch Initialen Ihrer Wahl ersetzt werden können. Rund um den Stein ist in Thuluth-Kalligrafie Vers 27 der Sure Al Imran graviert: „Du lässt die Nacht in den Tag übergehen und den Tag in die Nacht; Du bringst das Lebendige aus dem Toten hervor und das Tote aus dem Lebendigen; und Du versorgst, wen Du willst, ohne zu rechnen.“ Der Vers erinnert daran, dass Nacht und Tag, Leben und Versorgung allein Allah gehören; deshalb wird er in der Absicht von Segen und rechtmäßiger Versorgung rezitiert.",
+   ar="في وسط حجر العقيق الخراساني السداسي حرفا «العين» و«الميم»، وهما هنا الحرفان الأولان من اسمي عزيمة ومصطفى، ويمكن نقش الحرفين اللذين تختارهما. ونُقشت حول الحجر بخط الثلث الآية 27 من سورة آل عمران: «تُولِجُ اللَّيْلَ فِي النَّهَارِ وَتُولِجُ النَّهَارَ فِي اللَّيْلِ وَتُخْرِجُ الْحَيَّ مِنَ الْمَيِّتِ وَتُخْرِجُ الْمَيِّتَ مِنَ الْحَيِّ وَتَرْزُقُ مَن تَشَاءُ بِغَيْرِ حِسَابٍ». تذكّر الآية بأن الليل والنهار والحياة والرزق لله وحده، ولذلك تُقرأ بنية البركة والرزق الحلال.")),
 
  dict(key="kalkan", stone=None, sacred=True, cat="Gümüş Yüzük", price=8500,
   photos=[8, 5],
@@ -65,7 +65,7 @@ P = [
    de="Die Schahada ist in kufischer Schrift in den schwarzen Onyx graviert: „La ilaha illallah Muhammadun Rasulullah“ – es gibt keinen Gott außer Allah, und Muhammad ist der Gesandte Allahs. Der Prophet ﷺ sagte: „Das beste Gedenken ist La ilaha illallah“ (Tirmidhi). Der Tauhid ist der Kern des Bundes, den die Seele bei ihrer Erschaffung mit ihrem Herrn schloss – darum heißt dieser Ring „Misak“, der feierliche Bund.",
    ar="نُقشت كلمة التوحيد على حجر الأونيكس الأسود بالخط الكوفي: «لا إله إلا الله محمد رسول الله». قال النبي ﷺ: «أفضل الذكر لا إله إلا الله» (رواه الترمذي). والتوحيد جوهر الميثاق الذي أخذه الله على الأرواح، ولذلك سمّينا هذا الخاتم «ميثاق».")),
 
- dict(key="elif", stone="agate", sacred=True, cat="Horasan ve Yemen Akik Taşlı", price=10250,
+ dict(key="elif", stone="agate", sacred=True, cat="Horasan Akik Taşlı", price=10250,
   photos=[35, 24, 42, 23, 29, 32, 26, 30, 33, 37],
   title=dict(
    tr="Elif Model Kûfi “Lâ İlâhe İllallah” Kazınmış Dikdörtgen Akik Taşlı Gümüş Yüzük",
@@ -95,7 +95,7 @@ P = [
    de="Der natürliche Türkis zeigt mit seiner geäderten Matrix in jedem Stück einen anderen Himmel; jede Seite der Fassung ist von Hand mit Rankenmotiven graviert. In Anatolien gilt der Türkis seit Jahrhunderten als Farbe des Himmels und als Schutzstein. Wir nannten den Ring „Sema“ – der Himmel und alles Erhabene.",
    ar="يُظهر حجر الفيروز الطبيعي بعروقه سماءً مختلفة في كل قطعة، ونُقشت كل أوجه الإطار يدويًا بزخارف الأغصان الملتفة. وقد عُرف الفيروز في الأناضول منذ قرون بأنه لون السماء وحجر للحماية، فسمّينا الخاتم «سما».")),
 
- dict(key="vahdet", stone="agate", sacred=True, cat="Horasan ve Yemen Akik Taşlı", price=10250,
+ dict(key="vahdet", stone="agate", sacred=True, cat="Horasan Akik Taşlı", price=10250,
   photos=[44, 43, 45, 48, 49, 46, 47, 50, 51, 52],
   title=dict(
    tr="Vahdet Model “Lâ İlâhe İllallah” Kazınmış Oval Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -125,7 +125,7 @@ P = [
    de="Die Oberseite des Silbers trägt „La ilaha illallah“ in kufischer Schrift, der untere Teil „Muhammadun Rasulullah“ in Thuluth, darüber ein traditionelles seldschukisches Motiv. Die Schahada ist der Kern des Islam und das erste Wort des Glaubens. Wir nannten den Ring „Rumi“ nach dem klassischen seldschukischen und osmanischen Ornament, einem Sinnbild der Verwurzelung in Anatolien.",
    ar="نُقشت على وجه الفضة «لا إله إلا الله» بالخط الكوفي، وفي أسفله «محمد رسول الله» بخط الثلث، وفوقها زخرفة سلجوقية تقليدية. وكلمة التوحيد جوهر الإسلام وأول كلمة في الإيمان، وسمّينا الخاتم «رومي» نسبةً إلى الزخرفة السلجوقية والعثمانية الأصيلة.")),
 
- dict(key="sekine", stone="agate", sacred=True, cat="Horasan ve Yemen Akik Taşlı", price=13700,
+ dict(key="sekine", stone="agate", sacred=True, cat="Horasan Akik Taşlı", price=13700,
   photos=[60, 56, 71, 75, 61, 57, 72, 58, 62, 77],
   title=dict(
    tr="Sekîne Model Yûsuf Suresi 64. Ayet Kazınmış Zirkon Taşlı Akik Gümüş Yüzük",
@@ -140,7 +140,7 @@ P = [
    de="Vers 64 der Sure Yusuf ist in den ovalen Achat graviert: „Fallahu khayrun hafizan wa huwa arhamur-rahimin“ – Allah ist der beste Hüter, und Er ist der Barmherzigste der Barmherzigen. Es sind die Worte des Propheten Yaqub, als er seinen Sohn vor einer Reise Allah anvertraute: eine Hingabe, die unsere Liebsten unserem Herrn anvertraut und dem Herzen Ruhe schenkt. Der Stein wird von vergoldeten Krappen gehalten, Einfassung und Schultern sind mit schwarzen Zirkonen besetzt.",
    ar="نُقشت على حجر العقيق البيضاوي الآية 64 من سورة يوسف: «فَاللَّهُ خَيْرٌ حَافِظًا ۖ وَهُوَ أَرْحَمُ الرَّاحِمِينَ». وهي قول نبي الله يعقوب حين استودع ابنه الله قبل السفر؛ تسليمٌ يودِع الأحبةَ عند ربهم ويبعث السكينة في القلب. ويثبّت الحجرَ مخالب مطلية بالذهب، ويحيط به وبكتفي الخاتم أحجار الزركون السوداء.")),
 
- dict(key="yakin", stone="agate", sacred=True, cat="Horasan ve Yemen Akik Taşlı", price=10250,
+ dict(key="yakin", stone="agate", sacred=True, cat="Horasan Akik Taşlı", price=10250,
   photos=[68, 79, 83, 64, 69, 84, 65, 80, 66, 70],
   title=dict(
    tr="Yakin Model “Lâ İlâhe İllallah” Kazınmış Dikdörtgen Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -155,7 +155,7 @@ P = [
    de="„La ilaha illallah“ – es gibt keinen Gott außer Allah – ist in Kalligrafie in den rechteckigen Achat graviert. Die Schultern der Fassung sind von Hand ziseliert, die Seiten mit Punktarbeit veredelt. Das Wort des Tauhid drückt einen Glauben ohne Zweifel aus – darum heißt der Ring „Yakin“, die Gewissheit.",
    ar="نُقشت «لا إله إلا الله» على حجر العقيق المستطيل بالخط العربي، ونُقش كتفا الإطار يدويًا وزُيّن جانباه بعمل منقّط. وكلمة التوحيد تعبير عن إيمان خالٍ من الشك، ولذلك سمّينا الخاتم «يقين».")),
 
- dict(key="edep", stone="agate", sacred=True, cat="Horasan ve Yemen Akik Taşlı", price=10250,
+ dict(key="edep", stone="agate", sacred=True, cat="Horasan Akik Taşlı", price=10250,
   photos=[89, 85, 90, 86, 87, 88],
   title=dict(
    tr="Edep Model “Edep Yâ Hû” Kazınmış Sekizgen Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -185,7 +185,7 @@ P = [
    de="Der Deckel über dem achteckigen Achat lässt sich öffnen und gibt ein geheimes Fach frei; die Innenseite des Deckels ist mit handgravierter Kalligrafie geschmückt. Die Außenseite trägt geometrische Motive, die Seiten der Fassung schwarz ausgelegte Muster. Wir nannten den Ring „Sir“, das Geheimnis, das zwischen dem Diener und Allah bleibt; darin lässt sich ein kleines Gebet oder ein Andenken an einen geliebten Menschen aufbewahren.",
    ar="يُفتح الغطاء فوق حجر العقيق المثمن فتظهر تحته حجرة سرية، ويزيّن باطنَ الغطاء خطٌّ منقوش يدويًا، وظاهرَه زخارف هندسية، وجانبي الإطار نقوش مملوءة بالأسود. وسمّينا الخاتم «سرّ» وهو الحال الخفي بين العبد وربه، ويمكنك أن تحفظ فيه دعاءً صغيرًا أو تذكارًا من شخص عزيز.")),
 
- dict(key="hatem", stone="agate", sacred=True, cat="Horasan ve Yemen Akik Taşlı", price=10650,
+ dict(key="hatem", stone="agate", sacred=True, cat="Horasan Akik Taşlı", price=10650,
   photos=[105, 100, 106, 101, 102, 107, 103, 104, 108],
   title=dict(
    tr="Hatem Model Mühr-i Nebevî Kazınmış Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -200,7 +200,7 @@ P = [
    de="Das Siegel des Propheten ist in den Achat graviert: von unten nach oben die Wörter „Muhammad“, „Rasul“ und „Allah“, gelesen „Muhammadun Rasulullah“. Der Prophet ﷺ siegelte die Briefe, die er an Könige sandte, mit einem Silberring, der diese Worte trug (Buchari). Wir nannten den Ring „Hatem“ – Siegel und zugleich der Letzte –, in Erinnerung an das Siegel der Propheten; den Stein rahmt ein Kordelmotiv, die Fassung eine Punktarbeit.",
    ar="نُقش على حجر العقيق الخاتم النبوي: من الأسفل إلى الأعلى «محمد» ثم «رسول» ثم «الله»، فتُقرأ «محمد رسول الله». وكان النبي ﷺ يختم الكتب التي أرسلها إلى الملوك بخاتم من فضة نُقش عليه هذا (رواه البخاري). وسمّينا الخاتم «خاتم» تذكيرًا بخاتم النبيين، ويحيط بالحجر نقش مجدول وبالإطار عمل منقّط.")),
 
- dict(key="vakar", stone="agate", sacred=False, cat="Horasan ve Yemen Akik Taşlı", price=7850,
+ dict(key="vakar", stone="agate", sacred=False, cat="Horasan Akik Taşlı", price=7850,
   photos=[110, 109, 111, 113, 112],
   title=dict(
    tr="Vakar Model Sade Dikdörtgen Akik Taşlı El Oyması Gümüş Erkek Yüzüğü",
@@ -230,7 +230,7 @@ P = [
    de="Vers 5 der Sure Al-Fatiha ist in erhabener Kalligrafie ins Silber gearbeitet: „Iyyaka na'budu wa iyyaka nasta'in“ – Dir allein dienen wir, und Dich allein bitten wir um Hilfe. Dieser Vers, in jedem Gebet wiederholt, ist der Kern davon, allein Allah zu dienen und sich an niemanden sonst zu wenden – darum heißt der Ring „Ihlas“, aufrichtige Reinheit.",
    ar="نُقشت على الفضة بخط بارز الآية الخامسة من سورة الفاتحة: «إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ». وهذه الآية التي تتكرر في كل صلاة جوهر إخلاص العبادة لله وحده وألا يُستعان بغيره، ولذلك سمّينا الخاتم «إخلاص».")),
 
- dict(key="tevekkul", stone="agate", sacred=True, cat="Horasan ve Yemen Akik Taşlı", price=10250,
+ dict(key="tevekkul", stone="agate", sacred=True, cat="Horasan Akik Taşlı", price=10250,
   photos=[189, 185, 190, 117, 186, 118, 119, 115, 187, 188],
   title=dict(
    tr="Tevekkül Model Fâtiha 5. Ayet Kazınmış Dikdörtgen Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -260,7 +260,7 @@ P = [
    de="„Ya Hayyu ya Qayyum“ – o ewig Lebendiger, o Erhalter von allem – ist in Kalligrafie in den Hämatit graviert. Wenn den Propheten ﷺ etwas bedrückte, betete er: „Ya Hayyu ya Qayyum, bi rahmatika astaghith“ – o ewig Lebendiger, o Erhalter, bei Deiner Barmherzigkeit suche ich Hilfe (Tirmidhi). Wir nannten den Ring „Beka“, das Ewige, denn nur Allah bleibt; die Fassung ist mit Rankenmotiven graviert.",
    ar="نُقشت «يا حي يا قيوم» على حجر الهيماتيت بالخط العربي. وكان النبي ﷺ إذا كربه أمر قال: «يا حيُّ يا قيومُ برحمتك أستغيث» (رواه الترمذي). وسمّينا الخاتم «بقاء» لأن الباقي هو الله وحده، ونُقش إطاره بزخارف الأغصان الملتفة.")),
 
- dict(key="heybet", stone="agate", sacred=False, cat="Horasan ve Yemen Akik Taşlı", price=13700,
+ dict(key="heybet", stone="agate", sacred=False, cat="Horasan Akik Taşlı", price=13700,
   photos=[134, 135, 126, 127, 133, 136, 129, 128, 130, 131],
   title=dict(
    tr="Heybet Model Figür Oymalı Büyük Akik Taşlı El Yapımı Gümüş Erkek Yüzüğü",
@@ -275,7 +275,7 @@ P = [
    de="Ein großer runder Achat ist von Hand mit einem Adler mit ausgebreiteten Schwingen, Löwenfiguren zu beiden Seiten sowie Halbmond und Stern darüber geschnitzt. Die Fassung um den Stein ist mit fließenden ziselierten Wellen, die Schultern mit Blumenmotiven graviert. Für diese kraftvolle Komposition aus Stärke und Adel wählten wir den Namen „Heybet“ – eine Ausstrahlung, die Respekt gebietet.",
    ar="نُقش على حجر العقيق الكبير المستدير يدويًا نسرٌ باسط جناحيه، وعلى جانبيه أسدان، وفوقه هلال ونجمة. ويحيط بالحجر إطار منقوش بموجات يدوية، وزُيّن كتفاه بزخارف نباتية. ولهذا التكوين الذي يعبّر عن القوة والأصالة اخترنا اسم «هيبة».")),
 
- dict(key="vav", stone="agate", sacred=False, cat="Horasan ve Yemen Akik Taşlı", price=13700,
+ dict(key="vav", stone="agate", sacred=False, cat="Horasan Akik Taşlı", price=13700,
   photos=[137, 145, 138, 139, 146, 140, 144, 141, 142, 143],
   title=dict(
    tr="Vav Model Vav Harfi Kazınmış Altın Kaplama Detaylı Akik Taşlı Gümüş Yüzük",
@@ -305,7 +305,7 @@ P = [
    de="Bei diesem Ring ohne Stein ist das Silber in Durchbrucharbeit aus verschlungenen Buchstabenformen gestaltet; das Licht, das durch die Öffnungen fällt, gibt ihm aus jedem Winkel ein anderes Aussehen. Vorbild sind die Girift-Kompositionen der Kalligrafie, in denen Buchstaben ineinandergreifen. Wir nannten den Ring „Girift“, verschlungen – wie Leben und Schicksal, die verworren scheinen und doch einer vollkommenen Ordnung folgen.",
    ar="في هذا الخاتم الخالي من الحجر شُكّلت الفضة تخريمًا بأشكال حروف متداخلة، فيمر الضوء من فتحاتها ليمنحها مظهرًا مختلفًا من كل زاوية. وهو مستوحى من التراكيب المتداخلة في فن الخط، وسمّيناه «جريفت» أي المتشابك، كالحياة والقدر يبدوان متشابكين وهما على نظام محكم.")),
 
- dict(key="emin", stone="agate", sacred=True, cat="Horasan ve Yemen Akik Taşlı", price=10250,
+ dict(key="emin", stone="agate", sacred=True, cat="Horasan Akik Taşlı", price=10250,
   photos=[155, 153, 156, 163, 154, 157, 164, 165, 158, 160],
   title=dict(
    tr="Emin Model Mühr-i Nebevî Kazınmış Yuvarlak Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -320,7 +320,7 @@ P = [
    de="Das Siegel des Propheten ist in einem Kordelrahmen in den runden Achat graviert: von unten nach oben „Muhammad“, „Rasul“ und „Allah“ – Muhammadun Rasulullah. Der Prophet ﷺ siegelte seine Briefe mit einem Silberring, der diese Worte trug (Buchari). Wir nannten den Ring „Emin“ nach seinem Beinamen al-Amin, „der Vertrauenswürdige“, unter dem er schon vor dem Prophetentum bekannt war.",
    ar="نُقش على حجر العقيق المستدير داخل إطار مجدول الخاتمُ النبوي: من الأسفل إلى الأعلى «محمد» ثم «رسول» ثم «الله». وكان النبي ﷺ يختم كتبه بخاتم من فضة نُقش عليه هذا (رواه البخاري). وسمّينا الخاتم «أمين» من لقبه ﷺ «الأمين» الذي عُرف به قبل البعثة.")),
 
- dict(key="semse", stone="agate", sacred=True, cat="Horasan ve Yemen Akik Taşlı", price=11850,
+ dict(key="semse", stone="agate", sacred=True, cat="Horasan Akik Taşlı", price=11850,
   photos=[166, 171, 168, 167, 169, 170, 172, 173],
   title=dict(
    tr="Şemse Model Besmele Kazınmış Madalyon Desenli Yuvarlak Akik Taşlı Gümüş Yüzük",

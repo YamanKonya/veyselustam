@@ -15,6 +15,8 @@ import { db, storage } from "@/lib/firebase";
 import { Product } from "@/types";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 import { saveVideoBlob, getVideoBlobUrl } from "./videoStorage";
+import { toHorasanWording } from "@/lib/horasanWording";
+import { translationSourceKey } from "@/i18n/productTranslations";
 
 const PRODUCTS_COLLECTION = "products";
 const STORAGE_KEY = "vu_products_catalog_v4";
@@ -532,6 +534,37 @@ export const syncCatalogImages = async (): Promise<number> => {
     localProductsStore = localProductsStore.map((p) =>
       p.id === seed.id ? { ...p, images: seed.images, imagesVersion: seed.imagesVersion } : p
     );
+    updated++;
+  }
+  if (updated) notifySubscribers();
+  return updated;
+};
+
+// Saved products still worded "Horasan ve Yemen" / "Yemen akik": rewrite them as
+// Khorasan agate in every language. Translations made from the old Turkish text
+// were rewritten too, so they stay marked as current.
+const WORDED_FIELDS = ["title", "description", "category", "title_en", "title_es", "title_de", "title_ar",
+  "description_en", "description_es", "description_de", "description_ar"] as const;
+
+export const migrateAgateWording = async (): Promise<number> => {
+  const snapshot = await getDocs(collection(db, PRODUCTS_COLLECTION));
+  let updated = 0;
+  for (const d of snapshot.docs) {
+    const data = d.data() as Partial<Product>;
+    const fields: Record<string, unknown> = {};
+    WORDED_FIELDS.forEach((key) => {
+      const value = data[key];
+      if (typeof value === "string" && toHorasanWording(value) !== value) fields[key] = toHorasanWording(value);
+    });
+    if (!Object.keys(fields).length) continue;
+    if (data.i18nSource && data.i18nSource === translationSourceKey(data.title || "", data.description || "")) {
+      fields.i18nSource = translationSourceKey(
+        (fields.title as string) ?? data.title ?? "",
+        (fields.description as string) ?? data.description ?? ""
+      );
+    }
+    await setDoc(d.ref, fields, { merge: true });
+    localProductsStore = localProductsStore.map((p) => (p.id === d.id ? { ...p, ...fields } : p));
     updated++;
   }
   if (updated) notifySubscribers();
