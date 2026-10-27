@@ -4,6 +4,8 @@ export interface UserProfile {
   id: string;
   email: string;
   role: UserRole;
+  phone?: string;
+  name?: string;
   createdAt?: string;
 }
 
@@ -35,6 +37,10 @@ export interface Product {
   /** id of a shared stock group (e.g. the "Sidre" ring case); when set, the
    *  group's stock is what can be sold and every sale draws from it */
   stockGroup?: string;
+  /** price shown to signed-in members (lower than price) */
+  memberPrice?: number;
+  /** header menus this piece appears under; empty = guessed from its category */
+  menus?: string[];
   /** bumped in the catalogue when its image set changes; the admin panel then
    *  copies the new image list to Firestore once */
   imagesVersion?: number;

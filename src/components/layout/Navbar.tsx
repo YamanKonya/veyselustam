@@ -6,14 +6,19 @@ import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/useCartStore";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageSelector from "@/components/layout/LanguageSelector";
+import SocialIcons from "@/components/layout/SocialIcons";
 import { whatsappLink } from "@/lib/contact";
 import { SALES_OPEN } from "@/lib/shop";
-import { ShoppingBag, Search, Menu, X, Phone } from "lucide-react";
+import { MENUS, MenuId, openMenu, useMenuSettings } from "@/lib/menus";
+import { useAuth } from "@/context/AuthContext";
+import { ShoppingBag, Search, Menu, X, Phone, UserRound, LogOut } from "lucide-react";
 
 export default function Navbar() {
   const { toggleCart, getTotalItems } = useCartStore();
   const { t } = useLanguage();
   const router = useRouter();
+  const { user, logout } = useAuth();
+  const enabledMenus = useMenuSettings();
 
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -42,13 +47,31 @@ export default function Navbar() {
     }
   };
 
-  const categories = [
-    t("cat_el_oymasi"),
-    t("cat_dogal_tasli"),
-    t("cat_gumuse_oyma"),
-    t("cat_mineli_yuzukler"),
-    t("cat_ozel_siparis"),
-  ];
+  const menus = MENUS.filter((m) => enabledMenus[m.id]);
+
+  // On the home page filter in place; elsewhere go home with the menu in the URL.
+  const goToMenu = (e: React.MouseEvent, id: MenuId) => {
+    closeMenu();
+    if (window.location.pathname === "/") {
+      e.preventDefault();
+      openMenu(id);
+      history.replaceState(null, "", `/?menu=${id}#koleksiyon`);
+      document.getElementById("koleksiyon")?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const member = mounted && user;
+  const accountButton = (
+    <Link
+      href={member ? "/account" : "/register"}
+      className="flex flex-col items-center gap-1 text-versace-green-900 hover:text-versace-gold-700 transition-colors"
+    >
+      <UserRound className="w-6 h-6" />
+      <span className="hidden lg:block text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap">
+        {member ? t("nav_account") : t("nav_login")}
+      </span>
+    </Link>
+  );
 
   const searchForm = (className: string) => (
     <form onSubmit={handleSearch} role="search" className={`relative flex items-center ${className}`}>
@@ -110,17 +133,11 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Right: contact + cart */}
+          {/* Right: social logos, member sign-in, cart */}
           <div className="flex items-center justify-end gap-5 lg:gap-7">
-            <a
-              href={whatsappLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:flex flex-col items-center gap-1 text-versace-green-900 hover:text-versace-gold-700 transition-colors"
-            >
-              <Phone className="w-5 h-5 lg:w-6 lg:h-6" />
-              <span className="hidden lg:block text-[11px] font-semibold uppercase tracking-wider">{t("nav_contact")}</span>
-            </a>
+            <SocialIcons className="hidden md:flex lg:gap-4" iconClass="w-5 h-5 lg:w-[22px] lg:h-[22px]" />
+            <span className="hidden md:block h-8 w-px bg-slate-200" aria-hidden="true" />
+            {accountButton}
             {SALES_OPEN && (
             <button
               onClick={toggleCart}
@@ -145,13 +162,14 @@ export default function Navbar() {
       {/* Category bar (desktop) */}
       <div className="hidden lg:block bg-white border-b border-slate-200">
         <nav className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-8">
-          {categories.map((label) => (
+          {menus.map((m) => (
             <Link
-              key={label}
-              href="/#koleksiyon"
+              key={m.id}
+              href={`/?menu=${m.id}#koleksiyon`}
+              onClick={(e) => goToMenu(e, m.id)}
               className="py-3 text-xs font-semibold text-versace-green-900 hover:text-versace-gold-700 transition-colors tracking-widest uppercase border-b-2 border-transparent hover:border-versace-gold-700"
             >
-              {label}
+              {t(m.key)}
             </Link>
           ))}
         </nav>
@@ -184,16 +202,36 @@ export default function Navbar() {
         </div>
 
         <nav className="flex-1 overflow-y-auto py-2 flex flex-col">
-          {categories.map((label) => (
+          {menus.map((m) => (
             <Link
-              key={label}
-              href="/#koleksiyon"
-              onClick={closeMenu}
+              key={m.id}
+              href={`/?menu=${m.id}#koleksiyon`}
+              onClick={(e) => goToMenu(e, m.id)}
               className="p-4 text-sm font-semibold text-versace-green-900 border-b border-slate-50 hover:bg-slate-50"
             >
-              {label}
+              {t(m.key)}
             </Link>
           ))}
+          {member ? (
+            <button
+              type="button"
+              onClick={() => {
+                closeMenu();
+                logout();
+              }}
+              className="p-4 text-sm font-semibold text-slate-500 border-b border-slate-50 hover:bg-slate-50 flex items-center gap-2 text-start"
+            >
+              <LogOut className="w-4 h-4" /> {t("nav_logout")}
+            </button>
+          ) : (
+            <Link href="/register" onClick={closeMenu} className="p-4 text-sm font-semibold text-versace-gold-700 border-b border-slate-50 hover:bg-slate-50 flex items-center gap-2">
+              <UserRound className="w-4 h-4" /> {t("nav_login")}
+            </Link>
+          )}
+          <div className="px-4 pt-5 pb-1 flex items-center gap-3 text-xs text-slate-500">
+            {t("social_follow")}
+            <SocialIcons iconClass="w-6 h-6" />
+          </div>
           <a
             href={whatsappLink()}
             target="_blank"

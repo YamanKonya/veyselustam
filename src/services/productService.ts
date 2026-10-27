@@ -371,7 +371,7 @@ export const updateProduct = async (
 
   // Clearing a field in the form must remove it from Firestore, not keep the old value
   const firestoreFields: Record<string, unknown | FieldValue> = sanitizeForFirestore(updatedFields);
-  (["originalPrice", "discountPercent", "videoUrl"] as const).forEach((key) => {
+  (["originalPrice", "discountPercent", "videoUrl", "memberPrice", "menus"] as const).forEach((key) => {
     if (key in productData && productData[key] === undefined) firestoreFields[key] = deleteField();
   });
 

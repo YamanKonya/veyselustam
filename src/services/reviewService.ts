@@ -12,7 +12,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
-// Customer reviews. Anyone can send one; it stays "pending" until the admin
+// Customer reviews. Signed-in members can send one; it stays "pending" until the admin
 // approves it (firestore.rules). Reviews received elsewhere (WhatsApp, Instagram)
 // are added by the admin with their source shown on the card.
 
@@ -59,8 +59,9 @@ export const fetchApprovedReviews = async (productId: string): Promise<Review[]>
 };
 
 /** A customer's review from the product page; waits for admin approval. */
-export const submitReview = async (r: { productId: string; name: string; rating: number; text: string; lang: string }) => {
+export const submitReview = async (r: { uid: string; productId: string; name: string; rating: number; text: string; lang: string }) => {
   await addDoc(collection(db, REVIEWS), {
+    uid: r.uid,
     productId: r.productId,
     name: r.name.trim().slice(0, REVIEW_LIMITS.name),
     rating: Math.min(5, Math.max(1, Math.round(r.rating))),

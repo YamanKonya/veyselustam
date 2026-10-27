@@ -17,6 +17,8 @@ import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
 import { useRecentStore } from "@/store/useRecentStore";
 import ProductReviews from "@/components/product/ProductReviews";
+import MemberPrice, { forMember } from "@/components/product/MemberPrice";
+import { useAuth } from "@/context/AuthContext";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 import Link from "next/link";
 import { 
@@ -64,6 +66,7 @@ export default function ProductDetailPage() {
   const [imageZoom, setImageZoom] = useState(false);
 
   const { addItem } = useCartStore();
+  const { user } = useAuth();
   const { addRecentItem } = useRecentStore();
   const { groups } = useStockGroups();
 
@@ -151,7 +154,7 @@ export default function ProductDetailPage() {
     }
 
     setSizeError("");
-    addItem(product, selectedRingSize, quantity);
+    addItem(forMember(product, !!user), selectedRingSize, quantity);
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2500);
   };
@@ -408,6 +411,9 @@ export default function ProductDetailPage() {
                       ₺{product.price.toLocaleString("tr-TR", { minimumFractionDigits: 2 })}
                     </span>
                   )}
+                  <div className="basis-full">
+                    <MemberPrice product={product} size="lg" />
+                  </div>
 
                   {SALES_OPEN && (
                   <span

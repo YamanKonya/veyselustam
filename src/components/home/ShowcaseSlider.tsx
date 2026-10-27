@@ -7,6 +7,7 @@ import { Product } from "@/types";
 import { useLanguage } from "@/context/LanguageContext";
 import { useCartStore } from "@/store/useCartStore";
 import { formatPrice } from "@/lib/format";
+import MemberPrice from "@/components/product/MemberPrice";
 import { imageAt, imageSrcSet } from "@/lib/image";
 import { useStockGroups, availableStock } from "@/services/stockService";
 import { AdminEditButton } from "@/components/admin/AdminEditProvider";
@@ -211,6 +212,9 @@ export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
               <span className="font-display text-3xl sm:text-4xl text-versace-gold-500 tabular-nums lining-nums">
                 ₺{formatPrice(product.price)}
               </span>
+            </div>
+            <div className="mt-3 flex justify-center lg:justify-start">
+              <MemberPrice product={product} tone="dark" />
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3 justify-center lg:justify-start">

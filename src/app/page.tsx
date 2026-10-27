@@ -14,6 +14,9 @@ import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
 import { ChevronUp, X } from "lucide-react";
 import { imageAt, imageSrcSet } from "@/lib/image";
+import { MENUS, MenuId, productMenus } from "@/lib/menus";
+import { forMember } from "@/components/product/MemberPrice";
+import { useAuth } from "@/context/AuthContext";
 
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 
@@ -31,6 +34,7 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>(INITIAL_VEYSELUSTAM_PRODUCTS);
   const [globalSearch, setGlobalSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<{ label: string; match: string[] } | null>(null);
+  const [menuFilter, setMenuFilter] = useState<MenuId | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const { t, language } = useLanguage();
@@ -38,6 +42,7 @@ export default function Home() {
   const tabs = ["tab_new", "tab_bestseller", "tab_collection"];
 
   const { addItem } = useCartStore();
+  const { user } = useAuth();
   const { recentItems } = useRecentStore();
 
   const [mounted, setMounted] = useState(false);
@@ -56,11 +61,31 @@ export default function Home() {
     const handleGlobalSearch = (e: Event) => {
       setGlobalSearch((e as CustomEvent<string>).detail || "");
       setCategoryFilter(null);
+      setMenuFilter(null);
       document.getElementById("koleksiyon")?.scrollIntoView({ behavior: "smooth" });
     };
     window.addEventListener("global-search", handleGlobalSearch);
     return () => window.removeEventListener("global-search", handleGlobalSearch);
   }, []);
+
+  // Header menus: "menu-filter" events on this page, or ?menu= when arriving from another page
+  useEffect(() => {
+    const pick = (id: string | null) => {
+      if (!MENUS.some((m) => m.id === id)) return;
+      setGlobalSearch("");
+      setCategoryFilter(null);
+      setMenuFilter(id as MenuId);
+    };
+    pick(new URLSearchParams(window.location.search).get("menu"));
+    const onMenu = (e: Event) => pick((e as CustomEvent<string>).detail);
+    window.addEventListener("menu-filter", onMenu);
+    return () => window.removeEventListener("menu-filter", onMenu);
+  }, []);
+
+  const clearMenu = () => {
+    setMenuFilter(null);
+    if (window.location.search.includes("menu=")) history.replaceState(null, "", "/#koleksiyon");
+  };
 
   useEffect(() => {
     const unsubscribe = subscribeProducts((updatedProducts) => {
@@ -106,6 +131,12 @@ export default function Home() {
         (p) => p.title.toLocaleLowerCase("tr").includes(q) || p.description.toLocaleLowerCase("tr").includes(q)
       );
     } else {
+      if (menuFilter) {
+        filtered = filtered.filter((p) => {
+          const raw = products.find((o) => o.id === p.id);
+          return !!raw && productMenus(raw).includes(menuFilter);
+        });
+      }
       if (categoryFilter) {
         filtered = filtered.filter((p) => {
           const raw = (products.find((o) => o.id === p.id)?.category || "").toLocaleLowerCase("tr");
@@ -124,20 +155,21 @@ export default function Home() {
 
     // Featured pieces always lead the list
     return [...filtered].sort((a, b) => Number(!!b.isFeatured) - Number(!!a.isFeatured));
-  }, [localizedProducts, products, globalSearch, activeTab, categoryFilter]);
+  }, [localizedProducts, products, globalSearch, activeTab, categoryFilter, menuFilter]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [globalSearch, activeTab, categoryFilter]);
+  }, [globalSearch, activeTab, categoryFilter, menuFilter]);
 
   const handleAddToCart = useCallback((product: Product, size: string) => {
-    addItem(product, size, 1);
+    addItem(forMember(product, !!user), size, 1);
     setAddedToCart(product.id || null);
     setTimeout(() => setAddedToCart(null), 1500);
-  }, [addItem]);
+  }, [addItem, user]);
 
   const openCategory = (banner: (typeof BANNERS)[number]) => {
     setGlobalSearch("");
+    clearMenu();
     setCategoryFilter({ label: t(banner.titleKey), match: banner.match });
     document.getElementById("koleksiyon")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -221,6 +253,15 @@ export default function Home() {
                 ))}
               </div>
               <div className="pb-4 flex items-center gap-3 text-sm text-slate-500">
+                {menuFilter && (
+                  <button
+                    type="button"
+                    onClick={clearMenu}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-versace-green-900 text-versace-gold-50 hover:bg-versace-green-700"
+                  >
+                    {t(MENUS.find((m) => m.id === menuFilter)!.key)} <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
                 {categoryFilter && (
                   <button
                     type="button"

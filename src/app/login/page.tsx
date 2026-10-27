@@ -1,107 +1,106 @@
 "use client";
 
-import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { Mail, KeyRound, AlertCircle, Loader2, Check } from "lucide-react";
+import { auth } from "@/lib/firebase";
 import { useLanguage } from "@/context/LanguageContext";
-import { KeyRound, Mail, AlertCircle, ShoppingBag } from "lucide-react";
+import AuthShell, { authField, authErrorKey, nextPath } from "@/components/auth/AuthShell";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  // keep ?next= when switching between sign-in and sign-up
+  const [query, setQuery] = useState("");
+  useEffect(() => setQuery(window.location.search), []);
   const { t } = useLanguage();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setNotice("");
     setLoading(true);
-
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push("/");
+      await signInWithEmailAndPassword(auth, email.trim(), password);
+      router.push(nextPath());
     } catch (err: any) {
-      console.error(err);
-      setError(err.message || t("login_error_generic"));
+      setError(t(authErrorKey(err?.code)));
     } finally {
       setLoading(false);
     }
   };
 
+  const resetPassword = async () => {
+    setError("");
+    setNotice("");
+    if (!email.trim()) {
+      setError(t("log_reset_need_email"));
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email.trim());
+      setNotice(t("log_reset_sent"));
+    } catch (err: any) {
+      // Don't reveal whether an account exists for this email.
+      if (err?.code === "auth/invalid-email") setError(t("auth_invalid_email"));
+      else setNotice(t("log_reset_sent"));
+    }
+  };
+
+
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 text-2xl font-bold text-amber-800">
-            <ShoppingBag className="w-8 h-8 text-amber-600" />
-            {t("brand_name")}
-          </Link>
-          <h2 className="text-xl font-bold text-slate-900 mt-4">{t("login_title")}</h2>
-          <p className="text-sm text-slate-500 mt-1">{t("login_subtitle")}</p>
+    <AuthShell title={t("log_title")} subtitle={t("log_sub")}>
+      {error && (
+        <div role="alert" className="mb-5 p-3 bg-red-50 border border-red-200 flex items-start gap-2 text-red-700 text-sm">
+          <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" /> {error}
         </div>
-
-        {error && (
-          <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 flex items-start gap-3 text-red-700 text-sm">
-            <AlertCircle className="w-5 h-5 flex-shrink-0 text-red-500 mt-0.5" />
-            <span>{error}</span>
-          </div>
-        )}
-
-        <form onSubmit={handleLogin} className="space-y-5">
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-              {t("login_email_label")}
-            </label>
-            <div className="relative">
-              <Mail className="w-5 h-5 absolute left-3 rtl:right-3 rtl:left-auto top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="ornek@domain.com"
-                className="w-full pl-10 rtl:pr-10 rtl:pl-4 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-sm"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-              {t("login_password_label")}
-            </label>
-            <div className="relative">
-              <KeyRound className="w-5 h-5 absolute left-3 rtl:right-3 rtl:left-auto top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full pl-10 rtl:pr-10 rtl:pl-4 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-sm"
-              />
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl shadow-md transition disabled:opacity-50 text-sm"
-          >
-            {loading ? t("login_loading") : t("login_button")}
+      )}
+      {notice && (
+        <div role="status" className="mb-5 p-3 bg-emerald-50 border border-emerald-200 flex items-start gap-2 text-emerald-800 text-sm">
+          <Check className="w-4 h-4 flex-shrink-0 mt-0.5" /> {notice}
+        </div>
+      )}
+      <form onSubmit={handleLogin} className="space-y-4">
+        <label className="block">
+          <span className="block text-xs font-semibold text-slate-600 mb-1.5">{t("reg_email")}</span>
+          <span className="relative block">
+            <Mail className="w-4 h-4 absolute start-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} className={authField} dir="ltr" />
+          </span>
+        </label>
+        <label className="block">
+          <span className="block text-xs font-semibold text-slate-600 mb-1.5">{t("reg_password")}</span>
+          <span className="relative block">
+            <KeyRound className="w-4 h-4 absolute start-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input type="password" required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} className={authField} dir="ltr" />
+          </span>
+        </label>
+        <div className="flex justify-end">
+          <button type="button" onClick={resetPassword} className="text-xs text-slate-500 hover:text-versace-gold-700 hover:underline">
+            {t("log_forgot")}
           </button>
-        </form>
-
-        <p className="text-center text-xs text-slate-500 mt-6">
-          {t("login_no_account")}{" "}
-          <Link href="/register" className="font-semibold text-amber-700 hover:underline">
-            {t("login_register_link")}
-          </Link>
-        </p>
-      </div>
-    </div>
+        </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-3.5 bg-versace-green-900 text-versace-gold-50 text-sm font-semibold uppercase tracking-wider hover:bg-versace-green-700 transition-colors disabled:opacity-60 inline-flex items-center justify-center gap-2"
+        >
+          {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+          {loading ? t("log_loading") : t("log_button")}
+        </button>
+      </form>
+      <p className="mt-6 text-sm text-slate-500 text-center">
+        {t("log_no")}{" "}
+        <Link href={`/register${query}`} className="font-semibold text-versace-gold-700 hover:underline">
+          {t("log_register")}
+        </Link>
+      </p>
+    </AuthShell>
   );
 }

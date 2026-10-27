@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Product } from "@/types";
 import { useLanguage } from "@/context/LanguageContext";
 import { formatPrice, discountPercent } from "@/lib/format";
+import MemberPrice from "@/components/product/MemberPrice";
 import { imageAt, imageSrcSet } from "@/lib/image";
 import { useStockGroups, availableStock } from "@/services/stockService";
 import { AdminEditButton } from "@/components/admin/AdminEditProvider";
@@ -127,6 +128,9 @@ export default function ProductCard({ product, isAdded, onAddToCart }: ProductCa
           <span className={`font-bold text-versace-green-900 tabular-nums ${discount > 0 ? "text-xl" : "text-lg"}`}>
             ₺{formatPrice(product.price)}
           </span>
+        </div>
+        <div className="-mt-2 mb-4">
+          <MemberPrice product={product} />
         </div>
 
         {!SALES_OPEN ? (

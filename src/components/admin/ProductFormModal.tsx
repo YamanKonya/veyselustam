@@ -19,6 +19,7 @@ import {
   ArrowRight,
   Sparkles
 } from "lucide-react";
+import { MENUS, MENU_LABELS, productMenus } from "@/lib/menus";
 
 interface ProductFormModalProps {
   isOpen: boolean;
@@ -61,6 +62,8 @@ export default function ProductFormModal({
   const [price, setPrice] = useState<number | "">("");
   const [originalPrice, setOriginalPrice] = useState<number | "">("");
   const [discountPercent, setDiscountPercent] = useState<number | "">("");
+  const [memberPrice, setMemberPrice] = useState<number | "">("");
+  const [menus, setMenus] = useState<string[]>([]); // empty = placed automatically
   const [category, setCategory] = useState(DEFAULT_CATEGORIES[0]);
   const [customCategory, setCustomCategory] = useState("");
   const [stock, setStock] = useState<number | "">(10);
@@ -108,6 +111,8 @@ export default function ProductFormModal({
       setPrice(productToEdit.price || 0);
       setOriginalPrice(productToEdit.originalPrice || "");
       setDiscountPercent(productToEdit.discountPercent || "");
+      setMemberPrice(productToEdit.memberPrice || "");
+      setMenus(productToEdit.menus || []);
       setVideoUrl(productToEdit.videoUrl || "");
       setVideoFile(null);
       
@@ -357,6 +362,9 @@ export default function ProductFormModal({
         price: Number(price),
         originalPrice: isCampaignActive ? Number(originalPrice) : undefined,
         discountPercent: savedDiscount,
+        // a member price only counts when it is below the sale price
+        memberPrice: memberPrice !== "" && Number(memberPrice) > 0 && Number(memberPrice) < Number(price) ? Number(memberPrice) : undefined,
+        menus: menus.length ? menus : undefined,
         isCampaign: isCampaignActive,
         isFeatured: isFeatured,
         isActive: isActive,
@@ -722,6 +730,56 @@ export default function ProductFormModal({
                 İndirimsiz fiyat, satış fiyatından yüksek olmalı. Böyle kaydederseniz indirim gösterilmez ve eski fiyat silinir.
               </p>
             )}
+          </div>
+
+          {/* Member price + which header menus the piece appears under */}
+          <div className="bg-panel-950/60 border border-panel-800 rounded-2xl p-4 grid grid-cols-1 md:grid-cols-[220px_1fr] gap-4">
+            <label className="block">
+              <span className="block text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-2">Üyelere özel fiyat (₺)</span>
+              <span className="relative block">
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 font-bold text-sm">₺</span>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={memberPrice}
+                  onChange={(e) => setMemberPrice(e.target.value === "" ? "" : Number(e.target.value))}
+                  placeholder="Yoksa boş bırakın"
+                  className="w-full pl-9 pr-4 py-3 bg-panel-950 border border-emerald-700/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-emerald-300 font-bold placeholder:text-panel-600 placeholder:font-normal"
+                />
+              </span>
+              {memberPrice !== "" && price !== "" && Number(memberPrice) >= Number(price) && (
+                <span role="alert" className="block mt-1.5 text-xs text-amber-300">Üye fiyatı satış fiyatından düşük olmalı; böyle kaydedilirse gösterilmez.</span>
+              )}
+            </label>
+            <fieldset>
+              <legend className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">Menüler</legend>
+              <div className="flex flex-wrap gap-2">
+                {MENUS.map((m) => {
+                  const on = menus.includes(m.id);
+                  return (
+                    <label key={m.id} className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer border ${on ? "bg-brass-600 border-brass-500 text-white" : "bg-panel-900 border-panel-700 text-panel-300"}`}>
+                      <input
+                        type="checkbox"
+                        className="sr-only"
+                        checked={on}
+                        onChange={() => setMenus(on ? menus.filter((x) => x !== m.id) : [...menus, m.id])}
+                      />
+                      {MENU_LABELS[m.id]}
+                    </label>
+                  );
+                })}
+              </div>
+              <p className="mt-2 text-xs text-panel-500">
+                {menus.length
+                  ? "Ürün yalnızca seçtiğiniz menülerde görünür."
+                  : `Seçim yapmazsanız otomatik yerleşir: ${
+                      productMenus({ title, description, category: category === "Diğer" ? customCategory : category, isFeatured, id: productToEdit?.id } as any)
+                        .map((id) => MENU_LABELS[id])
+                        .join(", ") || "hiçbir menü"
+                    }.`}
+              </p>
+            </fieldset>
           </div>
 
           {/* Stock: own count, or a shared case (e.g. Sidre) that several products sell from */}

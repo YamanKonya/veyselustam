@@ -97,11 +97,12 @@ service cloud.firestore {
         && request.resource.data.seconds <= 14400;
     }
 
-    // Müşteri yorumları: herkes yalnızca onaylanmış yorumları okur. Siteden
-    // gelen yorum "pending" (onay bekliyor) olarak açılır; yönetici onaylar,
+    // Müşteri yorumları: herkes yalnızca onaylanmış yorumları okur. Sitede
+    // yalnızca üye olan müşteri yorum yazabilir; yorum kendi uid'siyle ve
+    // "pending" (onay bekliyor) olarak açılır; yönetici onaylar,
     // siler ya da WhatsApp gibi başka yerden gelen yorumu doğrudan ekler.
     function validReview(d) {
-      return d.keys().hasOnly(['productId', 'name', 'rating', 'text', 'lang', 'status', 'source', 'createdAt'])
+      return d.keys().hasOnly(['productId', 'name', 'rating', 'text', 'lang', 'status', 'source', 'createdAt', 'uid'])
         && d.productId is string && d.productId.size() > 0 && d.productId.size() <= 80
         && d.name is string && d.name.size() >= 2 && d.name.size() <= 60
         && d.rating is int && d.rating >= 1 && d.rating <= 5
@@ -114,6 +115,8 @@ service cloud.firestore {
       allow create: if validReview(request.resource.data)
         && ((request.resource.data.status == 'pending'
              && request.resource.data.source == 'site'
+             && signedIn()
+             && request.resource.data.uid == request.auth.uid
              && request.resource.data.createdAt == request.time)
             || isAdmin());
       allow update, delete: if isAdmin();
@@ -129,9 +132,10 @@ service cloud.firestore {
     }
 
     // Site ayarları. "adminLogin" belgesi giriş ekranındaki kullanıcı adını
-    // e-postaya çevirmek için herkese açık okunur; şifre içermez.
+    // e-postaya çevirmek için, "menus" belgesi hangi menülerin açık olduğunu
+    // göstermek için herkese açık okunur; ikisi de şifre içermez.
     match /settings/{docId} {
-      allow read: if docId == 'adminLogin' || isAdmin();
+      allow read: if docId in ['adminLogin', 'menus'] || isAdmin();
       allow write: if isAdmin();
     }
 
