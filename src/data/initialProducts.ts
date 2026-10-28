@@ -4124,5 +4124,45 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "stock": 1,
     "isActive": false,
     "createdAt": "2026-10-23T11:32:31.753622Z"
+  },
+  {
+    "id": "vu-tevekkul-sade-akik",
+    "title": "Tevekkül Yüzüğü – Sade Dikdörtgen Kızıl Akik Taşlı El Oyması Gümüş Erkek Yüzüğü",
+    "description": "Yazısız, düz kesim dikdörtgen kızıl akik; omuzları ince ve zarif el gravürüyle işlenmiş 925 ayar gümüş bir gövdeye oturtulmuştur. Sade haliyle günlük kullanıma yakışır; boş taş sizin sözünüzü bekler, dilerseniz üzerine isim ya da kısa bir söz oyuyoruz. Yüzüğe, elden gelen gayreti gösterip sonucu Allah'a bırakmayı anlatan “Tevekkül” adını verdik.",
+    "price": 6500,
+    "originalPrice": 7850,
+    "discountPercent": 17,
+    "images": [
+      "/images/products/tevekkul-sade-akik/tevekkul-sade-akik-1.jpg",
+      "/images/products/tevekkul-sade-akik/tevekkul-sade-akik-2.jpg",
+      "/images/products/tevekkul-sade-akik/tevekkul-sade-akik-3.jpg",
+      "/images/products/tevekkul-sade-akik/tevekkul-sade-akik-4.jpg",
+      "/images/products/tevekkul-sade-akik/tevekkul-sade-akik-5.jpg",
+      "/images/products/tevekkul-sade-akik/tevekkul-sade-akik-6.jpg",
+      "/images/products/tevekkul-sade-akik/tevekkul-sade-akik-7.jpg",
+      "/images/products/tevekkul-sade-akik/tevekkul-sade-akik-8.jpg"
+    ],
+    "videoUrl": "/videos/vu-tevekkul-sade-akik.mp4",
+    "category": "Horasan Akik Taşlı",
+    "ringSize": [
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30"
+    ],
+    "stock": 1,
+    "createdAt": "2026-10-28T15:30:00.000Z"
   }
 ];

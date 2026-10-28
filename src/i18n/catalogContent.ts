@@ -610,6 +610,14 @@ const TITLES: Record<string, L> = {
     ar: "خاتم «وقار» الرجالي من الفضة المنقوشة يدويًا بحجر عقيق مستطيل سادة",
     ru: "Серебряное мужское кольцо Vakar с прямоугольным агатом и ручной гравировкой Vakar",
   },
+  n_tevekkul_sade: {
+    tr: "Tevekkül Yüzüğü – Sade Dikdörtgen Kızıl Akik Taşlı El Oyması Gümüş Erkek Yüzüğü",
+    en: "Tevekkul Ring – Plain Rectangular Red Agate Hand-Engraved Silver Men's Ring",
+    es: "Anillo Tevekkul – anillo de plata para hombre con ágata roja rectangular lisa, grabado a mano",
+    de: "Tevekkul-Ring – Herrenring aus handgraviertem Silber mit schlichtem rechteckigem rotem Achat",
+    ar: "خاتم «توكّل» – خاتم رجالي من الفضة المنقوشة يدويًا بحجر عقيق أحمر مستطيل سادة",
+    ru: "Кольцо Таваккуль – мужское серебряное кольцо с гладким прямоугольным красным агатом и ручной гравировкой",
+  },
   n_ihlas: {
     tr: "İhlas Model “İyyâke Na'büdü” Yazılı Gümüş Erkek Yüzüğü",
     en: "Ihlas Silver Men's Ring Inscribed with “Iyyaka na'budu” (Al-Fatiha 1:5)",
@@ -1373,6 +1381,14 @@ const STORIES: Record<string, L> = {
     ar: "حجر عقيق مستطيل أملس بلون أحمر عميق، مثبّت في إطار فضي منقوش الجانبين يدويًا. خطوطه البسيطة بلا كتابة تناسب كل لباس والاستعمال اليومي، وسمّيناه «وقار» أي الرزانة بلا كبر، ويمكن نقش اسم أو دعاء على الحجر عند الطلب.",
     ru: "Гладкий прямоугольный агат темно-красного цвета помещен в серебряную оправу с выгравированными вручную сторонами. Без надписи, его чистые линии сочетаются с любым нарядом и подходят для повседневной носки. Мы назвали кольцо «Вакар», тихое достоинство, лишенное гордости; При желании на камне можно выгравировать имя или молитву.",
   },
+  n_tevekkul_sade: {
+    tr: "Yazısız, düz kesim dikdörtgen kızıl akik; omuzları ince ve zarif el gravürüyle işlenmiş 925 ayar gümüş bir gövdeye oturtulmuştur. Sade haliyle günlük kullanıma yakışır; boş taş sizin sözünüzü bekler, dilerseniz üzerine isim ya da kısa bir söz oyuyoruz. Yüzüğe, elden gelen gayreti gösterip sonucu Allah'a bırakmayı anlatan “Tevekkül” adını verdik.",
+    en: "A flat-cut rectangular red agate without inscription, set in a 925 sterling silver band whose shoulders carry fine, delicate hand engraving. Plain as it is, it suits everyday wear; the empty stone waits for your words, and we can engrave a name or a short phrase on it if you wish. We named the ring “Tevekkul”: doing all you can and leaving the outcome to Allah.",
+    es: "Un ágata roja rectangular de corte plano, sin inscripción, engastada en un aro de plata de ley 925 con los hombros finamente grabados a mano. Sencillo como es, sienta bien a diario; la piedra vacía espera sus palabras y, si lo desea, grabamos en ella un nombre o una frase corta. Llamamos al anillo «Tevekkul»: hacer todo lo posible y dejar el resultado en manos de Allah.",
+    de: "Ein flach geschliffener, rechteckiger roter Achat ohne Inschrift, gefasst in einen Ring aus 925er Sterlingsilber, dessen Schultern fein von Hand graviert sind. Schlicht wie er ist, passt er zum Alltag; der leere Stein wartet auf Ihre Worte, auf Wunsch gravieren wir einen Namen oder einen kurzen Spruch hinein. Wir nannten den Ring „Tevekkul“: alles Mögliche tun und das Ergebnis Allah überlassen.",
+    ar: "حجر عقيق أحمر مستطيل مسطّح القطع بلا كتابة، مثبّت في خاتم من الفضة عيار 925 نُقشت كتفاه يدويًا بنقش دقيق رقيق. ببساطته يناسب الاستعمال اليومي، والحجر الخالي ينتظر كلمتك، فننقش عليه اسمًا أو عبارة قصيرة عند الطلب. وسمّيناه «توكّل»: أن تبذل ما في وسعك ثم تترك النتيجة لله.",
+    ru: "Плоско ограненный прямоугольный красный агат без надписи, закрепленный в кольце из серебра 925 пробы, плечи которого покрыты тонкой изящной ручной гравировкой. Простое по своей сути, оно подходит для повседневной носки; чистый камень ждет ваших слов, и по желанию мы выгравируем на нем имя или короткую фразу. Мы назвали кольцо «Таваккуль»: сделать все, что в твоих силах, и оставить результат Аллаху.",
+  },
   n_ihlas: {
     tr: "Gümüşün üzerine kabartma hatla Fâtiha Suresi'nin 5. ayeti işlenmiştir: “İyyâke na'büdü ve iyyâke neste'în” — Yalnız Sana kulluk eder, yalnız Senden yardım dileriz. Her namazda tekrarlanan bu ayet, ibadetin yalnızca Allah için yapılmasının ve O'ndan başkasına el açmamanın özüdür. Yüzüğe bu yüzden saf samimiyet anlamındaki “İhlas” adını verdik.",
     en: "Verse 5 of Surah Al-Fatiha is worked onto the silver in raised calligraphy: “Iyyaka na'budu wa iyyaka nasta'in” — You alone we worship, and You alone we ask for help. Repeated in every prayer, this verse is the essence of worshipping Allah alone and turning to none but Him, which is why we named the ring “Ihlas”, pure sincerity.",
@@ -1769,6 +1785,7 @@ const ENTRIES: Record<string, CatalogEntry> = {
   "vu-sir": { title: "n_sir", story: "n_sir", stone: "agate" },
   "vu-hatem": { title: "n_hatem", story: "n_hatem", stone: "agate", sacred: true },
   "vu-vakar": { title: "n_vakar", story: "n_vakar", stone: "agate" },
+  "vu-tevekkul-sade-akik": { title: "n_tevekkul_sade", story: "n_tevekkul_sade", stone: "red_agate" },
   "vu-ihlas": { title: "n_ihlas", story: "n_ihlas", sacred: true },
   "vu-tevekkul": { title: "n_tevekkul", story: "n_tevekkul", stone: "agate", sacred: true },
   "vu-beka": { title: "n_beka", story: "n_beka", stone: "hematite", sacred: true },
