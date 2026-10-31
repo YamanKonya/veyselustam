@@ -17,8 +17,16 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
   const [language, setLanguageState] = useState<Language>("tr");
 
   useEffect(() => {
-    const saved = localStorage.getItem("veyselustam_lang") as Language;
-    if (saved && LANGUAGES.some((l) => l.code === saved)) {
+    const isLanguage = (code: string | null): code is Language => !!code && LANGUAGES.some((l) => l.code === code);
+    // A ?lang= link (e.g. from an English Pinterest pin) wins and is remembered for the rest of the visit
+    const fromUrl = new URLSearchParams(window.location.search).get("lang");
+    if (isLanguage(fromUrl)) {
+      setLanguageState(fromUrl);
+      localStorage.setItem("veyselustam_lang", fromUrl);
+      return;
+    }
+    const saved = localStorage.getItem("veyselustam_lang");
+    if (isLanguage(saved)) {
       setLanguageState(saved);
     }
   }, []);
