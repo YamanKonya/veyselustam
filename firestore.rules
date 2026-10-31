@@ -139,6 +139,18 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Yönetim panelinden yüklenen fotoğraflar (küçültülmüş, base64). Herkes okur
+    // (site /api/media üzerinden gösterir), yalnızca yönetici ekler ve siler.
+    match /media/{mediaId} {
+      allow read: if true;
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasOnly(['data', 'type', 'size', 'createdAt'])
+        && request.resource.data.data is string
+        && request.resource.data.data.size() < 1000000
+        && request.resource.data.type in ['image/webp', 'image/jpeg', 'image/png'];
+      allow delete: if isAdmin();
+    }
+
     // Yukarıda sayılmayan her şey kapalı.
     match /{document=**} {
       allow read, write: if false;

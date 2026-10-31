@@ -10,8 +10,8 @@ import {
   deleteField,
   FieldValue,
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db, storage } from "@/lib/firebase";
+import { db } from "@/lib/firebase";
+import { compressImage } from "@/lib/imageCompress";
 import { Product } from "@/types";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 import { saveVideoBlob, getVideoBlobUrl } from "./videoStorage";
@@ -150,54 +150,75 @@ const notifySubscribers = () => {
   subscribers.forEach((cb) => cb([...localProductsStore]));
 };
 
-// Convert file to Base64 Data URL instantly
-const fileToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve) => {
+// Photos uploaded in the admin panel. Firebase Storage is not available on this
+// project's free plan, so each photo is shrunk in the browser (lib/imageCompress)
+// and kept in its own Firestore document in "media": a 1600 px copy and a 720 px
+// copy for cards. The site serves them from /api/media/<id> with a long cache.
+// (Before this, photos were written into the product itself as text, which
+// soon hit Firestore's 1 MB limit per product: "Ürün verisi çok büyük".)
+const MEDIA_COLLECTION = "media";
+export const MEDIA_PREFIX = "/api/media/";
+
+const blobToBase64 = (blob: Blob): Promise<string> =>
+  new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onloadend = () => {
-      if (typeof reader.result === "string") {
-        resolve(reader.result);
-      } else {
-        resolve("https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/3b66ab45-af5a-4152-8a16-a2e22d478adf/720/img-20240207-121651.webp");
-      }
-    };
-    reader.onerror = () => {
-      resolve("https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/3b66ab45-af5a-4152-8a16-a2e22d478adf/720/img-20240207-121651.webp");
-    };
-    reader.readAsDataURL(file);
+    reader.onloadend = () => resolve(String(reader.result).split(",")[1] || "");
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(blob);
   });
+
+const saveMedia = async (id: string, blob: Blob) =>
+  setDoc(doc(db, MEDIA_COLLECTION, id), {
+    data: await blobToBase64(blob),
+    type: blob.type,
+    size: blob.size,
+    createdAt: new Date().toISOString(),
+  });
+
+export const uploadImageToStorage = async (file: File | Blob): Promise<string> => {
+  const { full, small } = await compressImage(file as File);
+  const id = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`;
+  try {
+    await saveMedia(`${id}_s`, small);
+    await saveMedia(id, full);
+  } catch (err) {
+    const code = (err as { code?: string })?.code;
+    throw new Error(
+      code === "permission-denied"
+        ? "Fotoğraf kaydedilemedi: Firebase kurallarının güncel hâli (media bölümü) yayınlanmamış."
+        : `Fotoğraf kaydedilemedi: ${describeFirestoreError(err)}`
+    );
+  }
+  return `${MEDIA_PREFIX}${id}`;
 };
 
-// Upload a single file (image or video) to Storage with IndexedDB fallback for videos
-export const uploadFileToStorage = async (file: File, folderName: string = "products"): Promise<string> => {
-  // For video files, save to browser IndexedDB for instant 60fps playback without localStorage truncation
+// Videos stay in this browser only (IndexedDB); they are too large for Firestore.
+export const uploadFileToStorage = async (file: File, _folderName: string = "products"): Promise<string> => {
   if (file.type && file.type.startsWith("video/")) {
     const videoKey = `vu_vid_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     return await saveVideoBlob(videoKey, file);
   }
-
-  try {
-    const firebaseUploadPromise = (async () => {
-      const fileExt = file.name.split('.').pop() || "jpg";
-      const fileName = `${folderName}/${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
-      const storageRef = ref(storage, fileName);
-      await uploadBytes(storageRef, file);
-      return await getDownloadURL(storageRef);
-    })();
-
-    const timeoutPromise = new Promise<string>((_, reject) => {
-      setTimeout(() => reject(new Error("Storage timeout")), 1200);
-    });
-
-    return await Promise.race([firebaseUploadPromise, timeoutPromise]);
-  } catch (error) {
-    console.warn("Storage upload network fallback to instant base64:", error);
-    return await fileToBase64(file);
-  }
+  return uploadImageToStorage(file);
 };
 
-export const uploadImageToStorage = (file: File): Promise<string> => {
-  return uploadFileToStorage(file, "products");
+// Photos saved inside product documents by the old upload code ("data:" text):
+// move them to "media" so product data stays small and the site loads faster.
+export const migrateInlineImages = async (): Promise<number> => {
+  const snapshot = await getDocs(collection(db, PRODUCTS_COLLECTION));
+  let moved = 0;
+  for (const d of snapshot.docs) {
+    const images: string[] = Array.isArray(d.data().images) ? d.data().images : [];
+    if (!images.some((u) => u.startsWith("data:image/"))) continue;
+    const next: string[] = [];
+    for (const url of images) {
+      next.push(url.startsWith("data:image/") ? await uploadImageToStorage(await (await fetch(url)).blob()) : url);
+    }
+    await setDoc(d.ref, { images: next }, { merge: true });
+    localProductsStore = localProductsStore.map((p) => (p.id === d.id ? { ...p, images: next } : p));
+    moved++;
+  }
+  if (moved) notifySubscribers();
+  return moved;
 };
 
 // Merge Firestore docs over the local catalog. Firestore is the source of truth for every

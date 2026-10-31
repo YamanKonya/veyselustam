@@ -4164,5 +4164,42 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     ],
     "stock": 1,
     "createdAt": "2026-10-28T15:30:00.000Z"
+  },
+  {
+    "id": "vu-hilal",
+    "title": "Hilal Model Ay Yıldız Kazınmış Yuvarlak Kızıl Akik Taşlı Gümüş Erkek Yüzüğü",
+    "description": "Yuvarlak kızıl akik taşın üzerine ay yıldız elle oyulmuş, altına Osmanlıca bir yazı kuşağı işlenmiştir. Taşı tırtıklı bir gümüş çerçeve tutar; gövdenin iki yanı dikey çizgili oyma ve kıvrım motifleriyle süslenmiştir. Ölçü parmağınıza göre hazırlanır.",
+    "price": 10250,
+    "images": [
+      "/images/products/hilal/hilal-1.jpg",
+      "/images/products/hilal/hilal-2.jpg",
+      "/images/products/hilal/hilal-3.jpg",
+      "/images/products/hilal/hilal-4.jpg",
+      "/images/products/hilal/hilal-5.jpg",
+      "/images/products/hilal/hilal-6.jpg"
+    ],
+    "videoUrl": "/videos/vu-hilal.mp4",
+    "category": "Horasan Akik Taşlı",
+    "ringSize": [
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30"
+    ],
+    "stock": 1,
+    "isActive": false,
+    "createdAt": "2026-10-31T07:55:09.946373Z"
   }
 ];

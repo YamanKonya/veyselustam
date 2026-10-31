@@ -106,6 +106,14 @@ const LABELS: Record<Language, {
 };
 
 const TITLES: Record<string, L> = {
+  n_hilal: {
+    tr: "Hilal Model Ay Yıldız Kazınmış Yuvarlak Kızıl Akik Taşlı Gümüş Erkek Yüzüğü",
+    en: "Hilal Round Carnelian Silver Men's Ring Engraved with a Crescent and Star",
+    es: "Anillo de plata Hilal para hombre con cornalina redonda grabada con media luna y estrella",
+    de: "Herrenring Hilal aus Silber mit rundem Karneol, graviert mit Halbmond und Stern",
+    ar: "خاتم «هلال» رجالي من الفضة بحجر عقيق أحمر مستدير منقوش عليه هلال ونجمة",
+    ru: "Мужское серебряное кольцо Hilal с круглым сердоликом и гравировкой полумесяца со звездой",
+  },
   sidre_hematit: {
     tr: "Sidre Model Hat Yazılı Hematit Taşlı El Oyması Gümüş Erkek Yüzüğü",
     en: "Sidre Calligraphy-Engraved Hematite Hand-Chased Silver Men's Ring",
@@ -917,6 +925,14 @@ const TITLES: Record<string, L> = {
 };
 
 const STORIES: Record<string, L> = {
+  n_hilal: {
+    tr: "Yuvarlak kızıl akik taşın üzerine ay yıldız elle oyulmuş, altına Osmanlıca bir yazı kuşağı işlenmiştir. Taşı tırtıklı bir gümüş çerçeve tutar; gövdenin iki yanı dikey çizgili oyma ve kıvrım motifleriyle süslenmiştir. Ölçü parmağınıza göre hazırlanır.",
+    en: "A crescent and star are hand-carved into the round carnelian, with a band of Ottoman script beneath them. A notched silver bezel holds the stone, and both sides of the band are decorated with vertical fluted carving and scroll motifs. Made to your ring size.",
+    es: "Sobre la cornalina redonda se tallaron a mano una media luna y una estrella, con una banda de escritura otomana debajo. Un bisel de plata dentado sujeta la piedra y ambos lados del aro llevan tallado acanalado vertical y motivos de volutas. Se hace a la medida de su dedo.",
+    de: "In den runden Karneol sind Halbmond und Stern von Hand geschnitten, darunter ein Band osmanischer Schrift. Eine gekerbte Silberfassung hält den Stein; beide Seiten der Ringschiene tragen senkrechte Rillengravur und Rankenmotive. Gefertigt in Ihrer Ringgröße.",
+    ar: "نُقش الهلال والنجمة يدويًا على حجر العقيق الأحمر المستدير، وتحتهما شريط من الكتابة العثمانية. يحمل الحجرَ إطارٌ فضي مسنّن، ويزيّن جانبي الخاتم نقشٌ طولي مخدّد وزخارف ملتفّة. يُصنع حسب مقاس إصبعك.",
+    ru: "На круглом сердолике вручную вырезаны полумесяц и звезда, а под ними — полоса османской надписи. Камень держит зубчатая серебряная оправа, обе стороны шинки украшены вертикальной рифлёной резьбой и завитками. Изготавливается по размеру вашего пальца.",
+  },
   sidre_hematit: {
     tr: "Sidre, atölyemizin imza kasasıdır: kasanın her yüzü geleneksel kalem işi (gravür) tekniğiyle, kıvrık dal ve rumi motifleriyle elde işlenir. Aynı kasa farklı doğal taşlarla hazırlanır. Bu modelde hematit taşın üzerine hat yazısı elde kazınmıştır.",
     en: "Sidre is our workshop's signature setting: every face of the band is hand-chased in the traditional engraving technique with scrolling branch and rumi motifs. The same setting is made with different natural stones. In this piece, calligraphy is hand-engraved onto the hematite stone.",
@@ -1701,6 +1717,7 @@ const NOTES: Record<string, L> = {
 };
 
 const ENTRIES: Record<string, CatalogEntry> = {
+  "vu-hilal": { title: "n_hilal", story: "n_hilal", stone: "red_agate" },
   "vu-sidre-hematit": { title: "sidre_hematit", story: "sidre_hematit", stone: "hematite", sacred: true },
   "vu-sidre-firuze": { title: "sidre_firuze", story: "sidre_firuze", stone: "turquoise" },
   "vu-sidre-akik": { title: "sidre_akik", story: "sidre_akik", stone: "red_agate" },

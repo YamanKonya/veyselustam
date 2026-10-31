@@ -8,6 +8,7 @@ import {
   seedProductsToFirestore,
   syncCatalogImages,
   migrateAgateWording,
+  migrateInlineImages,
   fillMissingRussian,
   describeFirestoreError,
 } from "@/services/productService";
@@ -70,10 +71,12 @@ export default function AdminDashboardPage() {
         const groups = await ensureStockGroups(INITIAL_VEYSELUSTAM_PRODUCTS);
         const imagesUpdated = await syncCatalogImages();
         const reworded = await migrateAgateWording();
+        const movedImages = await migrateInlineImages().catch(() => 0);
         const russian = await fillMissingRussian();
         const parts: string[] = [];
         if (created) parts.push(`${created} ürün Firebase'e kaydedildi`);
         if (imagesUpdated) parts.push(`${imagesUpdated} ürünün görselleri güncellendi`);
+        if (movedImages) parts.push(`${movedImages} ürünün fotoğrafları hızlı depolamaya taşındı`);
         if (reworded) parts.push(`${reworded} üründe "Yemen akik" ifadesi "Horasan akik" yapıldı`);
         if (russian) parts.push(`${russian} ürüne Rusça çeviri eklendi`);
         if (groups.length) parts.push(`kasa oluşturuldu: ${groups.join(", ")}`);
