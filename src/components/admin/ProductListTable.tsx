@@ -27,7 +27,10 @@ import {
   Star,
   Sparkles,
   LayoutList,
-  RotateCcw
+  RotateCcw,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
@@ -163,6 +166,25 @@ export default function ProductListTable({
     discount: (a, b) => discountOf(b) - discountOf(a),
     code: (a, b) => (a.code || Infinity) - (b.code || Infinity),
     name: (a, b) => translateProduct(a, "tr").title.localeCompare(translateProduct(b, "tr").title, "tr"),
+  };
+  const SortHeader = ({ label, first, second, className = "" }: { label: string; first: SortKey; second: SortKey; className?: string }) => {
+    const on = sortKey === first || sortKey === second;
+    return (
+      <th className={className}>
+        <button
+          type="button"
+          onClick={() => {
+            setSortKey(sortKey === first ? second : first);
+            setCurrentPage(1);
+          }}
+          title="Sıralamak için tıkla"
+          className={`inline-flex items-center gap-1 uppercase tracking-wider transition hover:text-brass-300 ${on ? "text-brass-300" : ""}`}
+        >
+          {label}
+          {sortKey === first ? <ArrowDown className="w-3.5 h-3.5" /> : sortKey === second ? <ArrowUp className="w-3.5 h-3.5" /> : <ArrowUpDown className="w-3.5 h-3.5 opacity-50" />}
+        </button>
+      </th>
+    );
   };
   const sortedProducts = compare[sortKey] ? [...filteredProducts].sort(compare[sortKey]!) : filteredProducts;
 
@@ -336,7 +358,9 @@ export default function ProductListTable({
 
         {/* Sort */}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-panel-400 font-medium whitespace-nowrap">Sırala:</span>
+          <span className="text-xs text-brass-300 font-semibold whitespace-nowrap inline-flex items-center gap-1">
+            <ArrowUpDown className="w-3.5 h-3.5" /> Sırala:
+          </span>
           <select
             value={sortKey}
             onChange={(e) => {
@@ -344,7 +368,7 @@ export default function ProductListTable({
               setCurrentPage(1);
             }}
             aria-label="Sıralama"
-            className="px-3 py-2.5 bg-panel-950 border border-panel-800 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-brass-500 transition"
+            className="px-3 py-2.5 bg-panel-950 border border-brass-500/40 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-brass-500 transition"
           >
             {SORTS.map(([key, label]) => (
               <option key={key} value={key}>{label}</option>
@@ -524,10 +548,30 @@ export default function ProductListTable({
                     </button>
                   </th>
                   <th className="py-4 px-4">{t("admin_tbl_th_product").split("&")[0]}</th>
-                  <th className="py-4 px-6">{t("admin_tbl_th_product")}</th>
+                  <th className="py-4 px-6">
+                    <div className="flex flex-col items-start gap-1.5">
+                      <span>{t("admin_tbl_th_product")}</span>
+                      <span className="flex flex-wrap gap-x-3 gap-y-1 normal-case text-[11px]">
+                        {([["code", "code", "ID"], ["newest", "oldest", "Eklenme"], ["edited", "edited", "Düzenlenme"], ["views_desc", "views_asc", "Bakılma"], ["sold_desc", "sold_asc", "Satış"]] as [SortKey, SortKey, string][]).map(([a, b, label]) => (
+                          <button
+                            key={a}
+                            type="button"
+                            onClick={() => {
+                              setSortKey(sortKey === a ? b : a);
+                              setCurrentPage(1);
+                            }}
+                            className={`inline-flex items-center gap-0.5 transition hover:text-brass-300 ${sortKey === a || sortKey === b ? "text-brass-300" : ""}`}
+                          >
+                            {label}
+                            {sortKey === a ? <ArrowDown className="w-3 h-3" /> : sortKey === b ? <ArrowUp className="w-3 h-3" /> : <ArrowUpDown className="w-3 h-3 opacity-50" />}
+                          </button>
+                        ))}
+                      </span>
+                    </div>
+                  </th>
                   <th className="py-4 px-6">{t("admin_tbl_th_category")}</th>
-                  <th className="py-4 px-6">{t("admin_tbl_th_price")}</th>
-                  <th className="py-4 px-6">{t("admin_tbl_th_stock")}</th>
+                  <SortHeader label={t("admin_tbl_th_price")} first="price_desc" second="price_asc" className="py-4 px-6" />
+                  <SortHeader label={t("admin_tbl_th_stock")} first="stock_asc" second="stock_desc" className="py-4 px-6" />
                   <th className="py-4 px-6 text-center">VİTRİN & DURUM</th>
                   <th className="py-4 px-6 text-right">{t("admin_tbl_th_actions")}</th>
                 </tr>
@@ -599,7 +643,7 @@ export default function ProductListTable({
                       <td className="py-4 px-6 max-w-sm">
                         {productCode(product) && (
                           <span className="inline-block mb-1 px-1.5 py-0.5 rounded bg-panel-800 border border-panel-700 text-[10px] font-bold text-brass-300 tabular-nums tracking-wider">
-                            {productCode(product)}
+                            <span className="text-panel-400 font-semibold">ID </span>{productCode(product)}
                           </span>
                         )}
                         <Link
