@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { compressImage } from "@/lib/imageCompress";
+import { nextCode } from "@/lib/productCode";
 import { Product } from "@/types";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 import { saveVideoBlob, getVideoBlobUrl } from "./videoStorage";
@@ -106,8 +107,11 @@ const writeProductDoc = async (
   );
 };
 
+// Every change also records when it happened ("last edited" sort in the admin list)
 const syncProductInBackground = (action: string, id: string, fields: Record<string, unknown | FieldValue>) => {
-  writeProductDoc(id, fields).catch((err) => reportWriteError(action, err));
+  const updatedAt = new Date().toISOString();
+  localProductsStore = localProductsStore.map((p) => (p.id === id ? { ...p, updatedAt } : p));
+  writeProductDoc(id, { ...fields, updatedAt }).catch((err) => reportWriteError(action, err));
 };
 
 // Helper to load catalog from localStorage (persists discounts & custom products)
@@ -352,6 +356,7 @@ export const createProduct = async (
   const newProduct: Product = {
     id: newId,
     ...productData,
+    code: nextCode(localProductsStore),
     images: uploadedImageUrls.length > 0 ? uploadedImageUrls : ["https://cdn.myikas.com/images/12b70023-d1d5-479c-951a-7f0a014982a9/3b66ab45-af5a-4152-8a16-a2e22d478adf/720/img-20240207-121651.webp"],
     createdAt: new Date().toISOString(),
   };
@@ -626,6 +631,21 @@ export const fillMissingRussian = async (): Promise<number> => {
   }
   if (updated) notifySubscribers();
   return updated;
+};
+
+// Gives a product code to every saved product that has none yet, oldest first.
+export const assignProductCodes = async (): Promise<number> => {
+  const snapshot = await getDocs(collection(db, PRODUCTS_COLLECTION));
+  const all = snapshot.docs.map((d) => ({ ref: d.ref, id: d.id, code: d.data().code as number | undefined, createdAt: String(d.data().createdAt || "") }));
+  const missing = all.filter((p) => !p.code).sort((a, b) => a.createdAt.localeCompare(b.createdAt) || a.id.localeCompare(b.id));
+  let code = nextCode(all);
+  for (const p of missing) {
+    await setDoc(p.ref, { code }, { merge: true });
+    const given = code++;
+    localProductsStore = localProductsStore.map((x) => (x.id === p.id ? { ...x, code: given } : x));
+  }
+  if (missing.length) notifySubscribers();
+  return missing.length;
 };
 
 export const seedProductsToFirestore = async (): Promise<{ created: number; skipped: number }> => {

@@ -46,12 +46,14 @@ export interface Product {
   memberPrice?: number;
   /** header menus this piece appears under; empty = guessed from its category */
   menus?: string[];
-  submenus?: string[]; // stone subcategories under a menu (e.g. Hematit under Erkek Yüzük)
+  submenus?: string[];
+  code?: number; // short product code shown as VU-1001 (admin list, product page, WhatsApp) // stone subcategories under a menu (e.g. Hematit under Erkek Yüzük)
   /** bumped in the catalogue when its image set changes; the admin panel then
    *  copies the new image list to Firestore once */
   imagesVersion?: number;
   originalUrl?: string;
   createdAt?: string;
+  updatedAt?: string; // last change, for the "last edited" sort in admin
 }
 
 export interface OrderItem {

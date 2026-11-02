@@ -20,6 +20,7 @@ import { useRecentStore } from "@/store/useRecentStore";
 import ProductReviews from "@/components/product/ProductReviews";
 import MemberPrice, { forMember, MemberDiscountNote } from "@/components/product/MemberPrice";
 import { useAuth } from "@/context/AuthContext";
+import { productCode } from "@/lib/productCode";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 import Link from "next/link";
 import { 
@@ -380,6 +381,11 @@ export default function ProductDetailPage() {
                   <h1 className="font-display text-3xl sm:text-4xl lg:text-[2.6rem] font-medium text-versace-green-900 leading-[1.1]">
                     {product.title}
                   </h1>
+                  {productCode(product) && (
+                    <p className="mt-2 text-xs text-slate-500 tracking-wider">
+                      {t("product_code")}: <span className="font-semibold text-versace-green-900 tabular-nums" dir="ltr">{productCode(product)}</span>
+                    </p>
+                  )}
                   <AdminEditButton
                     productId={product.id}
                     label="Bu ürünü düzenle"
@@ -543,7 +549,7 @@ export default function ProductDetailPage() {
 
                 {/* WhatsApp Contact */}
                 <a
-                  href={whatsappLink(product.title)}
+                  href={whatsappLink(productCode(product) ? `${product.title} (${productCode(product)})` : product.title)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center gap-2 transition-colors text-sm border border-emerald-200"

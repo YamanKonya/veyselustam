@@ -9,6 +9,7 @@ import {
   syncCatalogImages,
   migrateAgateWording,
   migrateInlineImages,
+  assignProductCodes,
   fillMissingRussian,
   describeFirestoreError,
 } from "@/services/productService";
@@ -72,10 +73,12 @@ export default function AdminDashboardPage() {
         const imagesUpdated = await syncCatalogImages();
         const reworded = await migrateAgateWording();
         const movedImages = await migrateInlineImages().catch(() => 0);
+        const coded = await assignProductCodes();
         const russian = await fillMissingRussian();
         const parts: string[] = [];
         if (created) parts.push(`${created} ürün Firebase'e kaydedildi`);
         if (imagesUpdated) parts.push(`${imagesUpdated} ürünün görselleri güncellendi`);
+        if (coded) parts.push(`${coded} ürüne ürün kodu verildi`);
         if (movedImages) parts.push(`${movedImages} ürünün fotoğrafları hızlı depolamaya taşındı`);
         if (reworded) parts.push(`${reworded} üründe "Yemen akik" ifadesi "Horasan akik" yapıldı`);
         if (russian) parts.push(`${russian} ürüne Rusça çeviri eklendi`);

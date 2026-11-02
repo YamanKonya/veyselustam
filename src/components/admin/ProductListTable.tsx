@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Product } from "@/types";
 import { deleteProduct, createProduct, toggleFeaturedProduct, toggleActiveProduct, setProductPlacement } from "@/services/productService";
 import { MENUS, MENU_LABELS, SUBMENUS, SUBMENU_LABELS, FilterId, MenuId, inFilter, isSubMenu, productMenus, productSubmenus } from "@/lib/menus";
 import BulkCampaignModal from "./BulkCampaignModal";
-import { 
-  Edit3, 
-  Trash2, 
+import {
+  Edit3,
+  Trash2,
   Copy,
-  Image as ImageIcon, 
-  Search, 
-  Tag, 
+  Image as ImageIcon,
+  Search,
+  Tag,
   AlertTriangle,
   Loader2,
   ExternalLink,
@@ -33,6 +33,31 @@ import { useLanguage } from "@/context/LanguageContext";
 import { translateProduct } from "@/i18n/productTranslations";
 import Link from "next/link";
 import { useStockGroups, availableStock } from "@/services/stockService";
+import { fetchPageViews } from "@/services/analyticsService";
+import { getOrders } from "@/services/orderService";
+import { productCode } from "@/lib/productCode";
+
+// Sort orders for the list. Views count the last 90 days of visits; sales count
+// every order that was not cancelled.
+const SORTS = [
+  ["default", "Varsayılan sıra"],
+  ["newest", "Yeni eklenen önce"],
+  ["oldest", "Eski eklenen önce"],
+  ["edited", "Son düzenlenen önce"],
+  ["sold_desc", "En çok satan"],
+  ["sold_asc", "En az satan"],
+  ["views_desc", "En çok bakılan"],
+  ["views_asc", "En az bakılan"],
+  ["price_asc", "Fiyat: ucuzdan pahalıya"],
+  ["price_desc", "Fiyat: pahalıdan ucuza"],
+  ["stock_asc", "Stok: azdan çoğa"],
+  ["stock_desc", "Stok: çoktan aza"],
+  ["discount", "En yüksek indirim"],
+  ["code", "Ürün kodu (küçükten büyüğe)"],
+  ["name", "İsim (A-Z)"],
+] as const;
+type SortKey = (typeof SORTS)[number][0];
+const VIEW_DAYS = 90;
 
 interface ProductListTableProps {
   products: Product[];
@@ -54,6 +79,22 @@ export default function ProductListTable({
   const { groups: stockGroups } = useStockGroups();
   const [selectedCategory, setSelectedCategory] = useState("Hepsi");
   const [statusFilter, setStatusFilter] = useState<"all" | "featured" | "active" | "passive">("all");
+  const [sortKey, setSortKey] = useState<SortKey>("default");
+  // views (last 90 days) and pieces sold, per product id
+  const [stats, setStats] = useState<{ views: Map<string, number>; sold: Map<string, number> } | null>(null);
+  useEffect(() => {
+    Promise.all([fetchPageViews(VIEW_DAYS).catch(() => []), getOrders().catch(() => [])]).then(([views, orders]) => {
+      const v = new Map<string, number>();
+      views.forEach((pv) => pv.productId && v.set(pv.productId, (v.get(pv.productId) || 0) + 1));
+      const s = new Map<string, number>();
+      orders
+        .filter((o) => o.status !== "cancelled")
+        .forEach((o) => (o.items || []).forEach((it) => s.set(it.productId, (s.get(it.productId) || 0) + (Number(it.quantity) || 1))));
+      setStats({ views: v, sold: s });
+    });
+  }, []);
+  const viewsOf = (p: Product) => stats?.views.get(p.id || "") || 0;
+  const soldOf = (p: Product) => stats?.sold.get(p.id || "") || 0;
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [cloningId, setCloningId] = useState<string | null>(null);
   const [deleteConfirmProduct, setDeleteConfirmProduct] = useState<Product | null>(null);
@@ -85,7 +126,7 @@ export default function ProductListTable({
     const shownHere = language === "tr" ? shown : translateProduct(product, language);
     const matchesSearch =
       !query ||
-      [shown.title, shown.description, shownHere.title, product.title, product.description, product.id || ""].some((s) =>
+      [shown.title, shown.description, shownHere.title, product.title, product.description, product.id || "", productCode(product), String(product.code || "")].some((s) =>
         fold(s).includes(query)
       );
     // the filter holds a new menu ("menu:erkek"), "menu:none" or an old category ("cat:…")
@@ -95,7 +136,7 @@ export default function ProductListTable({
       (selectedCategory === "menu:none" && menus.length === 0) ||
       (selectedCategory.startsWith("menu:") && selectedCategory !== "menu:none" && inFilter(product, selectedCategory.slice(5) as FilterId)) ||
       (selectedCategory.startsWith("cat:") && product.category === selectedCategory.slice(4));
-    
+
     let matchesStatus = true;
     if (statusFilter === "featured") matchesStatus = !!product.isFeatured;
     else if (statusFilter === "active") matchesStatus = product.isActive !== false;
@@ -104,9 +145,30 @@ export default function ProductListTable({
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
+  const time = (s?: string) => (s ? Date.parse(s) || 0 : 0);
+  const discountOf = (p: Product) => (p.originalPrice && p.originalPrice > p.price ? (p.originalPrice - p.price) / p.originalPrice : 0);
+  const compare: Record<SortKey, ((a: Product, b: Product) => number) | null> = {
+    default: null,
+    newest: (a, b) => time(b.createdAt) - time(a.createdAt),
+    oldest: (a, b) => time(a.createdAt) - time(b.createdAt),
+    edited: (a, b) => time(b.updatedAt || b.createdAt) - time(a.updatedAt || a.createdAt),
+    sold_desc: (a, b) => soldOf(b) - soldOf(a),
+    sold_asc: (a, b) => soldOf(a) - soldOf(b),
+    views_desc: (a, b) => viewsOf(b) - viewsOf(a),
+    views_asc: (a, b) => viewsOf(a) - viewsOf(b),
+    price_asc: (a, b) => a.price - b.price,
+    price_desc: (a, b) => b.price - a.price,
+    stock_asc: (a, b) => availableStock(a, stockGroups) - availableStock(b, stockGroups),
+    stock_desc: (a, b) => availableStock(b, stockGroups) - availableStock(a, stockGroups),
+    discount: (a, b) => discountOf(b) - discountOf(a),
+    code: (a, b) => (a.code || Infinity) - (b.code || Infinity),
+    name: (a, b) => translateProduct(a, "tr").title.localeCompare(translateProduct(b, "tr").title, "tr"),
+  };
+  const sortedProducts = compare[sortKey] ? [...filteredProducts].sort(compare[sortKey]!) : filteredProducts;
+
   // Pagination math
-  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) || 1;
-  const paginatedProducts = filteredProducts.slice(
+  const totalPages = Math.ceil(sortedProducts.length / ITEMS_PER_PAGE) || 1;
+  const paginatedProducts = sortedProducts.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
@@ -272,6 +334,24 @@ export default function ProductListTable({
           </select>
         </div>
 
+        {/* Sort */}
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-panel-400 font-medium whitespace-nowrap">Sırala:</span>
+          <select
+            value={sortKey}
+            onChange={(e) => {
+              setSortKey(e.target.value as SortKey);
+              setCurrentPage(1);
+            }}
+            aria-label="Sıralama"
+            className="px-3 py-2.5 bg-panel-950 border border-panel-800 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-brass-500 transition"
+          >
+            {SORTS.map(([key, label]) => (
+              <option key={key} value={key}>{label}</option>
+            ))}
+          </select>
+        </div>
+
         {/* Status Filter (Tümü / Vitrin / Aktif / Pasif) */}
         <div className="flex items-center gap-1 bg-panel-950 p-1 border border-panel-800 rounded-xl overflow-x-auto">
           <button
@@ -317,7 +397,7 @@ export default function ProductListTable({
           className="px-4 py-2.5 bg-gradient-to-r from-brass-600 to-brass-500 hover:from-brass-500 hover:to-brass-600 text-white rounded-xl text-xs font-bold shadow-lg shadow-brass-600/20 flex items-center justify-center gap-2 transition whitespace-nowrap"
         >
           <Zap className="w-4 h-4" />
-          {selectedProductIds.length > 0 
+          {selectedProductIds.length > 0
             ? `(${selectedProductIds.length}) ${t("admin_btn_campaign")}`
             : t("admin_btn_campaign")
           }
@@ -463,8 +543,8 @@ export default function ProductListTable({
                   const discountPct = (hasDiscount ? Math.round(((product.originalPrice! - product.price) / product.originalPrice!) * 100) : 0);
 
                   return (
-                    <tr 
-                      key={product.id} 
+                    <tr
+                      key={product.id}
                       className={`hover:bg-panel-800/40 transition ${
                         rawProduct.isActive === false ? "opacity-60 bg-red-950/10" : ""
                       } ${
@@ -489,7 +569,7 @@ export default function ProductListTable({
 
                       {/* Image Thumbnail */}
                       <td className="py-4 px-4">
-                        <div 
+                        <div
                           onClick={() => mainImg && setPreviewImage(mainImg)}
                           onMouseEnter={mainImg ? trackHover(product.images) : undefined}
                           onMouseMove={mainImg ? trackHover(product.images) : undefined}
@@ -517,8 +597,13 @@ export default function ProductListTable({
 
                       {/* Title & Description */}
                       <td className="py-4 px-6 max-w-sm">
-                        <Link 
-                          href={`/product/${product.id}`} 
+                        {productCode(product) && (
+                          <span className="inline-block mb-1 px-1.5 py-0.5 rounded bg-panel-800 border border-panel-700 text-[10px] font-bold text-brass-300 tabular-nums tracking-wider">
+                            {productCode(product)}
+                          </span>
+                        )}
+                        <Link
+                          href={`/product/${product.id}`}
                           target="_blank"
                           className="font-bold text-panel-100 text-sm hover:text-brass-400 transition line-clamp-1 flex items-center gap-1.5"
                         >
@@ -528,11 +613,28 @@ export default function ProductListTable({
                         <p className="text-xs text-panel-400 line-clamp-1 mt-0.5">
                           {product.description || "Açıklama yok"}
                         </p>
-                        {product.images && product.images.length > 1 && (
-                          <span className="inline-block mt-1 text-[10px] text-brass-500 font-semibold bg-brass-500/10 px-1.5 py-0.5 rounded border border-brass-500/20">
-                            +{product.images.length - 1} ekstra resim
-                          </span>
-                        )}
+                        <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[10px] font-semibold">
+                          {product.images && product.images.length > 1 && (
+                            <span className="text-brass-500 bg-brass-500/10 px-1.5 py-0.5 rounded border border-brass-500/20">
+                              +{product.images.length - 1} ekstra resim
+                            </span>
+                          )}
+                          {stats && (
+                            <>
+                              <span title={`Son ${VIEW_DAYS} günde ürün sayfasının görüntülenme sayısı`} className="text-sky-300 bg-sky-500/10 px-1.5 py-0.5 rounded border border-sky-500/20 inline-flex items-center gap-1">
+                                <Eye className="w-3 h-3" /> {viewsOf(product)}
+                              </span>
+                              <span title="İptal edilmemiş siparişlerde satılan adet" className="text-emerald-300 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+                                {soldOf(product)} satış
+                              </span>
+                            </>
+                          )}
+                          {(product.updatedAt || product.createdAt) && (
+                            <span title="Son düzenlenme" className="text-panel-500">
+                              {new Date(product.updatedAt || product.createdAt!).toLocaleDateString("tr-TR")}
+                            </span>
+                          )}
+                        </div>
                       </td>
 
                       {/* Category */}
