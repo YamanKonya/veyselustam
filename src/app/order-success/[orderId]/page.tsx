@@ -163,6 +163,11 @@ export default function OrderSuccessPage() {
             </span>
           </div>
 
+          <p className="text-xs text-slate-600 bg-amber-50 border border-amber-200 rounded-xl p-3">
+            <span className="font-bold text-slate-900">{t("payment_method")}: </span>
+            {t("payment_cod")}
+          </p>
+
           <div className="pt-4 text-center">
             <Link
               href="/"

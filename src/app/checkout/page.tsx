@@ -196,7 +196,6 @@ export default function CheckoutPage() {
           {[
             { step: 1, label: t("cart_title"), icon: ShoppingBag, done: true },
             { step: 2, label: t("checkout_title"), icon: MapPin, done: false, active: true },
-            { step: 3, label: t("payment_method"), icon: CreditCard, done: false },
           ].map((s, i) => (
             <React.Fragment key={s.step}>
               {i > 0 && <div className={`h-px w-8 sm:w-16 ${s.done || s.active ? 'bg-amber-400' : 'bg-slate-200'}`} />}
@@ -359,6 +358,15 @@ export default function CheckoutPage() {
                     className="w-full pl-10 rtl:pr-10 rtl:pl-4 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all resize-none placeholder:text-slate-400"
                   />
                 </div>
+              </div>
+
+              {/* No online payment yet: the shop calls the customer after the order */}
+              <div className="flex items-start gap-3 rounded-xl bg-amber-50 border border-amber-200 p-4 text-sm text-slate-700">
+                <CreditCard className="w-4 h-4 mt-0.5 text-amber-700 flex-shrink-0" />
+                <p>
+                  <span className="font-bold text-slate-900">{t("payment_method")}: </span>
+                  {t("payment_cod")}
+                </p>
               </div>
 
               <div className="pt-4 border-t border-slate-100">
