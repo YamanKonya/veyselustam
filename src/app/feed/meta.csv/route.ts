@@ -2,7 +2,6 @@ import { translateProduct } from "@/i18n/productTranslations";
 import { LANGUAGES, Language } from "@/i18n/translations";
 import { SITE_NAME, SITE_URL, absoluteUrl, listSeoProducts, listStockGroups } from "@/lib/seo";
 import { RATE_CODES, RateCode, getTcmbRates } from "@/lib/rates";
-import { SALES_OPEN } from "@/lib/shop";
 
 // Product catalogue feed for Meta Commerce Manager (WhatsApp Business catalogue,
 // Instagram and Facebook shop) and the Pinterest catalogue. They fetch this URL on a
@@ -81,8 +80,8 @@ export async function GET(request: Request) {
         id: p.id!,
         title: plain(p.title, 150),
         description: plain(p.description || p.title, 5000),
-        // Matches the product page JSON-LD: while sales are closed everything is a pre-order
-        availability: !SALES_OPEN ? "preorder" : inventory > 0 ? "in stock" : "out of stock",
+        // Real stock, not pre-order: Pinterest refuses to distribute preorder items as out of stock
+        availability: inventory > 0 ? "in stock" : "out of stock",
         condition: "new",
         price: `${(p.price / rate).toFixed(2)} ${currency}`,
         link: `${SITE_URL}/product/${encodeURIComponent(p.id!)}${langQuery}`,
