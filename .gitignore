@@ -36,3 +36,7 @@ tsconfig.tsbuildinfo
 # Automation inbox temp
 urun_inbox/temp/
 .vercel
+
+# Claude Code worktrees and Python caches
+.claude/worktrees/
+__pycache__/
