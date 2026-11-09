@@ -73,6 +73,13 @@ açığı notu yazma.
 
 ## Bekleyen işler
 
+Sahibin elle yapacakları:
+- `firestore.rules` dosyasının güncel hâlini Firebase konsolundan yayınlamak.
+- `/admin` panelini bir kez açıp kayıt ve ürün kodu işlemlerinin bitmesini beklemek.
+- Küçük bir deneme siparişiyle siparişin admin'e düştüğünü kontrol edip iptal etmek.
+- Ortağı GitHub'a ve Firebase'e eklemek; Instagram ve Pinterest klasörlerini Drive'dan paylaşmak.
+
+Kod tarafında:
 - Yeni sipariş bildirimi (ör. müşterinin sipariş özetini WhatsApp'tan göndermesi).
 - Mesafeli Satış Sözleşmesi, Ön Bilgilendirme Formu ve onay kutusu; satıcı bilgileri.
 - İngilizce "Free Worldwide Shipping" yazısının netleştirilmesi; formda ülke alanı yok.
