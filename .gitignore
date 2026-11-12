@@ -40,3 +40,6 @@ urun_inbox/temp/
 # Claude Code worktrees and Python caches
 .claude/worktrees/
 __pycache__/
+
+# Printed catalogue output (build with scripts/catalog/build_catalog.py)
+katalog/
