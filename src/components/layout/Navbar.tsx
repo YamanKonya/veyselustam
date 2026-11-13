@@ -38,12 +38,15 @@ export default function Navbar() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
+    const q = searchQuery.trim();
+    if (!q) return;
+    setMobileMenuOpen(false);
+    if (window.location.pathname === "/") {
       // page.tsx listens for this event and filters the collection
-      window.dispatchEvent(new CustomEvent("global-search", { detail: searchQuery }));
-      if (window.location.pathname !== "/") {
-        router.push("/");
-      }
+      window.dispatchEvent(new CustomEvent("global-search", { detail: q }));
+    } else {
+      // the home page is not mounted yet, so pass the search in the address
+      router.push(`/?q=${encodeURIComponent(q)}#koleksiyon`);
     }
   };
 

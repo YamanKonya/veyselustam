@@ -15,6 +15,8 @@ import { translateProduct } from "@/i18n/productTranslations";
 import { ChevronUp, X } from "lucide-react";
 import { imageAt, imageSrcSet } from "@/lib/image";
 import { MENUS, SUBMENUS, FilterId, inFilter } from "@/lib/menus";
+import { matchesSearch } from "@/lib/search";
+import { productCode } from "@/lib/productCode";
 import { forMember } from "@/components/product/MemberPrice";
 import { useAuth } from "@/context/AuthContext";
 
@@ -77,6 +79,12 @@ export default function Home() {
       setMenuFilter(id as FilterId);
     };
     pick(new URLSearchParams(window.location.search).get("menu"));
+    // ?q= when a search was made on another page (product page, cart…)
+    const q = new URLSearchParams(window.location.search).get("q");
+    if (q?.trim()) {
+      setGlobalSearch(q.trim());
+      setTimeout(() => document.getElementById("koleksiyon")?.scrollIntoView({ behavior: "smooth" }), 300);
+    }
     const onMenu = (e: Event) => pick((e as CustomEvent<string>).detail);
     window.addEventListener("menu-filter", onMenu);
     return () => window.removeEventListener("menu-filter", onMenu);
@@ -133,10 +141,14 @@ export default function Home() {
     let filtered = localizedProducts;
 
     if (globalSearch) {
-      const q = globalSearch.toLocaleLowerCase("tr");
-      filtered = filtered.filter(
-        (p) => p.title.toLocaleLowerCase("tr").includes(q) || p.description.toLocaleLowerCase("tr").includes(q)
-      );
+      // Search the shown language and the original Turkish text, category and product code
+      filtered = filtered.filter((p) => {
+        const raw = products.find((o) => o.id === p.id);
+        return matchesSearch(
+          [p.title, p.description, raw?.title, raw?.description, raw?.category, raw ? productCode(raw) : ""],
+          globalSearch
+        );
+      });
     } else {
       if (menuFilter) {
         filtered = filtered.filter((p) => {
@@ -234,7 +246,10 @@ export default function Home() {
               </div>
               <button
                 type="button"
-                onClick={() => setGlobalSearch("")}
+                onClick={() => {
+                  setGlobalSearch("");
+                  if (window.location.search.includes("q=")) history.replaceState(null, "", "/#koleksiyon");
+                }}
                 className="inline-flex items-center gap-1.5 text-sm text-versace-green-900 hover:text-versace-gold-700"
               >
                 <X className="w-4 h-4" /> {t("search_clear")}

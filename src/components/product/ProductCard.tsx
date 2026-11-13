@@ -116,7 +116,7 @@ export default function ProductCard({ product, isAdded, onAddToCart }: ProductCa
 
       <div className="pt-4 flex-1 flex flex-col">
         <Link href={href} className="hover:text-versace-gold-700 transition-colors">
-          <h3 className="font-display text-lg leading-snug text-versace-green-900 line-clamp-2">
+          <h3 className="font-display text-base sm:text-lg leading-snug text-versace-green-900 line-clamp-4 sm:line-clamp-3">
             {product.title}
           </h3>
         </Link>
