@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Product } from "@/types";
+import { trackEvent } from "@/lib/trackEvent";
 
 export interface CartItem {
   cartItemId: string; // `${productId}_${ringSize || 'no-size'}`
@@ -35,6 +36,7 @@ export const useCartStore = create<CartStore>()(
 
       addItem: (product, selectedRingSize, quantity = 1) => {
         if (!product.id) return;
+        trackEvent("sepet#ekle", product.id);
 
         const cartItemId = `${product.id}_${selectedRingSize || "standard"}`;
         const currentItems = get().items;

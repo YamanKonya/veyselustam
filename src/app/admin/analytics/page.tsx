@@ -17,7 +17,10 @@ import {
   Star,
   ChevronDown,
   ChevronRight,
+  ShoppingCart,
+  AlertTriangle,
 } from "lucide-react";
+import { isEventPath } from "@/lib/trackEvent";
 import { Product } from "@/types";
 import { subscribeProducts, toggleFeaturedProduct } from "@/services/productService";
 import { translateProduct } from "@/i18n/productTranslations";
@@ -53,6 +56,39 @@ const fmtTime = (d: Date) =>
   d.toLocaleString("tr-TR", { timeZone: TZ, day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
 const fmtClock = (d: Date) => d.toLocaleTimeString("tr-TR", { timeZone: TZ, hour: "2-digit", minute: "2-digit", second: "2-digit" });
 const dayKey = (d: Date) => d.toLocaleDateString("en-CA", { timeZone: TZ }); // YYYY-MM-DD
+
+// Shopping events recorded by trackEvent (path after "/")
+const ERROR_LABELS: Record<string, string> = {
+  stok: "Stok yetersiz",
+  form: "Formu eksik bıraktı",
+  "permission-denied": "Yetki hatası (Firebase kuralları)",
+  unavailable: "Bağlantı hatası",
+  "deadline-exceeded": "Bağlantı zaman aşımı",
+  genel: "Bilinmeyen hata",
+};
+const errorLabel = (path: string) => {
+  const code = path.split("#hata:")[1] || "genel";
+  return ERROR_LABELS[code] || `Hata: ${code}`;
+};
+const eventLabel = (path: string) =>
+  path === "/sepet#ekle"
+    ? "Sepete ekledi"
+    : path === "/checkout#sepet"
+    ? "Ödeme sayfasında sepetinde"
+    : path === "/checkout#gonder"
+    ? "Siparişi tamamlaya bastı"
+    : path.includes("#hata:")
+    ? errorLabel(path)
+    : path;
+
+type Stage = "error" | "tried" | "form" | "checkout" | "cart";
+const STAGES: Record<Stage, { label: string; cls: string }> = {
+  error: { label: "Sipariş hata verdi", cls: "bg-red-950 text-red-300 border-red-800" },
+  tried: { label: "Göndermeyi denedi", cls: "bg-amber-950 text-amber-300 border-amber-800" },
+  form: { label: "Formu eksik bıraktı", cls: "bg-amber-950 text-amber-300 border-amber-800" },
+  checkout: { label: "Ödeme sayfasından ayrıldı", cls: "bg-panel-800 text-panel-200 border-panel-700" },
+  cart: { label: "Sepete ekledi, ödemeye geçmedi", cls: "bg-panel-800 text-panel-300 border-panel-700" },
+};
 
 const DeviceIcon = ({ device }: { device: string }) =>
   device === "mobile" ? <Smartphone className="w-3.5 h-3.5" /> : device === "tablet" ? <Tablet className="w-3.5 h-3.5" /> : <Monitor className="w-3.5 h-3.5" />;
@@ -105,6 +141,47 @@ export default function AdminAnalyticsPage() {
   const productById = useMemo(() => new Map(products.map((p) => [p.id, p] as const)), [products]);
 
   const visits = useMemo(() => groupVisits(views), [views]);
+  // Page views without the shopping events (those are stored alongside them)
+  const pageViews = useMemo(() => views.filter((v) => !isEventPath(v.path)), [views]);
+
+  // Visits that added to cart or opened checkout but never reached the order-success page
+  const funnel = useMemo(() => {
+    let carted = 0;
+    let checkout = 0;
+    let ordered = 0;
+    const open: { visit: (typeof visits)[number]; stage: Stage; products: string[]; detail: string }[] = [];
+    for (const v of visits) {
+      const ev = v.events;
+      const added = ev.filter((e) => e.path === "/sepet#ekle");
+      const atCheckout = v.views.some((p) => p.path.startsWith("/checkout")) || ev.some((e) => e.path.startsWith("/checkout"));
+      const done = v.views.some((p) => p.path.startsWith("/order-success"));
+      if (added.length) carted++;
+      if (atCheckout) checkout++;
+      if (done) ordered++;
+      if (done || (!added.length && !atCheckout)) continue;
+
+      const errors = ev.filter((e) => e.path.includes("#hata:") && !e.path.endsWith(":form"));
+      const stage: Stage = errors.length
+        ? "error"
+        : ev.some((e) => e.path === "/checkout#gonder")
+        ? "tried"
+        : ev.some((e) => e.path === "/checkout#hata:form")
+        ? "form"
+        : atCheckout
+        ? "checkout"
+        : "cart";
+      const inCart = ev.filter((e) => e.path === "/checkout#sepet").map((e) => e.productId);
+      const products = Array.from(new Set((inCart.length ? inCart : added.map((e) => e.productId)).filter(Boolean)));
+      const last = errors[errors.length - 1];
+      const detail = last ? errorLabel(last.path) + (last.productId ? `: ${titleOf(last.productId)}` : "") : "";
+      open.push({ visit: v, stage, products, detail });
+    }
+    return { carted, checkout, ordered, open };
+  }, [visits, titleOf]);
+  const [stageFilter, setStageFilter] = useState<"all" | "cart" | "checkout">("all");
+  const openShown = funnel.open.filter((o) =>
+    stageFilter === "all" ? true : stageFilter === "cart" ? o.stage === "cart" : o.stage !== "cart"
+  );
 
   const kpis = useMemo(() => {
     const n = visits.length;
@@ -112,12 +189,12 @@ export default function AdminAnalyticsPage() {
     const bounces = visits.filter((v) => v.views.length === 1).length;
     return {
       visits: n,
-      views: views.length,
+      views: pageViews.length,
       avgTime: n ? Math.round(totalSec / n) : 0,
-      pagesPerVisit: n ? (views.length / n).toFixed(1).replace(".", ",") : "0",
+      pagesPerVisit: n ? (pageViews.length / n).toFixed(1).replace(".", ",") : "0",
       bounce: n ? Math.round((bounces / n) * 100) : 0,
     };
-  }, [visits, views]);
+  }, [visits, pageViews]);
 
   // Visits per day across the selected range (days with no visits included)
   const daily = useMemo(() => {
@@ -141,7 +218,7 @@ export default function AdminAnalyticsPage() {
   // Products by interest: unique visitors, then total viewing time
   const topProducts = useMemo(() => {
     const stats = new Map<string, { views: number; visitors: Set<string>; seconds: number }>();
-    for (const v of views) {
+    for (const v of pageViews) {
       if (!v.productId) continue;
       const s = stats.get(v.productId) || { views: 0, visitors: new Set<string>(), seconds: 0 };
       s.views++;
@@ -153,7 +230,7 @@ export default function AdminAnalyticsPage() {
       .map(([id, s]) => ({ id, views: s.views, visitors: s.visitors.size, seconds: s.seconds, avg: Math.round(s.seconds / s.views) }))
       .sort((a, b) => b.visitors - a.visitors || b.seconds - a.seconds)
       .slice(0, 15);
-  }, [views]);
+  }, [pageViews]);
 
   const tally = (key: (v: (typeof visits)[number]) => string) => {
     const m = new Map<string, number>();
@@ -316,6 +393,101 @@ export default function AdminAnalyticsPage() {
         </Panel>
       )}
 
+      {/* Abandoned carts and orders */}
+      <Panel title="Sepette ve ödemede yarım kalanlar">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+          {[
+            { label: "Sepete ekleyen ziyaret", value: funnel.carted },
+            { label: "Ödeme sayfasına gelen", value: funnel.checkout },
+            { label: "Sipariş veren", value: funnel.ordered },
+            { label: "Almadan ayrılan", value: funnel.open.length },
+          ].map((k) => (
+            <div key={k.label} className="bg-panel-950 border border-panel-800 rounded-xl p-3">
+              <p className="text-[11px] text-panel-400">{k.label}</p>
+              <p className="text-xl font-extrabold text-panel-50 tabular-nums">{loading ? "…" : k.value}</p>
+            </div>
+          ))}
+        </div>
+        <div role="group" aria-label="Aşama" className="inline-flex bg-panel-950 border border-panel-800 rounded-xl p-1 mb-3">
+          {([
+            ["all", "Hepsi"],
+            ["cart", "Sepette kalan"],
+            ["checkout", "Ödemede kalan"],
+          ] as const).map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setStageFilter(id)}
+              aria-pressed={stageFilter === id}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition ${
+                stageFilter === id ? "bg-brass-600 text-white" : "text-panel-300 hover:text-panel-100"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        {openShown.length === 0 ? (
+          <p className="text-sm text-panel-500">{loading ? "Yükleniyor…" : "Bu aralıkta almadan ayrılan yok."}</p>
+        ) : (
+          <ul className="divide-y divide-panel-800">
+            {openShown.slice(0, 50).map(({ visit: v, stage, products: ids, detail }) => (
+              <li key={v.sid} className="py-3 text-sm">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                  <span className={`px-2 py-0.5 rounded-lg border text-xs font-semibold ${STAGES[stage].cls}`}>
+                    {stage === "error" ? (
+                      <AlertTriangle className="w-3 h-3 inline -mt-0.5 mr-1" />
+                    ) : (
+                      <ShoppingCart className="w-3 h-3 inline -mt-0.5 mr-1" />
+                    )}
+                    {STAGES[stage].label}
+                  </span>
+                  <span className="text-panel-200 whitespace-nowrap">{fmtTime(v.start)}</span>
+                  <span className="text-panel-400 inline-flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5" /> {place(v)}
+                  </span>
+                  <span className="text-panel-400 inline-flex items-center gap-1">
+                    <DeviceIcon device={v.device} /> {deviceName(v.device)}
+                  </span>
+                  <span className="text-panel-400">
+                    {v.source}
+                    {v.campaign && <span className="text-brass-300"> · {v.campaign}</span>}
+                  </span>
+                </div>
+                {detail && <p className="mt-1.5 text-xs text-red-300">{detail}</p>}
+                {ids.length > 0 && (
+                  <ul className="mt-2 flex flex-wrap gap-2">
+                    {ids.map((id) => {
+                      const product = productById.get(id);
+                      return (
+                        <li key={id}>
+                          <a
+                            href={`/product/${id}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center gap-2 max-w-[260px] bg-panel-950 border border-panel-800 rounded-lg pr-2 hover:border-brass-500"
+                          >
+                            {product?.images?.[0] && (
+                              <img src={product.images[0]} alt="" className="w-8 h-8 rounded-l-lg object-cover flex-shrink-0" />
+                            )}
+                            <span className="text-xs text-panel-200 line-clamp-1">{titleOf(id)}</span>
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+        <p className="text-xs text-panel-500 mt-3">
+          Müşterinin formda yazdıkları kaydedilmez; burada yalnızca ne zaman ve nereden geldiği, sepetindeki ürünler ve varsa aldığı hata
+          görünür. Sepet ve hata kayıtları bu özelliğin eklendiği günden itibaren tutulur; daha eski ziyaretlerde yalnızca ödeme sayfasına
+          gelip gelmediği görünür.
+        </p>
+      </Panel>
+
       <CampaignLinkBuilder products={products} />
 
       {/* Products by interest */}
@@ -459,15 +631,28 @@ export default function AdminAnalyticsPage() {
                         <tr className="bg-panel-950/60">
                           <td colSpan={6} className="px-4 py-3">
                             <ol className="space-y-1.5">
-                              {v.views.map((pv) => (
-                                <li key={pv.id} className="flex flex-wrap items-center gap-x-3 text-xs">
-                                  <span className="tabular-nums text-panel-500 w-16">{fmtClock(pv.at)}</span>
-                                  <span className="text-panel-100">
-                                    {pv.productId ? titleOf(pv.productId) : pv.path === "/" ? "Anasayfa" : pv.path}
-                                  </span>
-                                  <span className="text-panel-400 tabular-nums">{fmtDuration(pv.seconds)}</span>
-                                </li>
-                              ))}
+                              {[...v.views, ...v.events]
+                                .sort((a, b) => a.at.getTime() - b.at.getTime())
+                                .map((pv) =>
+                                  isEventPath(pv.path) ? (
+                                    <li key={pv.id} className="flex flex-wrap items-center gap-x-3 text-xs">
+                                      <span className="tabular-nums text-panel-500 w-16">{fmtClock(pv.at)}</span>
+                                      <span className={pv.path.includes("#hata:") ? "text-red-300" : "text-brass-300"}>
+                                        <ShoppingCart className="w-3 h-3 inline -mt-0.5 mr-1" />
+                                        {eventLabel(pv.path)}
+                                        {pv.productId ? `: ${titleOf(pv.productId)}` : ""}
+                                      </span>
+                                    </li>
+                                  ) : (
+                                    <li key={pv.id} className="flex flex-wrap items-center gap-x-3 text-xs">
+                                      <span className="tabular-nums text-panel-500 w-16">{fmtClock(pv.at)}</span>
+                                      <span className="text-panel-100">
+                                        {pv.productId ? titleOf(pv.productId) : pv.path === "/" ? "Anasayfa" : pv.path}
+                                      </span>
+                                      <span className="text-panel-400 tabular-nums">{fmtDuration(pv.seconds)}</span>
+                                    </li>
+                                  )
+                                )}
                             </ol>
                             <p className="text-[11px] text-panel-500 mt-2">
                               Dil: {v.lang || "?"}

@@ -1,5 +1,6 @@
 import { collection, getDocs, limit, orderBy, query, Timestamp, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { isEventPath } from "@/lib/trackEvent";
 
 export interface PageView {
   id: string;
@@ -24,7 +25,8 @@ export interface Visit {
   sid: string;
   start: Date;
   end: Date;
-  views: PageView[]; // oldest first
+  views: PageView[]; // real page views, oldest first
+  events: PageView[]; // shopping events (add to cart, checkout steps, errors), oldest first
   seconds: number;
   country: string;
   region: string;
@@ -93,12 +95,13 @@ export const groupVisits = (views: PageView[]): Visit[] => {
   const visits: Visit[] = [];
   bySid.forEach((list, sid) => {
     list.sort((a, b) => a.at.getTime() - b.at.getTime());
-    const first = list.find((v) => v.landing) || list[0];
+    const first = list.find((v) => v.landing) || list.find((v) => !isEventPath(v.path)) || list[0];
     visits.push({
       sid,
       start: list[0].at,
       end: list[list.length - 1].at,
-      views: list,
+      views: list.filter((v) => !isEventPath(v.path)),
+      events: list.filter((v) => isEventPath(v.path)),
       seconds: list.reduce((n, v) => n + v.seconds, 0),
       country: first.country,
       region: first.region,

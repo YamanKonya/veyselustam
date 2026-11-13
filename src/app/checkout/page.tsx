@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { trackEvent } from "@/lib/trackEvent";
 import { imageAt } from "@/lib/image";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
@@ -43,6 +44,16 @@ export default function CheckoutPage() {
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Record once which pieces were in the cart when the checkout page opened
+  const cartTracked = useRef(false);
+  const invalidAt = useRef(0);
+  useEffect(() => {
+    if (!mounted || cartTracked.current || !items.length) return;
+    cartTracked.current = true;
+    const ids = Array.from(new Set(items.map((i) => i.product.id).filter(Boolean))) as string[];
+    ids.slice(0, 6).forEach((id) => trackEvent("checkout#sepet", id));
+  }, [mounted, items]);
 
   const [formData, setFormData] = useState<ShippingAddress>({
     fullName: "",
@@ -118,9 +129,11 @@ export default function CheckoutPage() {
 
     if (!formData.fullName.trim() || !formData.phone.trim() || !formData.city.trim() || !formData.address.trim() || !formData.district.trim()) {
       setError(t("form_error_required"));
+      trackEvent("checkout#hata:form");
       return;
     }
 
+    trackEvent("checkout#gonder");
     setLoading(true);
 
     try {
@@ -159,6 +172,8 @@ export default function CheckoutPage() {
       router.push(`/order-success/${newOrderId}`);
     } catch (err: any) {
       console.error(err);
+      if (err instanceof OutOfStockError) trackEvent("checkout#hata:stok", err.productId);
+      else trackEvent(`checkout#hata:${String(err?.code || "genel").replace(/[^a-z-]/gi, "").slice(0, 30) || "genel"}`);
       if (err instanceof OutOfStockError) {
         const line = items.find((i) => i.product.id === err.productId);
         const name = line ? translateProduct(line.product, language).title : "";
@@ -235,7 +250,15 @@ export default function CheckoutPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmitOrder} className="space-y-5">
+            <form
+              onSubmit={handleSubmitOrder}
+              // The browser stops an empty required field before onSubmit; record it once per try
+              onInvalidCapture={() => {
+                if (Date.now() - invalidAt.current > 2000) trackEvent("checkout#hata:form");
+                invalidAt.current = Date.now();
+              }}
+              className="space-y-5"
+            >
               {/* Full Name & Phone */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
