@@ -6,7 +6,7 @@ import {
   User as FirebaseUser,
   signOut as firebaseSignOut
 } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { UserProfile } from "@/types";
 import { adminSignIn, isAdminUser, loadAdminLoginInfo, AdminLoginResult } from "@/lib/adminAuth";
@@ -64,11 +64,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
         try {
           const userDoc = await getDoc(doc(db, "users", currentUser.uid));
-          setProfile(
-            userDoc.exists()
-              ? (userDoc.data() as UserProfile)
-              : { id: currentUser.uid, email: currentUser.email || "", role: "customer" }
-          );
+          if (userDoc.exists()) {
+            setProfile(userDoc.data() as UserProfile);
+          } else {
+            // Profile missing (e.g. saving it failed at sign-up): save a basic one so the
+            // member shows up in the admin members list. Admin accounts are not members.
+            const basic: UserProfile = {
+              id: currentUser.uid,
+              email: currentUser.email || "",
+              role: "customer",
+              createdAt: currentUser.metadata.creationTime
+                ? new Date(currentUser.metadata.creationTime).toISOString()
+                : new Date().toISOString(),
+            };
+            setProfile(basic);
+            if (!admin) setDoc(doc(db, "users", currentUser.uid), basic).catch(() => {});
+          }
         } catch {
           setProfile({ id: currentUser.uid, email: currentUser.email || "", role: "customer" });
         }
