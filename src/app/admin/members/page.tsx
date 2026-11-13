@@ -121,7 +121,41 @@ export default function AdminMembersPage() {
       ) : !error && shown.length === 0 ? (
         <p className="text-sm text-panel-400">{members.length ? "Aramaya uyan üye yok." : "Henüz üye yok."}</p>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-panel-800">
+        <>
+        {/* Phones: one card per member (a 4-column table squeezes the e-mail into a few letters per line) */}
+        <ul className="md:hidden space-y-3">
+          {shown.map((m) => {
+            const s = orderStats.get(m.id);
+            return (
+              <li key={m.id} className="p-4 rounded-2xl bg-panel-900 border border-panel-800 text-sm text-panel-200">
+                {m.name && <p className="font-semibold text-panel-100">{m.name}</p>}
+                <a href={`mailto:${m.email}`} className="block text-panel-100 hover:text-brass-400 break-words">
+                  {m.email || "—"}
+                </a>
+                <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+                  {m.phone ? (
+                    <a
+                      href={waLink(m.phone)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-panel-950 border border-panel-700 hover:border-brass-500"
+                    >
+                      <MessageCircle className="w-4 h-4 text-brass-400" /> {m.phone}
+                    </a>
+                  ) : (
+                    <span className="text-panel-500">Telefon yok</span>
+                  )}
+                  <span className="text-panel-400 text-xs">{fmtDate(m.createdAt)}</span>
+                </div>
+                <p className="mt-2 text-xs text-panel-400">
+                  Sipariş: {s ? <span className="text-panel-200">{s.count} · {s.total.toLocaleString("tr-TR")} ₺</span> : "0"}
+                </p>
+              </li>
+            );
+          })}
+        </ul>
+
+        <div className="hidden md:block overflow-x-auto rounded-2xl border border-panel-800">
           <table className="w-full text-sm">
             <thead className="bg-panel-900 text-panel-400 text-xs uppercase tracking-wider">
               <tr>
@@ -173,6 +207,7 @@ export default function AdminMembersPage() {
             </tbody>
           </table>
         </div>
+        </>
       )}
     </div>
   );
