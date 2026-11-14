@@ -2,6 +2,7 @@ import { translateProduct } from "@/i18n/productTranslations";
 import { LANGUAGES, Language } from "@/i18n/translations";
 import { SITE_NAME, SITE_URL, absoluteUrl, listSeoProducts, listStockGroups } from "@/lib/seo";
 import { RATE_CODES, RateCode, getTcmbRates } from "@/lib/rates";
+import { feedTitle } from "@/lib/feedTitle";
 
 // Product catalogue feed for Meta Commerce Manager (WhatsApp Business catalogue,
 // Instagram and Facebook shop) and the Pinterest catalogue. They fetch this URL on a
@@ -78,7 +79,8 @@ export async function GET(request: Request) {
       const inventory = p.stockGroup && groups[p.stockGroup] !== undefined ? Math.min(own, groups[p.stockGroup]) : own;
       const record: Record<(typeof COLUMNS)[number], string | number> = {
         id: p.id!,
-        title: plain(p.title, 150),
+        // Searchable title: the product name plus "925 Silver Ring · category" (see src/lib/feedTitle.ts)
+        title: plain(feedTitle(p.title, raw.category || "", lang), 100),
         description: plain(p.description || p.title, 5000),
         // Real stock, not pre-order: Pinterest refuses to distribute preorder items as out of stock
         availability: inventory > 0 ? "in stock" : "out of stock",

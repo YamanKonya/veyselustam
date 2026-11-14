@@ -14,6 +14,7 @@ export const normalizeSearch = (s: string) =>
     .normalize("NFD")
     .replace(MARKS, "") // â û î ü ö ç ş ğ → a u i u o c s g
     .replace(NON_WORD, " ")
+    .replace(/yuzug/g, "yuzuk") // "yüzük" and "yüzüğü" are the same word for search
     .trim();
 
 /** True when every word of the query appears somewhere in the given texts. */
