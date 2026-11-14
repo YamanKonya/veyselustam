@@ -123,7 +123,7 @@ export default function Navbar() {
           <Link href={localizedHref("/")} className="flex items-center gap-3 lg:gap-4 justify-self-center">
             <img
               src="/images/logo-256.webp"
-              alt=""
+              alt="Veysel Ustam"
               width={88}
               height={88}
               className="w-12 h-12 lg:w-[88px] lg:h-[88px] object-contain"

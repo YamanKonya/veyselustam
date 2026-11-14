@@ -261,7 +261,7 @@ export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
                   i === index ? "opacity-100" : "opacity-45 hover:opacity-80"
                 }`}
               >
-                <img src={imageAt(p.images?.[0], 180)} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" draggable={false} />
+                <img src={imageAt(p.images?.[0], 180)} alt={p.title} className="w-full h-full object-cover" loading="lazy" decoding="async" draggable={false} />
                 {i === index && (
                   <span
                     key={`${index}-${paused}`}

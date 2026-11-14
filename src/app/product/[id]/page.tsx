@@ -358,7 +358,7 @@ export default function ProductDetailPage() {
                           : "border-slate-200 hover:border-slate-300 opacity-70 hover:opacity-100"
                       }`}
                     >
-                      <img src={imageAt(imgUrl, 180)} alt={`${t("image_alt")} ${idx + 1}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                      <img src={imageAt(imgUrl, 180)} alt={`${product.title} – ${t("image_alt")} ${idx + 1}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                     </button>
                   ))}
                 </div>
