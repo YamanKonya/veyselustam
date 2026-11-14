@@ -23,7 +23,7 @@ interface ProductCardProps {
 const playableVideo = (url?: string) => (url && /^(\/|https?:\/\/)/.test(url) ? url : "");
 
 export default function ProductCard({ product, isAdded, onAddToCart }: ProductCardProps) {
-  const { t } = useLanguage();
+  const { t, localizedHref } = useLanguage();
   const { price } = usePrice();
   const video = playableVideo(product.videoUrl);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -52,7 +52,7 @@ export default function ProductCard({ product, isAdded, onAddToCart }: ProductCa
   const soldOut = availableStock(product, groups) <= 0;
   const image = product.images?.[0];
   const discount = discountPercent(product.price, product.originalPrice, product.discountPercent);
-  const href = `/product/${product.id}`;
+  const href = localizedHref(`/product/${product.id}`);
 
   return (
     <article className="group flex flex-col">

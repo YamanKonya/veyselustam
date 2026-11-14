@@ -11,6 +11,9 @@ const nextConfig = {
     const oldPages = ["/butun-urunler", "/cok-satanlar", "/nakkas-el-oymasi-tasli", "/erkek-urunlerimiz",
       "/kadin-urunlerimiz", "/iletisim", "/hakkimizda", "/sss"];
     return [
+      // Türkçe adres öneksiz; /tr adresi ana Türkçe adrese yönlendirilir
+      { source: "/tr", destination: "/", permanent: true },
+      { source: "/tr/:path*", destination: "/:path*", permanent: true },
       ...legacy.map(({ source, id }) => ({ source, destination: `/product/${id}`, permanent: true })),
       ...oldPages.map((source) => ({ source, destination: "/", permanent: true })),
     ];

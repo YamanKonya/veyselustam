@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { stripLocale } from "@/lib/locale";
 import { useLanguage } from "@/context/LanguageContext";
 import { whatsappLink } from "@/lib/contact";
 
@@ -20,7 +21,7 @@ export default function WhatsAppChat() {
   // the product link needs the page's own address, known only in the browser
   useEffect(() => {
     const parts = [t("wa_default_msg")];
-    if (pathname?.startsWith("/product/")) parts.push(`${t("wa_about_product")} ${window.location.origin}${pathname}`);
+    if (stripLocale(pathname || "").startsWith("/product/")) parts.push(`${t("wa_about_product")} ${window.location.origin}${pathname}`);
     setHref(whatsappLink(parts.join("\n\n")));
   }, [pathname, t]);
 

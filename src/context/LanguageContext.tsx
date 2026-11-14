@@ -1,7 +1,9 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { Language, LANGUAGES, LanguageOption, translations } from "@/i18n/translations";
+import { isLocale, isLocalizablePath, localizedPath, pathLocale, stripLocale } from "@/lib/locale";
 
 interface LanguageContextType {
   language: Language;
@@ -9,32 +11,55 @@ interface LanguageContextType {
   t: (key: string) => string;
   currentLangObj: LanguageOption;
   dir: "ltr" | "rtl";
+  /** Verilen yolu aktif dilin adresine çevirir (ör. "/?menu=x" → "/en/?menu=x") */
+  localizedHref: (path: string) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const STORAGE_KEY = "veyselustam_lang";
 
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-  const [language, setLanguageState] = useState<Language>("tr");
+  const pathname = usePathname() || "/";
+  const router = useRouter();
+  // Dil adreste ise (/en/...) o belirler; değilse tarayıcıdaki tercih kullanılır
+  const routeLocale = pathLocale(pathname);
+  const [savedLanguage, setSavedLanguage] = useState<Language>("tr");
+  const language: Language = routeLocale ?? savedLanguage;
 
   useEffect(() => {
-    const isLanguage = (code: string | null): code is Language => !!code && LANGUAGES.some((l) => l.code === code);
-    // A ?lang= link (e.g. from an English Pinterest pin) wins and is remembered for the rest of the visit
     const fromUrl = new URLSearchParams(window.location.search).get("lang");
-    if (isLanguage(fromUrl)) {
-      setLanguageState(fromUrl);
-      localStorage.setItem("veyselustam_lang", fromUrl);
+    if (isLocale(fromUrl) && fromUrl !== "tr" && !routeLocale && isLocalizablePath(pathname)) {
+      // Eski ?lang= bağlantıları (ör. İngilizce Pinterest pini) dil adresine yönlendirilir
+      router.replace(localizedPath(fromUrl, pathname));
       return;
     }
-    const saved = localStorage.getItem("veyselustam_lang");
-    if (isLanguage(saved)) {
-      setLanguageState(saved);
+    if (isLocale(fromUrl)) {
+      setSavedLanguage(fromUrl);
+      localStorage.setItem(STORAGE_KEY, fromUrl);
+      return;
     }
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (isLocale(saved)) setSavedLanguage(saved);
+    // routeLocale is only read for the first load; later changes come from the URL itself
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (routeLocale) localStorage.setItem(STORAGE_KEY, routeLocale);
+  }, [routeLocale]);
+
   const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
-    localStorage.setItem("veyselustam_lang", lang);
+    setSavedLanguage(lang);
+    localStorage.setItem(STORAGE_KEY, lang);
+    // Dil adresi olan bir sayfadaysak aynı sayfanın yeni dildeki adresine git
+    const current = stripLocale(pathname);
+    if (isLocalizablePath(current)) {
+      const target = localizedPath(lang, current);
+      if (target !== pathname) router.push(target);
+    }
   };
+
+  const localizedHref = (path: string) => localizedPath(language, path);
 
   const currentLangObj = LANGUAGES.find((l) => l.code === language) || LANGUAGES[0];
   const dir = currentLangObj.dir;
@@ -54,7 +79,7 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, currentLangObj, dir }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, currentLangObj, dir, localizedHref }}>
       {children}
     </LanguageContext.Provider>
   );

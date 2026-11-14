@@ -11,11 +11,12 @@ import { whatsappLink } from "@/lib/contact";
 import { SALES_OPEN } from "@/lib/shop";
 import { MENUS, FilterId, openMenu, subMenusOf, useMenuSettings } from "@/lib/menus";
 import { useAuth } from "@/context/AuthContext";
+import { stripLocale } from "@/lib/locale";
 import { ShoppingBag, Search, Menu, X, Phone, UserRound, LogOut, ChevronDown } from "lucide-react";
 
 export default function Navbar() {
   const { toggleCart, getTotalItems } = useCartStore();
-  const { t } = useLanguage();
+  const { t, localizedHref } = useLanguage();
   const router = useRouter();
   const { user, logout } = useAuth();
   const enabledMenus = useMenuSettings();
@@ -41,12 +42,12 @@ export default function Navbar() {
     const q = searchQuery.trim();
     if (!q) return;
     setMobileMenuOpen(false);
-    if (window.location.pathname === "/") {
+    if (stripLocale(window.location.pathname) === "/") {
       // page.tsx listens for this event and filters the collection
       window.dispatchEvent(new CustomEvent("global-search", { detail: q }));
     } else {
       // the home page is not mounted yet, so pass the search in the address
-      router.push(`/?q=${encodeURIComponent(q)}#koleksiyon`);
+      router.push(localizedHref(`/?q=${encodeURIComponent(q)}#koleksiyon`));
     }
   };
 
@@ -56,10 +57,10 @@ export default function Navbar() {
   // On the home page filter in place; elsewhere go home with the menu in the URL.
   const goToMenu = (e: React.MouseEvent, id: FilterId) => {
     closeMenu();
-    if (window.location.pathname === "/") {
+    if (stripLocale(window.location.pathname) === "/") {
       e.preventDefault();
       openMenu(id);
-      history.replaceState(null, "", `/?menu=${id}#koleksiyon`);
+      history.replaceState(null, "", `${window.location.pathname}?menu=${id}#koleksiyon`);
       document.getElementById("koleksiyon")?.scrollIntoView({ behavior: "smooth" });
     }
   };
@@ -119,7 +120,7 @@ export default function Navbar() {
           </div>
 
           {/* Center: logo + name */}
-          <Link href="/" className="flex items-center gap-3 lg:gap-4 justify-self-center">
+          <Link href={localizedHref("/")} className="flex items-center gap-3 lg:gap-4 justify-self-center">
             <img
               src="/images/logo-256.webp"
               alt=""
@@ -171,7 +172,7 @@ export default function Navbar() {
             return (
               <div key={m.id} className="relative group">
                 <Link
-                  href={`/?menu=${m.id}#koleksiyon`}
+                  href={localizedHref(`/?menu=${m.id}#koleksiyon`)}
                   onClick={(e) => goToMenu(e, m.id)}
                   aria-haspopup={subs.length ? "true" : undefined}
                   className="py-3 text-xs font-semibold text-versace-green-900 hover:text-versace-gold-700 transition-colors tracking-widest uppercase border-b-2 border-transparent hover:border-versace-gold-700 flex items-center gap-1"
@@ -184,7 +185,7 @@ export default function Navbar() {
                     <ul className="min-w-56 bg-white border border-slate-200 shadow-xl py-2">
                       <li>
                         <Link
-                          href={`/?menu=${m.id}#koleksiyon`}
+                          href={localizedHref(`/?menu=${m.id}#koleksiyon`)}
                           onClick={(e) => goToMenu(e, m.id)}
                           className="block px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-versace-gold-700 hover:bg-slate-50"
                         >
@@ -194,7 +195,7 @@ export default function Navbar() {
                       {subs.map((sm) => (
                         <li key={sm.id}>
                           <Link
-                            href={`/?menu=${sm.id}#koleksiyon`}
+                            href={localizedHref(`/?menu=${sm.id}#koleksiyon`)}
                             onClick={(e) => goToMenu(e, sm.id)}
                             className="block px-5 py-2.5 text-sm text-versace-green-900 hover:bg-slate-50 hover:text-versace-gold-700 whitespace-nowrap"
                           >
@@ -241,7 +242,7 @@ export default function Navbar() {
           {menus.map((m) => (
             <React.Fragment key={m.id}>
               <Link
-                href={`/?menu=${m.id}#koleksiyon`}
+                href={localizedHref(`/?menu=${m.id}#koleksiyon`)}
                 onClick={(e) => goToMenu(e, m.id)}
                 className="p-4 text-sm font-semibold text-versace-green-900 border-b border-slate-50 hover:bg-slate-50"
               >
@@ -250,7 +251,7 @@ export default function Navbar() {
               {subsOf(m.id).map((sm) => (
                 <Link
                   key={sm.id}
-                  href={`/?menu=${sm.id}#koleksiyon`}
+                  href={localizedHref(`/?menu=${sm.id}#koleksiyon`)}
                   onClick={(e) => goToMenu(e, sm.id)}
                   className="ps-8 pe-4 py-3 text-sm text-slate-600 border-b border-slate-50 hover:bg-slate-50"
                 >

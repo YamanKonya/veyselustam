@@ -55,6 +55,13 @@ açığı notu yazma.
   - Katalog metinleri: `src/i18n/catalogContent.ts`
 - Ürün başlıkları çevirilerle eşleştirildiği için rastgele değiştirilmemeli.
 - Menüler ve alt kategoriler: `src/lib/menus.ts`.
+- Dil adresleri: Türkçe adresler öneksiz (`/`, `/product/x`). Diğer diller önekli
+  (`/en`, `/es`, `/de`, `/ar`, `/ru`, `/en/product/x`). Dil `src/lib/locale.ts` ile
+  adresten okunur (`LanguageContext`). Her sayfanın hreflang ve canonical etiketleri
+  `src/lib/localeSeo.tsx` ile üretilir, sitemap 6 dili birlikte listeler. `/tr` ana
+  adrese yönlendirilir. Yalnızca anasayfa ve ürün sayfaları dil adresine sahip;
+  admin, sepet, giriş ve yasal sayfalar Türkçe kalır. Yeni dil adresi gereken bir
+  sayfa eklenirse `isLocalizablePath` ve `src/app/[lang]` altına eklenmeli.
 - Pinterest ve Meta katalogları `/feed/meta.csv` üzerinden beslenir.
 
 ## Kontrol ve yayın

@@ -20,7 +20,7 @@ interface ShowcaseSliderProps {
 }
 
 export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
-  const { t, dir } = useLanguage();
+  const { t, dir, localizedHref } = useLanguage();
   const { price } = usePrice();
   const { addItem } = useCartStore();
   const { groups } = useStockGroups();
@@ -221,7 +221,7 @@ export default function ShowcaseSlider({ products }: ShowcaseSliderProps) {
 
             <div className="mt-8 flex flex-wrap gap-3 justify-center lg:justify-start">
               <Link
-                href={`/product/${product.id}`}
+                href={localizedHref(`/product/${product.id}`)}
                 className="inline-flex items-center justify-center px-7 py-3.5 bg-versace-gold-500 text-versace-green-900 text-sm font-semibold hover:bg-versace-gold-100 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-versace-gold-100"
               >
                 {t("showcase_view")}

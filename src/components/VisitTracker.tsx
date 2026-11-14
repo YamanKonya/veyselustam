@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import { stripLocale } from "@/lib/locale";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -96,7 +97,8 @@ export default function VisitTracker() {
       }
     };
 
-    const productId = pathname.startsWith("/product/") ? decodeURIComponent(pathname.split("/")[2] || "") : "";
+    const plainPath = stripLocale(pathname);
+    const productId = plainPath.startsWith("/product/") ? decodeURIComponent(plainPath.split("/")[2] || "") : "";
     fetch("/api/track", {
       method: "POST",
       body: JSON.stringify({

@@ -51,7 +51,7 @@ export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const id = params?.id as string;
-  const { t, language } = useLanguage();
+  const { t, language, localizedHref } = useLanguage();
   const { price } = usePrice();
 
   // Catalogue products render on the server straight away, so search engines (and
@@ -189,7 +189,7 @@ export default function ProductDetailPage() {
           <h2 className="text-xl font-bold text-slate-800">{t("no_products_found")}</h2>
           <p className="text-sm text-slate-500 mb-2">{t("no_products_desc")}</p>
           <Link
-            href="/"
+            href={localizedHref("/")}
             className="px-6 py-3 bg-slate-900 text-white text-sm font-bold hover:bg-versace-green-700 transition-colors"
           >
             {t("pd_back")}
@@ -258,7 +258,7 @@ export default function ProductDetailPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 flex-1 w-full space-y-6">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-versace-gold-700 transition flex items-center gap-1">
+          <Link href={localizedHref("/")} className="hover:text-versace-gold-700 transition flex items-center gap-1">
             <ArrowLeft className="w-3.5 h-3.5 rtl:rotate-180" />
             {t("nav_home")}
           </Link>

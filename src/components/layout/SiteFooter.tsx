@@ -7,7 +7,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { CONTACT, whatsappLink } from "@/lib/contact";
 
 export default function SiteFooter() {
-  const { t } = useLanguage();
+  const { t, localizedHref } = useLanguage();
 
   const columns = [
     {
@@ -50,7 +50,7 @@ export default function SiteFooter() {
               <ul className="flex flex-col gap-3">
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <Link href={link.href} className="text-sm text-versace-green-100/70 hover:text-versace-gold-500 transition-colors">
+                    <Link href={localizedHref(link.href)} className="text-sm text-versace-green-100/70 hover:text-versace-gold-500 transition-colors">
                       {link.label}
                     </Link>
                   </li>
