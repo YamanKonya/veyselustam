@@ -8,16 +8,19 @@ export type DisplayCurrency = "TRY" | "USD";
 
 export interface SilverQuote {
   gramTL: number;
-  gramTLBuy?: number;
   gramUSD: number;
+  ounceUSD: number;
   usdTry: number;
-  change?: number;
+  /** "tcmb" = daily central bank rate (live feed unavailable) */
+  usdSource: "live" | "tcmb";
   updatedAt: string;
   source: string;
 }
 
 interface SilverState {
   quote: SilverQuote | null;
+  /** gram price before the last change, for the up/down arrow */
+  prevGramTL?: number;
   error: boolean;
   fetchedAt: number;
   currency: DisplayCurrency;
@@ -27,7 +30,7 @@ interface SilverState {
 
 export const useSilverStore = create<SilverState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       quote: null,
       error: false,
       fetchedAt: 0,
@@ -39,7 +42,13 @@ export const useSilverStore = create<SilverState>()(
           if (!res.ok) throw new Error(String(res.status));
           const quote = (await res.json()) as SilverQuote;
           if (!(quote.gramTL > 0)) throw new Error("bad quote");
-          set({ quote, error: false, fetchedAt: Date.now() });
+          const old = get().quote?.gramTL;
+          set({
+            quote,
+            prevGramTL: old && Math.abs(old - quote.gramTL) > 0.005 ? old : get().prevGramTL,
+            error: false,
+            fetchedAt: Date.now(),
+          });
         } catch (err) {
           console.warn("silver price:", err);
           set({ error: true });

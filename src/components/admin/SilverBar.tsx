@@ -11,7 +11,7 @@ const tr = (n: number, digits = 2) =>
 
 /** Live gram silver price and dollar rate, shown on every admin page */
 export default function SilverBar() {
-  const { quote, error, currency, setCurrency, refresh } = useSilverStore();
+  const { quote, prevGramTL, error, currency, setCurrency, refresh } = useSilverStore();
 
   useEffect(() => {
     refresh();
@@ -26,7 +26,7 @@ export default function SilverBar() {
     };
   }, [refresh]);
 
-  const up = (quote?.change ?? 0) >= 0;
+  const up = !!quote && !!prevGramTL && quote.gramTL >= prevGramTL;
 
   return (
     <div className="mb-5 -mt-1 flex flex-wrap items-center gap-x-4 gap-y-2 px-3 py-2 rounded-xl bg-panel-900 border border-panel-800 text-sm">
@@ -39,12 +39,15 @@ export default function SilverBar() {
           <span className="text-panel-400 text-xs tabular-nums">
             {currency === "USD" ? `${tr(quote.gramTL)} ₺` : `$${quote.gramUSD.toFixed(3)}`}
           </span>
-          {typeof quote.change === "number" && (
-            <span className={`flex items-center gap-0.5 text-xs font-semibold tabular-nums ${up ? "text-emerald-400" : "text-red-400"}`}>
-              {up ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}%{tr(Math.abs(quote.change))}
+          {prevGramTL && prevGramTL !== quote.gramTL && (
+            <span className={`flex items-center text-xs ${up ? "text-emerald-400" : "text-red-400"}`} title="Son yenilemeye göre">
+              {up ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
             </span>
           )}
-          <span className="text-panel-300 text-xs tabular-nums">USD {tr(quote.usdTry, 4)} ₺</span>
+          <span className="text-panel-500 text-xs tabular-nums">ons ${tr(quote.ounceUSD)}</span>
+          <span className="text-panel-300 text-xs tabular-nums" title={quote.usdSource === "tcmb" ? "Anlık kur alınamadı, TCMB günlük kuru" : "Anlık kur"}>
+            USD {tr(quote.usdTry, 4)} ₺{quote.usdSource === "tcmb" ? " (TCMB)" : ""}
+          </span>
           <span className="text-panel-600 text-[11px]" title={quote.source}>
             {new Date(quote.updatedAt).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" })}
             {error ? " · güncellenemedi" : ""}
