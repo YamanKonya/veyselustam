@@ -151,6 +151,19 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // Atölye: kasa kartları (kod, gram, uyarı sınırı), dökümcüler ve stok
+    // hareket defteri. Gram, işçilik ve satış tutarları içerdiği için yalnızca
+    // yönetici okur ve yazar.
+    match /workshopCases/{caseId} {
+      allow read, write: if isAdmin();
+    }
+    match /casters/{casterId} {
+      allow read, write: if isAdmin();
+    }
+    match /stockMovements/{movementId} {
+      allow read, write: if isAdmin();
+    }
+
     // Yukarıda sayılmayan her şey kapalı.
     match /{document=**} {
       allow read, write: if false;

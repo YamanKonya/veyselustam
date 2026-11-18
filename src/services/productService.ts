@@ -534,6 +534,24 @@ export const setProductPlacement = (id: string, change: { menus?: string[] | nul
   syncProductInBackground("menü", id, remote);
 };
 
+// Atölye: link a piece to a ring case (null unlinks) or set its own stone count.
+// Only the keys passed change.
+export const setProductWorkshopFields = (id: string, change: { stockGroup?: string | null; stock?: number }) => {
+  const local: Partial<Product> = {};
+  const remote: Record<string, unknown | FieldValue> = {};
+  if ("stockGroup" in change) {
+    local.stockGroup = change.stockGroup ?? undefined;
+    remote.stockGroup = change.stockGroup ?? deleteField();
+  }
+  if (typeof change.stock === "number") {
+    local.stock = Math.max(0, Math.floor(change.stock));
+    remote.stock = local.stock;
+  }
+  localProductsStore = localProductsStore.map((p) => (p.id === id ? { ...p, ...local } : p));
+  notifySubscribers();
+  syncProductInBackground("atölye", id, remote);
+};
+
 // Toggle Active / Passive (Aktif / Pasif)
 export const toggleActiveProduct = async (id: string): Promise<boolean> => {
   let newStatus = false;

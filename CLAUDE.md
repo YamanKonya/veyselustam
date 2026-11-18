@@ -64,6 +64,24 @@ açığı notu yazma.
   sayfa eklenirse `isLocalizablePath` ve `src/app/[lang]` altına eklenmeli.
 - Pinterest ve Meta katalogları `/feed/meta.csv` üzerinden beslenir.
 
+## Atölye (stok ve satış takibi)
+
+Ustam Medine'den atölyeyi `/admin/atolye` sayfasından izler. Sekmeler: Özet, Kasalar,
+Hareketler, Dökümcüler.
+- Kasa = yüzük kasa modeli (`stockGroups`, satılabilir adet burada). Atölyeye özel bilgiler
+  (K-001 kodu, gram, uyarı sınırı, dökümcüler) yalnızca yöneticinin okuduğu
+  `workshopCases` koleksiyonunda, aynı kimlikle. `stockGroups` herkese açık olduğu için
+  gram, işçilik veya fiyat bilgisi oraya yazılmaz.
+- Çeşit = kasaya bağlı sitedeki ürün (VU kodu). Ürünün kendi `stock` alanı taş adedidir.
+- Her stok değişikliği `stockMovements` defterine yazılır (`recordMovement`, tek işlemde
+  stokla birlikte): döküm geldi, yüzük yapıldı, elden satış, fire, iade, sayım. Site
+  siparişleri defterde değil `orders` içinde, ekranda birlikte gösterilir.
+- Kararlar: stok ölçü bazında değil toplam adet. Dökümcüye has gümüş verilir, gram başı
+  işçilik ödenir. Dökümcü birden fazla. Elden satışlar girilir. Kasa kodları K-001 ile
+  başlar, elle değiştirilebilir.
+- Sonraki aşamalar: döküm siparişleri ve dökümcü cari hesabı (has gümüş gram + işçilik TL),
+  gümüş fiyatı ve maliyet, para defteri ve raporlar, QR etiket.
+
 ## Kontrol ve yayın
 
 1. `npx tsc --noEmit -p .` (`guzel/`, `scratch/` ve `scripts/` altındaki hatalar önemsenmez).
@@ -81,7 +99,8 @@ açığı notu yazma.
 ## Bekleyen işler
 
 Sahibin elle yapacakları:
-- `firestore.rules` dosyasının güncel hâlini Firebase konsolundan yayınlamak.
+- `firestore.rules` dosyasının güncel hâlini Firebase konsolundan yayınlamak (Atölye sayfası
+  bunsuz çalışmaz). Sonra Atölye'de "Kod ver" ile kasalara K-kodlarını vermek.
 - `/admin` panelini bir kez açıp kayıt ve ürün kodu işlemlerinin bitmesini beklemek.
 - Küçük bir deneme siparişiyle siparişin admin'e düştüğünü kontrol edip iptal etmek.
 - Ortağı GitHub'a ve Firebase'e eklemek; Instagram ve Pinterest klasörlerini Drive'dan paylaşmak.

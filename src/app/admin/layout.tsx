@@ -15,7 +15,8 @@ import {
   BarChart3,
   MessageSquareQuote,
   LayoutList,
-  Users
+  Users,
+  Factory
 } from "lucide-react";
 
 export default function AdminLayout({
@@ -57,6 +58,18 @@ export default function AdminLayout({
             >
               <Package className="w-4 h-4" />
               Ürün & Katalog Yönetimi
+            </Link>
+
+            <Link
+              href="/admin/atolye"
+              className={`flex items-center gap-3 px-4 py-3 text-xs sm:text-sm font-semibold rounded-xl transition ${
+                pathname === "/admin/atolye"
+                  ? "bg-brass-600 text-white shadow-lg shadow-brass-600/20"
+                  : "text-panel-400 hover:bg-panel-800 hover:text-panel-200"
+              }`}
+            >
+              <Factory className="w-4 h-4" />
+              Atölye
             </Link>
 
             <Link

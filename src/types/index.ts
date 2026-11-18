@@ -101,3 +101,65 @@ export interface StockGroup {
   name: string;
   stock: number;
 }
+
+/* ---------- Atölye (workshop) ---------- */
+
+/** Workshop-only details of a ring case. Same id as its StockGroup; kept in an
+ *  admin-only collection because stockGroups is publicly readable. */
+export interface WorkshopCase {
+  id: string;
+  /** short case code, e.g. "K-001"; editable */
+  code: string;
+  /** silver weight of one cast case, in grams */
+  gram?: number;
+  /** below or at this count the case shows as "azaldı" (reorder) */
+  minStock?: number;
+  /** casters who make this case */
+  casterIds?: string[];
+  note?: string;
+}
+
+/** A caster (dökümcü) the workshop sends silver to */
+export interface Caster {
+  id: string;
+  name: string;
+  phone?: string;
+  /** labour per gram, TL */
+  laborPerGram?: number;
+  note?: string;
+}
+
+export type MovementType = "dokum" | "uretim" | "satis" | "fire" | "iade" | "sayim";
+
+export type SaleChannel = "dukkan" | "instagram" | "whatsapp" | "diger";
+export type PaymentMethod = "nakit" | "kart" | "havale" | "diger";
+
+/** One line in the workshop ledger. Stock-changing lines update the case stock
+ *  in the same transaction. */
+export interface StockMovement {
+  id: string;
+  type: MovementType;
+  groupId: string;
+  groupName: string;
+  caseCode?: string;
+  /** number of pieces the line is about (always positive) */
+  qty: number;
+  /** change applied to the case stock (+ in, − out, 0 for uretim) */
+  delta: number;
+  stockAfter: number;
+  productId?: string;
+  productTitle?: string;
+  productCode?: number;
+  casterId?: string;
+  casterName?: string;
+  /** total grams delivered by the caster (dokum) */
+  grams?: number;
+  /** total sale amount, TL (satis) */
+  amount?: number;
+  channel?: SaleChannel;
+  payment?: PaymentMethod;
+  note?: string;
+  /** ISO time */
+  at: string;
+  by?: string;
+}
