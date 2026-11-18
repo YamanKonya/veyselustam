@@ -87,7 +87,13 @@ Hareketler, Dökümcüler.
   gram işçiliği. Siparişsiz "Döküm geldi" hareketi de dökümcü ve gram girilirse cariye yazar.
 - Gümüş fiyatı elle girilir (`settings/workshop`, yalnızca yönetici). Taş maliyeti ve diğer
   maliyetler `workshopCases` içinde; ürün belgelerine maliyet yazılmaz (ürünler herkese açık).
-- Sonraki aşama: para defteri (gelir/gider, kasa bakiyesi), raporlar, QR etiket.
+- Para defteri (`cashbook`): nakit kasa ve banka. Elden satış (tutar girildiyse) ve
+  dökümcüye işçilik ödemesi kendi kaydıyla birlikte deftere kendiliğinden yazılır, geri
+  alınınca o da silinir (`cashId`). Site siparişlerinin parası "Tahsil edildi" ile girilir
+  (`source: siparis`, `refId` = sipariş). Ödeme yöntemi kart/havale ise banka, değilse nakit.
+- Rapor sekmesi: seçilen ay için satış, kasa bazında tahmini kâr, dökümcüler, gelir/gider;
+  CSV (Excel, `;` ayraçlı) ve yazdır. Tahmini maliyet bugünkü gümüş fiyatıyla hesaplanır.
+- QR etiket: `qrcode` paketiyle üretilir, `/admin/atolye?k=<kasa kimliği>` adresini açar.
 
 ## Kontrol ve yayın
 

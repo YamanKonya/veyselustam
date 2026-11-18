@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp, Loader2, MessageCircle, Pencil, Plus, Trash2 } from "lucide-react";
-import { Caster, CasterLedgerType } from "@/types";
+import { CashAccount, Caster, CasterLedgerType } from "@/types";
 import {
+  ACCOUNT_LABELS,
   addLedgerLine,
   casterBalance,
   deleteCaster,
@@ -188,6 +189,7 @@ function CasterCard({
   const [hasVal, setHasVal] = useState<Num>("");
   const [tlVal, setTlVal] = useState<Num>("");
   const [note, setNote] = useState("");
+  const [payFrom, setPayFrom] = useState<CashAccount | "">("nakit");
   const [busy, setBusy] = useState(false);
   const a = ACTIONS.find((x) => x.type === action);
 
@@ -203,6 +205,7 @@ function CasterCard({
         hasGram: a.type === "duzeltme" ? h : a.has * Math.abs(h),
         tl: a.type === "duzeltme" ? t : a.tl * Math.abs(t),
         note,
+        payFrom: a.type === "odeme" && payFrom ? payFrom : undefined,
       });
       setAction(null);
       setHasVal("");
@@ -280,6 +283,16 @@ function CasterCard({
               <input type="number" step="0.01" value={tlVal} onChange={(e) => setTlVal(num(e.target.value))} className={inputCls} />
             </label>
           )}
+          {a.type === "odeme" && (
+            <label>
+              <span className={labelCls}>Nereden ödendi</span>
+              <select value={payFrom} onChange={(e) => setPayFrom(e.target.value as CashAccount | "")} className={inputCls}>
+                <option value="nakit">{ACCOUNT_LABELS.nakit}</option>
+                <option value="banka">{ACCOUNT_LABELS.banka}</option>
+                <option value="">Para defterine yazma</option>
+              </select>
+            </label>
+          )}
           <label className="col-span-2">
             <span className={labelCls}>Not</span>
             <input value={note} onChange={(e) => setNote(e.target.value)} className={inputCls} />
@@ -322,7 +335,7 @@ function CasterCard({
                   aria-label="Kaydı sil"
                   onClick={() =>
                     window.confirm("Bu cari kaydı silinsin mi?") &&
-                    deleteLedgerLine(l.id).catch(() => onError("Silinemedi."))
+                    deleteLedgerLine(l).catch(() => onError("Silinemedi."))
                   }
                   className="text-panel-600 hover:text-red-400"
                 >

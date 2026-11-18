@@ -3,6 +3,7 @@ import {
   deleteDoc,
   doc,
   DocumentReference,
+  getDocs,
   limit,
   onSnapshot,
   orderBy,
@@ -11,10 +12,13 @@ import {
   setDoc,
   Transaction,
   where,
+  writeBatch,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { auth, db } from "@/lib/firebase";
 import {
+  CashAccount,
+  CashEntry,
   CastOrder,
   CastOrderLine,
   Caster,
@@ -42,6 +46,7 @@ const GROUPS = "stockGroups";
 const PRODUCTS = "products";
 const CAST_ORDERS = "castOrders";
 const LEDGER = "casterLedger";
+const CASH = "cashbook";
 const SETTINGS_DOC = ["settings", "workshop"] as const;
 
 export const MOVEMENT_LABELS: Record<MovementType, string> = {
@@ -257,9 +262,33 @@ export const recordMovement = async (input: MovementInput) => {
       ledgerId = writeDelivery(tx, input.caster, input.grams, { movementId: ref.id, note: input.note });
     }
 
+    // An in-person sale with an amount goes into the cash book too
+    let cashId: string | undefined;
+    if (input.type === "satis" && input.amount && input.amount > 0) {
+      const cashRef = doc(collection(db, CASH));
+      cashId = cashRef.id;
+      tx.set(
+        cashRef,
+        clean({
+          type: "gelir",
+          account: accountFor(input.payment),
+          category: "Elden satış",
+          amount: round(input.amount),
+          note: [input.product?.title || groupSnap.data().name, input.channel ? CHANNEL_LABELS[input.channel] : ""]
+            .filter(Boolean)
+            .join(" · "),
+          source: "satis",
+          refId: ref.id,
+          at: new Date().toISOString(),
+          by: auth?.currentUser?.email || undefined,
+        })
+      );
+    }
+
     const line: Record<string, unknown> = {
       type: input.type,
       ledgerId,
+      cashId,
       groupId: input.groupId,
       groupName: groupSnap.data().name ?? input.groupId,
       caseCode: caseSnap.exists() ? caseSnap.data().code : undefined,
@@ -299,6 +328,7 @@ export const undoMovement = async (m: StockMovement) => {
     ]);
     if (!snap.exists()) return;
     if (m.ledgerId) tx.delete(doc(db, LEDGER, m.ledgerId));
+    if (m.cashId) tx.delete(doc(db, CASH, m.cashId));
     if (groupSnap.exists() && m.delta !== 0) {
       const stock = Number(groupSnap.data().stock) || 0;
       tx.update(groupRef, { stock: Math.max(0, stock - m.delta) });
@@ -429,13 +459,39 @@ export const LEDGER_LABELS: Record<CasterLedgerType, string> = {
   duzeltme: "Düzeltme",
 };
 
+/**
+ * Writes a manual caster account line. A labour payment ("odeme") paid from an
+ * account also writes the matching expense in the cash book, in one batch.
+ */
 export const addLedgerLine = async (
   caster: Caster,
   type: CasterLedgerType,
-  values: { hasGram?: number; tl?: number; note?: string }
+  values: { hasGram?: number; tl?: number; note?: string; payFrom?: CashAccount }
 ) => {
+  const batch = writeBatch(db);
   const ref = doc(collection(db, LEDGER));
-  await setDoc(
+  const at = new Date().toISOString();
+  const by = auth?.currentUser?.email || undefined;
+  let cashId: string | undefined;
+  if (type === "odeme" && values.payFrom && values.tl) {
+    const cashRef = doc(collection(db, CASH));
+    cashId = cashRef.id;
+    batch.set(
+      cashRef,
+      clean({
+        type: "gider",
+        account: values.payFrom,
+        category: "Döküm işçiliği",
+        amount: round(Math.abs(values.tl)),
+        note: [caster.name, values.note?.trim()].filter(Boolean).join(" · "),
+        source: "dokumcu",
+        refId: ref.id,
+        at,
+        by,
+      })
+    );
+  }
+  batch.set(
     ref,
     clean({
       casterId: caster.id,
@@ -444,13 +500,20 @@ export const addLedgerLine = async (
       hasGram: round(values.hasGram || 0),
       tl: round(values.tl || 0),
       note: values.note?.trim(),
-      at: new Date().toISOString(),
-      by: auth?.currentUser?.email || undefined,
+      cashId,
+      at,
+      by,
     })
   );
+  await batch.commit();
 };
 
-export const deleteLedgerLine = (id: string) => deleteDoc(doc(db, LEDGER, id));
+export const deleteLedgerLine = async (line: CasterLedgerLine) => {
+  const batch = writeBatch(db);
+  batch.delete(doc(db, LEDGER, line.id));
+  if (line.cashId) batch.delete(doc(db, CASH, line.cashId));
+  await batch.commit();
+};
 
 export const createCastOrder = async (caster: Caster, lines: CastOrderLine[], note?: string) => {
   const ref = doc(collection(db, CAST_ORDERS));
@@ -618,3 +681,89 @@ export const variantCost = (
   const extra = wc?.extraCost || 0;
   return { silver, labor, stone, extra, total: round(silver + labor + stone + extra), missing };
 };
+
+/* ---------- cash book ---------- */
+
+export const ACCOUNT_LABELS: Record<CashAccount, string> = { nakit: "Nakit kasa", banka: "Banka" };
+
+export const INCOME_CATEGORIES = ["Elden satış", "Site siparişi", "Açılış bakiyesi", "Diğer gelir"];
+export const EXPENSE_CATEGORIES = [
+  "Gümüş alımı",
+  "Döküm işçiliği",
+  "Taş",
+  "Kargo",
+  "Ambalaj",
+  "Kira",
+  "Fatura",
+  "Maaş",
+  "Ustama gönderim",
+  "Diğer gider",
+];
+
+/** Which account a payment method lands in */
+export function accountFor(payment?: PaymentMethod): CashAccount {
+  return payment === "kart" || payment === "havale" ? "banka" : "nakit";
+}
+
+export const useCashbook = () =>
+  useCollection<CashEntry[]>(
+    (ok, fail) =>
+      onSnapshot(
+        query(collection(db, CASH), orderBy("at", "desc"), limit(5000)),
+        (snap) => ok(snap.docs.map((d) => ({ ...(d.data() as CashEntry), id: d.id }))),
+        fail
+      ),
+    []
+  );
+
+export const addCashEntry = async (entry: Omit<CashEntry, "id" | "at" | "by"> & { at?: string }) => {
+  const ref = doc(collection(db, CASH));
+  await setDoc(
+    ref,
+    clean({
+      ...entry,
+      amount: round(Math.abs(entry.amount)),
+      note: entry.note?.trim(),
+      source: entry.source || "manual",
+      at: entry.at || new Date().toISOString(),
+      by: auth?.currentUser?.email || undefined,
+    })
+  );
+  return ref.id;
+};
+
+export const deleteCashEntry = (id: string) => deleteDoc(doc(db, CASH, id));
+
+/** Ledger lines between two ISO times (for monthly reports older than the live window) */
+export const fetchMovementsBetween = async (from: string, to: string) => {
+  const snap = await getDocs(
+    query(collection(db, MOVEMENTS), where("at", ">=", from), where("at", "<", to), orderBy("at", "desc"))
+  );
+  return snap.docs.map((d) => ({ ...(d.data() as StockMovement), id: d.id }));
+};
+
+/** All-time balance of each account */
+export const cashBalances = (entries: CashEntry[]) => {
+  const b: Record<CashAccount, number> = { nakit: 0, banka: 0 };
+  for (const e of entries) {
+    if (e.type === "gelir") b[e.account] += e.amount;
+    else if (e.type === "gider") b[e.account] -= e.amount;
+    else if (e.type === "transfer" && e.toAccount) {
+      b[e.account] -= e.amount;
+      b[e.toAccount] += e.amount;
+    }
+  }
+  return { nakit: round(b.nakit), banka: round(b.banka), toplam: round(b.nakit + b.banka) };
+};
+
+/** Records the money of a website order once it is collected */
+export const collectOrder = (order: { id?: string; totalAmount: number; customerInfo?: { fullName?: string } }, account: CashAccount) =>
+  addCashEntry({
+    type: "gelir",
+    account,
+    category: "Site siparişi",
+    amount: order.totalAmount || 0,
+    note: `Sipariş ${order.id?.slice(0, 6) || ""}`.trim(),
+    source: "siparis",
+    refId: order.id,
+  });

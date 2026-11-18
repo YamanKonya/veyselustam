@@ -2,6 +2,7 @@
 
 import React from "react";
 import {
+  CashEntry,
   Caster,
   CasterLedgerLine,
   CastOrder,
@@ -34,6 +35,7 @@ export interface WorkshopData {
   castOrders: CastOrder[];
   ledger: CasterLedgerLine[];
   settings: WorkshopSettings;
+  cash: CashEntry[];
   caseById: Record<string, WorkshopCase>;
   groupById: Record<string, StockGroup>;
   /** products linked to each case */

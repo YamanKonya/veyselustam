@@ -170,6 +170,10 @@ service cloud.firestore {
     match /casterLedger/{lineId} {
       allow read, write: if isAdmin();
     }
+    // Para defteri (nakit kasa ve banka hareketleri).
+    match /cashbook/{entryId} {
+      allow read, write: if isAdmin();
+    }
 
     // Yukarıda sayılmayan her şey kapalı.
     match /{document=**} {

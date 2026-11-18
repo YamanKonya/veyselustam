@@ -36,15 +36,17 @@ export default function Cases({
   data,
   onMove,
   onError,
+  focusId,
 }: {
   data: WorkshopData;
   onMove: (p: MovementPreset) => void;
   onError: (msg: string) => void;
+  focusId?: string | null;
 }) {
   const { groups, caseById, variants } = data;
-  const [q, setQ] = useState("");
+  const [q, setQ] = useState(focusId && data.caseById[focusId]?.code ? data.caseById[focusId].code : "");
   const [filter, setFilter] = useState<Filter>("all");
-  const [open, setOpen] = useState<string | null>(null);
+  const [open, setOpen] = useState<string | null>(focusId || null);
   const [showNew, setShowNew] = useState(false);
 
   const list = useMemo(() => {

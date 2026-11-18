@@ -3,6 +3,7 @@
 import React, { useMemo, useState } from "react";
 import { AlertTriangle } from "lucide-react";
 import {
+  cashBalances,
   casterBalance,
   isLow,
   pendingByCase,
@@ -69,6 +70,13 @@ export default function Summary({ data, onMove }: { data: WorkshopData; onMove: 
     .sort((a, b) => a.stock - b.stock);
   const feed = useMemo(() => buildFeed(data).slice(0, 8), [data]);
   const pending = useMemo(() => pendingByCase(data.castOrders), [data.castOrders]);
+  const money = useMemo(() => cashBalances(data.cash), [data.cash]);
+  const uncollected = useMemo(() => {
+    const done = new Set(data.cash.filter((e) => e.source === "siparis").map((e) => e.refId));
+    const since = new Date(Date.now() - 120 * 86400000).toISOString();
+    const list = liveOrders(data.orders).filter((o) => o.createdAt >= since && o.id && !done.has(o.id));
+    return { count: list.length, amount: list.reduce((n, o) => n + (o.totalAmount || 0), 0) };
+  }, [data.cash, data.orders]);
   const casterTotals = useMemo(() => {
     let has = 0;
     let owed = 0;
@@ -123,9 +131,11 @@ export default function Summary({ data, onMove }: { data: WorkshopData; onMove: 
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <Tile label="Para (nakit + banka)" value={tl(money.toplam)} sub={`Nakit ${tl(money.nakit)} · Banka ${tl(money.banka)}`} />
         <Tile label="Dökümcülerdeki has" value={`${casterTotals.has} gr`} />
         <Tile label="Ödenecek işçilik" value={tl(casterTotals.owed)} />
+        <Tile label="Parası alınmamış sipariş" value={uncollected.count} sub={uncollected.count ? tl(uncollected.amount) : undefined} />
       </div>
 
       <div className="grid lg:grid-cols-2 gap-5">

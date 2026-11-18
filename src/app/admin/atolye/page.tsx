@@ -10,6 +10,7 @@ import {
   assignCaseCodes,
   useCasterLedger,
   useCasters,
+  useCashbook,
   useCastOrders,
   useMovements,
   useWorkshopCases,
@@ -23,16 +24,22 @@ import Ledger from "@/components/admin/atolye/Ledger";
 import Casters from "@/components/admin/atolye/Casters";
 import Casting from "@/components/admin/atolye/Casting";
 import Costs from "@/components/admin/atolye/Costs";
+import Money from "@/components/admin/atolye/Money";
+import Reports from "@/components/admin/atolye/Reports";
+import Labels from "@/components/admin/atolye/Labels";
 import MovementForm from "@/components/admin/atolye/MovementForm";
 
-type Tab = "summary" | "cases" | "ledger" | "casting" | "casters" | "costs";
+type Tab = "summary" | "cases" | "ledger" | "casting" | "casters" | "money" | "costs" | "reports" | "labels";
 const TABS: [Tab, string][] = [
   ["summary", "Özet"],
   ["cases", "Kasalar"],
   ["ledger", "Hareketler"],
   ["casting", "Döküm"],
   ["casters", "Dökümcüler"],
+  ["money", "Para"],
   ["costs", "Maliyet"],
+  ["reports", "Rapor"],
+  ["labels", "QR Etiket"],
 ];
 
 export default function AtolyePage() {
@@ -44,6 +51,16 @@ export default function AtolyePage() {
   const castOrders = useCastOrders();
   const ledger = useCasterLedger();
   const settings = useWorkshopSettings();
+  const cash = useCashbook();
+  // A QR label opens /admin/atolye?k=<case id>: show that case
+  const [focusId, setFocusId] = useState<string | null>(null);
+  useEffect(() => {
+    const k = new URLSearchParams(window.location.search).get("k");
+    if (k) {
+      setFocusId(k);
+      setTab("cases");
+    }
+  }, []);
   const [products, setProducts] = useState<Product[]>(INITIAL_VEYSELUSTAM_PRODUCTS);
   const [orders, setOrders] = useState<Order[]>([]);
   const [preset, setPreset] = useState<MovementPreset | null>(null);
@@ -74,13 +91,14 @@ export default function AtolyePage() {
       castOrders: castOrders.data,
       ledger: ledger.data,
       settings: settings.data,
+      cash: cash.data,
       caseById,
       groupById,
       variants,
     };
-  }, [groups, cases.data, casters.data, movements.data, products, orders, castOrders.data, ledger.data, settings.data]);
+  }, [groups, cases.data, casters.data, movements.data, products, orders, castOrders.data, ledger.data, settings.data, cash.data]);
 
-  const denied = [cases, casters, movements, castOrders, ledger].some((s) => s.error === "permission-denied");
+  const denied = [cases, casters, movements, castOrders, ledger, cash].some((s) => s.error === "permission-denied");
   const uncoded = cases.loaded && !denied ? groups.filter((g) => !data.caseById[g.id]?.code).length : 0;
 
   const giveCodes = async () => {
@@ -170,15 +188,21 @@ export default function AtolyePage() {
         ) : tab === "summary" ? (
           <Summary data={data} onMove={setPreset} />
         ) : tab === "cases" ? (
-          <Cases data={data} onMove={setPreset} onError={setError} />
+          <Cases data={data} onMove={setPreset} onError={setError} focusId={focusId} />
         ) : tab === "ledger" ? (
           <Ledger data={data} onError={setError} />
         ) : tab === "casting" ? (
           <Casting data={data} onError={setError} />
         ) : tab === "casters" ? (
           <Casters data={data} onError={setError} />
-        ) : (
+        ) : tab === "money" ? (
+          <Money data={data} onError={setError} />
+        ) : tab === "costs" ? (
           <Costs data={data} onError={setError} />
+        ) : tab === "reports" ? (
+          <Reports data={data} onError={setError} />
+        ) : (
+          <Labels data={data} />
         )}
       </div>
 

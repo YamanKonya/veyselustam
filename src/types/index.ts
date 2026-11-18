@@ -171,6 +171,8 @@ export interface StockMovement {
   castOrderId?: string;
   /** caster account line written with this delivery */
   ledgerId?: string;
+  /** cash book line written with this sale */
+  cashId?: string;
   /** ISO time */
   at: string;
   by?: string;
@@ -220,6 +222,8 @@ export interface CasterLedgerLine {
   grams?: number;
   castOrderId?: string;
   movementId?: string;
+  /** cash book line written with a labour payment */
+  cashId?: string;
   note?: string;
   at: string;
   by?: string;
@@ -232,4 +236,29 @@ export interface WorkshopSettings {
   hasPriceAt?: string;
   /** recent prices, newest first */
   hasPriceHistory?: { price: number; at: string }[];
+}
+
+/* ---------- Atölye: cash book ---------- */
+
+export type CashAccount = "nakit" | "banka";
+export type CashType = "gelir" | "gider" | "transfer";
+
+/** One line of the money book. Sales and caster payments write their line
+ *  automatically (source + refId); the rest is entered by hand. */
+export interface CashEntry {
+  id: string;
+  type: CashType;
+  /** account the money went into or out of (for transfer: the source) */
+  account: CashAccount;
+  /** transfer only: destination */
+  toAccount?: CashAccount;
+  category: string;
+  /** always positive, TL */
+  amount: number;
+  note?: string;
+  source?: "manual" | "satis" | "siparis" | "dokumcu";
+  /** movement id, order id or caster ledger id */
+  refId?: string;
+  at: string;
+  by?: string;
 }
