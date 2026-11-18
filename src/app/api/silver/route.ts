@@ -54,9 +54,25 @@ async function liveUsd() {
   return selling;
 }
 
+/** Second live USD/TRY source: Yahoo Finance chart (unofficial, keyless) */
+async function yahooUsd() {
+  const res = await fetch("https://query1.finance.yahoo.com/v8/finance/chart/TRY=X?range=1d&interval=5m", {
+    next: { revalidate: REVALIDATE },
+    signal: AbortSignal.timeout(3500),
+    headers: { "User-Agent": "Mozilla/5.0" },
+  });
+  if (!res.ok) throw new Error(`yahoo ${res.status}`);
+  const price = Number((await res.json())?.chart?.result?.[0]?.meta?.regularMarketPrice);
+  if (!(price > 10)) throw new Error("yahoo: no USD");
+  return price;
+}
+
 export async function GET() {
   try {
-    const [spot, usdLive] = await Promise.all([silverSpot(), liveUsd().catch(() => null)]);
+    const [spot, usdLive] = await Promise.all([
+      silverSpot(),
+      Promise.any([liveUsd(), yahooUsd()]).catch(() => null),
+    ]);
     let usdTry = usdLive;
     let usdSource: SilverQuote["usdSource"] = "live";
     if (!usdTry) {
@@ -72,7 +88,7 @@ export async function GET() {
       usdTry,
       usdSource,
       updatedAt: spot.updatedAt,
-      source: usdSource === "live" ? "gold-api.com + Truncgil" : "gold-api.com + TCMB",
+      source: usdSource === "live" ? "gold-api.com + anlık kur" : "gold-api.com + TCMB",
     };
     return NextResponse.json(quote);
   } catch (err) {

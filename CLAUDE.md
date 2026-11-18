@@ -95,8 +95,8 @@ Hareketler, Dökümcüler.
   CSV (Excel, `;` ayraçlı) ve yazdır. Tahmini maliyet bugünkü gümüş fiyatıyla hesaplanır.
 - QR etiket: `qrcode` paketiyle üretilir, `/admin/atolye?k=<kasa kimliği>` adresini açar.
 - Anlık gümüş ve dolar: `/api/silver` (1 dk önbellek). Gümüş gold-api.com spot (USD/ons),
-  dolar finans.truncgil.com (dengesiz: bazen boş/yarım döner, 3,5 sn zaman aşımı), olmazsa
-  TCMB günlük kuru. Gram TL = ons ÷ 31,1035 × USD/TRY. Bütün admin sayfalarının üstündeki şeritte
+  dolar finans.truncgil.com veya Yahoo Finance `TRY=X` (hangisi önce cevap verirse, 3,5 sn
+  zaman aşımı; truncgil dengesiz), ikisi de olmazsa TCMB günlük kuru. Gram TL = ons ÷ 31,1035 × USD/TRY. Bütün admin sayfalarının üstündeki şeritte
   (`SilverBar`) dakikada bir yenilenir. Aynı şeritteki TL/USD seçimi Atölye'deki tutarları
   anlık kurla çevirir (`tl()` → `useSilverStore`). Kayıtlar her zaman TL tutulur, giriş
   kutuları TL'dir. Maliyet hesabı kaydedilen has fiyatıyla yapılır, "Anlık fiyatı al" ile
