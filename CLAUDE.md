@@ -79,8 +79,15 @@ Hareketler, Dökümcüler.
 - Kararlar: stok ölçü bazında değil toplam adet. Dökümcüye has gümüş verilir, gram başı
   işçilik ödenir. Dökümcü birden fazla. Elden satışlar girilir. Kasa kodları K-001 ile
   başlar, elle değiştirilebilir.
-- Sonraki aşamalar: döküm siparişleri ve dökümcü cari hesabı (has gümüş gram + işçilik TL),
-  gümüş fiyatı ve maliyet, para defteri ve raporlar, QR etiket.
+- Döküm sekmesi: dökümcüye sipariş (`castOrders`), WhatsApp metni wa.me bağlantısıyla
+  gönderilir (API yok). Teslim alınca stok, hareket defteri ve dökümcü carisi tek işlemde
+  güncellenir (`receiveCastOrder`).
+- Dökümcü carisi (`casterLedger`): `hasGram` dökümcüdeki has gümüş değişimi, `tl` ödenecek
+  işçilik değişimi. Teslimde has düşümü = gram × ayar/1000 × (1 + fire%), işçilik = gram ×
+  gram işçiliği. Siparişsiz "Döküm geldi" hareketi de dökümcü ve gram girilirse cariye yazar.
+- Gümüş fiyatı elle girilir (`settings/workshop`, yalnızca yönetici). Taş maliyeti ve diğer
+  maliyetler `workshopCases` içinde; ürün belgelerine maliyet yazılmaz (ürünler herkese açık).
+- Sonraki aşama: para defteri (gelir/gider, kasa bakiyesi), raporlar, QR etiket.
 
 ## Kontrol ve yayın
 

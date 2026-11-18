@@ -163,6 +163,13 @@ service cloud.firestore {
     match /stockMovements/{movementId} {
       allow read, write: if isAdmin();
     }
+    // Döküm siparişleri ve dökümcü cari hesabı (has gram, işçilik TL).
+    match /castOrders/{orderId} {
+      allow read, write: if isAdmin();
+    }
+    match /casterLedger/{lineId} {
+      allow read, write: if isAdmin();
+    }
 
     // Yukarıda sayılmayan her şey kapalı.
     match /{document=**} {

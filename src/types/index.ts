@@ -117,6 +117,10 @@ export interface WorkshopCase {
   /** casters who make this case */
   casterIds?: string[];
   note?: string;
+  /** other cost of one finished ring besides silver and casting (polish, box…), TL */
+  extraCost?: number;
+  /** stone cost per variant (product id → TL) */
+  stoneCosts?: Record<string, number>;
 }
 
 /** A caster (dökümcü) the workshop sends silver to */
@@ -126,6 +130,10 @@ export interface Caster {
   phone?: string;
   /** labour per gram, TL */
   laborPerGram?: number;
+  /** fineness of the cast silver, e.g. 925 */
+  milyem?: number;
+  /** casting loss the caster charges, percent of the pure silver used */
+  firePercent?: number;
   note?: string;
 }
 
@@ -159,7 +167,69 @@ export interface StockMovement {
   channel?: SaleChannel;
   payment?: PaymentMethod;
   note?: string;
+  /** casting order this delivery belongs to */
+  castOrderId?: string;
+  /** caster account line written with this delivery */
+  ledgerId?: string;
   /** ISO time */
   at: string;
   by?: string;
+}
+
+export type CastOrderStatus = "verildi" | "kismi" | "teslim" | "iptal";
+
+export interface CastOrderLine {
+  groupId: string;
+  groupName: string;
+  caseCode?: string;
+  qty: number;
+  received?: number;
+}
+
+/** An order of cases sent to a caster */
+export interface CastOrder {
+  id: string;
+  casterId: string;
+  casterName: string;
+  lines: CastOrderLine[];
+  status: CastOrderStatus;
+  note?: string;
+  createdAt: string;
+  updatedAt?: string;
+  by?: string;
+}
+
+/** Caster account: pure silver (has) in grams and labour in TL.
+ *  hasVerildi: we gave pure silver (+gram at caster)
+ *  teslim: caster delivered cases (−gram used, +TL labour owed)
+ *  hasIade: caster returned pure silver to us (−gram)
+ *  odeme: we paid labour (−TL owed)
+ *  duzeltme: manual correction of either */
+export type CasterLedgerType = "hasVerildi" | "teslim" | "hasIade" | "odeme" | "duzeltme";
+
+export interface CasterLedgerLine {
+  id: string;
+  casterId: string;
+  casterName: string;
+  type: CasterLedgerType;
+  /** change of pure silver held by the caster, grams (+ more at caster) */
+  hasGram: number;
+  /** change of labour we owe, TL (+ we owe more) */
+  tl: number;
+  /** delivered 925 grams (teslim) */
+  grams?: number;
+  castOrderId?: string;
+  movementId?: string;
+  note?: string;
+  at: string;
+  by?: string;
+}
+
+/** Admin-only workshop settings (settings/workshop) */
+export interface WorkshopSettings {
+  /** price of 1 gram pure silver, TL */
+  hasPrice?: number;
+  hasPriceAt?: string;
+  /** recent prices, newest first */
+  hasPriceHistory?: { price: number; at: string }[];
 }

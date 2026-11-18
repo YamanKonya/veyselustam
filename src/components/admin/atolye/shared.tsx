@@ -1,7 +1,18 @@
 "use client";
 
 import React from "react";
-import { MovementType, Order, Product, StockGroup, StockMovement, WorkshopCase, Caster } from "@/types";
+import {
+  Caster,
+  CasterLedgerLine,
+  CastOrder,
+  MovementType,
+  Order,
+  Product,
+  StockGroup,
+  StockMovement,
+  WorkshopCase,
+  WorkshopSettings,
+} from "@/types";
 
 export const inputCls =
   "w-full px-3 py-2.5 bg-panel-950 border border-panel-700 rounded-xl text-sm text-panel-100 focus:outline-none focus:border-brass-500";
@@ -20,6 +31,9 @@ export interface WorkshopData {
   movements: StockMovement[];
   products: Product[];
   orders: Order[];
+  castOrders: CastOrder[];
+  ledger: CasterLedgerLine[];
+  settings: WorkshopSettings;
   caseById: Record<string, WorkshopCase>;
   groupById: Record<string, StockGroup>;
   /** products linked to each case */

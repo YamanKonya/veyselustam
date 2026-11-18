@@ -2,7 +2,15 @@
 
 import React, { useMemo, useState } from "react";
 import { AlertTriangle } from "lucide-react";
-import { isLow, startOfDay, startOfMonth, startOfWeek, tl } from "@/services/workshopService";
+import {
+  casterBalance,
+  isLow,
+  pendingByCase,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+  tl,
+} from "@/services/workshopService";
 import { buildFeed, FeedRow } from "./Ledger";
 import { btnGhost, card, caseLabel, liveOrders, MovementPreset, sortedGroups, WorkshopData } from "./shared";
 
@@ -60,6 +68,17 @@ export default function Summary({ data, onMove }: { data: WorkshopData; onMove: 
     .filter((g) => isLow(g.stock, data.caseById[g.id]))
     .sort((a, b) => a.stock - b.stock);
   const feed = useMemo(() => buildFeed(data).slice(0, 8), [data]);
+  const pending = useMemo(() => pendingByCase(data.castOrders), [data.castOrders]);
+  const casterTotals = useMemo(() => {
+    let has = 0;
+    let owed = 0;
+    for (const c of data.casters) {
+      const b = casterBalance(data.ledger, c.id);
+      has += b.has;
+      owed += b.owed;
+    }
+    return { has: Math.round(has * 100) / 100, owed };
+  }, [data.casters, data.ledger]);
 
   return (
     <div className="space-y-5">
@@ -89,9 +108,24 @@ export default function Summary({ data, onMove }: { data: WorkshopData; onMove: 
         <Tile label="Dökümden gelen" value={s.cast} sub={s.castGrams ? `${s.castGrams} gr` : undefined} />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <Tile label="Eldeki toplam kasa" value={totalStock} sub={`${data.groups.length} model`} />
         <Tile label="Azalan / biten model" value={low.length} sub={`${low.filter((g) => g.stock <= 0).length} tanesi bitti`} />
+        <Tile
+          label="Yoldaki döküm"
+          value={Object.values(pending).reduce((n, q) => n + q, 0)}
+          sub={`${data.castOrders.filter((o) => o.status === "verildi" || o.status === "kismi").length} açık sipariş`}
+        />
+        <Tile
+          label="Gram has gümüş"
+          value={data.settings.hasPrice ? tl(data.settings.hasPrice) : "—"}
+          sub={data.settings.hasPriceAt ? new Date(data.settings.hasPriceAt).toLocaleDateString("tr-TR") : "Maliyet sekmesinden girin"}
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <Tile label="Dökümcülerdeki has" value={`${casterTotals.has} gr`} />
+        <Tile label="Ödenecek işçilik" value={tl(casterTotals.owed)} />
       </div>
 
       <div className="grid lg:grid-cols-2 gap-5">
@@ -112,6 +146,7 @@ export default function Summary({ data, onMove }: { data: WorkshopData; onMove: 
                       {g.stock}
                       {typeof wc?.minStock === "number" && <span className="text-panel-500 font-normal"> / {wc.minStock}</span>}
                     </span>
+                    {pending[g.id] ? <span className="text-[11px] text-sky-300">yolda {pending[g.id]}</span> : null}
                     <button type="button" onClick={() => onMove({ type: "dokum", groupId: g.id })} className={btnGhost}>
                       Döküm geldi
                     </button>

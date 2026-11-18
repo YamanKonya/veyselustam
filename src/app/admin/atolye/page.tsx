@@ -6,21 +6,33 @@ import { Order, Product } from "@/types";
 import { subscribeProducts } from "@/services/productService";
 import { subscribeOrders } from "@/services/orderService";
 import { useStockGroups } from "@/services/stockService";
-import { assignCaseCodes, useCasters, useMovements, useWorkshopCases } from "@/services/workshopService";
+import {
+  assignCaseCodes,
+  useCasterLedger,
+  useCasters,
+  useCastOrders,
+  useMovements,
+  useWorkshopCases,
+  useWorkshopSettings,
+} from "@/services/workshopService";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 import { MovementPreset, WorkshopData } from "@/components/admin/atolye/shared";
 import Summary from "@/components/admin/atolye/Summary";
 import Cases from "@/components/admin/atolye/Cases";
 import Ledger from "@/components/admin/atolye/Ledger";
 import Casters from "@/components/admin/atolye/Casters";
+import Casting from "@/components/admin/atolye/Casting";
+import Costs from "@/components/admin/atolye/Costs";
 import MovementForm from "@/components/admin/atolye/MovementForm";
 
-type Tab = "summary" | "cases" | "ledger" | "casters";
+type Tab = "summary" | "cases" | "ledger" | "casting" | "casters" | "costs";
 const TABS: [Tab, string][] = [
   ["summary", "Özet"],
   ["cases", "Kasalar"],
   ["ledger", "Hareketler"],
+  ["casting", "Döküm"],
   ["casters", "Dökümcüler"],
+  ["costs", "Maliyet"],
 ];
 
 export default function AtolyePage() {
@@ -29,6 +41,9 @@ export default function AtolyePage() {
   const cases = useWorkshopCases();
   const casters = useCasters();
   const movements = useMovements(120);
+  const castOrders = useCastOrders();
+  const ledger = useCasterLedger();
+  const settings = useWorkshopSettings();
   const [products, setProducts] = useState<Product[]>(INITIAL_VEYSELUSTAM_PRODUCTS);
   const [orders, setOrders] = useState<Order[]>([]);
   const [preset, setPreset] = useState<MovementPreset | null>(null);
@@ -56,13 +71,16 @@ export default function AtolyePage() {
       movements: movements.data,
       products,
       orders,
+      castOrders: castOrders.data,
+      ledger: ledger.data,
+      settings: settings.data,
       caseById,
       groupById,
       variants,
     };
-  }, [groups, cases.data, casters.data, movements.data, products, orders]);
+  }, [groups, cases.data, casters.data, movements.data, products, orders, castOrders.data, ledger.data, settings.data]);
 
-  const denied = [cases, casters, movements].some((s) => s.error === "permission-denied");
+  const denied = [cases, casters, movements, castOrders, ledger].some((s) => s.error === "permission-denied");
   const uncoded = cases.loaded && !denied ? groups.filter((g) => !data.caseById[g.id]?.code).length : 0;
 
   const giveCodes = async () => {
@@ -155,8 +173,12 @@ export default function AtolyePage() {
           <Cases data={data} onMove={setPreset} onError={setError} />
         ) : tab === "ledger" ? (
           <Ledger data={data} onError={setError} />
-        ) : (
+        ) : tab === "casting" ? (
+          <Casting data={data} onError={setError} />
+        ) : tab === "casters" ? (
           <Casters data={data} onError={setError} />
+        ) : (
+          <Costs data={data} onError={setError} />
         )}
       </div>
 

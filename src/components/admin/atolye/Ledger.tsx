@@ -81,7 +81,7 @@ export const FeedRow = ({ line, onUndo }: { line: FeedLine; onUndo?: (m: StockMo
         </p>
       )}
       {typeof line.stockAfter === "number" && <p className="text-[11px] text-panel-500">kalan {line.stockAfter}</p>}
-      {onUndo && line.movement && (
+      {onUndo && line.movement && !line.movement.castOrderId && (
         <button
           type="button"
           onClick={() => onUndo(line.movement!)}

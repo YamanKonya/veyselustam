@@ -2,18 +2,24 @@ import {
   collection,
   deleteDoc,
   doc,
+  DocumentReference,
   limit,
   onSnapshot,
   orderBy,
   query,
   runTransaction,
   setDoc,
+  Transaction,
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { auth, db } from "@/lib/firebase";
 import {
+  CastOrder,
+  CastOrderLine,
   Caster,
+  CasterLedgerLine,
+  CasterLedgerType,
   MovementType,
   PaymentMethod,
   Product,
@@ -21,6 +27,7 @@ import {
   StockGroup,
   StockMovement,
   WorkshopCase,
+  WorkshopSettings,
 } from "@/types";
 import { saveStockGroup } from "./stockService";
 
@@ -33,6 +40,9 @@ const CASTERS = "casters";
 const MOVEMENTS = "stockMovements";
 const GROUPS = "stockGroups";
 const PRODUCTS = "products";
+const CAST_ORDERS = "castOrders";
+const LEDGER = "casterLedger";
+const SETTINGS_DOC = ["settings", "workshop"] as const;
 
 export const MOVEMENT_LABELS: Record<MovementType, string> = {
   dokum: "Döküm geldi",
@@ -241,8 +251,15 @@ export const recordMovement = async (input: MovementInput) => {
       tx.update(productRef, { stock: next });
     }
 
+    // A delivery with a caster and grams also goes on that caster's account
+    let ledgerId: string | undefined;
+    if (input.type === "dokum" && input.caster && input.grams) {
+      ledgerId = writeDelivery(tx, input.caster, input.grams, { movementId: ref.id, note: input.note });
+    }
+
     const line: Record<string, unknown> = {
       type: input.type,
+      ledgerId,
       groupId: input.groupId,
       groupName: groupSnap.data().name ?? input.groupId,
       caseCode: caseSnap.exists() ? caseSnap.data().code : undefined,
@@ -281,6 +298,7 @@ export const undoMovement = async (m: StockMovement) => {
       productRef ? tx.get(productRef) : Promise.resolve(null),
     ]);
     if (!snap.exists()) return;
+    if (m.ledgerId) tx.delete(doc(db, LEDGER, m.ledgerId));
     if (groupSnap.exists() && m.delta !== 0) {
       const stock = Number(groupSnap.data().stock) || 0;
       tx.update(groupRef, { stock: Math.max(0, stock - m.delta) });
@@ -309,3 +327,294 @@ export const tl = (n: number) =>
 
 export const isLow = (stock: number, wc?: WorkshopCase) =>
   stock <= 0 || (typeof wc?.minStock === "number" && stock <= wc.minStock);
+
+/* ---------- casting orders and caster accounts ---------- */
+
+const clean = (o: Record<string, unknown>) => {
+  for (const k of Object.keys(o)) if (o[k] === undefined || o[k] === "") delete o[k];
+  return o;
+};
+
+const round = (n: number, d = 2) => Math.round(n * 10 ** d) / 10 ** d;
+
+/** Pure silver used and labour owed for `grams` of cast silver from this caster */
+export const casterUsage = (caster: Pick<Caster, "milyem" | "firePercent" | "laborPerGram">, grams: number) => {
+  const milyem = caster.milyem || 925;
+  const fire = caster.firePercent || 0;
+  return {
+    has: round(grams * (milyem / 1000) * (1 + fire / 100)),
+    labor: round(grams * (caster.laborPerGram || 0)),
+  };
+};
+
+/** Writes a "teslim" line on the caster account inside a transaction; returns its id */
+function writeDelivery(
+  tx: Transaction,
+  caster: Caster,
+  grams: number,
+  extra: { movementId?: string; castOrderId?: string; note?: string; has?: number; labor?: number }
+) {
+  const usage = casterUsage(caster, grams);
+  const ref = doc(collection(db, LEDGER));
+  tx.set(
+    ref,
+    clean({
+      casterId: caster.id,
+      casterName: caster.name,
+      type: "teslim",
+      hasGram: -(extra.has ?? usage.has),
+      tl: extra.labor ?? usage.labor,
+      grams,
+      movementId: extra.movementId,
+      castOrderId: extra.castOrderId,
+      note: extra.note?.trim(),
+      at: new Date().toISOString(),
+      by: auth?.currentUser?.email || undefined,
+    })
+  );
+  return ref.id;
+}
+
+export const useCastOrders = () =>
+  useCollection<CastOrder[]>(
+    (ok, fail) =>
+      onSnapshot(
+        query(collection(db, CAST_ORDERS), orderBy("createdAt", "desc"), limit(300)),
+        (snap) => ok(snap.docs.map((d) => ({ ...(d.data() as CastOrder), id: d.id }))),
+        fail
+      ),
+    []
+  );
+
+export const useCasterLedger = () =>
+  useCollection<CasterLedgerLine[]>(
+    (ok, fail) =>
+      onSnapshot(
+        query(collection(db, LEDGER), orderBy("at", "desc"), limit(3000)),
+        (snap) => ok(snap.docs.map((d) => ({ ...(d.data() as CasterLedgerLine), id: d.id }))),
+        fail
+      ),
+    []
+  );
+
+export const useWorkshopSettings = () =>
+  useCollection<WorkshopSettings>(
+    (ok, fail) => onSnapshot(doc(db, ...SETTINGS_DOC), (snap) => ok((snap.data() as WorkshopSettings) || {}), fail),
+    {}
+  );
+
+export const saveHasPrice = async (price: number, current: WorkshopSettings) => {
+  const at = new Date().toISOString();
+  const history = [{ price, at }, ...(current.hasPriceHistory || [])].slice(0, 60);
+  await setDoc(doc(db, ...SETTINGS_DOC), { hasPrice: price, hasPriceAt: at, hasPriceHistory: history }, { merge: true });
+};
+
+/** Balance of one caster: pure silver they hold (g) and labour we owe (TL) */
+export const casterBalance = (ledger: CasterLedgerLine[], casterId: string) => {
+  let has = 0;
+  let owed = 0;
+  for (const l of ledger)
+    if (l.casterId === casterId) {
+      has += l.hasGram || 0;
+      owed += l.tl || 0;
+    }
+  return { has: round(has), owed: round(owed) };
+};
+
+export const LEDGER_LABELS: Record<CasterLedgerType, string> = {
+  hasVerildi: "Has verildi",
+  teslim: "Döküm teslim",
+  hasIade: "Has iade alındı",
+  odeme: "İşçilik ödendi",
+  duzeltme: "Düzeltme",
+};
+
+export const addLedgerLine = async (
+  caster: Caster,
+  type: CasterLedgerType,
+  values: { hasGram?: number; tl?: number; note?: string }
+) => {
+  const ref = doc(collection(db, LEDGER));
+  await setDoc(
+    ref,
+    clean({
+      casterId: caster.id,
+      casterName: caster.name,
+      type,
+      hasGram: round(values.hasGram || 0),
+      tl: round(values.tl || 0),
+      note: values.note?.trim(),
+      at: new Date().toISOString(),
+      by: auth?.currentUser?.email || undefined,
+    })
+  );
+};
+
+export const deleteLedgerLine = (id: string) => deleteDoc(doc(db, LEDGER, id));
+
+export const createCastOrder = async (caster: Caster, lines: CastOrderLine[], note?: string) => {
+  const ref = doc(collection(db, CAST_ORDERS));
+  await setDoc(
+    ref,
+    clean({
+      casterId: caster.id,
+      casterName: caster.name,
+      lines: lines.filter((l) => l.qty > 0).map((l) => clean({ ...l, received: 0 })),
+      status: "verildi",
+      note: note?.trim(),
+      createdAt: new Date().toISOString(),
+      by: auth?.currentUser?.email || undefined,
+    })
+  );
+  return ref.id;
+};
+
+/** Closes an order: cancelled if nothing came, otherwise done with what came */
+export const closeCastOrder = (o: CastOrder) =>
+  setDoc(
+    doc(db, CAST_ORDERS, o.id),
+    { status: o.lines.some((l) => l.received) ? "teslim" : "iptal", updatedAt: new Date().toISOString() },
+    { merge: true }
+  );
+
+/** WhatsApp text of a casting order */
+export const castOrderText = (
+  caster: Pick<Caster, "name">,
+  lines: CastOrderLine[],
+  cases: Record<string, WorkshopCase>,
+  note?: string
+) => {
+  const rows = lines
+    .filter((l) => l.qty > 0)
+    .map((l) => {
+      const gram = cases[l.groupId]?.gram;
+      return `• ${l.caseCode ? l.caseCode + " " : ""}${l.groupName}: ${l.qty} adet${gram ? ` (~${gram} gr)` : ""}`;
+    });
+  const total = lines.reduce((n, l) => n + (l.qty > 0 ? l.qty : 0), 0);
+  return [
+    `Selamün aleyküm ${caster.name},`,
+    "Veysel Ustam atölyesinden döküm siparişi:",
+    ...rows,
+    `Toplam: ${total} adet`,
+    note?.trim() ? `Not: ${note.trim()}` : "",
+    "Hayırlı işler.",
+  ]
+    .filter(Boolean)
+    .join("\n");
+};
+
+export const whatsappLink = (phone: string | undefined, text: string) => {
+  const digits = (phone || "").replace(/\D/g, "").replace(/^0/, "90");
+  return `https://wa.me/${digits}?text=${encodeURIComponent(text)}`;
+};
+
+/**
+ * Receives (part of) a casting order: adds the cases to stock with a ledger
+ * line each, writes one delivery line on the caster account and updates the
+ * order, all in one transaction.
+ */
+export const receiveCastOrder = async (
+  order: CastOrder,
+  caster: Caster,
+  received: Record<string, number>,
+  totals: { grams: number; has: number; labor: number; note?: string }
+) => {
+  await runTransaction(db, async (tx) => {
+    const orderRef = doc(db, CAST_ORDERS, order.id);
+    const lines = order.lines.filter((l) => (received[l.groupId] || 0) > 0);
+    const groupRefs: [CastOrderLine, DocumentReference][] = lines.map((l) => [l, doc(db, GROUPS, l.groupId)]);
+    const [orderSnap, ...groupSnaps] = await Promise.all([tx.get(orderRef), ...groupRefs.map(([, r]) => tx.get(r))]);
+    if (!orderSnap.exists()) throw new Error("no-order");
+
+    const totalQty = lines.reduce((n, l) => n + received[l.groupId], 0);
+    const ledgerId =
+      totals.grams > 0
+        ? writeDelivery(tx, caster, totals.grams, {
+            castOrderId: order.id,
+            note: totals.note,
+            has: totals.has,
+            labor: totals.labor,
+          })
+        : undefined;
+    const at = new Date().toISOString();
+
+    groupRefs.forEach(([l, ref], i) => {
+      const snap = groupSnaps[i];
+      if (!snap.exists()) return;
+      const qty = received[l.groupId];
+      const stock = Number(snap.data().stock) || 0;
+      tx.update(ref, { stock: stock + qty });
+      tx.set(
+        doc(collection(db, MOVEMENTS)),
+        clean({
+          type: "dokum",
+          groupId: l.groupId,
+          groupName: snap.data().name ?? l.groupName,
+          caseCode: l.caseCode,
+          qty,
+          delta: qty,
+          stockAfter: stock + qty,
+          casterId: caster.id,
+          casterName: caster.name,
+          grams: totalQty && totals.grams ? round((totals.grams * qty) / totalQty) : undefined,
+          castOrderId: order.id,
+          note: totals.note?.trim(),
+          at,
+          by: auth?.currentUser?.email || undefined,
+        })
+      );
+    });
+
+    const current = (orderSnap.data().lines || []) as CastOrderLine[];
+    const next = current.map((l) => ({ ...l, received: (l.received || 0) + (received[l.groupId] || 0) }));
+    const complete = next.every((l) => (l.received || 0) >= l.qty);
+    tx.update(orderRef, {
+      lines: next,
+      status: complete ? "teslim" : "kismi",
+      updatedAt: at,
+      ...(ledgerId ? { ledgerIds: [...((orderSnap.data().ledgerIds as string[]) || []), ledgerId] } : {}),
+    });
+  });
+};
+
+/** Cases already on an open order, with the quantity still to come */
+export const pendingByCase = (orders: CastOrder[]) => {
+  const out: Record<string, number> = {};
+  for (const o of orders)
+    if (o.status === "verildi" || o.status === "kismi")
+      for (const l of o.lines) out[l.groupId] = (out[l.groupId] || 0) + Math.max(0, l.qty - (l.received || 0));
+  return out;
+};
+
+/* ---------- cost ---------- */
+
+export interface VariantCost {
+  silver: number;
+  labor: number;
+  stone: number;
+  extra: number;
+  total: number;
+  /** what is missing for a complete figure */
+  missing: string[];
+}
+
+/** Cost of one finished ring of this case (and variant) at the saved silver price */
+export const variantCost = (
+  wc: WorkshopCase | undefined,
+  casters: Caster[],
+  settings: WorkshopSettings,
+  productId?: string
+): VariantCost => {
+  const missing: string[] = [];
+  const gram = wc?.gram || 0;
+  if (!gram) missing.push("gram");
+  if (!settings.hasPrice) missing.push("gümüş fiyatı");
+  const caster = casters.find((c) => wc?.casterIds?.includes(c.id));
+  if (!caster) missing.push("dökümcü");
+  const usage = casterUsage(caster || {}, gram);
+  const silver = round(usage.has * (settings.hasPrice || 0));
+  const labor = usage.labor;
+  const stone = (productId && wc?.stoneCosts?.[productId]) || 0;
+  const extra = wc?.extraCost || 0;
+  return { silver, labor, stone, extra, total: round(silver + labor + stone + extra), missing };
+};
