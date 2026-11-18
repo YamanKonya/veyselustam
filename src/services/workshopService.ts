@@ -34,6 +34,7 @@ import {
   WorkshopSettings,
 } from "@/types";
 import { saveStockGroup } from "./stockService";
+import { formatMoney, useSilverStore } from "@/store/useSilverStore";
 
 // Atölye: case cards (code, gram, reorder level), casters and a ledger of every
 // stock movement. All three collections are admin-only; the sellable count of
@@ -352,8 +353,11 @@ export const startOfWeek = (d = new Date()) => {
 };
 export const startOfMonth = (d = new Date()) => new Date(d.getFullYear(), d.getMonth(), 1);
 
-export const tl = (n: number) =>
-  new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(n);
+/** Formats a TL amount in the currency picked in the admin bar (TL or USD at the live rate) */
+export const tl = (n: number) => {
+  const { currency, quote } = useSilverStore.getState();
+  return formatMoney(n, currency, quote?.usdTry);
+};
 
 export const isLow = (stock: number, wc?: WorkshopCase) =>
   stock <= 0 || (typeof wc?.minStock === "number" && stock <= wc.minStock);

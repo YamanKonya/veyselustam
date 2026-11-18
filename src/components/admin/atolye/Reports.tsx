@@ -141,14 +141,14 @@ export default function Reports({ data, onError }: { data: WorkshopData; onError
   const downloadCsv = () => {
     if (!moves || !r) return;
     const esc = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-    const rows: unknown[][] = [["Tür", "Tarih", "Kasa kodu", "Kasa", "Çeşit", "Adet", "Stok değişimi", "Tutar", "Kanal", "Ödeme", "Dökümcü", "Gram", "Not", "Giren"]];
+    const rows: unknown[][] = [["Tür", "Tarih", "Kasa kodu", "Kasa", "Çeşit", "Adet", "Stok değişimi", "Tutar (TL)", "Kanal", "Ödeme", "Dökümcü", "Gram", "Not", "Giren"]];
     for (const m of [...moves].reverse())
       rows.push([
         MOVEMENT_LABELS[m.type], new Date(m.at).toLocaleString("tr-TR"), m.caseCode, m.groupName, m.productTitle, m.qty, m.delta,
         m.amount, m.channel ? CHANNEL_LABELS[m.channel] : "", m.payment ? PAYMENT_LABELS[m.payment] : "", m.casterName, m.grams, m.note, m.by,
       ]);
     rows.push([]);
-    rows.push(["Para defteri", "Tarih", "Hesap", "Kategori", "Tutar", "Not"]);
+    rows.push(["Para defteri", "Tarih", "Hesap", "Kategori", "Tutar (TL)", "Not"]);
     for (const e of [...r.cash].reverse())
       rows.push([
         e.type, new Date(e.at).toLocaleString("tr-TR"),

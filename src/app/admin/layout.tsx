@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import AdminLogin from "@/components/admin/AdminLogin";
+import SilverBar from "@/components/admin/SilverBar";
 import {
   Package,
   ShoppingBag,
@@ -185,6 +186,7 @@ export default function AdminLayout({
 
       {/* Main Content Area */}
       <main className="flex-1 p-4 sm:p-8 overflow-y-auto">
+        <SilverBar />
         {children}
       </main>
     </div>

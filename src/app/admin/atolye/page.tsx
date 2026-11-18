@@ -17,6 +17,7 @@ import {
   useWorkshopSettings,
 } from "@/services/workshopService";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
+import { useSilverStore } from "@/store/useSilverStore";
 import { MovementPreset, WorkshopData } from "@/components/admin/atolye/shared";
 import Summary from "@/components/admin/atolye/Summary";
 import Cases from "@/components/admin/atolye/Cases";
@@ -44,6 +45,9 @@ const TABS: [Tab, string][] = [
 
 export default function AtolyePage() {
   const [tab, setTab] = useState<Tab>("summary");
+  // Re-render every amount when the TL/USD switch or the dollar rate changes
+  useSilverStore((s) => s.currency);
+  useSilverStore((s) => s.quote?.usdTry);
   const { groups, loaded: groupsLoaded } = useStockGroups();
   const cases = useWorkshopCases();
   const casters = useCasters();

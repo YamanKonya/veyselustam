@@ -3,6 +3,7 @@
 import React, { useMemo, useState } from "react";
 import { Loader2, Save } from "lucide-react";
 import { productCode } from "@/lib/productCode";
+import { useSilverStore } from "@/store/useSilverStore";
 import { saveHasPrice, saveWorkshopCase, tl, variantCost } from "@/services/workshopService";
 import { btnPrimary, card, caseLabel, dateTime, inputCls, labelCls, sortedGroups, Thumb, WorkshopData } from "./shared";
 
@@ -14,6 +15,7 @@ export default function Costs({ data, onError }: { data: WorkshopData; onError: 
   const [busy, setBusy] = useState(false);
   const [sort, setSort] = useState<Sort>("margin");
   const [warnAt, setWarnAt] = useState(30);
+  const live = useSilverStore((s) => s.quote);
 
   const savePrice = async () => {
     if (!price || Number(price) <= 0) return onError("Gram has gümüş fiyatını girin.");
@@ -74,6 +76,16 @@ export default function Costs({ data, onError }: { data: WorkshopData; onError: 
           <button type="button" onClick={savePrice} disabled={busy} className={btnPrimary}>
             {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Kaydet
           </button>
+          {live && (
+            <button
+              type="button"
+              onClick={() => setPrice(Math.round(live.gramTL * 100) / 100)}
+              className="px-3 py-2.5 bg-panel-800 hover:bg-panel-700 text-panel-100 text-xs font-semibold rounded-xl"
+              title={`Kaynak: ${live.source}`}
+            >
+              Anlık fiyatı al ({live.gramTL.toLocaleString("tr-TR", { maximumFractionDigits: 2 })} ₺)
+            </button>
+          )}
           {settings.hasPriceAt && (
             <p className="text-xs text-panel-400">
               Son: {tl(settings.hasPrice || 0)} · {dateTime(settings.hasPriceAt)}
@@ -86,7 +98,8 @@ export default function Costs({ data, onError }: { data: WorkshopData; onError: 
           </p>
         )}
         <p className="mt-2 text-[11px] text-panel-500">
-          Maliyet = gram × ayar × (1 + fire) × has fiyatı + gram × işçilik + taş + diğer (cila, kutu…). Dökümcü olarak kasaya
+          Anlık fiyat piyasanın gram gümüş satış fiyatıdır; kuyumcu/toptancı fiyatınız farklıysa onu yazın. Maliyet hesabı
+          kaydedilen fiyatla yapılır. Maliyet = gram × ayar × (1 + fire) × has fiyatı + gram × işçilik + taş + diğer (cila, kutu…). Dökümcü olarak kasaya
           atanan ilk dökümcü kullanılır.
         </p>
       </div>
