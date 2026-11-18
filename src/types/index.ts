@@ -206,8 +206,9 @@ export interface CastOrder {
  *  teslim: caster delivered cases (−gram used, +TL labour owed)
  *  hasIade: caster returned pure silver to us (−gram)
  *  odeme: we paid labour (−TL owed)
- *  duzeltme: manual correction of either */
-export type CasterLedgerType = "hasVerildi" | "teslim" | "hasIade" | "odeme" | "duzeltme";
+ *  duzeltme: manual correction of either
+ *  acilis: balance carried over from before the system (old debt) */
+export type CasterLedgerType = "acilis" | "hasVerildi" | "teslim" | "hasIade" | "odeme" | "duzeltme";
 
 export interface CasterLedgerLine {
   id: string;

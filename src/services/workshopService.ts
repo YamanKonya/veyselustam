@@ -461,6 +461,7 @@ export const LEDGER_LABELS: Record<CasterLedgerType, string> = {
   hasIade: "Has iade alındı",
   odeme: "İşçilik ödendi",
   duzeltme: "Düzeltme",
+  acilis: "Eski bakiye (açılış)",
 };
 
 /**

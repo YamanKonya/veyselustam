@@ -157,6 +157,14 @@ export default function Casters({ data, onError }: { data: WorkshopData; onError
 }
 
 const ACTIONS: { type: CasterLedgerType; label: string; has: 1 | -1 | 0; tl: 1 | -1 | 0; help: string }[] = [
+  {
+    type: "acilis",
+    label: "Eski borç / açılış",
+    has: 1,
+    tl: 1,
+    help:
+      "Sistemden önce kalan hesabı bir kere girin. Tutar: dökümcüye olan işçilik borcumuz (TL). Has: dökümcünün elinde duran bizim has gümüşümüz (gr). Biz dökümcüye has borçluysak has kutusuna eksi yazın (ör. -50).",
+  },
   { type: "hasVerildi", label: "Has verdim", has: 1, tl: 0, help: "Dökümcüye verilen has gümüş (gr)" },
   { type: "odeme", label: "İşçilik ödedim", has: 0, tl: -1, help: "Ödenen işçilik (TL)" },
   { type: "hasIade", label: "Has iade aldım", has: -1, tl: 0, help: "Dökümcüden geri alınan has (gr)" },
@@ -202,8 +210,9 @@ function CasterCard({
     setBusy(true);
     try {
       await addLedgerLine(c, a.type, {
-        hasGram: a.type === "duzeltme" ? h : a.has * Math.abs(h),
-        tl: a.type === "duzeltme" ? t : a.tl * Math.abs(t),
+        // Opening balance and corrections keep the sign typed in
+        hasGram: a.type === "duzeltme" || a.type === "acilis" ? h : a.has * Math.abs(h),
+        tl: a.type === "duzeltme" || a.type === "acilis" ? t : a.tl * Math.abs(t),
         note,
         payFrom: a.type === "odeme" && payFrom ? payFrom : undefined,
       });
