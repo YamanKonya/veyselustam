@@ -55,7 +55,7 @@ const LABELS: Record<Language, {
     craft: "İşçilik", craftValue: "Tamamen el yapımı",
     shipping: "Gönderim", shippingValue: "1–3 iş gününde ücretsiz kargo; yurt dışına gönderim yapılır",
     personalise: "Taş ve yazı kişiye özel yapılabilir; detaylar için bizimle iletişime geçin.",
-    care: "Üzerinde mübarek yazı bulunduğundan, tuvalet gibi yerlere girerken yüzüğü çıkarmanızı rica ederiz.",
+    care: "Üzerinde mübarek yazı bulunduğundan, tuvalet gibi yerlere girerken takıyı çıkarmanızı rica ederiz.",
     serviceNote: "Fiyat ve teslim süresi tasarıma göre belirlenir; sipariş öncesi bizimle iletişime geçin.",
   },
   en: {
@@ -64,7 +64,7 @@ const LABELS: Record<Language, {
     craft: "Craftsmanship", craftValue: "Entirely handmade",
     shipping: "Shipping", shippingValue: "Free shipping within 1–3 business days; we ship worldwide",
     personalise: "The stone and inscription can be personalised; contact us for details.",
-    care: "As it bears a sacred inscription, we kindly ask that you remove the ring before entering the restroom.",
+    care: "As it bears a sacred inscription, we kindly ask that you remove the piece before entering the restroom.",
     serviceNote: "Price and delivery time depend on the design; please contact us before ordering.",
   },
   es: {
@@ -73,7 +73,7 @@ const LABELS: Record<Language, {
     craft: "Elaboración", craftValue: "Totalmente hecho a mano",
     shipping: "Envío", shippingValue: "Envío gratuito en 1–3 días hábiles; enviamos a todo el mundo",
     personalise: "La piedra y la inscripción pueden personalizarse; contáctenos para más detalles.",
-    care: "Al llevar una inscripción sagrada, le rogamos que se quite el anillo antes de entrar al baño.",
+    care: "Al llevar una inscripción sagrada, le rogamos que se quite la pieza antes de entrar al baño.",
     serviceNote: "El precio y el plazo de entrega dependen del diseño; contáctenos antes de realizar el pedido.",
   },
   de: {
@@ -82,7 +82,7 @@ const LABELS: Record<Language, {
     craft: "Verarbeitung", craftValue: "Vollständig von Hand gefertigt",
     shipping: "Versand", shippingValue: "Kostenloser Versand in 1–3 Werktagen; wir liefern weltweit",
     personalise: "Stein und Inschrift können individuell gestaltet werden; sprechen Sie uns gerne an.",
-    care: "Da der Ring eine heilige Inschrift trägt, bitten wir Sie, ihn vor dem Betreten der Toilette abzulegen.",
+    care: "Da das Schmuckstück eine heilige Inschrift trägt, bitten wir Sie, es vor dem Betreten der Toilette abzulegen.",
     serviceNote: "Preis und Lieferzeit richten sich nach dem Entwurf; bitte kontaktieren Sie uns vor der Bestellung.",
   },
   ar: {
@@ -91,7 +91,7 @@ const LABELS: Record<Language, {
     craft: "الصنعة", craftValue: "مصنوع يدويًا بالكامل",
     shipping: "الشحن", shippingValue: "شحن مجاني خلال 1–3 أيام عمل، ونشحن إلى جميع أنحاء العالم",
     personalise: "يمكن تخصيص الحجر والنقش حسب الطلب؛ تواصل معنا لمزيد من التفاصيل.",
-    care: "لأن الخاتم يحمل نقشًا مباركًا، نرجو خلعه قبل دخول دورة المياه.",
+    care: "لأن القطعة تحمل نقشًا مباركًا، نرجو خلعها قبل دخول دورة المياه.",
     serviceNote: "يُحدَّد السعر ومدة التسليم حسب التصميم؛ يرجى التواصل معنا قبل الطلب.",
   },
   ru: {
@@ -100,7 +100,7 @@ const LABELS: Record<Language, {
     craft: "Изготовление", craftValue: "Полностью ручная работа",
     shipping: "Доставка", shippingValue: "Бесплатная доставка за 1–3 рабочих дня; отправляем по всему миру",
     personalise: "Камень и надпись можно изготовить на заказ; свяжитесь с нами, чтобы обсудить детали.",
-    care: "Поскольку на кольце священная надпись, просим снимать его перед посещением туалета.",
+    care: "Поскольку на украшении священная надпись, просим снимать его перед посещением туалета.",
     serviceNote: "Цена и срок изготовления зависят от дизайна; пожалуйста, свяжитесь с нами перед заказом.",
   },
 };
@@ -697,6 +697,14 @@ const TITLES: Record<string, L> = {
     de: "Silberkette Vav mit Achat und dem Buchstaben Vav",
     ar: "قلادة «واو» من الفضة بحجر عقيق منقوش عليه حرف الواو",
     ru: "Серебряное колье Вав с агатом и буквой Вав",
+  },
+  n_medine_kolye: {
+    tr: "Medine Model Allah Lafızlı Kızıl Akik Taşlı İnci Kolye",
+    en: "Medina Pearl Necklace with Allah Carved on Red Agate",
+    es: "Collar de perlas Medina con el nombre de Allah tallado en ágata roja",
+    de: "Perlenkette Medina mit dem Namen Allah auf rotem Achat",
+    ar: "قلادة «المدينة» من اللؤلؤ بحجر عقيق أحمر منقوش عليه لفظ الجلالة",
+    ru: "Жемчужное колье Медина с именем Аллаха на красном агате",
   },
   u_gulsen: {
     tr: "Gülşen Model Çiçek Oymalı Horasan Akik Taşlı Gümüş Erkek Yüzüğü",
@@ -1477,6 +1485,14 @@ const STORIES: Record<string, L> = {
     ar: "نُقش حرف الواو يدويًا على حجر عقيق مستدير مثبت في إطار فضي منقوش، ونُقش ظهر القلادة بزخارف هندسية. والواو في التصوف رمز للتواضع والعبودية لأنه يشبه الجنين في رحم أمه والعبد الساجد. تُقدَّم مع سلسلة فضية، وتناسب النساء والرجال.",
     ru: "Буква Вав вырезана вручную на круглом агате в серебряной рамке ручной чеканки; задняя часть кулона связана геометрическими мотивами. В суфизме Вав в форме ребенка в утробе матери и склоненного в поклоне слуги является символом смирения и служения. Он поставляется с серебряной цепочкой и подходит как женщинам, так и мужчинам.",
   },
+  n_medine_kolye: {
+    tr: "Kızıl akik taşın kalbine Allah (c.c.) lafzı elle oyulmuş; lafzı, taşın kenarına kadar uzanan geometrik desenli Osmanlı motifleri çevreler. Taş, 14 ayar altın kaplama 925 ayar gümüş bir çerçeveye oturtulmuş, çerçeve ve kanatlar zirkon taşlarla bezenmiştir; zincir yerine Medine incisi dizilmiştir. O'nun ismini kalbinizin üzerinde taşımanız için hazırladık; kendinize ya da sevdiğinize ömürlük bir hediye.",
+    en: "The name of Allah is hand-carved into the heart of a red agate, framed by geometric Ottoman motifs that reach to the edge of the stone. The stone sits in a 14k gold-plated 925 sterling silver frame, its frame and wings set with zircons, and the chain is strung with Medina pearls. Made so you can carry His name over your heart; a lifelong gift for yourself or someone you love.",
+    es: "El nombre de Allah está tallado a mano en el corazón de un ágata roja, rodeado de motivos otomanos geométricos que llegan hasta el borde de la piedra. La piedra va engastada en un marco de plata 925 bañada en oro de 14 quilates, con el marco y las alas adornados con circonitas, y en lugar de cadena lleva perlas de Medina. Hecho para llevar Su nombre sobre el corazón; un regalo para toda la vida, para usted o para alguien querido.",
+    de: "Der Name Allahs ist von Hand in das Herz eines roten Achats geschnitzt, umrahmt von geometrischen osmanischen Motiven bis zum Rand des Steins. Der Stein sitzt in einem Rahmen aus 925er Silber mit 14-Karat-Vergoldung, Rahmen und Flügel sind mit Zirkonia besetzt, und statt einer Kette sind Medina-Perlen aufgezogen. Gemacht, um Seinen Namen über dem Herzen zu tragen; ein Geschenk fürs Leben, für Sie selbst oder einen geliebten Menschen.",
+    ar: "نُقش لفظ الجلالة «الله» يدويًا في قلب حجر عقيق أحمر، تحيط به زخارف عثمانية هندسية تمتد حتى حافة الحجر. ثُبّت الحجر في إطار من الفضة عيار 925 مطلي بذهب عيار 14، وزُيّن الإطار والجناحان بأحجار الزركون، ونُظم بدل السلسلة لؤلؤ المدينة. صُنعت لتحمل اسمه فوق قلبك؛ هدية العمر لنفسك أو لمن تحب.",
+    ru: "Имя Аллаха вручную вырезано в самом сердце красного агата и обрамлено геометрическими османскими узорами до края камня. Камень закреплён в оправе из серебра 925 пробы с покрытием золотом 14 карат, оправа и крылья украшены цирконами, а вместо цепочки нанизан мединский жемчуг. Создано, чтобы носить Его имя у сердца; подарок на всю жизнь для себя или близкого человека.",
+  },
   bismillah_onyx: {
     tr: "Siyah oniks taşın üzerine hat sanatıyla Besmele kazınmıştır: “Bismillâhirrahmânirrahîm” — Rahmân ve Rahîm olan Allah'ın adıyla.",
     en: "The Basmala is engraved onto the black onyx in calligraphy: “Bismillahir-Rahmanir-Rahim” — in the name of Allah, the Most Gracious, the Most Merciful.",
@@ -1812,6 +1828,7 @@ const ENTRIES: Record<string, CatalogEntry> = {
   "vu-emin": { title: "n_emin", story: "n_emin", stone: "agate", sacred: true },
   "vu-semse": { title: "n_semse", story: "n_semse", stone: "agate", sacred: true },
   "vu-vav-kolye": { title: "n_vav_kolye", story: "n_vav_kolye", stone: "agate" },
+  "vu-medine-kolye": { title: "n_medine_kolye", story: "n_medine_kolye", stone: "red_agate", weight: "20", sacred: true },
 };
 
 const buildDescription = (entry: CatalogEntry, lang: Language) => {

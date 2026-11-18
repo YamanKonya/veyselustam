@@ -4107,6 +4107,30 @@ export const INITIAL_VEYSELUSTAM_PRODUCTS: Product[] = [
     "createdAt": "2026-10-23T11:32:32.753622Z"
   },
   {
+    "id": "vu-medine-kolye",
+    "title": "Medine Model Allah Lafızlı Kızıl Akik Taşlı İnci Kolye",
+    "description": "Kızıl akik taşın üzerine Allah (c.c.) lafzı elle oyulmuş, etrafı geometrik desenli Osmanlı motifleriyle işlenmiştir. 14 ayar altın kaplama 925 ayar gümüş çerçeve, zirkon taşlarla bezenmiştir; zincir yerine Medine incisi dizilidir. Ağırlık: 20 gram.",
+    "price": 10000,
+    "originalPrice": 12000,
+    "discountPercent": 17,
+    "memberPrice": 9000,
+    "isFeatured": true,
+    "images": [
+      "/images/products/allah-lafzi-inci-kolye/allah-lafzi-inci-kolye-1.jpg",
+      "/images/products/allah-lafzi-inci-kolye/allah-lafzi-inci-kolye-2.jpg",
+      "/images/products/allah-lafzi-inci-kolye/allah-lafzi-inci-kolye-3.jpg",
+      "/images/products/allah-lafzi-inci-kolye/allah-lafzi-inci-kolye-4.jpg",
+      "/images/products/allah-lafzi-inci-kolye/allah-lafzi-inci-kolye-5.jpg",
+      "/images/products/allah-lafzi-inci-kolye/allah-lafzi-inci-kolye-6.jpg",
+      "/images/products/allah-lafzi-inci-kolye/allah-lafzi-inci-kolye-7.jpg",
+      "/images/products/allah-lafzi-inci-kolye/allah-lafzi-inci-kolye-8.jpg"
+    ],
+    "category": "El Yapımı Gümüş Kolye",
+    "ringSize": [],
+    "stock": 1,
+    "createdAt": "2026-11-18T15:30:00.000Z"
+  },
+  {
     "id": "vu-vav-kolye",
     "title": "Vav Model Vav Harfi Kazınmış Akik Taşlı Gümüş Kolye",
     "description": "Yuvarlak akik taşın üzerine Vav harfi elde oyulmuş, taş kalem işi süslemeli gümüş bir çerçeveye oturtulmuştur; kolyenin arka yüzü geometrik motiflerle işlenmiştir. Tasavvufta Vav, ana rahmindeki ceninin ve secdeye kapanan kulun şeklini andırdığı için tevazunun ve kulluğun sembolüdür. Gümüş zinciriyle birlikte sunulur; kadın ve erkek kullanımına uygundur.",
