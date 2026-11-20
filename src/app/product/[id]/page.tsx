@@ -21,6 +21,8 @@ import ProductReviews from "@/components/product/ProductReviews";
 import MemberPrice, { forMember, MemberDiscountNote } from "@/components/product/MemberPrice";
 import { useAuth } from "@/context/AuthContext";
 import { productCode } from "@/lib/productCode";
+import { tryOnFor } from "@/data/tryOn";
+import RingTryOn from "@/components/product/RingTryOn";
 import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 import Link from "next/link";
 import { 
@@ -546,6 +548,9 @@ export default function ProductDetailPage() {
                     <p className="text-sm text-slate-600 mt-1">{t("sales_soon_product")}</p>
                   </div>
                 )}
+
+                {/* Try the ring on a photo of the customer's own hand (rings listed in src/data/tryOn.ts) */}
+                {tryOnFor(product.id) && <RingTryOn ring={tryOnFor(product.id)!} title={product.title} />}
 
                 {/* WhatsApp Contact */}
                 <a

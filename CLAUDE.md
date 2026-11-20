@@ -63,6 +63,12 @@ açığı notu yazma.
   admin, sepet, giriş ve yasal sayfalar Türkçe kalır. Yeni dil adresi gereken bir
   sayfa eklenirse `isLocalizablePath` ve `src/app/[lang]` altına eklenmeli.
 - Pinterest ve Meta katalogları `/feed/meta.csv` üzerinden beslenir.
+- "Parmağımda Gör" (yüzük deneme): müşteri elinin fotoğrafını çeker, yüzük parmağına
+  yerleştirilir (`src/components/product/RingTryOn.tsx`). El tanıma tarayıcıda çalışır
+  (MediaPipe, ücretsiz); fotoğraf sunucuya gönderilmez. Buton yalnızca
+  `src/data/tryOn.ts` içinde görseli olan ürünlerde çıkar. Yeni yüzük eklemek için: tam
+  üstten (taş kameraya bakar) çekilmiş fotoğrafın arka planı silinir, webp olarak
+  `public/images/tryon/` altına konur ve o dosyaya bir satır eklenir.
 
 ## Atölye (stok ve satış takibi)
 
