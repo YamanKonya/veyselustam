@@ -81,10 +81,26 @@ export const Badge = ({ kind, children }: { kind: MovementType | "online"; child
   </span>
 );
 
+// Small photo; hovering it shows the full picture bigger, like the product cards zoom on hover
 export const Thumb = ({ src }: { src?: string }) =>
   src ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt="" className="w-10 h-10 rounded-lg object-cover bg-panel-800 flex-shrink-0" />
+    <span className="group relative flex-shrink-0">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt=""
+        loading="lazy"
+        className="w-10 h-10 rounded-lg object-cover bg-panel-800 transition-transform duration-300 ease-out group-hover:scale-110"
+      />
+      <span className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 hidden group-hover:block">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt=""
+          className="w-56 h-56 sm:w-64 sm:h-64 rounded-xl object-cover bg-panel-950 border border-panel-700 shadow-2xl shadow-black/60"
+        />
+      </span>
+    </span>
   ) : (
     <div className="w-10 h-10 rounded-lg bg-panel-800 flex-shrink-0" />
   );

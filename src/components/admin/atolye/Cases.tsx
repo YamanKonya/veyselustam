@@ -195,7 +195,7 @@ function CaseRow({
   const low = isLow(g.stock, wc);
 
   return (
-    <div className={`${card} !p-0 overflow-hidden`}>
+    <div className={`${card} !p-0`}>
       <button type="button" onClick={onToggle} className="w-full p-3 sm:p-4 flex items-center gap-3 text-left">
         <Thumb src={items[0]?.images?.[0]} />
         <div className="flex-1 min-w-0">
