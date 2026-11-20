@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Camera, Download, Hand, ImageIcon, Loader2, Lock, RefreshCw, X } from "lucide-react";
+import { Camera, Download, Hand, ImageIcon, Loader2, Lock, RefreshCw, RotateCw, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { TryOnRing } from "@/data/tryOn";
 import { FINGERS, FingerId, placeRing, Point } from "@/lib/tryOnGeometry";
@@ -52,7 +52,9 @@ export default function RingTryOn({ ring, title }: { ring: TryOnRing; title: str
   const [turn, setTurn] = useState(0); // degrees added to the detected angle
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const photoRef = useRef<HTMLCanvasElement | null>(null); // the hand photo, scaled down
+  const photoRef = useRef<HTMLCanvasElement | null>(null); // the hand photo as shown (scaled down, turned)
+  const sourceRef = useRef<HTMLCanvasElement | null>(null); // the hand photo as taken (scaled down)
+  const quarterRef = useRef(0); // quarter turns applied with "rotate photo"
   const ringRef = useRef<HTMLImageElement | null>(null);
   const landmarksRef = useRef<Point[] | null>(null);
   const offsetRef = useRef({ x: 0, y: 0 }); // manual move, in photo pixels
@@ -111,6 +113,34 @@ export default function RingTryOn({ ring, title }: { ring: TryOnRing; title: str
     offsetRef.current = { x: 0, y: 0 };
     landmarksRef.current = null;
     photoRef.current = null;
+    sourceRef.current = null;
+    quarterRef.current = 0;
+  };
+
+  // Turn the photo by the chosen quarter turns, then look for the hand in it
+  const analyse = async () => {
+    const src = sourceRef.current;
+    if (!src) return;
+    const q = ((quarterRef.current % 4) + 4) % 4;
+    const photo = document.createElement("canvas");
+    photo.width = q % 2 ? src.height : src.width;
+    photo.height = q % 2 ? src.width : src.height;
+    const ctx = photo.getContext("2d")!;
+    ctx.translate(photo.width / 2, photo.height / 2);
+    ctx.rotate((q * Math.PI) / 2);
+    ctx.drawImage(src, -src.width / 2, -src.height / 2);
+    photoRef.current = photo;
+    offsetRef.current = { x: 0, y: 0 };
+
+    let found: Point[] | null = null;
+    try {
+      const detector = await loadDetector();
+      found = detector.detect(photo).landmarks?.[0] || null;
+    } catch (err) {
+      console.warn("hand detection unavailable", err);
+    }
+    landmarksRef.current = found;
+    setNoHand(!found);
   };
 
   const onFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,27 +149,28 @@ export default function RingTryOn({ ring, title }: { ring: TryOnRing; title: str
     if (!file) return;
     setStage("loading");
     setNoHand(false);
-    offsetRef.current = { x: 0, y: 0 };
+    quarterRef.current = 0;
     const url = URL.createObjectURL(file);
     try {
-      const [img, ringImg] = await Promise.all([loadImage(url), ringRef.current ? Promise.resolve(ringRef.current) : loadImage(ring.src)]);
-      ringRef.current = ringImg;
-      const k = Math.min(1, MAX_SIDE / Math.max(img.naturalWidth, img.naturalHeight));
-      const photo = document.createElement("canvas");
-      photo.width = Math.round(img.naturalWidth * k);
-      photo.height = Math.round(img.naturalHeight * k);
-      photo.getContext("2d")!.drawImage(img, 0, 0, photo.width, photo.height);
-      photoRef.current = photo;
-
-      let found: Point[] | null = null;
+      if (!ringRef.current) ringRef.current = await loadImage(ring.src);
+      // Phone photos carry their rotation in EXIF. createImageBitmap applies it everywhere;
+      // a plain <img> drawn to a canvas does not in some in-app browsers (photo came out turned).
+      let pic: ImageBitmap | HTMLImageElement;
       try {
-        const detector = await loadDetector();
-        found = detector.detect(photo).landmarks?.[0] || null;
-      } catch (err) {
-        console.warn("hand detection unavailable", err);
+        pic = await createImageBitmap(file, { imageOrientation: "from-image" });
+      } catch {
+        pic = await loadImage(url);
       }
-      landmarksRef.current = found;
-      setNoHand(!found);
+      const pw = "naturalWidth" in pic ? pic.naturalWidth : pic.width;
+      const ph = "naturalHeight" in pic ? pic.naturalHeight : pic.height;
+      const k = Math.min(1, MAX_SIDE / Math.max(pw, ph));
+      const source = document.createElement("canvas");
+      source.width = Math.round(pw * k);
+      source.height = Math.round(ph * k);
+      source.getContext("2d")!.drawImage(pic, 0, 0, source.width, source.height);
+      if ("close" in pic) pic.close();
+      sourceRef.current = source;
+      await analyse();
       setStage("ready");
     } catch (err) {
       console.error(err);
@@ -147,6 +178,12 @@ export default function RingTryOn({ ring, title }: { ring: TryOnRing; title: str
     } finally {
       URL.revokeObjectURL(url);
     }
+  };
+
+  const rotatePhoto = async () => {
+    quarterRef.current += 1;
+    await analyse();
+    draw();
   };
 
   // Drag the ring (finger or mouse); canvas pixels differ from screen pixels
@@ -264,7 +301,17 @@ export default function RingTryOn({ ring, title }: { ring: TryOnRing; title: str
                     onPointerCancel={onPointerUp}
                     className="w-full h-auto max-h-[58vh] object-contain bg-slate-100 touch-none cursor-grab active:cursor-grabbing"
                   />
-                  <p className="text-xs text-slate-500">{t("tryon_drag")}</p>
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="text-xs text-slate-500">{t("tryon_drag")}</p>
+                    <button
+                      type="button"
+                      onClick={rotatePhoto}
+                      className="flex-shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold border border-slate-300 text-slate-700 hover:bg-slate-50"
+                    >
+                      <RotateCw className="w-3.5 h-3.5" />
+                      {t("tryon_rotate_photo")}
+                    </button>
+                  </div>
 
                   {!noHand && (
                     <div>
