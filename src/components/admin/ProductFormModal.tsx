@@ -18,7 +18,9 @@ import {
   Star,
   ArrowLeft,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { MENUS, MENU_LABELS, SUBMENUS, SUBMENU_LABELS, productMenus, productSubmenus } from "@/lib/menus";
 
@@ -262,6 +264,39 @@ export default function ProductFormModal({
     setNewFiles([file, ...files]);
     setFilePreviews([preview, ...previews]);
     setNewFirst(true);
+  };
+
+  // Reorder photos inside one group. Saving keeps the order: saved photos first (or
+  // new uploads first when one was picked as main), so this decides the storefront order.
+  const moveItem = <T,>(list: T[], from: number, to: number): T[] => {
+    if (from === to || from < 0 || to < 0 || from >= list.length || to >= list.length) return list;
+    const next = [...list];
+    const [item] = next.splice(from, 1);
+    next.splice(to, 0, item);
+    return next;
+  };
+  const moveExistingImage = (from: number, to: number) => {
+    const next = moveItem(existingImages, from, to);
+    if (next === existingImages) return;
+    setExistingImages(next);
+    // Whatever ends up first is the main photo, unless a new upload was chosen as main
+    if (to === 0) setNewFirst(false);
+  };
+  const moveNewFile = (from: number, to: number) => {
+    const nextFiles = moveItem(newFiles, from, to);
+    if (nextFiles === newFiles) return;
+    setNewFiles(nextFiles);
+    setFilePreviews(moveItem(filePreviews, from, to));
+  };
+
+  // Drag and drop (desktop). Phones use the ← → buttons on each photo.
+  const dragFrom = React.useRef<{ group: "old" | "new"; index: number } | null>(null);
+  const dropOn = (group: "old" | "new", index: number) => {
+    const from = dragFrom.current;
+    dragFrom.current = null;
+    if (!from || from.group !== group) return; // photos move inside their own group only
+    if (group === "old") moveExistingImage(from.index, index);
+    else moveNewFile(from.index, index);
   };
 
   const handleAddImageUrl = () => {
@@ -1047,7 +1082,7 @@ export default function ProductFormModal({
               <div className="space-y-2 pt-2">
                 <p className="text-[11px] text-panel-400 font-medium flex items-center gap-1">
                   <Star className="w-3 h-3 text-brass-500 fill-brass-500" />
-                  Ana görsel yapmak istediğiniz fotoğrafa tıklayın.
+                  Ana görsel yapmak istediğiniz fotoğrafa tıklayın. Sırayı değiştirmek için fotoğrafı sürükleyin veya ok tuşlarını kullanın.
                 </p>
 
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
@@ -1055,6 +1090,10 @@ export default function ProductFormModal({
                   {existingImages.map((url, idx) => (
                     <div
                       key={`existing-${idx}`}
+                      draggable
+                      onDragStart={() => (dragFrom.current = { group: "old", index: idx })}
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={() => dropOn("old", idx)}
                       className={`relative group rounded-xl overflow-hidden border aspect-square bg-panel-950 ${
                         idx === 0 && !newFirst ? "border-brass-500 ring-2 ring-brass-500 shadow-md shadow-brass-500/20" : "border-panel-800 hover:border-brass-500/60 cursor-pointer"
                       }`}
@@ -1065,7 +1104,7 @@ export default function ProductFormModal({
                         title={idx === 0 && !newFirst ? "Ana görsel" : "Ana görsel yap"}
                         className="absolute inset-0 w-full h-full"
                       >
-                        <img src={url} alt={`Görsel ${idx + 1}`} className="w-full h-full object-cover" />
+                        <img src={url} alt={`Görsel ${idx + 1}`} className="w-full h-full object-cover pointer-events-none" draggable={false} />
                       </button>
 
                       {idx === 0 && !newFirst && (
@@ -1079,6 +1118,28 @@ export default function ProductFormModal({
                           Ana görsel yap
                         </span>
                       )}
+                      <div className="absolute bottom-1 left-1 flex gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition">
+                        <button
+                          type="button"
+                          onClick={() => moveExistingImage(idx, idx - 1)}
+                          disabled={idx === 0}
+                          title="Sola taşı"
+                          aria-label="Sola taşı"
+                          className="p-1 bg-black/70 text-white rounded-md disabled:opacity-30"
+                        >
+                          <ChevronLeft className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => moveExistingImage(idx, idx + 1)}
+                          disabled={idx === existingImages.length - 1}
+                          title="Sağa taşı"
+                          aria-label="Sağa taşı"
+                          className="p-1 bg-black/70 text-white rounded-md disabled:opacity-30"
+                        >
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                       <button
                         type="button"
                         onClick={() => handleRemoveExistingImage(idx)}
@@ -1094,6 +1155,10 @@ export default function ProductFormModal({
                   {filePreviews.map((previewUrl, idx) => (
                     <div
                       key={`new-${idx}`}
+                      draggable
+                      onDragStart={() => (dragFrom.current = { group: "new", index: idx })}
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={() => dropOn("new", idx)}
                       className={`relative group rounded-xl overflow-hidden border aspect-square bg-panel-950 ${
                         newFirst && idx === 0 ? "border-brass-500 ring-2 ring-brass-500" : "border-brass-500/60 cursor-pointer"
                       }`}
@@ -1104,11 +1169,33 @@ export default function ProductFormModal({
                         title={newFirst && idx === 0 ? "Ana görsel" : "Ana görsel yap"}
                         className="absolute inset-0 w-full h-full"
                       >
-                        <img src={previewUrl} alt="Yeni Yüklenen" className="w-full h-full object-cover" />
+                        <img src={previewUrl} alt="Yeni Yüklenen" className="w-full h-full object-cover pointer-events-none" draggable={false} />
                       </button>
                       <span className={`absolute top-1 left-1 text-[9px] font-bold px-1.5 py-0.5 rounded ${newFirst && idx === 0 ? "bg-brass-500 text-panel-950" : "bg-emerald-500 text-white"}`}>
                         {newFirst && idx === 0 ? "Ana Görsel" : "Yeni"}
                       </span>
+                      <div className="absolute bottom-1 left-1 flex gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition">
+                        <button
+                          type="button"
+                          onClick={() => moveNewFile(idx, idx - 1)}
+                          disabled={idx === 0}
+                          title="Sola taşı"
+                          aria-label="Sola taşı"
+                          className="p-1 bg-black/70 text-white rounded-md disabled:opacity-30"
+                        >
+                          <ChevronLeft className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => moveNewFile(idx, idx + 1)}
+                          disabled={idx === filePreviews.length - 1}
+                          title="Sağa taşı"
+                          aria-label="Sağa taşı"
+                          className="p-1 bg-black/70 text-white rounded-md disabled:opacity-30"
+                        >
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                       <button
                         type="button"
                         onClick={() => handleRemoveNewFile(idx)}
