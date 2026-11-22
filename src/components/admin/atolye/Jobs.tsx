@@ -2,11 +2,12 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { AlertCircle, Banknote, Building2, CalendarClock, Check, CreditCard, Hammer, Loader2, MessageCircle, PackageCheck, Pencil, Plus, Trash2, Undo2, X } from "lucide-react";
-import { JobStatus, PaymentMethod, WorkshopJob } from "@/types";
+import { JobStatus, PaymentMethod, SaleChannel, WorkshopJob } from "@/types";
 import { productCode } from "@/lib/productCode";
 import {
   ACCOUNT_LABELS,
   accountFor,
+  CHANNEL_LABELS,
   deleteJob,
   deliverJob,
   JOB_STATUS_LABELS,
@@ -197,6 +198,9 @@ export default function Jobs({ data, onError, denied }: { data: WorkshopData; on
                     </p>
                     <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-panel-300">
                       {job.customer && <span className="font-semibold text-panel-200">{job.customer}</span>}
+                      {job.source && (
+                        <span className="px-1.5 py-0.5 rounded-md bg-panel-800 border border-panel-700 text-panel-200">{CHANNEL_LABELS[job.source]}</span>
+                      )}
                       {job.phone && (
                         <a
                           href={whatsappLink(job.phone, job.status === "yapildi" ? `Merhaba, ${job.title} siparişiniz hazır.` : "Merhaba,")}
@@ -323,6 +327,7 @@ function JobForm({ data, job, onClose }: { data: WorkshopData; job: WorkshopJob 
   const [size, setSize] = useState(job?.size || "");
   const [customer, setCustomer] = useState(job?.customer || "");
   const [phone, setPhone] = useState(job?.phone || "");
+  const [source, setSource] = useState<SaleChannel | "">(job?.source || "");
   const [dueAt, setDueAt] = useState(toLocalInput(job?.dueAt));
   const [price, setPrice] = useState<number | "">(job?.price ?? "");
   const [priceTouched, setPriceTouched] = useState(typeof job?.price === "number");
@@ -369,6 +374,7 @@ function JobForm({ data, job, onClose }: { data: WorkshopData; job: WorkshopJob 
         size: size.trim() || undefined,
         customer: customer.trim() || undefined,
         phone: phone.trim() || undefined,
+        source: source || undefined,
         dueAt: dueAt ? new Date(dueAt).toISOString() : undefined,
         price: price === "" ? undefined : Number(price),
         note: note.trim() || undefined,
@@ -462,6 +468,25 @@ function JobForm({ data, job, onClose }: { data: WorkshopData; job: WorkshopJob 
             <span className={labelCls}>Telefon</span>
             <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="05xx xxx xx xx" className={inputCls} />
           </label>
+        </div>
+
+        <div>
+          <p className={labelCls}>Müşteri nereden geldi?</p>
+          <div role="group" aria-label="Müşteri nereden geldi" className="flex flex-wrap gap-1.5">
+            {(Object.keys(CHANNEL_LABELS) as SaleChannel[]).map((id) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setSource(source === id ? "" : id)}
+                aria-pressed={source === id}
+                className={`px-3 py-2 rounded-xl border text-xs font-semibold transition ${
+                  source === id ? "bg-brass-600 border-brass-500 text-white" : "bg-panel-950 border-panel-700 text-panel-200 hover:border-brass-500"
+                }`}
+              >
+                {CHANNEL_LABELS[id]}
+              </button>
+            ))}
+          </div>
         </div>
 
         <label className="block">

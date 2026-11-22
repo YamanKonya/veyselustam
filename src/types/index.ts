@@ -139,7 +139,7 @@ export interface Caster {
 
 export type MovementType = "dokum" | "uretim" | "satis" | "fire" | "iade" | "sayim";
 
-export type SaleChannel = "dukkan" | "instagram" | "whatsapp" | "diger";
+export type SaleChannel = "dukkan" | "web" | "instagram" | "facebook" | "whatsapp" | "etsy" | "amazon" | "diger";
 export type PaymentMethod = "nakit" | "kart" | "havale" | "diger";
 
 /** One line in the workshop ledger. Stock-changing lines update the case stock
@@ -191,6 +191,8 @@ export interface WorkshopJob {
   title: string;
   customer?: string;
   phone?: string;
+  /** where the customer came from (Etsy, Instagram, the workshop…); becomes the sale channel on delivery */
+  source?: SaleChannel;
   /** case the piece comes out of; empty = work that does not touch the stock */
   groupId?: string;
   groupName?: string;

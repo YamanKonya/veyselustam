@@ -64,9 +64,13 @@ export const MOVEMENT_LABELS: Record<MovementType, string> = {
 };
 
 export const CHANNEL_LABELS: Record<SaleChannel, string> = {
-  dukkan: "Dükkân",
+  dukkan: "Atölye / Dükkân",
+  web: "Web sitesi",
   instagram: "Instagram",
+  facebook: "Facebook",
   whatsapp: "WhatsApp",
+  etsy: "Etsy",
+  amazon: "Amazon",
   diger: "Diğer",
 };
 
@@ -451,7 +455,7 @@ export const deliverJob = async (
       product: opts.product,
       amount: opts.amount,
       payment: opts.payment,
-      channel: "dukkan",
+      channel: job.source || "dukkan",
       note: [job.customer, job.size ? `Ölçü ${job.size}` : "", job.note].filter(Boolean).join(" · "),
       job: { id: job.id, customer: job.customer },
     });

@@ -178,6 +178,27 @@ export default function AdminAnalyticsPage() {
     }
     return { carted, checkout, ordered, open };
   }, [visits, titleOf]);
+  // Like Etsy's "in N carts": how many visits put each piece in the cart, and what became of them
+  const cartProducts = useMemo(() => {
+    const stats = new Map<string, { carts: number; ordered: number; last: Date }>();
+    for (const v of visits) {
+      const ids = new Set(
+        v.events.filter((e) => (e.path === "/sepet#ekle" || e.path === "/checkout#sepet") && e.productId).map((e) => e.productId)
+      );
+      if (!ids.size) continue;
+      const done = v.views.some((p) => p.path.startsWith("/order-success"));
+      ids.forEach((id) => {
+        const s = stats.get(id) || { carts: 0, ordered: 0, last: v.start };
+        s.carts++;
+        if (done) s.ordered++;
+        if (v.start > s.last) s.last = v.start;
+        stats.set(id, s);
+      });
+    }
+    return Array.from(stats.entries())
+      .map(([id, s]) => ({ id, ...s, left: s.carts - s.ordered }))
+      .sort((a, b) => b.carts - a.carts || b.last.getTime() - a.last.getTime());
+  }, [visits]);
   const [stageFilter, setStageFilter] = useState<"all" | "cart" | "checkout">("all");
   const openShown = funnel.open.filter((o) =>
     stageFilter === "all" ? true : stageFilter === "cart" ? o.stage === "cart" : o.stage !== "cart"
@@ -486,6 +507,52 @@ export default function AdminAnalyticsPage() {
           görünür. Sepet ve hata kayıtları bu özelliğin eklendiği günden itibaren tutulur; daha eski ziyaretlerde yalnızca ödeme sayfasına
           gelip gelmediği görünür.
         </p>
+      </Panel>
+
+      {/* Products in carts */}
+      <Panel title="Sepete eklenen ürünler">
+        {cartProducts.length === 0 ? (
+          <p className="text-sm text-panel-500">{loading ? "Yükleniyor…" : "Bu aralıkta sepete eklenen ürün yok."}</p>
+        ) : (
+          <div className="overflow-x-auto -mx-5 px-5">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-xs text-panel-400 border-b border-panel-800">
+                  <th className="py-2 pr-3 font-medium">Ürün</th>
+                  <th className="py-2 px-3 font-medium text-right">Sepete ekleyen</th>
+                  <th className="py-2 px-3 font-medium text-right">Sipariş veren</th>
+                  <th className="py-2 px-3 font-medium text-right">Almadan çıkan</th>
+                  <th className="py-2 pl-3 font-medium text-right">Son ekleme</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cartProducts.slice(0, 30).map((p) => {
+                  const product = productById.get(p.id);
+                  return (
+                    <tr key={p.id} className="border-b border-panel-800/60 last:border-0">
+                      <td className="py-2.5 pr-3">
+                        <div className="flex items-center gap-3 min-w-[220px]">
+                          {product?.images?.[0] && <img src={product.images[0]} alt="" className="w-9 h-9 rounded-lg object-cover flex-shrink-0" />}
+                          <a href={`/product/${p.id}`} target="_blank" rel="noreferrer" className="text-panel-100 hover:text-brass-300 line-clamp-2">
+                            {titleOf(p.id)}
+                          </a>
+                        </div>
+                      </td>
+                      <td className="py-2.5 px-3 text-right tabular-nums text-panel-100 font-semibold">{p.carts}</td>
+                      <td className="py-2.5 px-3 text-right tabular-nums text-emerald-300">{p.ordered}</td>
+                      <td className="py-2.5 px-3 text-right tabular-nums text-panel-300">{p.left}</td>
+                      <td className="py-2.5 pl-3 text-right whitespace-nowrap text-panel-400">{fmtTime(p.last)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <p className="text-xs text-panel-500 mt-3">
+              Sayılar ziyaret bazındadır: aynı kişi başka bir gün tekrar eklerse ayrı sayılır. “Sipariş veren”, o ziyarette sipariş
+              tamamlayanları gösterir. Kimlerin eklediği yukarıdaki “Sepette ve ödemede yarım kalanlar” listesindedir.
+            </p>
+          </div>
+        )}
       </Panel>
 
       <CampaignLinkBuilder products={products} />
