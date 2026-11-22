@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { AlertCircle, Banknote, Building2, CalendarClock, Check, CreditCard, Hammer, Loader2, MessageCircle, PackageCheck, Pencil, Plus, Trash2, Undo2, X } from "lucide-react";
+import { AlertCircle, Banknote, Building2, CalendarClock, Check, CreditCard, Hammer, Loader2, MessageCircle, PackageCheck, Pencil, Plus, Printer, Trash2, Undo2, X } from "lucide-react";
 import { JobStatus, PaymentMethod, SaleChannel, WorkshopJob } from "@/types";
 import { productCode } from "@/lib/productCode";
+import { printJob } from "@/lib/printJob";
 import {
   ACCOUNT_LABELS,
   accountFor,
@@ -94,6 +95,18 @@ export default function Jobs({ data, onError, denied }: { data: WorkshopData; on
       ready: open.filter((j) => j.status === "yapildi").length,
     };
   }, [data.jobs]);
+
+  // A5 work sheet to hand to the craftsman
+  const print = (job: WorkshopJob) => {
+    const product = job.productId ? productById[job.productId] : undefined;
+    const group = job.groupId ? data.groupById[job.groupId] : undefined;
+    printJob(job, {
+      caseLabel: group ? caseLabel(group, data.caseById[group.id]) : undefined,
+      productCode: product ? productCode(product) : undefined,
+      image: product?.images?.[0],
+      sourceLabel: job.source ? CHANNEL_LABELS[job.source] : undefined,
+    });
+  };
 
   const run = async (job: WorkshopJob, fn: () => Promise<unknown>) => {
     setBusyId(job.id);
@@ -269,6 +282,9 @@ export default function Jobs({ data, onError, denied }: { data: WorkshopData; on
                       <Undo2 className="w-3.5 h-3.5" /> Geri aç
                     </button>
                   )}
+                  <button type="button" onClick={() => print(job)} className={btnGhost}>
+                    <Printer className="w-3.5 h-3.5" /> Yazdır
+                  </button>
                   {job.status !== "teslim" && (
                     <button type="button" disabled={busy} onClick={() => setEditing(job)} className={btnGhost}>
                       <Pencil className="w-3.5 h-3.5" /> Düzenle
@@ -296,7 +312,7 @@ export default function Jobs({ data, onError, denied }: { data: WorkshopData; on
         </ul>
       )}
 
-      {editing && <JobForm data={data} job={editing === "new" ? null : editing} onClose={() => setEditing(null)} />}
+      {editing && <JobForm data={data} job={editing === "new" ? null : editing} onClose={() => setEditing(null)} onPrint={print} />}
       {delivering && <DeliverDialog data={data} job={delivering} onClose={() => setDelivering(null)} />}
     </div>
   );
@@ -318,7 +334,17 @@ const Modal = ({ title, onClose, children }: { title: string; onClose: () => voi
 
 /* ---------- new job / edit job ---------- */
 
-function JobForm({ data, job, onClose }: { data: WorkshopData; job: WorkshopJob | null; onClose: () => void }) {
+function JobForm({
+  data,
+  job,
+  onClose,
+  onPrint,
+}: {
+  data: WorkshopData;
+  job: WorkshopJob | null;
+  onClose: () => void;
+  onPrint: (job: WorkshopJob) => void;
+}) {
   const [groupId, setGroupId] = useState(job?.groupId || "");
   const [productId, setProductId] = useState(job?.productId || "");
   const [title, setTitle] = useState(job?.title || "");
@@ -356,13 +382,15 @@ function JobForm({ data, job, onClose }: { data: WorkshopData; job: WorkshopJob 
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // which button was pressed: "Kaydet" or "Kaydet ve yazdır"
+    const andPrint = ((e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null)?.value === "print";
     setError("");
     const n = Number(qty);
     if (!title.trim()) return setError("Ne yapılacağını yazın ya da stoktan bir yüzük seçin.");
     if (qty === "" || n <= 0) return setError("Adet girin.");
     setBusy(true);
     try {
-      await saveJob({
+      const fields = {
         id: job?.id,
         title: title.trim(),
         qty: Math.floor(n),
@@ -378,7 +406,10 @@ function JobForm({ data, job, onClose }: { data: WorkshopData; job: WorkshopJob 
         dueAt: dueAt ? new Date(dueAt).toISOString() : undefined,
         price: price === "" ? undefined : Number(price),
         note: note.trim() || undefined,
-      });
+      };
+      const id = await saveJob(fields);
+      if (andPrint)
+        onPrint({ status: "bekliyor", createdAt: new Date().toISOString(), ...job, ...fields, id });
       onClose();
     } catch (err) {
       console.error(err);
@@ -505,9 +536,14 @@ function JobForm({ data, job, onClose }: { data: WorkshopData; job: WorkshopJob 
           </p>
         )}
 
-        <button type="submit" disabled={busy} className={`${btnPrimary} w-full`}>
-          {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />} {job ? "Kaydet" : "İşi ekle"}
-        </button>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <button type="submit" value="save" disabled={busy} className={`${btnGhost} !py-2.5 !text-sm justify-center`}>
+            {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />} {job ? "Kaydet" : "İşi ekle"}
+          </button>
+          <button type="submit" value="print" disabled={busy} className={btnPrimary}>
+            {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Printer className="w-4 h-4" />} Kaydet ve yazdır
+          </button>
+        </div>
       </form>
     </Modal>
   );
