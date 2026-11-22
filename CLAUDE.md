@@ -99,6 +99,13 @@ Hareketler, Dökümcüler.
   (`source: siparis`, `refId` = sipariş). Ödeme yöntemi kart/havale ise banka, değilse nakit.
 - Rapor sekmesi: seçilen ay için satış, kasa bazında tahmini kâr, dökümcüler, gelir/gider;
   CSV (Excel, `;` ayraçlı) ve yazdır. Tahmini maliyet bugünkü gümüş fiyatıyla hesaplanır.
+- İşler sekmesi (`workshopJobs`, yalnızca yönetici): yapılacak işlerin hatırlatma listesi.
+  İş eklerken önce kasa, sonra çeşit seçilir (stok dışı iş de girilebilir); müşteri, ölçü,
+  hazır olma zamanı ve fiyat yazılır. Durumlar: Yapılacak → Yapıldı → Teslim edildi. Stok
+  yalnızca teslimde düşer: `deliverJob` kasaya bağlı işi "Elden satış" hareketi olarak
+  yazar (`recordMovement`, stok + hareket defteri + para defteri + iş tek işlemde). Ödeme
+  nakit ise nakit kasaya, IBAN/havale ya da kredi kartı ise bankaya gelir yazılır. "Teslimi
+  geri al" hepsini geri çevirir. Müşteri adı ve telefonu bu koleksiyonda durur, depoya yazılmaz.
 - QR etiket: `qrcode` paketiyle üretilir, `/admin/atolye?k=<kasa kimliği>` adresini açar.
 - Anlık gümüş ve dolar: `/api/silver` (1 dk önbellek). Gümüş gold-api.com spot (USD/ons),
   dolar finans.truncgil.com veya Yahoo Finance `TRY=X` (hangisi önce cevap verirse, 3,5 sn
@@ -126,7 +133,8 @@ Hareketler, Dökümcüler.
 
 Sahibin elle yapacakları:
 - `firestore.rules` dosyasının güncel hâlini Firebase konsolundan yayınlamak (Atölye sayfası
-  bunsuz çalışmaz). Sonra Atölye'de "Kod ver" ile kasalara K-kodlarını vermek.
+  ve yeni "İşler" sekmesi bunsuz çalışmaz; `workshopJobs` kuralı 22 Kasım 2026'da eklendi).
+  Sonra Atölye'de "Kod ver" ile kasalara K-kodlarını vermek.
 - `/admin` panelini bir kez açıp kayıt ve ürün kodu işlemlerinin bitmesini beklemek.
 - Küçük bir deneme siparişiyle siparişin admin'e düştüğünü kontrol edip iptal etmek.
 - Ortağı GitHub'a ve Firebase'e eklemek; Instagram ve Pinterest klasörlerini Drive'dan paylaşmak.

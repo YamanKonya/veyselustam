@@ -1,8 +1,10 @@
 import {
   collection,
   deleteDoc,
+  deleteField,
   doc,
   DocumentReference,
+  getDoc,
   getDocs,
   limit,
   onSnapshot,
@@ -31,6 +33,7 @@ import {
   StockGroup,
   StockMovement,
   WorkshopCase,
+  WorkshopJob,
   WorkshopSettings,
 } from "@/types";
 import { saveStockGroup } from "./stockService";
@@ -48,6 +51,7 @@ const PRODUCTS = "products";
 const CAST_ORDERS = "castOrders";
 const LEDGER = "casterLedger";
 const CASH = "cashbook";
+const JOBS = "workshopJobs";
 const SETTINGS_DOC = ["settings", "workshop"] as const;
 
 export const MOVEMENT_LABELS: Record<MovementType, string> = {
@@ -209,6 +213,8 @@ export interface MovementInput {
   channel?: SaleChannel;
   payment?: PaymentMethod;
   note?: string;
+  /** a sale that delivers a job: the job is marked delivered in the same transaction */
+  job?: { id: string; customer?: string };
 }
 
 const OUT: MovementType[] = ["satis", "fire"];
@@ -234,12 +240,16 @@ export const recordMovement = async (input: MovementInput) => {
     const groupRef = doc(db, GROUPS, input.groupId);
     const caseRef = doc(db, CASES, input.groupId);
     const productRef = input.product?.id ? doc(db, PRODUCTS, input.product.id) : null;
-    const [groupSnap, caseSnap, productSnap] = await Promise.all([
+    const jobRef = input.job ? doc(db, JOBS, input.job.id) : null;
+    const [groupSnap, caseSnap, productSnap, jobSnap] = await Promise.all([
       tx.get(groupRef),
       tx.get(caseRef),
       productRef ? tx.get(productRef) : Promise.resolve(null),
+      jobRef ? tx.get(jobRef) : Promise.resolve(null),
     ]);
     if (!groupSnap.exists()) throw new Error("no-case");
+    // Two phones open at once must not deliver (and deduct) the same job twice
+    if (jobRef && (!jobSnap?.exists() || jobSnap.data().status === "teslim")) throw new JobAlreadyDeliveredError();
     const stock = Number(groupSnap.data().stock) || 0;
 
     let delta = 0;
@@ -275,7 +285,7 @@ export const recordMovement = async (input: MovementInput) => {
           account: accountFor(input.payment),
           category: "Elden satış",
           amount: round(input.amount),
-          note: [input.product?.title || groupSnap.data().name, input.channel ? CHANNEL_LABELS[input.channel] : ""]
+          note: [input.product?.title || groupSnap.data().name, input.job?.customer, input.channel ? CHANNEL_LABELS[input.channel] : ""]
             .filter(Boolean)
             .join(" · "),
           source: "satis",
@@ -290,6 +300,7 @@ export const recordMovement = async (input: MovementInput) => {
       type: input.type,
       ledgerId,
       cashId,
+      jobId: input.job?.id,
       groupId: input.groupId,
       groupName: groupSnap.data().name ?? input.groupId,
       caseCode: caseSnap.exists() ? caseSnap.data().code : undefined,
@@ -311,6 +322,20 @@ export const recordMovement = async (input: MovementInput) => {
     };
     for (const k of Object.keys(line)) if (line[k] === undefined || line[k] === "") delete line[k];
     tx.set(ref, line);
+
+    if (jobRef) {
+      tx.update(
+        jobRef,
+        clean({
+          status: "teslim",
+          deliveredAt: new Date().toISOString(),
+          movementId: ref.id,
+          cashId,
+          payment: input.payment,
+          amount: input.amount,
+        })
+      );
+    }
   });
 
   return ref.id;
@@ -322,12 +347,16 @@ export const undoMovement = async (m: StockMovement) => {
     const ref = doc(db, MOVEMENTS, m.id);
     const groupRef = doc(db, GROUPS, m.groupId);
     const productRef = m.productId ? doc(db, PRODUCTS, m.productId) : null;
-    const [snap, groupSnap, productSnap] = await Promise.all([
+    const jobRef = m.jobId ? doc(db, JOBS, m.jobId) : null;
+    const [snap, groupSnap, productSnap, jobSnap] = await Promise.all([
       tx.get(ref),
       tx.get(groupRef),
       productRef ? tx.get(productRef) : Promise.resolve(null),
+      jobRef ? tx.get(jobRef) : Promise.resolve(null),
     ]);
     if (!snap.exists()) return;
+    // The sale delivered a job: the job goes back to "made, not handed over"
+    if (jobRef && jobSnap?.exists()) tx.update(jobRef, UNDELIVERED);
     if (m.ledgerId) tx.delete(doc(db, LEDGER, m.ledgerId));
     if (m.cashId) tx.delete(doc(db, CASH, m.cashId));
     if (groupSnap.exists() && m.delta !== 0) {
@@ -339,6 +368,136 @@ export const undoMovement = async (m: StockMovement) => {
       tx.update(productRef, { stock: m.type === "satis" ? productStock + m.qty : Math.max(0, productStock - m.qty) });
     }
     tx.delete(ref);
+  });
+};
+
+/* ---------- jobs (İşler): what is to be made and handed over ---------- */
+
+export class JobAlreadyDeliveredError extends Error {
+  constructor() {
+    super("job-already-delivered");
+  }
+}
+
+const UNDELIVERED = {
+  status: "yapildi",
+  deliveredAt: deleteField(),
+  movementId: deleteField(),
+  cashId: deleteField(),
+  payment: deleteField(),
+  amount: deleteField(),
+};
+
+export const JOB_STATUS_LABELS: Record<WorkshopJob["status"], string> = {
+  bekliyor: "Yapılacak",
+  yapildi: "Yapıldı",
+  teslim: "Teslim edildi",
+  iptal: "İptal",
+};
+
+export const useJobs = () =>
+  useCollection<WorkshopJob[]>(
+    (ok, fail) =>
+      onSnapshot(
+        query(collection(db, JOBS), orderBy("createdAt", "desc"), limit(1000)),
+        (snap) => ok(snap.docs.map((d) => ({ ...(d.data() as WorkshopJob), id: d.id }))),
+        fail
+      ),
+    []
+  );
+
+/** Creates a job, or saves the edited fields of an existing one */
+export const saveJob = async (job: Partial<WorkshopJob> & { title: string; qty: number }) => {
+  if (job.id) {
+    const { id, ...fields } = job;
+    const update: Record<string, unknown> = {};
+    // an emptied field must be removed, not kept
+    for (const [k, v] of Object.entries(fields)) update[k] = v === undefined || v === "" ? deleteField() : v;
+    await setDoc(doc(db, JOBS, id), update, { merge: true });
+    return id;
+  }
+  const ref = doc(collection(db, JOBS));
+  await setDoc(
+    ref,
+    clean({ ...job, status: "bekliyor", createdAt: new Date().toISOString(), by: auth?.currentUser?.email || undefined })
+  );
+  return ref.id;
+};
+
+/** bekliyor ↔ yapildi ↔ iptal (delivery has its own function: it moves stock and money) */
+export const setJobStatus = (job: WorkshopJob, status: "bekliyor" | "yapildi" | "iptal") =>
+  setDoc(
+    doc(db, JOBS, job.id),
+    { status, madeAt: status === "yapildi" ? new Date().toISOString() : deleteField() },
+    { merge: true }
+  );
+
+export const deleteJob = (id: string) => deleteDoc(doc(db, JOBS, id));
+
+/**
+ * Hands a job over. A job tied to a case is a sale: the case (and the model's own count)
+ * drops, the ledger gets a line and the payment goes into the cash book, all in one
+ * transaction with the job itself. A job outside the stock only records the payment.
+ */
+export const deliverJob = async (
+  job: WorkshopJob,
+  opts: { amount?: number; payment: PaymentMethod; product?: Product }
+) => {
+  if (job.groupId) {
+    return recordMovement({
+      type: "satis",
+      groupId: job.groupId,
+      qty: job.qty,
+      product: opts.product,
+      amount: opts.amount,
+      payment: opts.payment,
+      channel: "dukkan",
+      note: [job.customer, job.size ? `Ölçü ${job.size}` : "", job.note].filter(Boolean).join(" · "),
+      job: { id: job.id, customer: job.customer },
+    });
+  }
+  await runTransaction(db, async (tx) => {
+    const jobRef = doc(db, JOBS, job.id);
+    const snap = await tx.get(jobRef);
+    if (!snap.exists() || snap.data().status === "teslim") throw new JobAlreadyDeliveredError();
+    let cashId: string | undefined;
+    if (opts.amount && opts.amount > 0) {
+      const cashRef = doc(collection(db, CASH));
+      cashId = cashRef.id;
+      tx.set(
+        cashRef,
+        clean({
+          type: "gelir",
+          account: accountFor(opts.payment),
+          category: "Diğer gelir",
+          amount: round(opts.amount),
+          note: [job.title, job.customer].filter(Boolean).join(" · "),
+          source: "is",
+          refId: job.id,
+          at: new Date().toISOString(),
+          by: auth?.currentUser?.email || undefined,
+        })
+      );
+    }
+    tx.update(
+      jobRef,
+      clean({ status: "teslim", deliveredAt: new Date().toISOString(), cashId, payment: opts.payment, amount: opts.amount })
+    );
+  });
+};
+
+/** Takes a delivery back: the stock returns, the cash line is removed, the job is "made" again */
+export const undoJobDelivery = async (job: WorkshopJob) => {
+  if (job.movementId) {
+    const snap = await getDoc(doc(db, MOVEMENTS, job.movementId));
+    if (snap.exists()) return undoMovement({ ...(snap.data() as StockMovement), id: snap.id });
+  }
+  await runTransaction(db, async (tx) => {
+    const jobRef = doc(db, JOBS, job.id);
+    const snap = await tx.get(jobRef);
+    if (!snap.exists()) return;
+    if (job.cashId) tx.delete(doc(db, CASH, job.cashId));
+    tx.update(jobRef, UNDELIVERED);
   });
 };
 

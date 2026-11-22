@@ -173,8 +173,46 @@ export interface StockMovement {
   ledgerId?: string;
   /** cash book line written with this sale */
   cashId?: string;
+  /** job (İşler) this sale delivered */
+  jobId?: string;
   /** ISO time */
   at: string;
+  by?: string;
+}
+
+/** A job to do (Atölye → İşler): a piece to make and hand over.
+ *  bekliyor → yapildi → teslim. Delivery takes the piece out of stock and writes the
+ *  payment into the cash book in one transaction. */
+export type JobStatus = "bekliyor" | "yapildi" | "teslim" | "iptal";
+
+export interface WorkshopJob {
+  id: string;
+  /** what is to be made (the product title, or free text for work outside the stock) */
+  title: string;
+  customer?: string;
+  phone?: string;
+  /** case the piece comes out of; empty = work that does not touch the stock */
+  groupId?: string;
+  groupName?: string;
+  caseCode?: string;
+  productId?: string;
+  productCode?: number;
+  qty: number;
+  size?: string;
+  /** agreed total, TL */
+  price?: number;
+  /** when it should be ready (ISO) */
+  dueAt?: string;
+  note?: string;
+  status: JobStatus;
+  createdAt: string;
+  madeAt?: string;
+  deliveredAt?: string;
+  /** set on delivery */
+  payment?: PaymentMethod;
+  amount?: number;
+  movementId?: string;
+  cashId?: string;
   by?: string;
 }
 
@@ -257,8 +295,8 @@ export interface CashEntry {
   /** always positive, TL */
   amount: number;
   note?: string;
-  source?: "manual" | "satis" | "siparis" | "dokumcu";
-  /** movement id, order id or caster ledger id */
+  source?: "manual" | "satis" | "siparis" | "dokumcu" | "is";
+  /** movement id, order id, caster ledger id or job id */
   refId?: string;
   at: string;
   by?: string;

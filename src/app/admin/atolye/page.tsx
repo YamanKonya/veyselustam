@@ -12,6 +12,7 @@ import {
   useCasters,
   useCashbook,
   useCastOrders,
+  useJobs,
   useMovements,
   useWorkshopCases,
   useWorkshopSettings,
@@ -20,6 +21,7 @@ import { INITIAL_VEYSELUSTAM_PRODUCTS } from "@/data/initialProducts";
 import { useSilverStore } from "@/store/useSilverStore";
 import { MovementPreset, WorkshopData } from "@/components/admin/atolye/shared";
 import Summary from "@/components/admin/atolye/Summary";
+import Jobs from "@/components/admin/atolye/Jobs";
 import Cases from "@/components/admin/atolye/Cases";
 import Ledger from "@/components/admin/atolye/Ledger";
 import Casters from "@/components/admin/atolye/Casters";
@@ -30,9 +32,10 @@ import Reports from "@/components/admin/atolye/Reports";
 import Labels from "@/components/admin/atolye/Labels";
 import MovementForm from "@/components/admin/atolye/MovementForm";
 
-type Tab = "summary" | "cases" | "ledger" | "casting" | "casters" | "money" | "costs" | "reports" | "labels";
+type Tab = "summary" | "jobs" | "cases" | "ledger" | "casting" | "casters" | "money" | "costs" | "reports" | "labels";
 const TABS: [Tab, string][] = [
   ["summary", "Özet"],
+  ["jobs", "İşler"],
   ["cases", "Kasalar"],
   ["ledger", "Hareketler"],
   ["casting", "Döküm"],
@@ -56,6 +59,7 @@ export default function AtolyePage() {
   const ledger = useCasterLedger();
   const settings = useWorkshopSettings();
   const cash = useCashbook();
+  const jobs = useJobs();
   // A QR label opens /admin/atolye?k=<case id>: show that case
   const [focusId, setFocusId] = useState<string | null>(null);
   useEffect(() => {
@@ -96,11 +100,15 @@ export default function AtolyePage() {
       ledger: ledger.data,
       settings: settings.data,
       cash: cash.data,
+      jobs: jobs.data,
       caseById,
       groupById,
       variants,
     };
-  }, [groups, cases.data, casters.data, movements.data, products, orders, castOrders.data, ledger.data, settings.data, cash.data]);
+  }, [groups, cases.data, casters.data, movements.data, products, orders, castOrders.data, ledger.data, settings.data, cash.data, jobs.data]);
+
+  // Open jobs, shown on the tab so nothing waiting is forgotten
+  const openJobs = jobs.data.filter((j) => j.status === "bekliyor" || j.status === "yapildi").length;
 
   const denied = [cases, casters, movements, castOrders, ledger, cash].some((s) => s.error === "permission-denied");
   const uncoded = cases.loaded && !denied ? groups.filter((g) => !data.caseById[g.id]?.code).length : 0;
@@ -180,6 +188,9 @@ export default function AtolyePage() {
             }`}
           >
             {label}
+            {k === "jobs" && openJobs > 0 && (
+              <span className="ml-1.5 px-1.5 py-0.5 rounded-md bg-brass-600 text-white text-[11px] tabular-nums">{openJobs}</span>
+            )}
           </button>
         ))}
       </div>
@@ -191,6 +202,8 @@ export default function AtolyePage() {
           </p>
         ) : tab === "summary" ? (
           <Summary data={data} onMove={setPreset} />
+        ) : tab === "jobs" ? (
+          <Jobs data={data} onError={setError} denied={jobs.error === "permission-denied"} />
         ) : tab === "cases" ? (
           <Cases data={data} onMove={setPreset} onError={setError} focusId={focusId} />
         ) : tab === "ledger" ? (

@@ -13,6 +13,7 @@ import {
   StockGroup,
   StockMovement,
   WorkshopCase,
+  WorkshopJob,
   WorkshopSettings,
 } from "@/types";
 
@@ -37,6 +38,7 @@ export interface WorkshopData {
   ledger: CasterLedgerLine[];
   settings: WorkshopSettings;
   cash: CashEntry[];
+  jobs: WorkshopJob[];
   caseById: Record<string, WorkshopCase>;
   groupById: Record<string, StockGroup>;
   /** products linked to each case */
