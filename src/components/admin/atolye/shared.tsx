@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import {
   CashEntry,
   Caster,
@@ -81,29 +82,46 @@ export const Badge = ({ kind, children }: { kind: MovementType | "online"; child
   </span>
 );
 
-// Small photo; hovering it shows the full picture bigger, like the product cards zoom on hover
-export const Thumb = ({ src }: { src?: string }) =>
-  src ? (
-    <span className="group relative flex-shrink-0">
+// Small photo; hovering it grows the thumbnail and shows the full picture beside it.
+// The big picture is drawn in a portal on <body> with fixed position, so the scrolling
+// admin panels and cards cannot clip it.
+export const Thumb = ({ src }: { src?: string }) => {
+  const [at, setAt] = useState<{ x: number; y: number } | null>(null);
+  if (!src) return <div className="w-10 h-10 rounded-lg bg-panel-800 flex-shrink-0" />;
+  const big = 256;
+  const left = at ? Math.min(at.x, window.innerWidth - big - 12) : 0;
+  const top = at ? Math.min(Math.max(at.y - big / 2, 8), window.innerHeight - big - 8) : 0;
+  return (
+    <span
+      className="relative flex-shrink-0"
+      onMouseEnter={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        setAt({ x: r.right + 12, y: r.top + r.height / 2 });
+      }}
+      onMouseLeave={() => setAt(null)}
+    >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
         alt=""
         loading="lazy"
-        className="w-10 h-10 rounded-lg object-cover bg-panel-800 transition-transform duration-300 ease-out group-hover:scale-110"
+        className="w-10 h-10 rounded-lg object-cover bg-panel-800 transition-transform duration-300 ease-out hover:scale-125"
       />
-      <span className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 hidden group-hover:block">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={src}
-          alt=""
-          className="w-56 h-56 sm:w-64 sm:h-64 rounded-xl object-cover bg-panel-950 border border-panel-700 shadow-2xl shadow-black/60"
-        />
-      </span>
+      {at &&
+        typeof document !== "undefined" &&
+        createPortal(
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={src}
+            alt=""
+            className="fixed z-[90] pointer-events-none rounded-xl object-cover bg-panel-950 border border-panel-700 shadow-2xl shadow-black/60"
+            style={{ left, top, width: big, height: big }}
+          />,
+          document.body
+        )}
     </span>
-  ) : (
-    <div className="w-10 h-10 rounded-lg bg-panel-800 flex-shrink-0" />
   );
+};
 
 /** Online orders that count as sales (not cancelled) */
 export const liveOrders = (orders: Order[]) => orders.filter((o) => o.status !== "cancelled" && !o.restocked);
