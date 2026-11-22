@@ -550,11 +550,33 @@ export default function ProductFormModal({
 
         {/* Form */}
         <form noValidate onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[80vh] overflow-y-auto custom-scrollbar">
+          {/* Step 1: the ring case, when the piece is made on a shared case (e.g. Sidre) */}
+          <div className="bg-panel-950/60 border border-brass-500/40 rounded-2xl p-4">
+            <label className="block">
+              <span className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">1. Kasa (varsa)</span>
+              <select
+                value={stockGroup}
+                onChange={(e) => setStockGroup(e.target.value)}
+                className="w-full px-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-white"
+              >
+                <option value="">Yok — ürünün kendi stoğu</option>
+                {stockGroups.map((g) => (
+                  <option key={g.id} value={g.id}>
+                    {g.name} ({g.stock} stokta)
+                  </option>
+                ))}
+              </select>
+              <span className="block text-[11px] text-panel-500 mt-1.5">
+                Yüzük ortak bir kasayla yapılıyorsa önce kasayı seçin. Kasalar “Kasa Stokları” sayfasından eklenir.
+              </span>
+            </label>
+          </div>
+
           {/* Title & Category */}
           <div className="space-y-4">
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">
-                Ürün Adı / Başlığı *
+                2. Ürün Adı / Başlığı *
               </label>
               <input
                 type="text"
@@ -928,26 +950,8 @@ export default function ProductFormModal({
             </fieldset>
           </div>
 
-          {/* Stock: own count, or a shared case (e.g. Sidre) that several products sell from */}
-          <div className="bg-panel-950/60 border border-panel-800 rounded-2xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <label className="block">
-              <span className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">Stok kasası</span>
-              <select
-                value={stockGroup}
-                onChange={(e) => setStockGroup(e.target.value)}
-                className="w-full px-4 py-3 bg-panel-950 border border-panel-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-brass-500 text-sm text-white"
-              >
-                <option value="">Yok — ürünün kendi stoğu</option>
-                {stockGroups.map((g) => (
-                  <option key={g.id} value={g.id}>
-                    {g.name} ({g.stock} stokta)
-                  </option>
-                ))}
-              </select>
-              <span className="block text-[11px] text-panel-500 mt-1.5">
-                Kasalar “Kasa Stokları” sayfasından eklenir.
-              </span>
-            </label>
+          {/* Stock count (the shared case is chosen at the top of the form) */}
+          <div className="bg-panel-950/60 border border-panel-800 rounded-2xl p-4">
             <label className="block">
               <span className="block text-xs font-semibold uppercase tracking-wider text-panel-400 mb-2">Stok adedi</span>
               <input
