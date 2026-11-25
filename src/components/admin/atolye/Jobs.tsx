@@ -96,7 +96,7 @@ export default function Jobs({ data, onError, denied }: { data: WorkshopData; on
     };
   }, [data.jobs]);
 
-  // A5 work sheet to hand to the craftsman
+  // A6 work sheet to hand to the craftsman
   const print = (job: WorkshopJob) => {
     const product = job.productId ? productById[job.productId] : undefined;
     const group = job.groupId ? data.groupById[job.groupId] : undefined;

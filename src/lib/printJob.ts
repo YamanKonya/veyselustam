@@ -1,7 +1,7 @@
 import { WorkshopJob } from "@/types";
 
 /**
- * Prints a job (Atölye → İşler) as an A5 work sheet to hand to the craftsman.
+ * Prints a job (Atölye → İşler) as an A6 portrait work sheet to hand to the craftsman.
  * The sheet is built in a hidden iframe so the admin page itself is not printed.
  * It carries what the craftsman needs: the piece, case, size, quantity, due time and
  * note. The price is left out on purpose.
@@ -40,36 +40,38 @@ export function jobSheetHtml(job: WorkshopJob, info: JobSheetInfo, origin: strin
   return `<!doctype html>
 <html lang="tr"><head><meta charset="utf-8"><title>İş ${esc(no)} · ${esc(job.title)}</title>
 <style>
-  @page { size: A5 portrait; margin: 9mm; }
+  /* A6 portrait. Browsers know "A5" by name but not "A6", so the size is given in mm. */
+  @page { size: 105mm 148mm; margin: 6mm; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, Helvetica, sans-serif; color: #111; font-size: 11pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .head { display: flex; align-items: center; justify-content: space-between; border-bottom: 0.6mm solid #133B27; padding-bottom: 3mm; }
-  .brand { display: flex; align-items: center; gap: 3mm; }
-  .brand img { width: 14mm; height: 14mm; object-fit: contain; }
-  .brand b { font-size: 14pt; color: #133B27; letter-spacing: .04em; }
-  .brand span { display: block; font-size: 8pt; color: #555; letter-spacing: .12em; text-transform: uppercase; }
-  .no { text-align: right; font-size: 8.5pt; color: #555; }
-  .no b { display: block; font-size: 13pt; color: #111; letter-spacing: .06em; }
-  .main { display: flex; gap: 5mm; margin-top: 5mm; }
-  .photo { width: 46mm; height: 46mm; flex: none; border: 0.3mm solid #bbb; object-fit: cover; }
-  h1 { font-size: 15pt; line-height: 1.2; }
-  .case { margin-top: 1.5mm; font-size: 10pt; color: #444; }
-  .big { display: flex; gap: 4mm; margin-top: 4mm; }
-  .big div { border: 0.5mm solid #133B27; padding: 2mm 4mm; min-width: 26mm; text-align: center; }
-  .big small { display: block; font-size: 7.5pt; letter-spacing: .12em; text-transform: uppercase; color: #555; }
-  .big b { font-size: 22pt; line-height: 1.1; }
-  table { width: 100%; border-collapse: collapse; margin-top: 5mm; }
-  th, td { text-align: left; vertical-align: top; padding: 2mm 0; border-bottom: 0.2mm solid #ccc; font-size: 10.5pt; }
-  th { width: 32mm; font-weight: normal; color: #555; }
+  body { font-family: Arial, Helvetica, sans-serif; color: #111; font-size: 8.5pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .head { display: flex; align-items: center; justify-content: space-between; border-bottom: 0.5mm solid #133B27; padding-bottom: 2mm; }
+  .brand { display: flex; align-items: center; gap: 2mm; }
+  .brand img { width: 10mm; height: 10mm; object-fit: contain; }
+  .brand b { font-size: 10.5pt; color: #133B27; letter-spacing: .04em; }
+  .brand span { display: block; font-size: 6pt; color: #555; letter-spacing: .12em; text-transform: uppercase; }
+  .no { text-align: right; font-size: 6.5pt; color: #555; }
+  .no b { display: block; font-size: 10pt; color: #111; letter-spacing: .06em; }
+  .main { display: flex; gap: 3mm; margin-top: 3mm; }
+  .photo { width: 30mm; height: 30mm; flex: none; border: 0.3mm solid #bbb; object-fit: cover; }
+  .main > div { min-width: 0; flex: 1; }
+  h1 { font-size: 10.5pt; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .case { margin-top: 1mm; font-size: 7.5pt; color: #444; }
+  .big { display: flex; gap: 2mm; margin-top: 2mm; }
+  .big div { flex: 1; border: 0.5mm solid #133B27; padding: 1mm 2mm; text-align: center; }
+  .big small { display: block; font-size: 6pt; letter-spacing: .12em; text-transform: uppercase; color: #555; }
+  .big b { font-size: 16pt; line-height: 1.1; }
+  table { width: 100%; border-collapse: collapse; margin-top: 3mm; }
+  th, td { text-align: left; vertical-align: top; padding: 1.3mm 0; border-bottom: 0.2mm solid #ccc; font-size: 8.5pt; }
+  th { width: 24mm; font-weight: normal; color: #555; }
   td { font-weight: bold; }
-  .note { margin-top: 5mm; border: 0.3mm solid #999; padding: 3mm; min-height: 24mm; }
-  .note small, .checks small { display: block; font-size: 7.5pt; letter-spacing: .12em; text-transform: uppercase; color: #555; margin-bottom: 1.5mm; }
-  .note p { white-space: pre-wrap; font-size: 11pt; }
-  .checks { display: flex; gap: 8mm; margin-top: 6mm; }
+  .note { margin-top: 3mm; border: 0.3mm solid #999; padding: 2mm; min-height: 17mm; }
+  .note small, .checks small { display: block; font-size: 6pt; letter-spacing: .1em; text-transform: uppercase; color: #555; margin-bottom: 1mm; }
+  .note p { white-space: pre-wrap; font-size: 8.5pt; }
+  .checks { display: flex; gap: 4mm; margin-top: 3.5mm; }
   .checks div { flex: 1; }
-  .line { border-bottom: 0.3mm solid #333; height: 9mm; }
-  .box { display: inline-block; width: 4.5mm; height: 4.5mm; border: 0.4mm solid #111; vertical-align: -1mm; margin-right: 2mm; }
-  .foot { margin-top: 6mm; font-size: 7.5pt; color: #777; display: flex; justify-content: space-between; }
+  .line { border-bottom: 0.3mm solid #333; height: 7mm; }
+  .box { display: inline-block; width: 3.2mm; height: 3.2mm; border: 0.4mm solid #111; vertical-align: -0.7mm; margin-right: 1.2mm; }
+  .foot { margin-top: 3mm; font-size: 6pt; color: #777; display: flex; justify-content: space-between; }
 </style></head>
 <body>
   <div class="head">
@@ -99,15 +101,15 @@ export function jobSheetHtml(job: WorkshopJob, info: JobSheetInfo, origin: strin
   <div class="note"><small>Not</small><p>${esc(job.note || "")}</p></div>
 
   <div class="checks">
-    <div><small><span class="box"></span>Yapıldı · tarih / imza</small><div class="line"></div></div>
-    <div><small><span class="box"></span>Teslim edildi · tarih / imza</small><div class="line"></div></div>
+    <div><small><span class="box"></span>Yapıldı · imza</small><div class="line"></div></div>
+    <div><small><span class="box"></span>Teslim · imza</small><div class="line"></div></div>
   </div>
 
   <div class="foot"><span>veyselustam.com</span><span>Yazdırıldı: ${esc(fmt(new Date().toISOString()))}</span></div>
 </body></html>`;
 }
 
-/** Opens the print dialog with the A5 sheet of this job */
+/** Opens the print dialog with the A6 sheet of this job */
 export function printJob(job: WorkshopJob, info: JobSheetInfo) {
   const frame = document.createElement("iframe");
   frame.setAttribute("aria-hidden", "true");
